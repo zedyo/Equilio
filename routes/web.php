@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\QualificationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,41 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+// PLAYGROUND
+// Route::get('/test/{param}', [Qualification::class, 'testMethode']);
+//
+
+//Route::get('/qualification', [QualificationController::class, 'index']);
+//Route::get('/qualification/{qualification}/edit ', [QualificationController::class, 'index']);
+//Route::get('/qualification/{qualification}', [QualificationController::class, 'show']);
+
+Route::resources([
+    'qualifications' => QualificationController::class
+]);
+
+//
+//Route::get('/qualification/{qualification}', function($id) {
+//
+//    return view ('qualification', [
+//        'qualification' => Qualification::find($id)
+//    ]);
+//});
+
+//Route::get('/qualification/{qualification}', function(Qualification $qualification) {
+//
+//    $test = view ('qualification', [
+//        'qualification' => $qualification
+//    ]);
+//    dd($test);
+//});
+
+//Route::update('qualification/{qualification}', function($id, $description) {
+//    $qualification = Qualification::find($id);
+//
+//    return view ('qualification', [
+//        'qualifications' => $qualification::update(['description' => $description])
+//    ]);
+//});
+
+//Route::create()
