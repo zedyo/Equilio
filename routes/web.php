@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
+use App\Http\Controllers\ShiftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +32,8 @@ Route::get('/', function () {
 
 Route::resources([
     'qualifications' => QualificationController::class,
-    'employees' => EmployeeController::class
+    'employees' => EmployeeController::class,
+    'shifts' => ShiftController::class
 ]);
 
 //

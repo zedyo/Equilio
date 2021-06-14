@@ -18,7 +18,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             QualificationSeeder::class,
-            EmployeeSeeder::class
+            EmployeeSeeder::class,
+            ShiftSeeder::class
         ]);
     }
 }
