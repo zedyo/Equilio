@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
 use Illuminate\Support\Facades\Route;
 
@@ -26,8 +27,11 @@ Route::get('/', function () {
 //Route::get('/qualification/{qualification}/edit ', [QualificationController::class, 'index']);
 //Route::get('/qualification/{qualification}', [QualificationController::class, 'show']);
 
+//Route::resource('employees', EmployeeController::class);
+
 Route::resources([
-    'qualifications' => QualificationController::class
+    'qualifications' => QualificationController::class,
+    'employees' => EmployeeController::class
 ]);
 
 //
