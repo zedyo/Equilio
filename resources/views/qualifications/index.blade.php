@@ -11,7 +11,7 @@
                 <div id="qualification_{{ $qualification->id }}">
                     <a href="{{ route('qualifications.show', ['qualification' => $qualification]) }}">{{ $qualification->id }} {{ $qualification->description }}</a>
                     @foreach($qualification->employees as $employee)
-                    <p>{{ $employee->firstname }} {{  $employee->lastname }}</p>
+                    <p>{{ $employee->first_name }} {{  $employee->last_name }}</p>
                     <p>{{ $employee->diffForHumans }}</p>
                     @endforeach
                 </div>

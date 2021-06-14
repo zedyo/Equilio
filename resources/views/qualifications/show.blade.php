@@ -6,7 +6,7 @@
 
 @section('content')
     <div>
-        <div class="qualifications text-lg text-gray-200">
+        <div>
             <p>{{ $qualification->id }}</p>
             <p>{{ $qualification->description }}</p>
             <a href="{{ route('qualifications.edit', ['qualification' => $qualification]) }}">EDIT</a>
