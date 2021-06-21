@@ -4,6 +4,7 @@ use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
+use App\Models\Duty;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -37,6 +38,9 @@ Route::resources([
     'shifts' => ShiftController::class,
     'duties' => DutyController::class
 ]);
+
+Route::get('/duties/{year}/{month}', [DutyController::class, 'calendar'])->name('calendar');
+Route::get('/duties/changeMonth', [DutyController::class, 'changeMonth'])->name('changeMonth');
 
 //
 //Route::get('/qualification/{qualification}', function($id) {

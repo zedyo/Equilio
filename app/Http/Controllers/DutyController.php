@@ -13,6 +13,33 @@ use Illuminate\Support\Carbon;
 
 class DutyController extends Controller
 {
+
+    public function calendar($year, $month) {
+        $employees = Employee::all();
+
+        $new_date = Carbon::createFromDate($year, $month, 1);
+
+        $days_of_month = [];
+
+        for ($i = $new_date->day; ($new_date->month == $month && $new_date->year == $year); $new_date->addDay()) {
+            $days_of_month[] = $i;
+            $i++;
+        };
+
+
+        return view ('duties.index', [
+            'employees' => $employees,
+            'days_of_month' => $days_of_month,
+            'year' => $year,
+            'month' => $month
+        ]);
+    }
+
+
+    public function changeMonth($year, $month) {
+        dd('test');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -20,28 +47,25 @@ class DutyController extends Controller
      */
     public function index()
     {
-        $employees = Employee::all();
-
-        $year = 2019;
-        $month =  02;
-
-        $new_date = Carbon::createFromDate($year, $month, 1);
-
-        $days_of_month = [];
-
-
-        for ($i = $new_date->day; ($new_date->month === $month && $new_date->year === $year); $new_date->addDay()) {
-          $days_of_month[] = $i;
-          $i++;
-        };
-
-
-
-
-        return view ('duties.index', [
-            'employees' => $employees,
-            'days_of_month' => $days_of_month
-        ]);
+//        $employees = Employee::all();
+//
+//        $year = 2019;
+//        $month =  02;
+//
+//        $new_date = Carbon::createFromDate($year, $month, 1);
+//
+//        $days_of_month = [];
+//
+//
+//        for ($i = $new_date->day; ($new_date->month === $month && $new_date->year === $year); $new_date->addDay()) {
+//          $days_of_month[] = $i;
+//          $i++;
+//        };
+//
+//        return view ('duties.index', [
+//            'employees' => $employees,
+//            'days_of_month' => $days_of_month
+//        ]);
     }
 
     /**
