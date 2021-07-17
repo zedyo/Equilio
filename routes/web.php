@@ -21,6 +21,8 @@ use Illuminate\Support\Facades\Route;
 //    return 'You did it!';
 //}]);
 
+Route::view('/{any}', 'app')->where('any', '.*');
+
 Route::get('/', function () {
     return view('welcome');
 });
