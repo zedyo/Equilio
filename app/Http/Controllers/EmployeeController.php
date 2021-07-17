@@ -7,6 +7,7 @@ use App\Models\Qualification;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -15,15 +16,13 @@ class EmployeeController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View
+     * @return array
      */
     public function index()
     {
         $employees = Employee::all();
 
-        return view ('employees.index', [
-            'employees' => $employees
-        ]);
+        return ['employees' => $employees];
     }
 
     /**
@@ -71,9 +70,11 @@ class EmployeeController extends Controller
      */
     public function show(Employee $employee)
     {
-        return view ('employees.show', [
-           'employee' => $employee
-        ]);
+        return ['employee' => $employee];
+
+//        return view ('employees.show', [
+//           'employee' => $employee
+//        ]);
     }
 
     /**

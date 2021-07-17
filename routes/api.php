@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\DutyController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\QualificationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -17,3 +20,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+//Route::get('/qualifications', [QualificationController::class, 'index']);
+
+Route::resources([
+    'qualifications' => QualificationController::class,
+    'employees' => EmployeeController::class
+]);
+
+Route::post('/qualifications', [QualificationController::class, 'store']);
+
+Route::get('/duties/{year}/{month}', [DutyController::class, 'calendar'])->name('calendar');
+Route::get('/duties/changeMonth', [DutyController::class, 'changeMonth'])->name('changeMonth');
+//Route::get('/qualifications', [QualificationController::class, 'index']);
+
+//Route::delete('/qualifications', [QualificationController::class, 'index2']);
+

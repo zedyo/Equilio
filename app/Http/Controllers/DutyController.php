@@ -7,14 +7,22 @@ use App\Models\Employee;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use phpDocumentor\Reflection\Types\Integer;
 
 class DutyController extends Controller
 {
 
-    public function calendar($year, $month) {
+    /**
+     * @param $year
+     * @param $month
+     * @return JsonResponse
+     */
+    public function calendar($year, $month)
+    {
         $employees = Employee::all();
 
         $new_date = Carbon::createFromDate($year, $month, 1);
@@ -26,8 +34,7 @@ class DutyController extends Controller
             $i++;
         };
 
-
-        return view ('duties.index', [
+        return response()->json([
             'employees' => $employees,
             'days_of_month' => $days_of_month,
             'year' => $year,

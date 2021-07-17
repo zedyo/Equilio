@@ -2,45 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Employee;
 use App\Models\Qualification;
+use http\Env\Response;
 use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Routing\ResponseFactory;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class QualificationController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return Application|Factory|View
-     */
+
     public function index()
     {
-        $qualifications = Qualification::all();
+        try {
+            // $qualifications = Employee::with('qua/lification')->get();
+            $qualifications = Qualification::all();
+            // Notwendig anstatt Employee::all(),
+            // da hier auch die Relations zu qualifications mitgeliefert werden
 
-        return view ('qualifications.index', [
-            'qualifications' => $qualifications
-        ]);
+            if (count($qualifications) == 0) {
+                return response()->json('Keine Einträge da!', 404);
+            }
+
+            return [
+                'qualifications' => $qualifications
+            ];
+        } catch (\Exception $exception) {
+            return response()->json([
+                'exception' => $exception->getMessage()
+            ], 500);
+        }
+
+//        return view ('qualifications.index', [
+//            'qualifications' => $qualifications
+//        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return Application|Factory|View
-     */
+    public function index2()
+    {
+//        try {
+//            $qualifications = Employee::with('qualification')->get();
+//            // Notwendig anstatt Employee::all(),
+//            // da hier auch die Relations zu qualifications mitgeliefert werden
+//
+//            if (count($qualifications) == 0) {
+//                return response()->json('Keine Einträge da!', 404);
+//            }
+//
+//            return response()->json([
+//                'qualifications' => $qualifications
+//            ]);
+//        } catch (\Exception $exception) {
+//            return response()->json([
+//                'exception' => $exception->getMessage()
+//            ], 500);
+//        }
+
+//        return view ('qualifications.index', [
+//            'qualifications' => $qualifications
+//        ]);
+    }
+
     public function create()
     {
         return view ('qualifications.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param Request $request
-     * @return RedirectResponse
-     */
     public function store(Request $request): RedirectResponse
     {
         $validatedData = $request->validate([
@@ -50,34 +83,22 @@ class QualificationController extends Controller
         $qualification = new Qualification();
         $qualification->description = $validatedData['description'];
         $qualification->save();
-
-        return redirect()->route('qualifications.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param Qualification $qualification
-     * @return Application|Factory|View
-     */
     public function show(Qualification $qualification)
     {
-        return view ('qualifications.show', [
-            'qualification' => $qualification
-        ]);
+        return ['qualification' => $qualification];
     }
 
     /**
      * Show the form for editing the specified resource.
      *
      * @param Qualification $qualification
-     * @return Application|Factory|View
+     * @return Qualification[]
      */
     public function edit(Qualification $qualification)
     {
-        return view ('qualifications.edit', [
-            'qualification' => $qualification
-        ]);
+        return ['qualification' => $qualification];
     }
 
     /**
@@ -96,19 +117,19 @@ class QualificationController extends Controller
         $qualification->description = $validatedData['description'];
         $qualification->save();
 
-        return view ('qualifications.show', [
-            'qualification' => $qualification
-        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return void
+     * @param Qualification $qualification
+     * @return Application|ResponseFactory|\Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Qualification $qualification)
     {
-        //
+//        dd($qualification);
+        $qualification->delete();
+
+        return response(null, 204);
     }
 }

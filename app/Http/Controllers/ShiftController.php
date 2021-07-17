@@ -6,6 +6,7 @@ use App\Models\Shift;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\View\Factory;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
@@ -14,13 +15,13 @@ class ShiftController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return Application|Factory|View
+     * @return JsonResponse
      */
     public function index()
     {
         $shifts = Shift::all();
 
-        return view ('shifts.index', [
+        return response()->json([
            'shifts' => $shifts
         ]);
     }

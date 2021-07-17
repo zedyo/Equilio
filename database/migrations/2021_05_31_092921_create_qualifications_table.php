@@ -17,6 +17,7 @@ class CreateQualificationsTable extends Migration
             $table->id();
             $table->string('description')->unique();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
