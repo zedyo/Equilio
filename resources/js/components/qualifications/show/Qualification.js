@@ -1,22 +1,21 @@
 import React from "react";
 import {Fragment} from "react";
-import {Link} from "react-router-dom";
+import {Card, Col} from "react-bootstrap";
+import {Button} from "react-bootstrap";
 
 function Qualification(props) {
 
     return (
-    <Fragment>
-            <h2>
-                {props.qualificationData.id}
-            </h2>
-            <h1>
-                {props.qualificationData.description}
-            </h1>
-            <Link to={`/qualification/edit/${props.qualificationData.id}`} >EDIT</Link>
-
-
-            {/*{props.qualificationData.first_name}*/}
-            {/*{props.qualificationData.last_name}*/}
+        <Fragment>
+            <Col md="auto">
+                <Card style={{ width: '18rem', margin: '0.3rem' }}>
+                    <Card.Body>
+                        <Card.Title>{props.qualificationData.description}</Card.Title>
+                        <Card.Subtitle className="mb-2 text-muted">ID: {props.qualificationData.id}</Card.Subtitle>
+                        <Button href={`/qualification/edit/${props.qualificationData.id}`} variant="outline-secondary" size="sm">Bearbeiten</Button>{' '}
+                    </Card.Body>
+                </Card>
+            </Col>
         </Fragment>
     )
 }
