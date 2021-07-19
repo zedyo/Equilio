@@ -10,7 +10,7 @@ function Duty(props) {
     const employeeRowStyle = {
         display: "grid",
         gridAutoFlow: "column",
-        gridTemplateColumns: "100px"
+        gridTemplateColumns: "150px"
     }
 
     const getDays = days => {
@@ -29,7 +29,7 @@ function Duty(props) {
         <Fragment>
             <div style={employeeRowStyle}>
                 <hi>
-                    {props.dutiesData.first_name}
+                    {props.dutiesData.first_name} {props.dutiesData.last_name}
                 </hi>
                 <Fragment>
                     {getDays(moment(

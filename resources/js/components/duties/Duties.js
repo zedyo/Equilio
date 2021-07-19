@@ -3,6 +3,8 @@ import axios from "axios"
 import Duty from "./single_duty/Duty";
 import DateChecker from "./date_checker/DateChecker";
 import moment from "moment";
+import {Col, Row, Form, FloatingLabel, Container, Card, Button} from "react-bootstrap";
+
 
 function Duties() {
     const [dutiesData, setDuty] = useState(null);
@@ -16,10 +18,10 @@ function Duties() {
     const daysRowStyle = {
         display: "grid",
         gridAutoFlow: "column",
-        gridTemplateColumns: "100px"
+        gridTemplateColumns: "150px"
     }
     const daysStyle = {
-        width: "38px"
+        width: "28px"
     }
 
     const getDaysCount = days =>{
@@ -46,24 +48,26 @@ function Duties() {
     )
 
     return <div>
-        <DateChecker checkerData={checkerData}
-                     setChecker={setChecker}/>
-        <div style={daysRowStyle}>
-            <div/>
-            <Fragment>
-                {getDaysCount(moment(
-                    `${checkerData.year}-${checkerData.month}`,
-                    "YYYY-MM")
-                    .daysInMonth())}
-            </Fragment>
-        </div>
-        <div>
-            {dutiesData && dutiesData.map( (dutyObject) => <Duty key={dutyObject.id}
-                                                                 dutiesData={dutyObject}
-                                                                 checkerData={checkerData}/>)}
-            {/* Hier könnte im Else ein Loading Spinner kommen!*/}
-            {/*{dutiesData ? dutiesData.map( (dutyObject) => <Duty key={dutyObject.id} dutiesData={dutyObject}/>) : "Nix!"}*/}
-        </div>
+        <Container>
+            <DateChecker checkerData={checkerData}
+                         setChecker={setChecker}/>
+            <div style={daysRowStyle}>
+                <div/>
+                <Fragment>
+                    {getDaysCount(moment(
+                        `${checkerData.year}-${checkerData.month}`,
+                        "YYYY-MM")
+                        .daysInMonth())}
+                </Fragment>
+            </div>
+            <div>
+                {dutiesData && dutiesData.map( (dutyObject) => <Duty key={dutyObject.id}
+                                                                     dutiesData={dutyObject}
+                                                                     checkerData={checkerData}/>)}
+                {/* Hier könnte im Else ein Loading Spinner kommen!*/}
+                {/*{dutiesData ? dutiesData.map( (dutyObject) => <Duty key={dutyObject.id} dutiesData={dutyObject}/>) : "Nix!"}*/}
+            </div>
+        </Container>
     </div>
 }
 

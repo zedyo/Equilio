@@ -8,6 +8,8 @@ import UpdateQualification from "../components/qualifications/update/UpdateQuali
 import CreateQualification from "../components/qualifications/create/CreateQualification";
 import Employees from "../components/employees/Employees";
 import Duties from "../components/duties/Duties";
+import UpdateEmployee from "../components/employees/update/UpdateEmployee";
+import CreateEmployee from "../components/employees/create/CreateEmployee";
 
 function Router(props) {
     return (
@@ -20,6 +22,8 @@ function Router(props) {
                         <Route path="/qualification/edit/:id" component={UpdateQualification}/>
                         <Route path="/qualification/create" component={CreateQualification}/>
                         <Route path="/qualifications" component={Qualifications}/>
+                        <Route path="/employee/edit/:id" component={UpdateEmployee}/>
+                        <Route path="/employee/create" component={CreateEmployee}/>
                         <Route path="/employees" component={Employees}/>
                         <Route path="/duties" component={Duties}/>
                         <Route exact path="/" component={Home} />
