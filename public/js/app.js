@@ -6037,7 +6037,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 function Qualification(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
@@ -6058,6 +6057,11 @@ function Qualification(props) {
             variant: "outline-secondary",
             size: "sm",
             children: "Bearbeiten"
+          }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__.default, {
+            href: "",
+            variant: "outline-danger",
+            size: "sm",
+            children: "L\xF6schen"
           }), ' ']
         })
       })

@@ -24,8 +24,8 @@ class Qualification extends Model
         return $this->hasMany(Employee::class);
     }
 
-// PLAYGROUND
-//    public function testMethode($param) {
-//        return 'das ist ein test '.$param;
-//    }
+    // PLAYGROUND
+    //    public function testMethode($param) {
+    //        return 'das ist ein test '.$param;
+    //    }
 }
