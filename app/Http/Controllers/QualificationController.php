@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Qualification;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class QualificationController extends Controller
 {
@@ -52,11 +54,11 @@ class QualificationController extends Controller
 
     public function update(Request $request, Qualification $qualification)
     {
-        $validatedData = $request->validate([
-            'description' => 'required|string|min:3'
-        ]);
+//        $validatedData = $request->validate([
+//            'description' => 'required|string|min:3'
+//        ]);
 
-        $qualification->description = $validatedData['description'];
+        $qualification->description = $request->qualificationsData['description'];
         $qualification->save();
     }
 

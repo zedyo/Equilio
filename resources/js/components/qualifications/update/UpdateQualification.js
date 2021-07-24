@@ -1,5 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
-import {useParams} from "react-router-dom";
+import {useParams, useHistory} from "react-router-dom";
 import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 
@@ -7,7 +7,8 @@ import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap"
 function UpdateQualification(props) {
 
     const params = useParams()
-    const [qualificationsData, setQualification] = useState([])
+    const history = useHistory()
+    const [qualificationsData, setQualification] = useState({})
 
     useEffect(()=>{
         async function getData() {
@@ -21,6 +22,22 @@ function UpdateQualification(props) {
         getData()
     }, [])
 
+    async function submitFormHandler() {
+
+
+        try {
+            await axios.patch(`http://127.0.0.1:8000/api/qualifications/${params.id}/`, {qualificationsData})
+            history.push("/qualifications")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    console.log(Object.keys(qualificationsData).length)
+    // Untkontrollierten Input kontrollieren
+    if (Object.keys(qualificationsData).length === 0) return <h1>...this loading</h1>
+
+    // Kontrollierter Input (nachdem JS oben durch ist und qualificationsData aufgefüllt wurde)
     return (
         <Fragment>
             <Container>
@@ -40,10 +57,11 @@ function UpdateQualification(props) {
                                             aria-label="Bezeichnung"
                                             aria-describedby="qualification_description"
                                             value={qualificationsData.description}
+                                            onChange={(event)=>setQualification({...qualificationsData, description : event.target.value})}
                                         />
                                     </InputGroup>
                                 </Card.Title>
-                                <Button href={`/qualifications`} variant="outline-success">Speichern</Button>{' '}
+                                <Button onClick={submitFormHandler} variant="outline-success">Speichern</Button>{' '}
                             </Card.Body>
                         </Card>
                     </div>
