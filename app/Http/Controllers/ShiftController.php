@@ -39,8 +39,10 @@ class ShiftController extends Controller
     }
 
     public function destroy(Shift $shift) {
+        $deleted_shift = $shift;
+
         $shift->delete();
 
-        return response()->json([null], 204);
+        return['deleted_shift' => $deleted_shift];
     }
 }
