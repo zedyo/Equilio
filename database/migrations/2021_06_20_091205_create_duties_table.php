@@ -15,7 +15,15 @@ class CreateDutiesTable extends Migration
     {
         Schema::create('duties', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('employee_id');
+            $table->unsignedBigInteger('shift_id');
+            $table->unsignedInteger('day');
+            $table->unsignedInteger('month');
+            $table->unsignedInteger('year');
             $table->timestamps();
+
+            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('shift_id')->references('id')->on('shifts');
         });
     }
 

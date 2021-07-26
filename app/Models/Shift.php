@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Shift extends Model
@@ -15,4 +16,9 @@ class Shift extends Model
         'h_duration',
         'color_hex'
     ];
+
+    public function duties(): HasMany
+    {
+        return $this->hasMany(Duty::class);
+    }
 }
