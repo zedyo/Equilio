@@ -16,7 +16,6 @@ function Employees() {
     // --MEMO Array destructioring---
     // const [var1, var2] = blahMethode() -> ich vergebe 2 Variablen für 2 Returnwerte von blahMethode
 
-
     useEffect( ()=>{
         // --MEMO Anonyme Methoden--
         // ()=>{} ist eine Anonyme "wegwerf" Methode die nur hier verwendet wird
@@ -41,6 +40,15 @@ function Employees() {
     // employeeData od. inputState (egal was) -> "Überwache das! und Ändere das jedes mal wenn sich da was ändert!"
     // Man kann mehrere Variablen hier reinbringen die dann explizit überwacht werden sollen.
 
+    async function destroyData(deletedEmployeeId) {
+        try {
+            const deleted_data = await axios.delete(`http://127.0.0.1:8000/api/employees/${deletedEmployeeId}/`)
+            setEmployee(employeesData.filter((employee)=>employee.id !== deleted_data.data.deleted_employee.id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Fragment>
             <Container>
@@ -58,7 +66,9 @@ function Employees() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {employeesData.map( (employeeObject) => <Employee key={employeeObject.id} employeeData={employeeObject}/> )}
+                                {employeesData.map( (employeeObject) => <Employee key={employeeObject.id}
+                                                                                  employeeData={employeeObject}
+                                                                                  deleteHandler={destroyData}/>)}
                             </tbody>
                         </Table>
                         <Container fluid="sm">

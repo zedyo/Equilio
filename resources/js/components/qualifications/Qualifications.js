@@ -1,7 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react";
 import axios from "axios";
 import Qualification from "./show/Qualification";
-import {Button, Col, Row, Container} from "react-bootstrap";
+import {Button, Row, Container} from "react-bootstrap";
 
 function Qualifications() {
     const [qualificationsData, setQualification] = useState([])
@@ -19,6 +19,15 @@ function Qualifications() {
 
     }, [])
 
+    async function destroyData(deletedQualificationId) {
+        try {
+            const deleted_data = await axios.delete(`http://127.0.0.1:8000/api/qualifications/${deletedQualificationId}/`)
+            setQualification(qualificationsData.filter((qualification)=>qualification.id !== deleted_data.data.deleted_qualification.id))
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
     return (
         <Fragment>
             <div className="container">
@@ -31,7 +40,8 @@ function Qualifications() {
                                 <Container fluid="sm">
                                     <Row>
                                             {qualificationsData.map((qualificationObject) => <Qualification key={qualificationObject.id}
-                                                                                                            qualificationData={qualificationObject}/>)}
+                                                                                                            qualificationData={qualificationObject}
+                                                                                                            deleteHandler={destroyData}/>)}
                                     </Row>
                                 </Container>
 

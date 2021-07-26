@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Qualification;
+use Exception;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
@@ -27,7 +28,7 @@ class QualificationController extends Controller
                 'qualifications' => $qualifications
             ];
 
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             return response()->json([
                 'exception' => $exception->getMessage()
             ], 500);
@@ -60,8 +61,10 @@ class QualificationController extends Controller
 
     public function destroy(Qualification $qualification)
     {
+        $deleted_qualification = $qualification;
+
         $qualification->delete();
 
-        return response()->json([null], 204);
+        return['deleted_qualification' => $deleted_qualification];
     }
 }

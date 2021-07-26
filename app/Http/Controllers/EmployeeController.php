@@ -38,8 +38,10 @@ class EmployeeController extends Controller
     }
 
     public function destroy(Employee $employee) {
+        $deleted_employee = $employee;
+
         $employee->delete();
 
-        return response()->json([null], 204);
+        return['deleted_employee' => $deleted_employee];
     }
 }
