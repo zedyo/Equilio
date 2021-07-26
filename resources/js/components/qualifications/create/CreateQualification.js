@@ -1,8 +1,24 @@
-import React, {Fragment} from "react";
+import React, {Fragment, useState} from "react";
+import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
+import {useHistory} from "react-router-dom";
 
 function CreateQualification(props) {
 
+    const history = useHistory()
+    const [qualificationsData, setQualification] = useState({})
+
+    async function submitFormHandler() {
+        try {
+            console.log('START AXIOS')
+            console.log(qualificationsData)
+            await axios.post(`http://127.0.0.1:8000/api/qualfications/`, {qualificationsData})
+            console.log('Ende AXIOS')
+            history.push("/qualifications")
+        } catch (error) {
+            console.log(error.message)
+        }
+    }
 
     return (
         <Fragment>
@@ -21,10 +37,11 @@ function CreateQualification(props) {
                                             placeholder="Berufsbeziechnung"
                                             aria-label="Bezeichnung"
                                             aria-describedby="qualification_description"
+                                            onChange={(event  )=>setQualification({...qualificationsData, description: event.target.value})}
                                         />
                                     </InputGroup>
                                 </Card.Title>
-                                <Button href={`/qualifications`} variant="outline-success">Speichern</Button>{' '}
+                                <Button onClick={submitFormHandler} variant="outline-success">Speichern</Button>{' '}
                             </Card.Body>
                         </Card>
                     </div>

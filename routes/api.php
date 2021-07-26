@@ -27,7 +27,7 @@ Route::resources([
     'employees' => EmployeeController::class
 ]);
 
-Route::post('/qualifications', [QualificationController::class, 'store']);
+//Route::post('/qualifications', [QualificationController::class, 'store']);
 
 Route::get('/duties/{year}/{month}', [DutyController::class, 'calendar'])->name('calendar');
 Route::get('/duties/changeMonth', [DutyController::class, 'changeMonth'])->name('changeMonth');

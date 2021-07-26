@@ -38,12 +38,13 @@ class QualificationController extends Controller
 
     public function store(Request $request): RedirectResponse
     {
-        $validatedData = $request->validate([
-            'description' => 'required|string|min:3'
-        ]);
+//        $validatedData = $request->validate([
+//            'description' => 'required|string|min:3'
+//        ]);
 
         $qualification = new Qualification();
-        $qualification->description = $validatedData['description'];
+//        $qualification->description = $validatedData['description'];
+        $qualification->description = $request->qualificationsData['description'];
         $qualification->save();
     }
 
@@ -66,8 +67,8 @@ class QualificationController extends Controller
     {
         $qualification->delete();
 
-        return response()->json([
-            null
-        ], 204);
+//        return response()->json([
+//            null
+//        ], 204);
     }
 }
