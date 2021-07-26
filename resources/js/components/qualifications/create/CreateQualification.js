@@ -10,10 +10,7 @@ function CreateQualification(props) {
 
     async function submitFormHandler() {
         try {
-            console.log('START AXIOS')
-            console.log(qualificationsData)
-            await axios.post(`http://127.0.0.1:8000/api/qualfications/`, {qualificationsData})
-            console.log('Ende AXIOS')
+            await axios.post(`http://127.0.0.1:8000/api/qualifications/`, {qualificationsData})
             history.push("/qualifications")
         } catch (error) {
             console.log(error.message)

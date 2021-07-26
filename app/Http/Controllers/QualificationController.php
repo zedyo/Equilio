@@ -3,10 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Qualification;
-use Illuminate\Contracts\Validation\Validator;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log;
 
 class QualificationController extends Controller
 {
@@ -36,16 +34,13 @@ class QualificationController extends Controller
         }
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request): JsonResponse
     {
-//        $validatedData = $request->validate([
-//            'description' => 'required|string|min:3'
-//        ]);
-
         $qualification = new Qualification();
-//        $qualification->description = $validatedData['description'];
         $qualification->description = $request->qualificationsData['description'];
         $qualification->save();
+
+        return response()->json([null], 201);
     }
 
     public function show(Qualification $qualification)
@@ -67,8 +62,6 @@ class QualificationController extends Controller
     {
         $qualification->delete();
 
-//        return response()->json([
-//            null
-//        ], 204);
+        return response()->json([null], 204);
     }
 }

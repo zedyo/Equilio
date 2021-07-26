@@ -17,6 +17,7 @@ function Qualification(props) {
         }
     }
 
+    //TODO: Delete soll die Seite automatisch neuladen.
     return (
         <Fragment>
             <Col md="auto">
@@ -25,7 +26,6 @@ function Qualification(props) {
                         <Card.Title>{props.qualificationData.description}</Card.Title>
                         <Card.Subtitle className="mb-2 text-muted">ID: {props.qualificationData.id}</Card.Subtitle>
                         <Button href={`/qualification/edit/${props.qualificationData.id}`} variant="outline-secondary" size="sm">Bearbeiten</Button>{' '}
-                        {/*<Button onClick={destroyData(1)} variant="outline-danger" size="sm">Löschen</Button>{' '}*/}
                         <Button onClick={(e)=>destroyData(props.qualificationData.id)} variant="outline-danger" size="sm">Löschen</Button>{' '}
                     </Card.Body>
                 </Card>

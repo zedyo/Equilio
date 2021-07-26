@@ -3,9 +3,7 @@ import {useParams, useHistory} from "react-router-dom";
 import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 
-
-function UpdateQualification(props) {
-
+function UpdateQualification() {
     const params = useParams()
     const history = useHistory()
     const [qualificationsData, setQualification] = useState({})
@@ -23,8 +21,6 @@ function UpdateQualification(props) {
     }, [])
 
     async function submitFormHandler() {
-
-
         try {
             await axios.patch(`http://127.0.0.1:8000/api/qualifications/${params.id}/`, {qualificationsData})
             history.push("/qualifications")
@@ -33,7 +29,6 @@ function UpdateQualification(props) {
         }
     }
 
-    console.log(Object.keys(qualificationsData).length)
     // Untkontrollierten Input kontrollieren
     if (Object.keys(qualificationsData).length === 0) return <h1>...this loading</h1>
 
@@ -52,12 +47,15 @@ function UpdateQualification(props) {
                                     ID: {qualificationsData.id}
                                     <InputGroup className="mb-3">
                                         <InputGroup.Text id="qualification_description">Bezeichnung</InputGroup.Text>
-                                        <FormControl
-                                            placeholder="Berufsbeziechnung"
-                                            aria-label="Bezeichnung"
-                                            aria-describedby="qualification_description"
-                                            value={qualificationsData.description}
-                                            onChange={(event)=>setQualification({...qualificationsData, description : event.target.value})}
+                                        <FormControl placeholder="Berufsbeziechnung"
+                                                     aria-label="Bezeichnung"
+                                                     aria-describedby="qualification_description"
+                                                     value={qualificationsData.description}
+                                                     onChange={
+                                                         (e)=>setQualification(
+                                                             {...qualificationsData, description : e.target.value}
+                                                         )
+                                                     }
                                         />
                                     </InputGroup>
                                 </Card.Title>

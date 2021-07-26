@@ -44,12 +44,12 @@ Route::get('/', function () {
 //Route::get('/qualifications/create', [QualificationController::class, 'create'])->name('QualificationCreate');
 
 
-Route::resources([
-    'qualifications' => QualificationController::class,
-    'employees' => EmployeeController::class,
-    'shifts' => ShiftController::class,
-    'duties' => DutyController::class
-]);
+//Route::resources([
+//    'qualifications' => QualificationController::class,
+//    'employees' => EmployeeController::class,
+//    'shifts' => ShiftController::class,
+//    'duties' => DutyController::class
+//]);
 
 Route::get('/duties/{year}/{month}', [DutyController::class, 'calendar'])->name('calendar');
 Route::get('/duties/changeMonth', [DutyController::class, 'changeMonth'])->name('changeMonth');

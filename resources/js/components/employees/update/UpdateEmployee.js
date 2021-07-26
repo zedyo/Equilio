@@ -1,11 +1,11 @@
 import React, {Fragment, useState, useEffect} from "react";
 import {Col, Row, Form, FloatingLabel, Container, Card, Button} from "react-bootstrap";
-import {useParams} from "react-router-dom";
+import {useHistory, useParams} from "react-router-dom";
 
 function UpdateEmployee(props) {
-
     const params = useParams()
-    const[employeeData, setEmployee] = useState([])
+    const history = useHistory()
+    const[employeeData, setEmployee] = useState({})
     const[qualificationData, setQualification] = useState([])
 
     useEffect(()=>{
@@ -31,6 +31,18 @@ function UpdateEmployee(props) {
         getQualificationData()
     }, [])
 
+    async function submitFormHandler() {
+        try {
+            await axios.patch(`http://127.0.0.1:8000/api/employees/${params.id}/`, {employeeData})
+            history.push("/employees")
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
+    if (Object.keys(qualificationData).length === 0) return <h1>... loading</h1>
+
     return (
         <Fragment>
             <Container>
@@ -47,31 +59,50 @@ function UpdateEmployee(props) {
                         <Row className="g-2">
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Vorname">
-                                    <Form.Control type="text" placeholder="Klara" value={employeeData.first_name} />
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Klara"
+                                        value={employeeData.first_name}
+                                        onChange={(e)=>setEmployee({...employeeData, first_name: e.target.value})}
+                                    />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Nachname">
-                                    <Form.Control type="text" placeholder="Musterstein" value={employeeData.last_name}/>
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Musterstein"
+                                        value={employeeData.last_name}
+                                        onChange={(e)=>setEmployee({...employeeData, last_name: e.target.value})}
+                                    />
                                 </FloatingLabel>
                             </Col>
                         </Row>
                         <Row className="g-2">
                             <Col md>
                                 <FloatingLabel controlId="floatingInputGrid" label="Irgendwas">
-                                    <Form.Control type="text" placeholder="Dings" />
+                                    <Form.Control
+                                        type="text"
+                                        placeholder="Dings"
+                                    />
                                 </FloatingLabel>
                             </Col>
                             <Col md>
                                 <FloatingLabel controlId="floatingSelectGrid" label="Qualifikation">
-                                    <Form.Select aria-label="Floating label select example">
-                                        <option isInvalid>Bitte auswählen</option>
-                                        {qualificationData.map((qualificationObject) => <option value={qualificationObject.id}>{qualificationObject.description}</option>)}
+                                    <Form.Select aria-label="Floating label select example"
+                                    onChange={(e)=>setEmployee({...employeeData, qualification_id: parseInt(e.target.value)})}>
+                                        <option key="0">Bitte auswählen</option>
+                                        {qualificationData.map((qualificationObject) =>
+                                            <option
+                                                key={qualificationObject.id}
+                                                value={qualificationObject.id}>
+                                                {qualificationObject.description}
+                                            </option>)}
                                     </Form.Select>
                                 </FloatingLabel>
                             </Col>
                         </Row>
-                        <Button href={`/employees`} variant="outline-success">Speichern</Button>{' '}
+                        <Button onClick={submitFormHandler} variant="outline-success">Speichern</Button>{' '}
                     </Card.Body>
                 </Card>
             </Container>

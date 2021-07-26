@@ -3,59 +3,43 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
-use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index()
-    {
+    public function index() {
         $employees = Employee::with('qualification')->get();
 
         return ['employees' => $employees];
     }
 
-    public function store(Request $request): RedirectResponse
-    {
-        $validatedData = $request->validate([
-            'first_name' =>  'required|string|min:3',
-            'last_name' =>  'required|string|min:3'
-        ]);
-
+    public function store(Request $request): JsonResponse {
         $employee = new Employee();
-        $employee->first_name = $validatedData['first_name'];
-        $employee->last_name = $validatedData['last_name'];
-        $employee->qualification_id = $request->request->get('qualification_id');
-
+        $employee->first_name = $request->employeeData['first_name'];
+        $employee->last_name = $request->employeeData['last_name'];
+        $employee->qualification_id = $request->employeeData['qualification_id'];
         $employee->save();
+
+        return response()->json([null], 201);
+
     }
 
-    public function show(Employee $employee)
-    {
+    public function show(Employee $employee) {
         return ['employee' => $employee];
-
     }
 
-    public function update(Request $request, Employee $employee)
-    {
-        $validatedData = $request->validate([
-            'first_name' =>  'required|string|min:3',
-            'last_name' =>  'required|string|min:3'
-        ]);
-
-        $employee->first_name = $validatedData['first_name'];
-        $employee->last_name = $validatedData['last_name'];
-        $employee->qualification_id = $request->request->get('qualification_id');
+    public function update(Request $request, Employee $employee) {
+        $employee->first_name = $request->employeeData['first_name'];
+        $employee->last_name = $request->employeeData['last_name'];
+        $employee->qualification_id = $request->employeeData['qualification_id'];
 
         $employee->save();
     }
 
-    public function destroy(Employee $employee)
-    {
+    public function destroy(Employee $employee) {
         $employee->delete();
 
-        return response()->json([
-            null
-        ], 204);
+        return response()->json([null], 204);
     }
 }
