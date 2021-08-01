@@ -91,7 +91,23 @@ class DutyController extends Controller
     {
 //        Log::emergency($request->value);
 
-        return ['TEST' => $request->all(), ];
+        $duty_check = Duty::where('employee_id', 2);
+        $duty_check->where('shift_id', 1);
+        $duty_check->where('day', 7);
+        $duty_check->where('month', 8);
+        $duty_check->where('year', 2021);
+
+        $duty = $duty_check->get();
+
+        Log::emergency($duty);
+
+        if ($duty->empty()) {
+            return ['NADA'];
+//            return response()->json([null], 404);
+        }
+
+//        return ['TEST' => $request->all(), ];
+        return [$duty];
 
 
         // TODO: FindOne/All finden
