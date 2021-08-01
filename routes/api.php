@@ -23,6 +23,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 //Route::get('/qualifications', [QualificationController::class, 'index']);
 
+Route::post('/duty', [DutyController::class, 'store']);
+
 Route::resources([
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,

@@ -13,12 +13,23 @@ function Duty(props) {
         gridTemplateColumns: "150px"
     }
 
+    async function sendDuty(value, day, month, year, employee_id) {
+        if (value !== "") {
+            const data = await axios.post(`http://127.0.0.1:8000/api/duty/`, {value, day, month, year, employee_id})
+            console.log(data)
+        }
+    }
+
     const getDays = days => {
         let content = [];
         for (let i = 1; i <= days; i++) {
             content.push(<div>
                 <label>
-                    <input style={inputStyle} type="text"/>
+                    <input style={inputStyle}
+                           type="text"
+                           onBlur={(e)=>{
+                               sendDuty(e.target.value, i, props.checkerData.month, props.checkerData.year, props.dutiesData.id)
+                           }}/>
                 </label>
             </div>);
         }

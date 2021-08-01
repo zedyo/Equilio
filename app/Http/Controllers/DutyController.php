@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Log;
 use phpDocumentor\Reflection\Types\Integer;
 
 class DutyController extends Controller
@@ -86,15 +87,24 @@ class DutyController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return Response
-     */
     public function store(Request $request)
     {
-        //
+//        Log::emergency($request->value);
+
+        return ['TEST' => $request->all(), ];
+
+
+        // TODO: FindOne/All finden
+        // TODO: Ziel: Finden von der vorhandenen Datei.
+
+//        $duty = new Duty();
+
+//        $duty->id = $request->dutyData['id'];
+//        $duty->employee_id = $request->dutyData['employee_id'];
+//        $duty->shift_id = $request->dutyData['shift_id'];
+//        $duty->day = $request->dutyData['day'];
+//        $duty->month = $request->dutyData['month'];
+//        $duty->year = $request->dutyData['year'];
     }
 
     /**
