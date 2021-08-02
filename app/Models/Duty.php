@@ -19,11 +19,13 @@ class Duty extends Model
         'creation_date'
     ];
 
-    public function employee(){
+    public function employee()
+    {
         return $this->belongsTo(Employee::class, 'employee_id');
     }
 
-    public function shift(){
+    public function shift()
+    {
         return $this->belongsTo(Shift::class, 'shift_id');
     }
 }

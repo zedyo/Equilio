@@ -8,16 +8,15 @@ use Illuminate\Http\Request;
 
 class ShiftController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $shifts = Shift::all();
 
-        return [
-           'shifts' => $shifts
-        ];
+        return ['shifts' => $shifts];
     }
 
-    public function store(Request $request): JsonResponse {
-
+    public function store(Request $request): JsonResponse
+    {
         $shift = new Shift();
         $shift->abrv = $request->shiftData['abrv'];
         $shift->color_hex = $request->shiftData['color_hex'];
@@ -27,18 +26,21 @@ class ShiftController extends Controller
         return response()->json([null], 201);
     }
 
-    public function show(Shift $shift) {
+    public function show(Shift $shift)
+    {
         return ['shift' => $shift];
     }
 
-    public function update(Request $request, Shift $shift) {
+    public function update(Request $request, Shift $shift)
+    {
         $shift->abrv = $request->shiftData['abrv'];
         $shift->color_hex = $request->shiftData['color_hex'];
         $shift->h_duration = $request->shiftData['h_duration'];
         $shift->save();
     }
 
-    public function destroy(Shift $shift) {
+    public function destroy(Shift $shift)
+    {
         $deleted_shift = $shift;
 
         $shift->delete();

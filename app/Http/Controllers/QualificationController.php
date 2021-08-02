@@ -51,11 +51,8 @@ class QualificationController extends Controller
 
     public function update(Request $request, Qualification $qualification)
     {
-//        $validatedData = $request->validate([
-//            'description' => 'required|string|min:3'
-//        ]);
-
         $qualification->description = $request->qualificationsData['description'];
+
         $qualification->save();
     }
 

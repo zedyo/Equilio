@@ -21,9 +21,9 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-//Route::get('/qualifications', [QualificationController::class, 'index']);
 
 Route::patch('/duty', [DutyController::class, 'update']);
+Route::get('/duties/{year}/{month}', [DutyController::class, 'overview'])->name('overview');
 
 Route::resources([
     'qualifications' => QualificationController::class,
@@ -31,11 +31,4 @@ Route::resources([
     'shifts' => ShiftController::class
 ]);
 
-//Route::post('/qualifications', [QualificationController::class, 'store']);
-
-Route::get('/duties/{year}/{month}', [DutyController::class, 'calendar'])->name('calendar');
-Route::get('/duties/changeMonth', [DutyController::class, 'changeMonth'])->name('changeMonth');
-//Route::get('/qualifications', [QualificationController::class, 'index']);
-
-//Route::delete('/qualifications', [QualificationController::class, 'index2']);
 

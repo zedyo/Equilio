@@ -14,6 +14,26 @@ class QualificationSeeder extends Seeder
      */
     public function run()
     {
-        Qualification::factory(3)->create();
+        $dummyQualification1 = new Qualification([
+            'description' => 'Exam. Pfleger:in'
+        ]);
+        $dummyQualification1->save();
+
+        $dummyQualification2 = new Qualification([
+            'description' => 'Qual. Pflegehelfer:in'
+        ]);
+        $dummyQualification2->save();
+
+        $dummyQualification3 = new Qualification([
+            'description' => 'Pflegehelfer:in'
+        ]);
+        $dummyQualification3->save();
+
+        $dummyQualification4 = new Qualification([
+            'description' => 'Betreuungsassistent:in'
+        ]);
+        $dummyQualification4->save();
+
+//        Qualification::factory(3)->create();
     }
 }

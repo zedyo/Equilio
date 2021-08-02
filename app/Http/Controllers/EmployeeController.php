@@ -8,13 +8,15 @@ use Illuminate\Http\Request;
 
 class EmployeeController extends Controller
 {
-    public function index() {
+    public function index()
+    {
         $employees = Employee::with('qualification')->get();
 
         return ['employees' => $employees];
     }
 
-    public function store(Request $request): JsonResponse {
+    public function store(Request $request): JsonResponse
+    {
         $employee = new Employee();
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
@@ -22,14 +24,15 @@ class EmployeeController extends Controller
         $employee->save();
 
         return response()->json([null], 201);
-
     }
 
-    public function show(Employee $employee) {
+    public function show(Employee $employee)
+    {
         return ['employee' => $employee];
     }
 
-    public function update(Request $request, Employee $employee) {
+    public function update(Request $request, Employee $employee)
+    {
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
         $employee->qualification_id = $request->employeeData['qualification_id'];
@@ -37,7 +40,8 @@ class EmployeeController extends Controller
         $employee->save();
     }
 
-    public function destroy(Employee $employee) {
+    public function destroy(Employee $employee)
+    {
         $deleted_employee = $employee;
 
         $employee->delete();

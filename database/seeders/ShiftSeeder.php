@@ -29,9 +29,9 @@ class ShiftSeeder extends Seeder
         $dummyS1Shift->save();
 
         $dummyFreeShift = new Shift([
-            'abrv' => '-',
-            'h_duration' => 0.00,
-            'color_hex' => '#000000'
+            'abrv' => 'N1',
+            'h_duration' => 8.00,
+            'color_hex' => '#932092'
         ]);
         $dummyFreeShift->save();
     }
