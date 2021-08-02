@@ -11,7 +11,7 @@ function Duties() {
 
     const [checkerData, setChecker] = useState(
         {
-            month:`${moment().format('MM')}`,
+            month:`${moment().format('M')}`,
             year:`${moment().format('YYYY')}`
         });
 

@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 //Route::get('/qualifications', [QualificationController::class, 'index']);
 
-Route::post('/duty', [DutyController::class, 'store']);
+Route::patch('/duty', [DutyController::class, 'update']);
 
 Route::resources([
     'qualifications' => QualificationController::class,

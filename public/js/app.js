@@ -5464,7 +5464,7 @@ function Duties() {
       setDuty = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
-    month: "".concat(moment__WEBPACK_IMPORTED_MODULE_5___default()().format('MM')),
+    month: "".concat(moment__WEBPACK_IMPORTED_MODULE_5___default()().format('M')),
     year: "".concat(moment__WEBPACK_IMPORTED_MODULE_5___default()().format('YYYY'))
   }),
       _useState4 = _slicedToArray(_useState3, 2),
@@ -5662,7 +5662,7 @@ function Duty(props) {
               }
 
               _context.next = 3;
-              return axios.post("http://127.0.0.1:8000/api/duty/", {
+              return axios.patch("http://127.0.0.1:8000/api/duty/", {
                 value: value,
                 day: day,
                 month: month,

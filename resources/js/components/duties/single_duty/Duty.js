@@ -15,7 +15,7 @@ function Duty(props) {
 
     async function sendDuty(value, day, month, year, employee_id) {
         if (value !== "") {
-            const data = await axios.post(`http://127.0.0.1:8000/api/duty/`, {value, day, month, year, employee_id})
+            const data = await axios.patch(`http://127.0.0.1:8000/api/duty/`, {value, day, month, year, employee_id})
             console.log(data)
         }
     }
