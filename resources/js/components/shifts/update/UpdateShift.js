@@ -3,7 +3,8 @@ import {useParams, useHistory} from "react-router-dom";
 import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 
-function UpdateShift() {
+function UpdateShift()
+{
     const params = useParams()
     const history = useHistory()
     const [shiftData, setShift] = useState({})
@@ -14,19 +15,18 @@ function UpdateShift() {
                 const {data} = await axios.get(`http://127.0.0.1:8000/api/shifts/${params.id}/`, {})
                 setShift(data.shift)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
         getData()
     }, [])
-    console.log(shiftData)
 
     async function submitFormHandler() {
         try {
             await axios.patch(`http://127.0.0.1:8000/api/shifts/${params.id}/`, {shiftData})
             history.push("/shifts")
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 

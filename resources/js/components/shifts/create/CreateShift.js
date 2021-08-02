@@ -3,8 +3,8 @@ import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
-function CreateShift(props) {
-
+function CreateShift()
+{
     const history = useHistory()
     const [shiftData, setShift] = useState({})
 
@@ -16,8 +16,6 @@ function CreateShift(props) {
             console.log(error.message)
         }
     }
-
-    console.log(shiftData)
 
     return (
         <Fragment>

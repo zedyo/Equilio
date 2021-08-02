@@ -2,7 +2,8 @@ import React, {Fragment, useState, useEffect} from "react";
 import {Col, Row, Form, FloatingLabel, Container, Card, Button} from "react-bootstrap";
 import {useHistory, useParams} from "react-router-dom";
 
-function UpdateEmployee(props) {
+function UpdateEmployee()
+{
     const params = useParams()
     const history = useHistory()
     const[employeeData, setEmployee] = useState({})
@@ -14,7 +15,7 @@ function UpdateEmployee(props) {
                 const {data} = await axios.get(`http://127.0.0.1:8000/api/employees/${params.id}/`, {})
                 setEmployee(data.employee)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
 
@@ -23,7 +24,7 @@ function UpdateEmployee(props) {
                 const {data} = await axios.get(`http://127.0.0.1:8000/api/qualifications`)
                 setQualification(data.qualifications)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
 
@@ -36,7 +37,7 @@ function UpdateEmployee(props) {
             await axios.patch(`http://127.0.0.1:8000/api/employees/${params.id}/`, {employeeData})
             history.push("/employees")
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 

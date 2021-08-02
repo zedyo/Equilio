@@ -3,10 +3,11 @@ import axios from "axios"
 import Duty from "./single_duty/Duty";
 import DateChecker from "./date_checker/DateChecker";
 import moment from "moment";
-import {Col, Row, Form, FloatingLabel, Container, Card, Button} from "react-bootstrap";
+import {Container} from "react-bootstrap";
 
 
-function Duties() {
+function Duties()
+{
     const [dutiesData, setDuty] = useState(null);
 
     const [checkerData, setChecker] = useState(

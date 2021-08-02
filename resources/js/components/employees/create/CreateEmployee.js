@@ -3,7 +3,8 @@ import {Col, Row, Form, FloatingLabel, Container, Card, Button} from "react-boot
 import {useHistory} from "react-router-dom";
 import axios from "axios";
 
-function CreateEmployee(props) {
+function CreateEmployee()
+{
     const history = useHistory()
     const[qualificationData, setQualification] = useState([])
     const[employeeData, setEmployee] = useState({})
@@ -14,9 +15,8 @@ function CreateEmployee(props) {
             try {
                 const {data} = await axios.get(`http://127.0.0.1:8000/api/qualifications`)
                 setQualification(data.qualifications)
-
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
         getQualificationData()
@@ -24,7 +24,6 @@ function CreateEmployee(props) {
 
     async function submitFormHandler() {
         try {
-            console.log(employeeData)
             await axios.post(`http://127.0.0.1:8000/api/employees/`, {employeeData})
             history.push("/employees")
         } catch (error) {

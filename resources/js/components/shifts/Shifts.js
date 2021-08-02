@@ -3,7 +3,8 @@ import axios from "axios";
 import {Button, Row, Container} from "react-bootstrap";
 import Shift from "./show/Shift";
 
-function Shifts() {
+function Shifts()
+{
     const [shiftsData, setShift] = useState([])
 
     useEffect(()=>{
@@ -12,11 +13,10 @@ function Shifts() {
                 const {data} = await axios.get('http://127.0.0.1:8000/api/shifts', {})
                 setShift(data.shifts)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
         getData()
-
     }, [])
 
     async function destroyData(deletedShiftsId) {
@@ -24,7 +24,7 @@ function Shifts() {
             const deleted_data = await axios.delete(`http://127.0.0.1:8000/api/shifts/${deletedShiftsId}/`)
             setShift(shiftsData.filter((shift)=>shift.id !== deleted_data.data.deleted_shift.id))
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 
@@ -39,9 +39,10 @@ function Shifts() {
                             <div className="card-body">
                                 <Container fluid="sm">
                                     <Row>
-                                        {shiftsData.map((shiftsObject) => <Shift key={shiftsObject.id}
-                                                                                                        shiftsData={shiftsObject}
-                                                                                                        deleteHandler={destroyData}/>)}
+                                        {shiftsData.map((shiftsObject) => <Shift
+                                            key={shiftsObject.id}
+                                            shiftsData={shiftsObject}
+                                            deleteHandler={destroyData}/>)}
                                     </Row>
                                 </Container>
 

@@ -2,7 +2,8 @@ import React from "react";
 import {Fragment} from "react";
 import {Card, Col, Button} from "react-bootstrap";
 
-function Qualification(props) {
+function Qualification(props)
+{
     return (
         <Fragment>
             <Col md="auto">

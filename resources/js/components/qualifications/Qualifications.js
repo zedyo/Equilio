@@ -3,7 +3,8 @@ import axios from "axios";
 import Qualification from "./show/Qualification";
 import {Button, Row, Container} from "react-bootstrap";
 
-function Qualifications() {
+function Qualifications()
+{
     const [qualificationsData, setQualification] = useState([])
 
     useEffect(()=>{
@@ -12,11 +13,10 @@ function Qualifications() {
                 const {data} = await axios.get('http://127.0.0.1:8000/api/qualifications', {})
                 setQualification(data.qualifications)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
         getData()
-
     }, [])
 
     async function destroyData(deletedQualificationId) {
@@ -24,7 +24,7 @@ function Qualifications() {
             const deleted_data = await axios.delete(`http://127.0.0.1:8000/api/qualifications/${deletedQualificationId}/`)
             setQualification(qualificationsData.filter((qualification)=>qualification.id !== deleted_data.data.deleted_qualification.id))
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 

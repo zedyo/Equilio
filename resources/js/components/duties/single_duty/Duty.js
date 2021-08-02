@@ -1,8 +1,8 @@
 import React, {Fragment} from "react"
 import moment from "moment";
 
-function Duty(props) {
-
+function Duty(props)
+{
     const inputStyle = {
         width: "30px"
     }

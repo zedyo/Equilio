@@ -1,12 +1,7 @@
-import React, {Fragment, useState} from "react"
+import React, {Fragment} from "react"
 
-function DateChecker(props) {
-
-    // function formDataHandler(e) {
-    //     e.preventDefault()
-        // console.log(moment(`${checkerData.year}-${checkerData.month}`, "YYYY-MM").daysInMonth())
-    // }
-
+function DateChecker(props)
+{
     return <Fragment>
         <input type="text"
                onChange={(e) => props.setChecker({...props.checkerData, month:e.target.value})}

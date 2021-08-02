@@ -14,7 +14,7 @@ import Shifts from "../components/shifts/Shifts";
 import UpdateShift from "../components/shifts/update/UpdateShift";
 import CreateShift from "../components/shifts/create/CreateShift";
 
-function Router(props) {
+function Router() {
     return (
         <div>
             <BrowserRouter>

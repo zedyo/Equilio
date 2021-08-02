@@ -5374,7 +5374,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function Navigation(props) {
+function Navigation() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__.default, {
       bg: "light",
@@ -5576,10 +5576,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 function DateChecker(props) {
-  // function formDataHandler(e) {
-  //     e.preventDefault()
-  // console.log(moment(`${checkerData.year}-${checkerData.month}`, "YYYY-MM").daysInMonth())
-  // }
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)("input", {
       type: "text",
@@ -5972,7 +5968,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CreateEmployee(props) {
+function CreateEmployee() {
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useHistory)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
@@ -6012,7 +6008,7 @@ function CreateEmployee(props) {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -6038,28 +6034,27 @@ function CreateEmployee(props) {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.prev = 0;
-              console.log(employeeData);
-              _context2.next = 4;
+              _context2.next = 3;
               return axios__WEBPACK_IMPORTED_MODULE_2___default().post("http://127.0.0.1:8000/api/employees/", {
                 employeeData: employeeData
               });
 
-            case 4:
+            case 3:
               history.push("/employees");
-              _context2.next = 10;
+              _context2.next = 9;
               break;
 
-            case 7:
-              _context2.prev = 7;
+            case 6:
+              _context2.prev = 6;
               _context2.t0 = _context2["catch"](0);
               console.log(_context2.t0.message);
 
-            case 10:
+            case 9:
             case "end":
               return _context2.stop();
           }
         }
-      }, _callee2, null, [[0, 7]]);
+      }, _callee2, null, [[0, 6]]);
     }));
     return _submitFormHandler.apply(this, arguments);
   }
@@ -6259,7 +6254,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function UpdateEmployee(props) {
+function UpdateEmployee() {
   var params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useParams)();
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_3__.useHistory)();
 
@@ -6300,7 +6295,7 @@ function UpdateEmployee(props) {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -6338,7 +6333,7 @@ function UpdateEmployee(props) {
               case 8:
                 _context2.prev = 8;
                 _context2.t0 = _context2["catch"](0);
-                console.log(_context2.t0);
+                console.log(_context2.t0.message);
 
               case 11:
               case "end":
@@ -6378,7 +6373,7 @@ function UpdateEmployee(props) {
             case 6:
               _context3.prev = 6;
               _context3.t0 = _context3["catch"](0);
-              console.log(_context3.t0);
+              console.log(_context3.t0.message);
 
             case 9:
             case "end":
@@ -6578,7 +6573,7 @@ function Qualifications() {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -6619,7 +6614,7 @@ function Qualifications() {
             case 7:
               _context2.prev = 7;
               _context2.t0 = _context2["catch"](0);
-              console.log(_context2.t0);
+              console.log(_context2.t0.message);
 
             case 10:
             case "end":
@@ -6732,7 +6727,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CreateQualification(props) {
+function CreateQualification() {
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useHistory)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
@@ -6970,7 +6965,7 @@ function UpdateQualification() {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -7010,7 +7005,7 @@ function UpdateQualification() {
             case 6:
               _context2.prev = 6;
               _context2.t0 = _context2["catch"](0);
-              console.log(_context2.t0);
+              console.log(_context2.t0.message);
 
             case 9:
             case "end":
@@ -7150,7 +7145,7 @@ function Shifts() {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -7191,7 +7186,7 @@ function Shifts() {
             case 7:
               _context2.prev = 7;
               _context2.t0 = _context2["catch"](0);
-              console.log(_context2.t0);
+              console.log(_context2.t0.message);
 
             case 10:
             case "end":
@@ -7304,7 +7299,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
-function CreateShift(props) {
+function CreateShift() {
   var history = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_4__.useHistory)();
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
@@ -7348,7 +7343,6 @@ function CreateShift(props) {
     return _submitFormHandler.apply(this, arguments);
   }
 
-  console.log(shiftData);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__.default, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
@@ -7571,7 +7565,7 @@ function UpdateShift() {
               case 8:
                 _context.prev = 8;
                 _context.t0 = _context["catch"](0);
-                console.log(_context.t0);
+                console.log(_context.t0.message);
 
               case 11:
               case "end":
@@ -7585,7 +7579,6 @@ function UpdateShift() {
 
     getData();
   }, []);
-  console.log(shiftData);
 
   function submitFormHandler() {
     return _submitFormHandler.apply(this, arguments);
@@ -7611,7 +7604,7 @@ function UpdateShift() {
             case 6:
               _context2.prev = 6;
               _context2.t0 = _context2["catch"](0);
-              console.log(_context2.t0);
+              console.log(_context2.t0.message);
 
             case 9:
             case "end":
@@ -7740,7 +7733,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function Router(props) {
+function Router() {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_15__.BrowserRouter, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)(_components_Navigation__WEBPACK_IMPORTED_MODULE_3__.default, {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_14__.jsx)("div", {

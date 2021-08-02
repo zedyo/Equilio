@@ -3,8 +3,8 @@ import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 import {useHistory} from "react-router-dom";
 
-function CreateQualification(props) {
-
+function CreateQualification()
+{
     const history = useHistory()
     const [qualificationsData, setQualification] = useState({})
 

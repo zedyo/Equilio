@@ -3,7 +3,8 @@ import {useParams, useHistory} from "react-router-dom";
 import axios from "axios";
 import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
 
-function UpdateQualification() {
+function UpdateQualification()
+{
     const params = useParams()
     const history = useHistory()
     const [qualificationsData, setQualification] = useState({})
@@ -14,7 +15,7 @@ function UpdateQualification() {
                 const {data} = await axios.get(`http://127.0.0.1:8000/api/qualifications/${params.id}/`, {})
                 setQualification(data.qualification)
             } catch (error) {
-                console.log(error)
+                console.log(error.message)
             }
         }
         getData()
@@ -25,7 +26,7 @@ function UpdateQualification() {
             await axios.patch(`http://127.0.0.1:8000/api/qualifications/${params.id}/`, {qualificationsData})
             history.push("/qualifications")
         } catch (error) {
-            console.log(error)
+            console.log(error.message)
         }
     }
 

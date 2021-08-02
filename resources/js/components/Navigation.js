@@ -3,7 +3,7 @@ import {Container} from "react-bootstrap";
 import {Navbar} from "react-bootstrap";
 import {Nav} from "react-bootstrap";
 
-function Navigation(props) {
+function Navigation() {
     return (
         <Fragment>
             <Navbar bg="light" variant="light">
