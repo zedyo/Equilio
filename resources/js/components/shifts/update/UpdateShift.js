@@ -52,7 +52,7 @@ function UpdateShift()
                                                      value={shiftData.abrv}
                                                      onChange={
                                                          (e)=>setShift(
-                                                             {...shiftData, description : e.target.value}
+                                                             {...shiftData, abrv : e.target.value}
                                                          )
                                                      }
                                         />

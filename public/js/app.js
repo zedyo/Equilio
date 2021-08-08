@@ -7708,7 +7708,7 @@ function UpdateShift() {
                     value: shiftData.abrv,
                     onChange: function onChange(e) {
                       return setShift(_objectSpread(_objectSpread({}, shiftData), {}, {
-                        description: e.target.value
+                        abrv: e.target.value
                       }));
                     }
                   }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__.default.Text, {
