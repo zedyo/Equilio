@@ -8,6 +8,7 @@ import {Container} from "react-bootstrap";
 
 function Duties()
 {
+    moment.locale("de")
     const [dutiesData, setDuty] = useState(null);
 
     const [checkerData, setChecker] = useState(
@@ -29,14 +30,30 @@ function Duties()
             let content = [];
             for (let i = 1; i <= days; i++) {
                 content.push(
-                    <div style={daysStyle}>
-                        {i}
-                    </div>
+                    <Fragment>
+                        <div style={daysStyle}>
+                            {i}
+                        </div>
+                    </Fragment>
                 )
             }
             return content;
         }
 
+    const getWeekdays = weekdays => {
+        let content = [];
+        for (let i = 1; i <= weekdays; i++) {
+            content.push(
+                <div style={daysStyle}>
+                    {moment(
+                        `${checkerData.year}-${checkerData.month}-${i}`,
+                        "YYYY-MM-DD")
+                        .format("ddd")}
+                </div>
+            )
+        }
+        return content;
+    }
 
     useEffect( ()=>{
             async function getData() {
@@ -52,10 +69,17 @@ function Duties()
         <Container>
             <DateChecker checkerData={checkerData}
                          setChecker={setChecker}/>
-            <div style={daysRowStyle}>
-                <div/>
+            <div style={daysRowStyle}><div/>
                 <Fragment>
                     {getDaysCount(moment(
+                        `${checkerData.year}-${checkerData.month}`,
+                        "YYYY-MM")
+                        .daysInMonth())}
+                </Fragment>
+            </div>
+            <div style={daysRowStyle}><div/>
+                <Fragment>
+                    {getWeekdays(moment(
                         `${checkerData.year}-${checkerData.month}`,
                         "YYYY-MM")
                         .daysInMonth())}

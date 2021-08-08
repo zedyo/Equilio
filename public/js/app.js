@@ -5458,6 +5458,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function Duties() {
+  moment__WEBPACK_IMPORTED_MODULE_5___default().locale("de");
+
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
       dutiesData = _useState2[0],
@@ -5484,9 +5486,24 @@ function Duties() {
     var content = [];
 
     for (var i = 1; i <= days; i++) {
+      content.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+          style: daysStyle,
+          children: i
+        })
+      }));
+    }
+
+    return content;
+  };
+
+  var getWeekdays = function getWeekdays(weekdays) {
+    var content = [];
+
+    for (var i = 1; i <= weekdays; i++) {
       content.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         style: daysStyle,
-        children: i
+        children: moment__WEBPACK_IMPORTED_MODULE_5___default()("".concat(checkerData.year, "-").concat(checkerData.month, "-").concat(i), "YYYY-MM-DD").format("ddd")
       }));
     }
 
@@ -5535,6 +5552,11 @@ function Duties() {
         style: daysRowStyle,
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
           children: getDaysCount(moment__WEBPACK_IMPORTED_MODULE_5___default()("".concat(checkerData.year, "-").concat(checkerData.month), "YYYY-MM").daysInMonth())
+        })]
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
+        style: daysRowStyle,
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
+          children: getWeekdays(moment__WEBPACK_IMPORTED_MODULE_5___default()("".concat(checkerData.year, "-").concat(checkerData.month), "YYYY-MM").daysInMonth())
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
         children: dutiesData && dutiesData.map(function (dutyObject) {
