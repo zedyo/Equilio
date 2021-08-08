@@ -27,6 +27,7 @@
     },
     "dependencies": {
         "moment": "^2.29.1",
+        "moment-holiday": "^1.5.1",
         "react-bootstrap": "^2.0.0-beta.3",
         "react-router-dom": "^5.2.0"
     }
