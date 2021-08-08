@@ -40,7 +40,7 @@ function Duties()
 
     useEffect( ()=>{
             async function getData() {
-                const {data} = await axios.get('http://127.0.0.1:8000/api/duties/2020/01')
+                const {data} = await axios.get('http://127.0.0.1:8000/api/duties/')
 
                 setDuty(data.employees)
             }

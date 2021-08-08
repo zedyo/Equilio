@@ -5507,7 +5507,7 @@ function Duties() {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/duties/2020/01');
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/duties/');
 
               case 2:
                 _yield$axios$get = _context.sent;
@@ -5626,15 +5626,31 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
+
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
+
 
 
 
 
 
 function Duty(props) {
-  var inputStyle = {
-    width: "30px"
-  };
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
+      _useState2 = _slicedToArray(_useState, 2),
+      dutiesData = _useState2[0],
+      setDutiesData = _useState2[1];
+
+  var daysInMonth = moment__WEBPACK_IMPORTED_MODULE_2___default()("".concat(props.checkerData.year, "-").concat(props.checkerData.month), "YYYY-MM").daysInMonth();
   var employeeRowStyle = {
     display: "grid",
     gridAutoFlow: "column",
@@ -5646,18 +5662,17 @@ function Duty(props) {
   }
 
   function _sendDuty() {
-    _sendDuty = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
-      var data;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+    _sendDuty = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(value, day, month, year, employee_id) {
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
         while (1) {
-          switch (_context.prev = _context.next) {
+          switch (_context2.prev = _context2.next) {
             case 0:
               if (!(value !== "")) {
-                _context.next = 5;
+                _context2.next = 3;
                 break;
               }
 
-              _context.next = 3;
+              _context2.next = 3;
               return axios.patch("http://127.0.0.1:8000/api/duty/", {
                 value: value,
                 day: day,
@@ -5667,28 +5682,57 @@ function Duty(props) {
               });
 
             case 3:
-              data = _context.sent;
-              console.log(data);
+            case "end":
+              return _context2.stop();
+          }
+        }
+      }, _callee2);
+    }));
+    return _sendDuty.apply(this, arguments);
+  }
 
-            case 5:
+  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
+      var duties;
+      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              _context.next = 2;
+              return axios.get("http://127.0.0.1:8000/api/duties/".concat(props.checkerData.year, "/").concat(props.checkerData.month, "/").concat(props.dutiesData.id, "/"), {});
+
+            case 2:
+              duties = _context.sent;
+              setDutiesData(duties.data.duties);
+
+            case 4:
             case "end":
               return _context.stop();
           }
         }
       }, _callee);
-    }));
-    return _sendDuty.apply(this, arguments);
-  }
+    }))();
+  }, []);
 
   var getDays = function getDays(days) {
     var content = [];
 
     var _loop = function _loop(i) {
+      var filter = dutiesData.filter(function (duty) {
+        return duty.day === i;
+      });
+      var inputStyle = {
+        width: "30px",
+        color: filter.length !== 0 ? filter[0].shift.color_hex : "black",
+        textAlign: "center"
+      };
       content.push( /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("label", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
             style: inputStyle,
-            type: "text",
+            type: "text" // value={filter.length !== 0 ? filter[0].shift.abrv : ""}
+            ,
+            value: filter.length !== 0 ? filter[0].shift.abrv : null,
             onBlur: function onBlur(e) {
               sendDuty(e.target.value, i, props.checkerData.month, props.checkerData.year, props.dutiesData.id);
             }
@@ -5710,7 +5754,7 @@ function Duty(props) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("hi", {
         children: [props.dutiesData.first_name, " ", props.dutiesData.last_name]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-        children: getDays(moment__WEBPACK_IMPORTED_MODULE_2___default()("".concat(props.checkerData.year, "-").concat(props.checkerData.month), "YYYY-MM").daysInMonth())
+        children: getDays(daysInMonth)
       })]
     })
   });
