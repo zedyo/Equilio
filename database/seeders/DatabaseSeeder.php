@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
         $this->call([
             QualificationSeeder::class,
             EmployeeSeeder::class,
-            ShiftSeeder::class
+            ShiftSeeder::class,
+            ShiftTypeSeeder::class
         ]);
     }
 }
