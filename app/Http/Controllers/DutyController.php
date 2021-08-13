@@ -27,6 +27,16 @@ class DutyController extends Controller
         return ['duties' => $duties];
     }
 
+    public function getAllDutiesData(Request $request, $year, $month)
+    {
+        $duties_db = Duty::with('shift');
+        $duties_db->where('month', $month);
+        $duties_db->where('year', $year);
+        $duties = $duties_db->get();
+
+        return ['duties' => $duties];
+    }
+
     public function show(Request $request, $day, $month, $year, $employee_id)
     {
         $duty_check = Duty::where('employee_id', $request->employee_id);

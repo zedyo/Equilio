@@ -1,99 +1,131 @@
-import React, {useEffect, useState, Fragment} from "react"
-import axios from "axios"
+import React, { useEffect, useState, Fragment } from "react";
+import axios from "axios";
 import Duty from "./single_duty/Duty";
 import DateChecker from "./date_checker/DateChecker";
 import moment from "moment";
-import {Container} from "react-bootstrap";
+import { Container } from "react-bootstrap";
+import { random } from "lodash";
 
+import { daysToArray } from "../../util/daysToArray";
 
-function Duties()
-{
-    moment.locale("de")
+function Duties() {
+    moment.locale("de");
+
     const [dutiesData, setDuty] = useState(null);
+    const [allDuties, setAllDuties] = useState(null);
 
-    const [checkerData, setChecker] = useState(
-        {
-            month:`${moment().format('M')}`,
-            year:`${moment().format('YYYY')}`
-        });
+    const [checkerData, setChecker] = useState({
+        month: `${moment().format("M")}`,
+        year: `${moment().format("YYYY")}`,
+    });
+
+    const days = daysToArray(checkerData.year, checkerData.month);
 
     const daysRowStyle = {
         display: "grid",
         gridAutoFlow: "column",
-        gridTemplateColumns: "150px"
-    }
+        gridTemplateColumns: "150px",
+    };
+
     const daysStyle = {
-        width: "28px"
-    }
+        width: "28px",
+    };
 
-    const getDaysCount = days =>{
-            let content = [];
-            for (let i = 1; i <= days; i++) {
-                content.push(
-                    <Fragment>
-                        <div style={daysStyle}>
-                            {i}
-                        </div>
-                    </Fragment>
-                )
-            }
-            return content;
-        }
+    const Day = (props) => {
+        return <div style={daysStyle}>{props.day}</div>;
+    };
 
-    const getWeekdays = weekdays => {
-        let content = [];
-        for (let i = 1; i <= weekdays; i++) {
-            content.push(
-                <div style={daysStyle}>
-                    {moment(
-                        `${checkerData.year}-${checkerData.month}-${i}`,
-                        "YYYY-MM-DD")
-                        .format("ddd")}
+    const WeekDay = (props) => {
+        return (
+            <div style={daysStyle}>
+                {moment(`${props.year}-${props.month}-${props.day}`).format(
+                    "ddd"
+                )}
+            </div>
+        );
+    };
+
+    const Days = () => {
+        return (
+            <Fragment>
+                <div style={daysRowStyle}>
+                    <div></div>
+                    {days.map((day) => {
+                        return <Day key={day} day={day} />;
+                    })}
                 </div>
-            )
+
+                <div style={daysRowStyle}>
+                    <div></div>
+                    {days.map((day) => {
+                        return (
+                            <WeekDay
+                                key={"wd" + day}
+                                day={day}
+                                month={checkerData.month}
+                                year={checkerData.year}
+                            />
+                        );
+                    })}
+                </div>
+            </Fragment>
+        );
+    };
+
+    useEffect(() => {
+        async function getData() {
+            const { data } = await axios.get(
+                "http://127.0.0.1:8000/api/duties/"
+            );
+            setDuty(data.employees);
         }
-        return content;
+        getData();
+    }, []);
+
+    useEffect(() => {
+        (async () => {
+            const { data } = await axios.get(
+                `http://127.0.0.1:8000/api/duties/${checkerData.year}/${checkerData.month}`,
+                {}
+            );
+            setAllDuties(data.duties);
+        })();
+    }, [checkerData]);
+
+    function dateSubmitHandler() {
+        console.log("NARF!!!!!");
     }
 
-    useEffect( ()=>{
-            async function getData() {
-                const {data} = await axios.get('http://127.0.0.1:8000/api/duties/')
+    return (
+        <Fragment>
+            <Container key="container">
+                <DateChecker
+                    key="datechecker-render"
+                    //datePickerData={datePickerData}
+                    checkerData={checkerData}
+                    // setDatePickerData={setDatePickerData}
+                    setChecker={setChecker}
+                    dateSubmitHandler={dateSubmitHandler}
+                />
 
-                setDuty(data.employees)
-            }
-        getData()
-        }, []
-    )
+                <Days />
 
-    return <div>
-        <Container>
-            <DateChecker checkerData={checkerData}
-                         setChecker={setChecker}/>
-            <div style={daysRowStyle}><div/>
-                <Fragment>
-                    {getDaysCount(moment(
-                        `${checkerData.year}-${checkerData.month}`,
-                        "YYYY-MM")
-                        .daysInMonth())}
-                </Fragment>
-            </div>
-            <div style={daysRowStyle}><div/>
-                <Fragment>
-                    {getWeekdays(moment(
-                        `${checkerData.year}-${checkerData.month}`,
-                        "YYYY-MM")
-                        .daysInMonth())}
-                </Fragment>
-            </div>
-            <div>
-                {dutiesData && dutiesData.map( (dutyObject) => <Duty key={dutyObject.id}
-                                                                     dutiesData={dutyObject}
-                                                                     checkerData={checkerData}/>)}
-                {/* Hier könnte im Else ein Loading Spinner kommen!*/}
-                {/*{dutiesData ? dutiesData.map( (dutyObject) => <Duty key={dutyObject.id} dutiesData={dutyObject}/>) : "Nix!"}*/}
-            </div>
-        </Container>
-    </div>
+                <div>
+                    {console.log("NARF!!!!!!")}
+                    {dutiesData &&
+                        dutiesData.map((dutyObject) => (
+                            <Duty
+                                key={Math.random()}
+                                dutiesData={dutyObject}
+                                checkerData={checkerData}
+                                days={days}
+                                allDuties={allDuties}
+                            />
+                        ))}
+                </div>
+            </Container>
+        </Fragment>
+    );
 }
 
-export default Duties
+export default Duties;

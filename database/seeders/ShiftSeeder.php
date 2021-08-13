@@ -34,5 +34,12 @@ class ShiftSeeder extends Seeder
             'color_hex' => '#932092'
         ]);
         $dummyFreeShift->save();
+
+        $dummyFreeShift = new Shift([
+            'abrv' => '-',
+            'h_duration' => 0.00,
+            'color_hex' => '#000000'
+        ]);
+        $dummyFreeShift->save();
     }
 }

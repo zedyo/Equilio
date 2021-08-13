@@ -24,39 +24,22 @@ class ShiftTypeController extends Controller
                 'exception' => $exception->getMessage()
             ], 500);
         }
-
-
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
-        //
+        $shift_type = new ShiftType();
+        $shift_type->name = $request->shiftTypeData['name'];
+        $shift_type->save;
+
+        return response()->json([null], 201);
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\ShiftType  $shiftType
-     * @return \Illuminate\Http\Response
-     */
     public function show(ShiftType $shiftType)
     {
-        //
+        return ['shift_type' => $shiftType];
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\ShiftType  $shiftType
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, ShiftType $shiftType)
     {
         //
