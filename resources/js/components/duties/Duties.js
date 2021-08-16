@@ -1,10 +1,10 @@
 import React, { useEffect, useState, Fragment } from "react";
 import axios from "axios";
 import Duty from "./single_duty/Duty";
+import Days from "./days/Days";
 import DateChecker from "./date_checker/DateChecker";
 import moment from "moment";
 import { Container } from "react-bootstrap";
-import { random } from "lodash";
 
 import { daysToArray } from "../../util/daysToArray";
 
@@ -20,57 +20,6 @@ function Duties() {
     });
 
     const days = daysToArray(checkerData.year, checkerData.month);
-
-    const daysRowStyle = {
-        display: "grid",
-        gridAutoFlow: "column",
-        gridTemplateColumns: "150px",
-    };
-
-    const daysStyle = {
-        width: "28px",
-    };
-
-    const Day = (props) => {
-        return <div style={daysStyle}>{props.day}</div>;
-    };
-
-    const WeekDay = (props) => {
-        return (
-            <div style={daysStyle}>
-                {moment(`${props.year}-${props.month}-${props.day}`).format(
-                    "ddd"
-                )}
-            </div>
-        );
-    };
-
-    const Days = () => {
-        return (
-            <Fragment>
-                <div style={daysRowStyle}>
-                    <div></div>
-                    {days.map((day) => {
-                        return <Day key={day} day={day} />;
-                    })}
-                </div>
-
-                <div style={daysRowStyle}>
-                    <div></div>
-                    {days.map((day) => {
-                        return (
-                            <WeekDay
-                                key={"wd" + day}
-                                day={day}
-                                month={checkerData.month}
-                                year={checkerData.year}
-                            />
-                        );
-                    })}
-                </div>
-            </Fragment>
-        );
-    };
 
     useEffect(() => {
         async function getData() {
@@ -92,26 +41,18 @@ function Duties() {
         })();
     }, [checkerData]);
 
-    function dateSubmitHandler() {
-        console.log("NARF!!!!!");
-    }
-
     return (
         <Fragment>
             <Container key="container">
                 <DateChecker
                     key="datechecker-render"
-                    //datePickerData={datePickerData}
                     checkerData={checkerData}
-                    // setDatePickerData={setDatePickerData}
                     setChecker={setChecker}
-                    dateSubmitHandler={dateSubmitHandler}
                 />
 
                 <Days />
 
                 <div>
-                    {console.log("NARF!!!!!!")}
                     {dutiesData &&
                         dutiesData.map((dutyObject) => (
                             <Duty
