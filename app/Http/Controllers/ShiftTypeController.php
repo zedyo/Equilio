@@ -35,24 +35,30 @@ class ShiftTypeController extends Controller
         return response()->json([null], 201);
     }
 
-    public function show(ShiftType $shiftType)
+    public function show(ShiftType $shift_type)
     {
-        return ['shift_type' => $shiftType];
+        return ['shift_type' => $shift_type]; 
     }
 
-    public function update(Request $request, ShiftType $shiftType)
+    public function update(Request $request, ShiftType $shift_type)
     {
-        //
+        $shift_type->name = $request->shiftTypeData['name'];
+
+        $shift_type->save();
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\ShiftType  $shiftType
+     * @param  \App\Models\ShiftType  $shift_type
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ShiftType $shiftType)
+    public function destroy(ShiftType $shift_type)
     {
-        //
+        $deleted_shift_type = $shift_type;
+
+        $shift_type->delete();
+
+        return['deleted_shift_type' => $deleted_shift_type]; 
     }
 }

@@ -4,6 +4,7 @@ use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\ShiftTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -30,7 +31,8 @@ Route::get('/duties', [DutyController::class, 'overview'])->name('overview');
 Route::resources([
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,
-    'shifts' => ShiftController::class
+    'shifts' => ShiftController::class,
+    'shift_types' => ShiftTypeController::class
 ]);
 
 

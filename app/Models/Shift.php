@@ -13,6 +13,7 @@ class Shift extends Model
 
     protected $fillable = [
         'abrv',
+        'shift_type_id',
         'h_duration',
         'color_hex'
     ];

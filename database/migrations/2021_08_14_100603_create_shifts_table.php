@@ -16,10 +16,13 @@ class CreateShiftsTable extends Migration
         Schema::create('shifts', function (Blueprint $table) {
             $table->id();
             $table->string('abrv');
+            $table->unsignedBigInteger('shift_type_id')->comment('Shift Type Id of Shift')->nullable()->unsigned();
             $table->decimal('h_duration', 10);
             $table->string('color_hex');
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('shift_type_id')->references('id')->on('shift_types');
         });
     }
 

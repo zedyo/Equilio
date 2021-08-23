@@ -15,8 +15,8 @@ class ShiftType extends Model
         'name'
     ];
 
-//    public function shifts(): HasMany
-//    {
-//        return $this->hasMany(Shift::class);
-//    }
+   public function shifts(): HasMany
+   {
+       return $this->hasMany(Shift::class);
+   }
 }
