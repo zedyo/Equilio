@@ -10,14 +10,14 @@ class ShiftTypeController extends Controller
     public function index()
     {
         try {
-            $shift_type = ShiftType::all();
+            $shift_types = ShiftType::all();
 
-            if (count($shift_type) == 0) {
+            if (count($shift_types) == 0) {
                 return response()->json('Keine Schicht Arten vorhanden!', 404);
             }
 
             return [
-                'shift_type' => $shift_type
+                'shift_types' => $shift_types
             ];
         } catch (\Exception $exception) {
             return response()->json([

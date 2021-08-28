@@ -1,7 +1,7 @@
-import React, {Fragment} from 'react';
-import {Container} from "react-bootstrap";
-import {Navbar} from "react-bootstrap";
-import {Nav} from "react-bootstrap";
+import React, { Fragment } from "react";
+import { Container } from "react-bootstrap";
+import { Navbar } from "react-bootstrap";
+import { Nav } from "react-bootstrap";
 
 function Navigation() {
     return (
@@ -12,7 +12,10 @@ function Navigation() {
                     <Nav className="me-auto">
                         <Nav.Link href="/duties">Dienstplan</Nav.Link>
                         <Nav.Link href="/employees">Angestellte</Nav.Link>
-                        <Nav.Link href="/qualifications">Qualifikationen</Nav.Link>
+                        <Nav.Link href="/qualifications">
+                            Qualifikationen
+                        </Nav.Link>
+                        <Nav.Link href="/shift_types">Schicht Arten</Nav.Link>
                         <Nav.Link href="/shifts">Schichten</Nav.Link>
                     </Nav>
                 </Container>

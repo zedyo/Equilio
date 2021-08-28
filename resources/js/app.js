@@ -4,11 +4,12 @@
  * building robust, powerful web applications using React + Laravel.
  */
 
-import React from 'react';
-import ReactDOM from 'react-dom';
-import Router from './router'
+import React from "react";
+import ReactDOM from "react-dom";
+import Router from "./router";
+import "../sass/app.scss";
 
-require('./bootstrap');
+require("./bootstrap");
 
 /**
  * Next, we will create a fresh React component instance and attach it to
@@ -16,19 +17,18 @@ require('./bootstrap');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-require('./components/Example');
+require("./components/Example");
 
 function App() {
     return (
         <div>
-            <Router/>
+            <Router />
         </div>
     );
 }
 
 export default App;
 
-if (document.getElementById('root')) {
-    ReactDOM.render(<App />, document.getElementById('root'));
+if (document.getElementById("root")) {
+    ReactDOM.render(<App />, document.getElementById("root"));
 }
-
