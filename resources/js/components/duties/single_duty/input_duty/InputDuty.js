@@ -29,6 +29,9 @@ function InputDuty(props) {
             }
         }
 
+        //TODO: State mit Color
+        
+
         return (
             <input
                 style={inputStyle}

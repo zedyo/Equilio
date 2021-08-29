@@ -50,6 +50,7 @@ function Qualifications()
                                 </Container>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>

@@ -17,7 +17,7 @@ function Qualification(props)
                 </Card>
             </Col>
         </Fragment>
-    );
+    )
 }
 
 export default Qualification;
