@@ -10,7 +10,7 @@ class ShiftController extends Controller
 {
     public function index()
     {
-        $shifts = Shift::all();
+        $shifts = Shift::with('shift_type')->get();
 
         return ['shifts' => $shifts];
     }
@@ -21,6 +21,7 @@ class ShiftController extends Controller
         $shift->abrv = $request->shiftData['abrv'];
         $shift->color_hex = $request->shiftData['color_hex'];
         $shift->h_duration = $request->shiftData['h_duration'];
+        $shift->shift_type_id = $request->shiftData['shift_type_id'];
         $shift->save();
 
         return response()->json([null], 201);

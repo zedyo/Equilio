@@ -1,6 +1,6 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
-import { Row, Container } from "react-bootstrap";
+import { Button, Row, Container } from "react-bootstrap";
 import ShiftType from "./show/ShiftType";
 
 function ShiftTypes() {
@@ -63,12 +63,12 @@ function ShiftTypes() {
                                     style={{ margin: "0.3rem" }}
                                     fluid="sm"
                                 >
-                                    {/* <Button
+                                    <Button
                                         href={`/shift_type/create`}
                                         variant="outline-success"
                                     >
                                         Erstellen
-                                    </Button>{" "} */}
+                                    </Button>{" "}
                                 </Container>
                             </div>
                         </div>

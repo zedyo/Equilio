@@ -16,7 +16,7 @@ class ShiftSeeder extends Seeder
     public function run()
     {
         $shift_type_seeder = new ShiftTypeSeeder;
-        $shift_type_seeder->run();
+        $shift_type_seeder->runForShiftSeeder();
 
         $dummyF1Shift = new Shift([
             'abrv' => 'F1',
@@ -44,7 +44,7 @@ class ShiftSeeder extends Seeder
 
         $dummyFreeShift = new Shift([
             'abrv' => '-',
-            'shift_type_id' => null,
+            'shift_type_id' => 4,
             'h_duration' => 0.00,
             'color_hex' => '#000000'
         ]);

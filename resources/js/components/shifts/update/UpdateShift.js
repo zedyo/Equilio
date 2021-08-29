@@ -1,12 +1,13 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {useParams, useHistory} from "react-router-dom";
 import axios from "axios";
-import {Button, Card, Container, FormControl, InputGroup} from "react-bootstrap";
+import {Button, Card, Container, FormControl, InputGroup, FormSelect} from "react-bootstrap";
 
 function UpdateShift()
 {
     const params = useParams()
     const history = useHistory()
+    const [shiftTypeData, setShiftType] = useState([])
     const [shiftData, setShift] = useState({})
 
     useEffect(()=>{
@@ -19,6 +20,18 @@ function UpdateShift()
             }
         }
         getData()
+    }, [])
+
+    useEffect(()=>{
+        async function getShiftTypeData() {
+            try {
+                const {data} = await axios.get(`http://127.0.0.1:8000/api/shift_types`)
+                setShiftType(data.shift_types)
+            } catch (error) {
+                console.log(error.message)
+            }
+        }
+        getShiftTypeData()
     }, [])
 
     async function submitFormHandler() {
@@ -64,6 +77,16 @@ function UpdateShift()
                                             value={shiftData.h_duration}
                                             onChange={(event  )=>setShift({...shiftData, h_duration: event.target.value})}
                                         />
+                                        <FormSelect aria-label="Floating label select example"
+                                                 onChange={(e)=>setShift({...shiftData, shift_type_id: parseInt(e.target.value)})}>
+                                        <option key="0">Bitte auswählen</option>
+                                        {shiftTypeData.map((shiftTypeObject) =>
+                                            <option
+                                                key={shiftTypeObject.id}
+                                                value={shiftTypeObject.id}>
+                                                {shiftTypeObject.name}
+                                            </option>)}
+                                        </FormSelect>
                                         <FormControl
                                             type="color"
                                             id="exampleColorInput"

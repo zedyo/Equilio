@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShiftType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
 class ShiftTypeController extends Controller
@@ -30,7 +31,7 @@ class ShiftTypeController extends Controller
     {
         $shift_type = new ShiftType();
         $shift_type->name = $request->shiftTypeData['name'];
-        $shift_type->save;
+        $shift_type->save();
 
         return response()->json([null], 201);
     }

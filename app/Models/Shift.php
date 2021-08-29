@@ -18,6 +18,10 @@ class Shift extends Model
         'color_hex'
     ];
 
+    public function shift_type(){
+        return $this->belongsTo(ShiftType::class, 'shift_type_id');
+    }
+
     public function duties(): HasMany
     {
         return $this->hasMany(Duty::class);

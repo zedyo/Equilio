@@ -15,6 +15,7 @@ import ShiftTypes from "../components/shift_types/ShiftTypes";
 import UpdateShift from "../components/shifts/update/UpdateShift";
 import CreateShift from "../components/shifts/create/CreateShift";
 import UpdateShiftType from "../components/shift_types/update/UpdateShiftType";
+import CreateShiftType from "../components/shift_types/create/CreateShiftType";
 
 function Router() {
     return (
@@ -45,7 +46,7 @@ function Router() {
                         />
                         <Route
                             path="/shift_type/create"
-                            component={CreateShift}
+                            component={CreateShiftType}
                         />
 
                         <Route path="/shift_types" component={ShiftTypes} />
