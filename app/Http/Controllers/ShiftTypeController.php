@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\ShiftType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use App\Models\Duty;
 
 class ShiftTypeController extends Controller
 {
@@ -62,4 +63,6 @@ class ShiftTypeController extends Controller
 
         return['deleted_shift_type' => $deleted_shift_type]; 
     }
+
+
 }

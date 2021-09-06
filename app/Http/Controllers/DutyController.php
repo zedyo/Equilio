@@ -11,7 +11,7 @@ class DutyController extends Controller
 {
     public function overview()
     {
-        $employees = Employee::all();
+        $employees = Employee::with('qualification')->get();
 
         return response()->json(['employees' => $employees]);
     }
@@ -29,7 +29,7 @@ class DutyController extends Controller
 
     public function getAllDutiesData(Request $request, $year, $month)
     {
-        $duties_db = Duty::with('shift');
+        $duties_db = Duty::with('shift.shift_type');
         $duties_db->where('month', $month);
         $duties_db->where('year', $year);
         $duties = $duties_db->get();
@@ -58,7 +58,8 @@ class DutyController extends Controller
         $request_shift = $shift_check->get();
 
         if ($request_shift->isEmpty()) {
-            return 'Keine Schicht mit dieser Abkürzung!';
+            return response()->json(['exception' => 'Schicht mit diesem Kürzel nicht gefunden.'], 404);
+            // return 'Keine Schicht mit dieser Abkürzung!';
         }
 
         $duty_check = Duty::where('employee_id', $request->employee_id);
@@ -78,7 +79,9 @@ class DutyController extends Controller
 
             $new_duty->save();
 
-            return 'Neuer Duty Eintrag erstellt!';
+            $duty = Duty::with('shift')->where('id', $new_duty->id)->first();
+
+            return ['new_duty' => $duty];
         } else if ($duty[0]->shift_id !== $request_shift[0]->id) {
 
             $update_duty = Duty::where('id', $duty[0]->id)->first();
@@ -86,9 +89,24 @@ class DutyController extends Controller
 
             $update_duty->save();
 
-            return 'Eintrag verändert';
+            $duty = Duty::with('shift')->where('id', $update_duty->id)->first();
+
+            return ['new_duty' => $duty];
+            // return 'Eintrag verändert';
         } else {
-            return 'Keine Änderung';
+            // return 'Keine Änderung';
         }
+    }
+
+    public function showDutiesByShiftTypeAndDate(int $shift_type_id, $day, $month, $year) {
+        $duties_db = Duty::with('shift.shift_type');
+        $duties_db->where('day', $day);
+        $duties_db->where('month', $month);
+        $duties_db->where('year', $year);
+        $duties = $duties_db->get();
+
+        $duties = $duties->where('shift.shift_type_id', $shift_type_id);
+
+        return ['duties' => $duties];
     }
 }

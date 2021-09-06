@@ -3,16 +3,18 @@ import axios from "axios";
 import Duty from "./single_duty/Duty";
 import Days from "./days/Days";
 import DateChecker from "./date_checker/DateChecker";
+import ShiftTypesOverview from "./shift_type_statistics_overview/ShiftTypeOverview";
 import moment from "moment";
 import { Container } from "react-bootstrap";
 
 import { daysToArray } from "../../util/daysToArray";
+//import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 function Duties() {
     moment.locale("de");
 
     const [dutiesData, setDuty] = useState(null);
-    const [allDuties, setAllDuties] = useState(null);
+    const [allDuties, setAllDuties] = useState([]);
 
     const [checkerData, setChecker] = useState({
         month: `${moment().format("M")}`,
@@ -64,6 +66,11 @@ function Duties() {
                             />
                         ))}
                 </div>
+                <ShiftTypesOverview
+                    days={days}
+                    checkerData={checkerData}
+                    allDuties={allDuties}
+                />
             </Container>
         </Fragment>
     );

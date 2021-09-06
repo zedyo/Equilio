@@ -1,11 +1,8 @@
 import React from "react";
+import "../../../../../sass/days.scss";
 
 function Day(props) {
-    const daysStyle = {
-        width: "28px",
-    };
-
-    return <div style={daysStyle}>{props.day}</div>;
+    return <div className="day">{props.day}</div>;
 }
 
 export default Day;

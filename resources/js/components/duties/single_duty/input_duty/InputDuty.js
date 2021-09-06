@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../../../../sass/duty.scss";
 
 function InputDuty(props) {
     const allDuties = props.allDuties;
@@ -8,33 +9,44 @@ function InputDuty(props) {
         );
         let dutyVal = dutie ? dutie.shift.abrv : "";
         const [InputDuty, setInputDuty] = useState(dutyVal);
+        const [DutyColor, setDutyColor] = useState("black");
 
-        let color =
-            InputDuty.length !== 0 && dutie ? dutie.shift.color_hex : "black";
+        let color = dutie ? dutie.shift.color_hex : DutyColor;
 
-        const inputStyle = {
-            width: "30px",
+        // TODO: Fehler wenn Duty nicht vorhanden ist.
+        // TODO: Farbe verändert sich nicht wenn Überschrieben wird
+
+        const inputColor = {
             color: color,
-            textAlign: "center",
         };
+
         async function sendDuty(value, day, month, year, employee_id) {
-            if (value !== "") {
-                await axios.patch(`http://127.0.0.1:8000/api/duty/`, {
-                    value,
-                    day,
-                    month,
-                    year,
-                    employee_id,
-                });
+            try {
+                if (value !== "") {
+                    const { data } = await axios.patch(
+                        `http://127.0.0.1:8000/api/duty/`,
+                        {
+                            value,
+                            day,
+                            month,
+                            year,
+                            employee_id,
+                        }
+                    );
+                    setDutyColor(data.new_duty.shift.color_hex);
+                    console.log(DutyColor);
+                }
+            } catch (error) {
+                //TODO: Nur bei richtigem Statuscode 404 ausführen
+                console.log(error);
+                // setInputDuty("");
             }
         }
 
-        //TODO: State mit Color
-        
-
         return (
             <input
-                style={inputStyle}
+                style={inputColor}
+                className="inputDutyForm"
                 value={InputDuty}
                 onChange={(e) => setInputDuty(e.target.value)}
                 onBlur={(e) =>

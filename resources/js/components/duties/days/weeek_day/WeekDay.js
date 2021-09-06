@@ -1,14 +1,15 @@
 import React from "react";
 import moment from "moment";
+import "../../../../../sass/days.scss";
 
 function WeekDay(props) {
-    const daysStyle = {
-        width: "28px",
-    };
+    let day = Intl.NumberFormat("de", { minimumIntegerDigits: 2 }).format(
+        props.day
+    );
 
     return (
-        <div style={daysStyle}>
-            {moment(`${props.year}-${props.month}-${props.day}`).format("ddd")}
+        <div className="weekDay">
+            {moment(`${props.year}-${props.month}-${day}`).format("dd")}
         </div>
     );
 }

@@ -5,6 +5,7 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
+use App\Http\Controllers\SummarizeDutyShiftTypeController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,17 +23,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');
 
 Route::patch('/duty', [DutyController::class, 'update']);
 Route::get('/duties/{year}/{month}/', [DutyController::class, 'getAllDutiesData'])->name('getAllDutiesData');
-Route::get('/duties/{year}/{month}/{employee_id}', [DutyController::class, 'getDutiesData'])->name('getDutiesData');//
+Route::get('/duties/{year}/{month}/{employee_id}', [DutyController::class, 'getDutiesData'])->name('getDutiesData');
 Route::get('/duties', [DutyController::class, 'overview'])->name('overview');
 
 Route::resources([
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,
     'shifts' => ShiftController::class,
-    'shift_types' => ShiftTypeController::class
+    // 'shift_types' => ShiftTypeController::class
 ]);
 
 

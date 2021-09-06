@@ -1,0 +1,41 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+.employeeRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 12rem repeat(31, 2.2rem);
+    align-items: center;
+}
+
+.inputDutyForm {
+    width: 2rem;
+    height: 2rem;
+    border: 0.01rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    justify-self: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.employeeName {
+    align-content: center;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1;
+    margin: 0 0.8rem 0 0;
+}
+
+.employeeQualification {
+    font-size: 0.75rem;
+    font-weight: 100;
+    line-height: 1;
+    margin: 0.1rem 0 0.8rem 0;
+}

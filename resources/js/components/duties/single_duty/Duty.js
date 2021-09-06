@@ -1,19 +1,20 @@
 import React, { Fragment } from "react";
 import InputDuty from "./input_duty/InputDuty";
+import "../../../../sass/duty.scss";
 
 function Duty(props) {
-    const employeeRowStyle = {
-        display: "grid",
-        gridAutoFlow: "column",
-        gridTemplateColumns: "150px",
-    };
-
     return (
         <Fragment>
-            <div style={employeeRowStyle}>
-                <p>
-                    {props.dutiesData.first_name} {props.dutiesData.last_name}
-                </p>
+            <div className="employeeRow">
+                <div>
+                    <p className="employeeName">
+                        {props.dutiesData.first_name}{" "}
+                        {props.dutiesData.last_name}
+                    </p>
+                    <p className="employeeQualification">
+                        {props.dutiesData.qualification.description}
+                    </p>
+                </div>
                 <Fragment>
                     {props.days.map((day) => (
                         <InputDuty

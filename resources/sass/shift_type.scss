@@ -1,0 +1,32 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+.statisticRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 12rem repeat(31, 2.2rem);
+    align-items: center;
+    div {
+        height: 2rem;
+        align-content: center;
+        font-weight: 500;
+        font-size: 1rem;
+    }
+}
+
+.dayStatisticForm {
+    width: 2rem;
+    height: 2rem;
+    border: 0.01rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    justify-self: center;
+    font-weight: 600;
+    font-size: 1rem;
+}

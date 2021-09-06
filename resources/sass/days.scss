@@ -1,0 +1,30 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// Variables
+@import "variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+.daysRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 12rem repeat(31, 2.2rem);
+    justify-items: center;
+    align-items: center;
+}
+
+// Day
+
+.day {
+    font-size: 1.1rem;
+}
+
+// WeekDay
+
+.weekDay {
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: rgb(134, 134, 134);
+}
