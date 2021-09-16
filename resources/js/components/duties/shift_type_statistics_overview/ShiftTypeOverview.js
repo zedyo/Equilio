@@ -1,27 +1,34 @@
-import { result } from "lodash";
-import React, { Fragment } from "react";
+import React, { Fragment, useState, useEffect } from "react";
 import ShiftTypeStatistics from "./shift_type_statistics/ShiftTypeStatistics";
 
 function ShiftTypesOverview(props) {
-    let allDuties = props.allDuties;
+    const [shiftTypeData, setShiftType] = useState([]);
 
-    console.log(allDuties);
-
-    let shiftTypeData = props.allDuties.filter(
-        (duty) => duty.shift.shift_type.id === 2
-    );
-
-    // TODO: Weiterleiten von Schichttypen
-
-    console.log(shiftTypeData);
+    useEffect(() => {
+        async function getData() {
+            const { data } = await axios.get(
+                "http://127.0.0.1:8000/api/shift_types",
+                {}
+            );
+            setShiftType(data.shift_types);
+        }
+        getData();
+    }, []);
 
     return (
         <Fragment>
-            <ShiftTypeStatistics
-                days={props.days}
-                checkerData={props.checkerData}
-                shiftTypeData={shiftTypeData}
-            />
+            {shiftTypeData.map((shiftTypeObject) => (
+                <ShiftTypeStatistics
+                    days={props.days}
+                    checkerData={props.checkerData}
+                    key={shiftTypeObject.id}
+                    shiftTypeName={shiftTypeObject.name}
+                    shiftTypeData={props.allDuties.filter(
+                        (duty) =>
+                            duty.shift.shift_type.id === shiftTypeObject.id
+                    )}
+                />
+            ))}
         </Fragment>
     );
 }

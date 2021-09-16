@@ -44,7 +44,7 @@ class DutyController extends Controller
         $duty_check->where('month', $request->month);
         $duty_check->where('year', $request->year);
 
-        $duty = $duty_check->get()->first();
+        $duty = $duty_check->get()->first(); 
 
         $shift_check = Shift::where('id', $duty->shift_id);
         $shift = $shift_check->get()->first();
@@ -69,6 +69,7 @@ class DutyController extends Controller
 
         $duty = $duty_check->get();
 
+
         if ($duty->isEmpty()) {
             $new_duty = new Duty();
             $new_duty->employee_id = $request->employee_id;
@@ -83,10 +84,9 @@ class DutyController extends Controller
 
             return ['new_duty' => $duty];
         } else if ($duty[0]->shift_id !== $request_shift[0]->id) {
-
             $update_duty = Duty::where('id', $duty[0]->id)->first();
             $update_duty->shift_id = $request_shift[0]->id;
-
+            
             $update_duty->save();
 
             $duty = Duty::with('shift')->where('id', $update_duty->id)->first();

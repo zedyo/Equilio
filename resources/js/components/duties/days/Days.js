@@ -6,12 +6,7 @@ import moment from "moment";
 import "../../../../sass/days.scss";
 
 function Days(props) {
-    const [checkerData, setChecker] = useState({
-        month: `${moment().format("MM")}`,
-        year: `${moment().format("YYYY")}`,
-    });
-
-    const days = daysToArray(checkerData.year, checkerData.month);
+    const days = props.days;
 
     return (
         <Fragment>
@@ -29,8 +24,8 @@ function Days(props) {
                         <WeekDay
                             key={"wd" + day}
                             day={day}
-                            month={checkerData.month}
-                            year={checkerData.year}
+                            month={props.checkerData.month}
+                            year={props.checkerData.year}
                         />
                     );
                 })}

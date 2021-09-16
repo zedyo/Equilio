@@ -4,12 +4,18 @@ import { Form, FormGroup, FormControl, FormLabel } from "react-bootstrap";
 import "../../../../../../sass/shift_type.scss";
 
 function ShiftTypeStatistic(props) {
-    //TODO: Ankommende summe unter value aufzeigen
+    //TODO: Instant aktualisierung wenn eine Änderung stattfindet in der Duty Übersicht
+
+    let shiftTypeDayData = props.shiftTypeDayData;
 
     return (
         <Fragment>
             <div>
-                <input className="dayStatisticForm" disabled value="n" />
+                <input
+                    className="dayStatisticForm"
+                    disabled
+                    value={shiftTypeDayData.length}
+                />
             </div>
         </Fragment>
     );

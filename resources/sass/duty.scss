@@ -10,7 +10,7 @@
 .employeeRow {
     display: grid;
     grid-auto-flow: column;
-    grid-template-columns: 12rem repeat(31, 2.2rem);
+    grid-template-columns: 16rem repeat(31, 2.2rem);
     align-items: center;
 }
 
@@ -38,4 +38,27 @@
     font-weight: 100;
     line-height: 1;
     margin: 0.1rem 0 0.8rem 0;
+}
+
+.employeeContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 11rem 4rem;
+    align-items: center;
+}
+
+.separator {
+    height: 2rem;
+}
+
+// Working Time
+
+.workingTime {
+    height: 2rem;
+    width: 4rem;
+    border: 0.01rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    font-weight: 600;
+    font-size: 1rem;
 }

@@ -7,14 +7,21 @@ function InputDuty(props) {
         const dutie = allDuties.find(
             (d) => d.day === props.day && d.employee_id === props.employee_id
         );
+
         let dutyVal = dutie ? dutie.shift.abrv : "";
+
+        let dutyColor = dutie ? dutie.shift.color_hex : "black";
+
         const [InputDuty, setInputDuty] = useState(dutyVal);
-        const [DutyColor, setDutyColor] = useState("black");
+        const [DutyColor, setDutyColor] = useState(dutyColor);
 
-        let color = dutie ? dutie.shift.color_hex : DutyColor;
+        // let color = dutie ? dutie.shift.color_hex : DutyColor;
+        let color = DutyColor;
 
-        // TODO: Fehler wenn Duty nicht vorhanden ist.
-        // TODO: Farbe verändert sich nicht wenn Überschrieben wird
+        // TODO: Einbauen Fehler wenn Duty nicht vorhanden ist.
+        // TODO: Einbauen Farbe verändert sich nicht wenn Überschrieben wird
+
+        // TODO: WEnn per Tab ein eingetragenes Feld verlassen wird, wird das Feld geleert (zumindest sichtbar)
 
         const inputColor = {
             color: color,
@@ -33,13 +40,19 @@ function InputDuty(props) {
                             employee_id,
                         }
                     );
-                    setDutyColor(data.new_duty.shift.color_hex);
-                    console.log(DutyColor);
+
+                    const hex = data.new_duty.shift.color_hex;
+
+                    console.log(data.new_duty.shift.color_hex, "undefined");
+                    if (data.length !== 0 || hex) {
+                        console.log("UPDATE DONE!");
+                        setDutyColor(data.new_duty.shift.color_hex);
+                    }
                 }
             } catch (error) {
-                //TODO: Nur bei richtigem Statuscode 404 ausführen
+                //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
                 console.log(error);
-                // setInputDuty("");
+                setInputDuty("");
             }
         }
 

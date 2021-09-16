@@ -34,7 +34,7 @@ Route::resources([
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,
     'shifts' => ShiftController::class,
-    // 'shift_types' => ShiftTypeController::class
+    'shift_types' => ShiftTypeController::class
 ]);
 
 

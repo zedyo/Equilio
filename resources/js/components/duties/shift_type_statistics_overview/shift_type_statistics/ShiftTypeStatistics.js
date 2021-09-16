@@ -3,6 +3,10 @@ import ShiftTypeStatistic from "./shift_type_statistic/ShiftTypeStatistic";
 import "../../../../../sass/shift_type.scss";
 
 function ShiftTypeStatistics(props) {
+    const shiftTypeName = {
+        color: "grey",
+    };
+
     // --- Abholen aus der Datenbank unnütz ---
     // async function loadData() {
     //     const data = await axios.get(
@@ -13,13 +17,11 @@ function ShiftTypeStatistics(props) {
     // }
     // loadData();
 
-    //TODO: Duties ab hier aussortieren Nach Tag und das übergabe der Anzahl der Duties nach diesem Tag.
-
     return (
         <Fragment>
             <div className="statisticRow">
                 <div>
-                    <p>Frühdienste</p>
+                    <p style={shiftTypeName}>{props.shiftTypeName}</p>
                 </div>
                 {props.days.map((day) => (
                     <ShiftTypeStatistic
@@ -27,6 +29,9 @@ function ShiftTypeStatistics(props) {
                         day={day}
                         month={props.checkerData.month}
                         year={props.checkerData.year}
+                        shiftTypeDayData={props.shiftTypeData.filter(
+                            (duty) => duty.day === day
+                        )}
                     />
                 ))}
             </div>

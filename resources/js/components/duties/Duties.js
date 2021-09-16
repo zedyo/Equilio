@@ -6,9 +6,7 @@ import DateChecker from "./date_checker/DateChecker";
 import ShiftTypesOverview from "./shift_type_statistics_overview/ShiftTypeOverview";
 import moment from "moment";
 import { Container } from "react-bootstrap";
-
 import { daysToArray } from "../../util/daysToArray";
-//import { createNoSubstitutionTemplateLiteral } from "typescript";
 
 function Duties() {
     moment.locale("de");
@@ -52,7 +50,9 @@ function Duties() {
                     setChecker={setChecker}
                 />
 
-                <Days />
+                {/* <Days /> */}
+
+                <Days days={days} checkerData={checkerData} />
 
                 <div>
                     {dutiesData &&
@@ -66,7 +66,9 @@ function Duties() {
                             />
                         ))}
                 </div>
+                <div className="separator" />
                 <ShiftTypesOverview
+                    key={"d"}
                     days={days}
                     checkerData={checkerData}
                     allDuties={allDuties}

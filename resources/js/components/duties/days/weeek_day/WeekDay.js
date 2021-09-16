@@ -7,9 +7,13 @@ function WeekDay(props) {
         props.day
     );
 
+    let month = Intl.NumberFormat("de", { minimumIntegerDigits: 2 }).format(
+        props.month
+    );
+
     return (
         <div className="weekDay">
-            {moment(`${props.year}-${props.month}-${day}`).format("dd")}
+            {moment(`${props.year}-${month}-${day}`).format("dd")}
         </div>
     );
 }
