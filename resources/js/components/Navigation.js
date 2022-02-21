@@ -8,9 +8,8 @@ function Navigation() {
         <Fragment>
             <Navbar bg="light" variant="light">
                 <Container>
-                    <Navbar.Brand href="/">Project Yeti</Navbar.Brand>
+                    <Navbar.Brand href="/duties">Project Yeti</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="/duties">Dienstplan</Nav.Link>
                         <Nav.Link href="/employees">Angestellte</Nav.Link>
                         <Nav.Link href="/qualifications">
                             Qualifikationen
