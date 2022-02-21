@@ -10455,7 +10455,7 @@ function Router() {
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_17__.jsx)(react_router_dom__WEBPACK_IMPORTED_MODULE_19__.Route, {
             exact: true,
             path: "/",
-            component: _views_Home__WEBPACK_IMPORTED_MODULE_1__["default"]
+            component: _components_duties_Duties__WEBPACK_IMPORTED_MODULE_8__["default"]
           })]
         })
       })]

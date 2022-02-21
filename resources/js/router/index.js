@@ -60,7 +60,7 @@ function Router() {
                         />
                         <Route path="/employees" component={Employees} />
                         <Route path="/duties" component={Duties} />
-                        <Route exact path="/" component={Home} />
+                        <Route exact path="/" component={Duties} />
                     </Switch>
                 </div>
             </BrowserRouter>
