@@ -13,7 +13,11 @@ function Days(props) {
             <div className="daysRow">
                 <div></div>
                 {days.map((day) => {
-                    return <Day key={day} day={day} />;
+                    return <Day
+                    key={"wd2"+day}
+                    day={day}
+                    month={props.checkerData.month}
+                    year={props.checkerData.year}/>;
                 })}
             </div>
 

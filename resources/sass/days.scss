@@ -21,10 +21,22 @@
     font-size: 1.1rem;
 }
 
+.weekendDayBig {
+    font-size: 1.1rem;
+    font-weight: 100;
+    color: rgb(251, 67, 67);
+}
+
 // WeekDay
 
 .weekDay {
     font-size: 0.8rem;
     font-weight: 100;
     color: rgb(134, 134, 134);
+}
+
+.weekendDay {
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: rgb(251, 67, 67);
 }

@@ -1,6 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { Button, Form, Col, Row, InputGroup } from "react-bootstrap";
 import moment from "moment";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function DateChecker(props) {
     const [checkerInput, setCheckerInput] = useState({
