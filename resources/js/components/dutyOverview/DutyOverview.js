@@ -1,7 +1,7 @@
 import React, { useEffect, useState, Fragment } from "react";
 import axios from "axios";
-import DutyColumn from "./dutyColumn/DutyColumn";
-import DaysColumn from "./daysColumn/DaysColumn";
+import DutiesRow from "./dutiesRow/DutiesRow";
+import DaysRow from "./daysRow/DaysRow";
 import DateSelector from "./dateSelector/DateSelector";
 import ShiftTypeStatisticsContainer from "./shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer";
 import moment from "moment";
@@ -52,12 +52,12 @@ function Duties() {
 
                 {/* <Days /> */}
 
-                <DaysColumn days={days} checkerData={checkerData} />
+                <DaysRow days={days} checkerData={checkerData} />
 
                 <div>
                     {dutiesData &&
                         dutiesData.map((dutyObject) => (
-                            <DutyColumn
+                            <DutiesRow
                                 key={Math.random()}
                                 dutiesData={dutyObject}
                                 checkerData={checkerData}

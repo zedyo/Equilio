@@ -6833,8 +6833,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _dutyColumn_DutyColumn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dutyColumn/DutyColumn */ "./resources/js/components/dutyOverview/dutyColumn/DutyColumn.js");
-/* harmony import */ var _daysColumn_DaysColumn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./daysColumn/DaysColumn */ "./resources/js/components/dutyOverview/daysColumn/DaysColumn.js");
+/* harmony import */ var _dutiesRow_DutiesRow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dutiesRow/DutiesRow */ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js");
+/* harmony import */ var _daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./daysRow/DaysRow */ "./resources/js/components/dutyOverview/daysRow/DaysRow.js");
 /* harmony import */ var _dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dateSelector/DateSelector */ "./resources/js/components/dutyOverview/dateSelector/DateSelector.js");
 /* harmony import */ var _shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer */ "./resources/js/components/dutyOverview/shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
@@ -6956,12 +6956,12 @@ function Duties() {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
         checkerData: checkerData,
         setChecker: setChecker
-      }, "datechecker-render"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_daysColumn_DaysColumn__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      }, "datechecker-render"), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
         days: days,
         checkerData: checkerData
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)("div", {
         children: dutiesData && dutiesData.map(function (dutyObject) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_dutyColumn_DutyColumn__WEBPACK_IMPORTED_MODULE_3__["default"], {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_9__.jsx)(_dutiesRow_DutiesRow__WEBPACK_IMPORTED_MODULE_3__["default"], {
             dutiesData: dutyObject,
             checkerData: checkerData,
             days: days,
@@ -7093,10 +7093,10 @@ function DateChecker(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/daysColumn/DaysColumn.js":
-/*!***********************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/daysColumn/DaysColumn.js ***!
-  \***********************************************************************/
+/***/ "./resources/js/components/dutyOverview/daysRow/DaysRow.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/daysRow/DaysRow.js ***!
+  \*****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7106,8 +7106,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _util_daysToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../util/daysToArray */ "./resources/js/util/daysToArray.js");
-/* harmony import */ var _day_Day__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./day/Day */ "./resources/js/components/dutyOverview/daysColumn/day/Day.js");
-/* harmony import */ var _weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./weekDay/WeekDay */ "./resources/js/components/dutyOverview/daysColumn/weekDay/WeekDay.js");
+/* harmony import */ var _day_Day__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./day/Day */ "./resources/js/components/dutyOverview/daysRow/day/Day.js");
+/* harmony import */ var _weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./weekDay/WeekDay */ "./resources/js/components/dutyOverview/daysRow/weekDay/WeekDay.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _sass_days_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../../sass/days.scss */ "./resources/sass/days.scss");
@@ -7150,10 +7150,10 @@ function Days(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/daysColumn/day/Day.js":
-/*!********************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/daysColumn/day/Day.js ***!
-  \********************************************************************/
+/***/ "./resources/js/components/dutyOverview/daysRow/day/Day.js":
+/*!*****************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/daysRow/day/Day.js ***!
+  \*****************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7188,10 +7188,10 @@ function Day(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/daysColumn/weekDay/WeekDay.js":
-/*!****************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/daysColumn/weekDay/WeekDay.js ***!
-  \****************************************************************************/
+/***/ "./resources/js/components/dutyOverview/daysRow/weekDay/WeekDay.js":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/daysRow/weekDay/WeekDay.js ***!
+  \*************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7227,10 +7227,10 @@ function WeekDay(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutyColumn/DutyColumn.js":
-/*!***********************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutyColumn/DutyColumn.js ***!
-  \***********************************************************************/
+/***/ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js":
+/*!*********************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js ***!
+  \*********************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7239,8 +7239,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _dutyCell_dutyCell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dutyCell/dutyCell */ "./resources/js/components/dutyOverview/dutyColumn/dutyCell/dutyCell.js");
-/* harmony import */ var _workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingTimeCell/WorkingTimeCell */ "./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.js");
+/* harmony import */ var _dutyCell_dutyCell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dutyCell/dutyCell */ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/dutyCell.js");
+/* harmony import */ var _workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingTimeCell/WorkingTimeCell */ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js");
 /* harmony import */ var _sass_duty_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../sass/duty.scss */ "./resources/sass/duty.scss");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
@@ -7287,10 +7287,10 @@ function DutyRowContainer(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutyColumn/dutyCell/dutyCell.js":
-/*!******************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutyColumn/dutyCell/dutyCell.js ***!
-  \******************************************************************************/
+/***/ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/dutyCell.js":
+/*!*****************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/dutiesRow/dutyCell/dutyCell.js ***!
+  \*****************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7434,10 +7434,10 @@ function InputDuty(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.js":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.js ***!
-  \********************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js":
+/*!*******************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js ***!
+  \*******************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -7446,7 +7446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -15529,10 +15529,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;/*!
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss":
-/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss ***!
-  \************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -107628,10 +107628,10 @@ if (false) {} else {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss":
-/*!**********************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss ***!
-  \**********************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss ***!
+  \*********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -107641,7 +107641,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingTimeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutyColumn/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingTimeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss");
 
             
 
