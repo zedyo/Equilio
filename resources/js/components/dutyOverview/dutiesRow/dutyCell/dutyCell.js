@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import "../../../../../sass/duty.scss";
+// import "../../../../../sass/duty.scss";
+import "./DutyCell.scss";
 
 function InputDuty(props) {
     const allDuties = props.allDuties;
@@ -14,6 +15,7 @@ function InputDuty(props) {
 
         const [InputDuty, setInputDuty] = useState(dutyVal);
         const [DutyColor, setDutyColor] = useState(dutyColor);
+        const [CellStyle, setCellStyle] = useState("inputDutyForm");
 
         // let color = dutie ? dutie.shift.color_hex : DutyColor;
         let color = DutyColor;
@@ -43,15 +45,18 @@ function InputDuty(props) {
 
                     const hex = data.new_duty.shift.color_hex;
 
-                    console.log(data.new_duty.shift.color_hex, "undefined");
+                    // console.log(data.new_duty.shift.color_hex, "undefined");
+
                     if (data.length !== 0 || hex) {
-                        console.log("UPDATE DONE!");
+                        // console.log("UPDATE DONE!");
                         setDutyColor(data.new_duty.shift.color_hex);
+                        setCellStyle("inputDutyForm");
                     }
                 }
             } catch (error) {
                 //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
-                console.log(error);
+                // console.log(error);
+                setCellStyle("error");
                 setInputDuty("");
             }
         }
@@ -59,7 +64,7 @@ function InputDuty(props) {
         return (
             <input
                 style={inputColor}
-                className="inputDutyForm"
+                className={CellStyle}
                 value={InputDuty}
                 onChange={(e) => setInputDuty(e.target.value)}
                 onBlur={(e) =>

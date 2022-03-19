@@ -1,0 +1,55 @@
+// Fonts
+@import url("https://fonts.googleapis.com/css?family=Nunito");
+
+// // Variables
+// @import "variables";
+
+// Bootstrap
+@import "~bootstrap/scss/bootstrap";
+
+.inputDutyForm {
+    width: 2rem;
+    height: 2rem;
+    border: 0.03rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    justify-self: center;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.error {
+    width: 2rem;
+    height: 2rem;
+    border: 0.03rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    justify-self: center;
+    font-weight: 600;
+    font-size: 1rem;
+    animation: blink 0.3s ease 0s 2 normal;
+
+    @-webkit-keyframes blink {
+        0% {
+            background-color: rgb(255, 255, 255);
+        }
+        50% {
+            background-color: rgb(228, 50, 50);
+        }
+        100% {
+            background-color: rgb(255, 255, 255);
+        }
+    }
+
+    @keyframes blink {
+        0% {
+            background-color: rgb(255, 255, 255);
+        }
+        50% {
+            background-color: rgb(228, 50, 50);
+        }
+        100% {
+            background-color: rgb(255, 255, 255);
+        }
+    }
+}
