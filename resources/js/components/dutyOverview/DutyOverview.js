@@ -1,9 +1,9 @@
 import React, { useEffect, useState, Fragment } from "react";
 import axios from "axios";
-import Duty from "./single_duty/Duty";
-import Days from "./days/Days";
-import DateChecker from "./date_checker/DateChecker";
-import ShiftTypesOverview from "./shift_type_statistics_overview/ShiftTypeOverview";
+import DutyColumn from "./dutyColumn/DutyColumn";
+import DaysColumn from "./daysColumn/DaysColumn";
+import DateSelector from "./dateSelector/DateSelector";
+import ShiftTypeStatisticsContainer from "./shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer";
 import moment from "moment";
 import { Container } from "react-bootstrap";
 import { daysToArray } from "../../util/daysToArray";
@@ -44,7 +44,7 @@ function Duties() {
     return (
         <Fragment>
             <Container key="container">
-                <DateChecker
+                <DateSelector
                     key="datechecker-render"
                     checkerData={checkerData}
                     setChecker={setChecker}
@@ -52,12 +52,12 @@ function Duties() {
 
                 {/* <Days /> */}
 
-                <Days days={days} checkerData={checkerData} />
+                <DaysColumn days={days} checkerData={checkerData} />
 
                 <div>
                     {dutiesData &&
                         dutiesData.map((dutyObject) => (
-                            <Duty
+                            <DutyColumn
                                 key={Math.random()}
                                 dutiesData={dutyObject}
                                 checkerData={checkerData}
@@ -67,7 +67,7 @@ function Duties() {
                         ))}
                 </div>
                 <div className="separator" />
-                <ShiftTypesOverview
+                <ShiftTypeStatisticsContainer
                     key={"d"}
                     days={days}
                     checkerData={checkerData}

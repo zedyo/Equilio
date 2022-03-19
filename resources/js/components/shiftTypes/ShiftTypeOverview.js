@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from "react";
 import axios from "axios";
 import { Button, Row, Container } from "react-bootstrap";
-import ShiftType from "./show/ShiftType";
+import ShiftTypeCard from "./show/ShiftTypeCard";
 
 function ShiftTypes() {
     const [shiftTypeData, setShiftType] = useState([]);
@@ -43,11 +43,22 @@ function ShiftTypes() {
                             <div className="card-header">Schicht Arten</div>
 
                             <div className="card-body">
+                                <Container
+                                    style={{ margin: "0.3rem" }}
+                                    fluid="sm"
+                                >
+                                    <Button
+                                        href={`/shift_type/create`}
+                                        variant="outline-success"
+                                    >
+                                        Neue Schicht Art anlegen
+                                    </Button>
+                                </Container>
                                 <Container fluid="sm">
                                     <Row>
                                         {shiftTypeData.map(
                                             (shiftTypeObject) => (
-                                                <ShiftType
+                                                <ShiftTypeCard
                                                     key={shiftTypeObject.id}
                                                     shiftTypeData={
                                                         shiftTypeObject
@@ -57,18 +68,6 @@ function ShiftTypes() {
                                             )
                                         )}
                                     </Row>
-                                </Container>
-
-                                <Container
-                                    style={{ margin: "0.3rem" }}
-                                    fluid="sm"
-                                >
-                                    <Button
-                                        href={`/shift_type/create`}
-                                        variant="outline-success"
-                                    >
-                                        Erstellen
-                                    </Button>{" "}
                                 </Container>
                             </div>
                         </div>

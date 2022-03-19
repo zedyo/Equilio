@@ -1,9 +1,9 @@
 import React, { Fragment } from "react";
-import InputDuty from "./input_duty/InputDuty";
-import WorkingTime from "./working_time/WorkingTime";
+import DutyCell from "./dutyCell/dutyCell";
+import WorkingTimeCell from "./workingTimeCell/WorkingTimeCell";
 import "../../../../sass/duty.scss";
 
-function Duty(props) {
+function DutyRowContainer(props) {
     return (
         <Fragment>
             <div className="employeeRow">
@@ -17,12 +17,10 @@ function Duty(props) {
                             {props.dutiesData.qualification.description}
                         </p>
                     </div>
-
-                    <WorkingTime />
                 </div>
                 <Fragment>
                     {props.days.map((day) => (
-                        <InputDuty
+                        <DutyCell
                             key={day}
                             day={day}
                             month={props.checkerData.month}
@@ -31,10 +29,14 @@ function Duty(props) {
                             allDuties={props.allDuties}
                         />
                     ))}
+                    <WorkingTimeCell
+                        allDuties={props.allDuties}
+                        employee_id={props.dutiesData.id}
+                    />
                 </Fragment>
             </div>
         </Fragment>
     );
 }
 
-export default Duty;
+export default DutyRowContainer;

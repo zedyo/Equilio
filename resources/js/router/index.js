@@ -1,30 +1,27 @@
 import React from "react";
 import { Switch, BrowserRouter, Route } from "react-router-dom";
-import Home from "../views/Home";
-import Test from "../views/Test";
-import Navigation from "../components/Navigation";
-import Qualifications from "../components/qualifications/Qualifications";
+import NavigationBar from "../components/NavigationBar";
+import QualificationOverview from "../components/qualifications/QualificationOverview";
 import UpdateQualification from "../components/qualifications/update/UpdateQualification";
 import CreateQualification from "../components/qualifications/create/CreateQualification";
-import Employees from "../components/employees/Employees";
-import Duties from "../components/duties/Duties";
+import EmployeeOverview from "../components/employees/EmployeeOverview";
+import DutyOverview from "../components/dutyOverview/DutyOverview";
 import UpdateEmployee from "../components/employees/update/UpdateEmployee";
 import CreateEmployee from "../components/employees/create/CreateEmployee";
-import Shifts from "../components/shifts/Shifts";
-import ShiftTypes from "../components/shift_types/ShiftTypes";
+import ShiftOverview from "../components/shifts/ShiftOverview";
+import ShiftTypeOverview from "../components/shiftTypes/ShiftTypeOverview";
 import UpdateShift from "../components/shifts/update/UpdateShift";
 import CreateShift from "../components/shifts/create/CreateShift";
-import UpdateShiftType from "../components/shift_types/update/UpdateShiftType";
-import CreateShiftType from "../components/shift_types/create/CreateShiftType";
+import UpdateShiftType from "../components/shiftTypes/update/UpdateShiftType";
+import CreateShiftType from "../components/shiftTypes/create/CreateShiftType";
 
 function Router() {
     return (
         <div>
             <BrowserRouter>
-                <Navigation />
+                <NavigationBar />
                 <div className="py-4">
                     <Switch>
-                        <Route path="/test" component={Test} />
                         <Route
                             path="/qualification/edit/:id"
                             component={UpdateQualification}
@@ -35,11 +32,11 @@ function Router() {
                         />
                         <Route
                             path="/qualifications"
-                            component={Qualifications}
+                            component={QualificationOverview}
                         />
                         <Route path="/shift/edit/:id" component={UpdateShift} />
                         <Route path="/shift/create" component={CreateShift} />
-                        <Route path="/shifts" component={Shifts} />
+                        <Route path="/shifts" component={ShiftOverview} />
                         <Route
                             path="/shift_type/edit/:id"
                             component={UpdateShiftType}
@@ -49,7 +46,10 @@ function Router() {
                             component={CreateShiftType}
                         />
 
-                        <Route path="/shift_types" component={ShiftTypes} />
+                        <Route
+                            path="/shift_types"
+                            component={ShiftTypeOverview}
+                        />
                         <Route
                             path="/employee/edit/:id"
                             component={UpdateEmployee}
@@ -58,9 +58,9 @@ function Router() {
                             path="/employee/create"
                             component={CreateEmployee}
                         />
-                        <Route path="/employees" component={Employees} />
-                        <Route path="/duties" component={Duties} />
-                        <Route exact path="/" component={Duties} />
+                        <Route path="/employees" component={EmployeeOverview} />
+                        <Route path="/duties" component={DutyOverview} />
+                        <Route exact path="/" component={DutyOverview} />
                     </Switch>
                 </div>
             </BrowserRouter>

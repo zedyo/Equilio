@@ -1,5 +1,5 @@
 import React, { Fragment } from "react";
-import ShiftTypeStatistic from "./shift_type_statistic/ShiftTypeStatistic";
+import ShiftTypeStatisticCell from "./shiftTypeStatisticCell/ShiftTypeStatisticCell";
 import "../../../../../sass/shift_type.scss";
 
 function ShiftTypeStatistics(props) {
@@ -24,7 +24,7 @@ function ShiftTypeStatistics(props) {
                     <p style={shiftTypeName}>{props.shiftTypeName}</p>
                 </div>
                 {props.days.map((day) => (
-                    <ShiftTypeStatistic
+                    <ShiftTypeStatisticCell
                         key={day}
                         day={day}
                         month={props.checkerData.month}

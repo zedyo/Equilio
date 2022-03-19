@@ -1,10 +1,9 @@
-import React, {Fragment, useEffect, useState} from "react"
-import axios from "axios"
-import Employee from "./show/Employee";
-import {Button, Card, Container, Table} from "react-bootstrap";
+import React, { Fragment, useEffect, useState } from "react";
+import axios from "axios";
+import EmployeeColumn from "./show/EmployeeColumn";
+import { Button, Card, Container, Table } from "react-bootstrap";
 
-function Employees()
-{
+function Employees() {
     const [employeesData, setEmployee] = useState([]);
     // --MEMO useState--
     // useState ein React Werkzeug. Im Parameter wird der Defaultwert gesetzt (hier [])
@@ -16,7 +15,7 @@ function Employees()
     // --MEMO Array destructioring---
     // const [var1, var2] = blahMethode() -> ich vergebe 2 Variablen für 2 Returnwerte von blahMethode
 
-    useEffect( ()=>{
+    useEffect(() => {
         // --MEMO Anonyme Methoden--
         // ()=>{} ist eine Anonyme "wegwerf" Methode die nur hier verwendet wird
 
@@ -24,17 +23,19 @@ function Employees()
             // --MEMO async function--
             // async Funktion - damit asynchroner Datenaustausch möglich ist
 
-            const {data} = await axios.get('http://127.0.0.1:8000/api/employees')
+            const { data } = await axios.get(
+                "http://127.0.0.1:8000/api/employees"
+            );
             // --MEMO data und axios
             // data sind die empfangen PHP Daten (mithilfe axios)
 
-            setEmployee(data.employees)
+            setEmployee(data.employees);
             // --MEMO data.employees--
             // data.employees ~ 'employees' Array daten aus den empfangen PHP Daten, werden in setEmployee gegeben
         }
 
-        getData()
-    }, [])
+        getData();
+    }, []);
     // --MEMO deps--
     // [] = "Aktiviere useEffect nur wenn du die Seite lädst. Nur 1x!!!" .
     // employeeData od. inputState (egal was) -> "Überwache das! und Ändere das jedes mal wenn sich da was ändert!"
@@ -42,10 +43,17 @@ function Employees()
 
     async function destroyData(deletedEmployeeId) {
         try {
-            const deleted_data = await axios.delete(`http://127.0.0.1:8000/api/employees/${deletedEmployeeId}/`)
-            setEmployee(employeesData.filter((employee)=>employee.id !== deleted_data.data.deleted_employee.id))
+            const deleted_data = await axios.delete(
+                `http://127.0.0.1:8000/api/employees/${deletedEmployeeId}/`
+            );
+            setEmployee(
+                employeesData.filter(
+                    (employee) =>
+                        employee.id !== deleted_data.data.deleted_employee.id
+                )
+            );
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     }
 
@@ -66,13 +74,22 @@ function Employees()
                                 </tr>
                             </thead>
                             <tbody>
-                                {employeesData.map( (employeeObject) => <Employee key={employeeObject.id}
-                                                                                  employeeData={employeeObject}
-                                                                                  deleteHandler={destroyData}/>)}
+                                {employeesData.map((employeeObject) => (
+                                    <EmployeeColumn
+                                        key={employeeObject.id}
+                                        employeeData={employeeObject}
+                                        deleteHandler={destroyData}
+                                    />
+                                ))}
                             </tbody>
                         </Table>
                         <Container fluid="sm">
-                            <Button href={`/employee/create`} variant="outline-success">Erstellen</Button>{' '}
+                            <Button
+                                href={`/employee/create`}
+                                variant="outline-success"
+                            >
+                                Erstellen
+                            </Button>{" "}
                         </Container>
                     </Card.Body>
                 </Card>
@@ -86,4 +103,4 @@ function Employees()
     );
 }
 
-export default Employees
+export default Employees;

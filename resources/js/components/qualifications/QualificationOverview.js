@@ -1,6 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import axios from "axios";
-import Qualification from "./show/Qualification";
+import QualificationCard from "./show/QualificationCard";
 import { Button, Row, Container } from "react-bootstrap";
 
 function Qualifications() {
@@ -47,11 +47,22 @@ function Qualifications() {
                             <div className="card-header">Qualifikationen</div>
 
                             <div className="card-body">
+                                <Container
+                                    style={{ margin: "0.3rem" }}
+                                    fluid="sm"
+                                >
+                                    <Button
+                                        href={`/qualification/create`}
+                                        variant="outline-success"
+                                    >
+                                        Neue Qualifikation anlegen
+                                    </Button>
+                                </Container>
                                 <Container fluid="sm">
                                     <Row>
                                         {qualificationsData.map(
                                             (qualificationObject) => (
-                                                <Qualification
+                                                <QualificationCard
                                                     key={qualificationObject.id}
                                                     qualificationData={
                                                         qualificationObject
@@ -61,18 +72,6 @@ function Qualifications() {
                                             )
                                         )}
                                     </Row>
-                                </Container>
-
-                                <Container
-                                    style={{ margin: "0.3rem" }}
-                                    fluid="sm"
-                                >
-                                    <Button
-                                        href={`/qualification/create`}
-                                        variant="outline-success"
-                                    >
-                                        Erstellen
-                                    </Button>{" "}
                                 </Container>
                             </div>
                         </div>

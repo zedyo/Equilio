@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { daysToArray } from "../../../util/daysToArray";
 import Day from "./day/Day";
-import WeekDay from "./weeek_day/WeekDay";
+import WeekDay from "./weekDay/WeekDay";
 import moment from "moment";
 import "../../../../sass/days.scss";
 
@@ -13,11 +13,14 @@ function Days(props) {
             <div className="daysRow">
                 <div></div>
                 {days.map((day) => {
-                    return <Day
-                    key={"wd2"+day}
-                    day={day}
-                    month={props.checkerData.month}
-                    year={props.checkerData.year}/>;
+                    return (
+                        <Day
+                            key={"wd2" + day}
+                            day={day}
+                            month={props.checkerData.month}
+                            year={props.checkerData.year}
+                        />
+                    );
                 })}
             </div>
 

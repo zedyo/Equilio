@@ -1,7 +1,7 @@
 import React, { useState, Fragment } from "react";
 import { Button, Form, Col, Row, InputGroup } from "react-bootstrap";
 import moment from "moment";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 function DateChecker(props) {
     const [checkerInput, setCheckerInput] = useState({
@@ -20,7 +20,10 @@ function DateChecker(props) {
                                 id="inlineFormInputGroup"
                                 type="text"
                                 onChange={(e) =>
-                                    setCheckerInput({ ...checkerInput, month: e.target.value })
+                                    setCheckerInput({
+                                        ...checkerInput,
+                                        month: e.target.value,
+                                    })
                                 }
                                 value={checkerInput.month}
                                 placeholder="Monat"
@@ -33,7 +36,10 @@ function DateChecker(props) {
                             <Form.Control
                                 type="text"
                                 onChange={(e) =>
-                                    setCheckerInput({ ...checkerInput, year: e.target.value })
+                                    setCheckerInput({
+                                        ...checkerInput,
+                                        year: e.target.value,
+                                    })
                                 }
                                 value={checkerInput.year}
                                 placeholder="Jahr"
@@ -42,7 +48,9 @@ function DateChecker(props) {
                     </Col>
                     <Col>
                         <Button
-                            onClick={(e) => props.setChecker({ ...checkerInput })}
+                            onClick={(e) =>
+                                props.setChecker({ ...checkerInput })
+                            }
                             variant="outline-success"
                         >
                             Suche

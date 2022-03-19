@@ -14,8 +14,14 @@ function WeekDay(props) {
     // let day = moment(`${props.year}-${month}-${day}`).format("dd");
 
     return (
-        <div className={moment(`${props.year}-${month}-${day}`).format("dd") == "So" ? "weekendDay": "weekDay"}>
-             {moment(`${props.year}-${month}-${day}`).format("dd")}
+        <div
+            className={
+                moment(`${props.year}-${month}-${day}`).format("dd") == "So"
+                    ? "weekendDay"
+                    : "weekDay"
+            }
+        >
+            {moment(`${props.year}-${month}-${day}`).format("dd")}
         </div>
     );
 }
