@@ -7338,13 +7338,12 @@ function InputDuty(props) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.prev = 0;
-
                 if (!(value !== "")) {
-                  _context.next = 8;
+                  _context.next = 14;
                   break;
                 }
 
+                _context.prev = 1;
                 _context.next = 4;
                 return axios.patch("http://127.0.0.1:8000/api/duty/", {
                   value: value,
@@ -7365,15 +7364,14 @@ function InputDuty(props) {
                   setCellStyle("inputDutyForm");
                 }
 
-              case 8:
                 _context.next = 14;
                 break;
 
               case 10:
                 _context.prev = 10;
-                _context.t0 = _context["catch"](0);
+                _context.t0 = _context["catch"](1);
                 //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
-                // console.log(error);
+                // console.loge(data.exception);
                 setCellStyle("error");
                 setInputDuty("");
 
@@ -7382,7 +7380,7 @@ function InputDuty(props) {
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 10]]);
+        }, _callee, null, [[1, 10]]);
       }));
 
       return function sendDuty(_x, _x2, _x3, _x4, _x5) {
@@ -7460,13 +7458,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function WorkingTime(props) {
-  var value = props.allDuties.map(function (dutyData) {
-    console.log(dutyData);
+  var value = props.allDuties.map(function (dutyData) {// console.log(dutyData);
   }); // console.log("Test: " + props.allDuties);
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
     className: "input",
-    value: "--.--"
+    value: "--.--",
+    disabled: true
   });
 }
 

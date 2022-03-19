@@ -30,8 +30,8 @@ function InputDuty(props) {
         };
 
         async function sendDuty(value, day, month, year, employee_id) {
-            try {
-                if (value !== "") {
+            if (value !== "") {
+                try {
                     const { data } = await axios.patch(
                         `http://127.0.0.1:8000/api/duty/`,
                         {
@@ -52,12 +52,12 @@ function InputDuty(props) {
                         setDutyColor(data.new_duty.shift.color_hex);
                         setCellStyle("inputDutyForm");
                     }
+                } catch (error) {
+                    //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
+                    // console.loge(data.exception);
+                    setCellStyle("error");
+                    setInputDuty("");
                 }
-            } catch (error) {
-                //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
-                // console.log(error);
-                setCellStyle("error");
-                setInputDuty("");
             }
         }
 
