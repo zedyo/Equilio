@@ -14,12 +14,14 @@ function Duties() {
     const [dutiesData, setDuty] = useState(null);
     const [allDuties, setAllDuties] = useState([]);
 
-    const [checkerData, setChecker] = useState({
+    const [dateSelectorData, setDateSelector] = useState({
         month: `${moment().format("M")}`,
         year: `${moment().format("YYYY")}`,
     });
 
-    const days = daysToArray(checkerData.year, checkerData.month);
+    //console.log(dateSelectorData);
+
+    const days = daysToArray(dateSelectorData.year, dateSelectorData.month);
 
     useEffect(() => {
         async function getData() {
@@ -34,25 +36,25 @@ function Duties() {
     useEffect(() => {
         (async () => {
             const { data } = await axios.get(
-                `http://127.0.0.1:8000/api/duties/${checkerData.year}/${checkerData.month}`,
+                `http://127.0.0.1:8000/api/duties/${dateSelectorData.year}/${dateSelectorData.month}`,
                 {}
             );
             setAllDuties(data.duties);
         })();
-    }, [checkerData]);
+    }, [dateSelectorData]);
 
     return (
         <Fragment>
             <Container key="container">
                 <DateSelector
                     key="datechecker-render"
-                    checkerData={checkerData}
-                    setChecker={setChecker}
+                    dateSelectorData={dateSelectorData}
+                    setDateSelector={setDateSelector}
                 />
 
                 {/* <Days /> */}
 
-                <DaysRow days={days} checkerData={checkerData} />
+                <DaysRow days={days} checkerData={dateSelectorData} />
 
                 <div>
                     {dutiesData &&
@@ -60,7 +62,7 @@ function Duties() {
                             <DutiesRow
                                 key={Math.random()}
                                 dutiesData={dutyObject}
-                                checkerData={checkerData}
+                                checkerData={dateSelectorData}
                                 days={days}
                                 allDuties={allDuties}
                             />
@@ -70,7 +72,7 @@ function Duties() {
                 <ShiftTypeStatisticsContainer
                     key={"d"}
                     days={days}
-                    checkerData={checkerData}
+                    checkerData={dateSelectorData}
                     allDuties={allDuties}
                 />
             </Container>
