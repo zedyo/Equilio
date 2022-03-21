@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import "../../../../../sass/days.scss";
+import "./weekDay.scss";
 
 function WeekDay(props) {
     let day = Intl.NumberFormat("de", { minimumIntegerDigits: 2 }).format(

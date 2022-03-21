@@ -1,6 +1,6 @@
 import React from "react";
 import moment from "moment";
-import "../../../../../sass/days.scss";
+import "./day.scss";
 
 function Day(props) {
     let day = Intl.NumberFormat("de", { minimumIntegerDigits: 2 }).format(
@@ -11,7 +11,17 @@ function Day(props) {
         props.month
     );
 
-    return <div className={moment(`${props.year}-${month}-${day}`).format("dd") == "So" ? "weekendDayBig" : "day"}>{props.day}</div>;
+    return (
+        <div
+            className={
+                moment(`${props.year}-${month}-${day}`).format("dd") == "So"
+                    ? "weekendDayBig"
+                    : "day"
+            }
+        >
+            {props.day}
+        </div>
+    );
 }
 
 export default Day;

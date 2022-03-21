@@ -3,7 +3,7 @@ import { daysToArray } from "../../../util/daysToArray";
 import Day from "./day/Day";
 import WeekDay from "./weekDay/WeekDay";
 import moment from "moment";
-import "../../../../sass/days.scss";
+import "./daysRow.scss";
 
 function Days(props) {
     const days = props.days;
@@ -11,7 +11,6 @@ function Days(props) {
     return (
         <Fragment>
             <div className="daysRow">
-                <div></div>
                 {days.map((day) => {
                     return (
                         <Day
@@ -25,7 +24,6 @@ function Days(props) {
             </div>
 
             <div className="daysRow">
-                <div></div>
                 {days.map((day) => {
                     return (
                         <WeekDay

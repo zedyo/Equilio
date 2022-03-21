@@ -1,0 +1,14 @@
+.dateRow {
+    display: grid;
+    grid-template-columns: 16rem auto;
+    align-items: center;
+
+    .dateSelector {
+        margin-top: 1rem;
+        margin-right: 1rem;
+    }
+}
+
+.separator {
+    height: 2rem;
+}

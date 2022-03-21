@@ -1,0 +1,7 @@
+.daysRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: repeat(32, 2.2rem);
+    justify-items: center;
+    align-items: center;
+}

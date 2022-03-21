@@ -1,7 +1,7 @@
 import React, { Fragment } from "react";
 import DutyCell from "./dutyCell/DutyCell";
 import WorkingTimeCell from "./workingTimeCell/WorkingTimeCell";
-import "../../../../sass/duty.scss";
+import "./DutiesRow.scss";
 
 function DutyRowContainer(props) {
     return (

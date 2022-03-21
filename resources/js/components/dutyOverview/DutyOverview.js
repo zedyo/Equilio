@@ -7,6 +7,7 @@ import ShiftTypeStatisticsContainer from "./shiftTypeStatisticsContainer/ShiftTy
 import moment from "moment";
 import { Container } from "react-bootstrap";
 import { daysToArray } from "../../util/daysToArray";
+import "./DutyOverview.scss";
 
 function Duties() {
     moment.locale("de");
@@ -46,15 +47,19 @@ function Duties() {
     return (
         <Fragment>
             <Container key="container">
-                <DateSelector
-                    key="datechecker-render"
-                    dateSelectorData={dateSelectorData}
-                    setDateSelector={setDateSelector}
-                />
+                <div className="dateRow">
+                    <div className="dateSelector">
+                        <DateSelector
+                            key="datechecker-render"
+                            dateSelectorData={dateSelectorData}
+                            setDateSelector={setDateSelector}
+                        />
+                    </div>
 
-                {/* <Days /> */}
-
-                <DaysRow days={days} checkerData={dateSelectorData} />
+                    <div>
+                        <DaysRow days={days} checkerData={dateSelectorData} />
+                    </div>
+                </div>
 
                 <div>
                     {dutiesData &&

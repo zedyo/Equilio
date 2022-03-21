@@ -47,7 +47,7 @@ function DateSelector(props) {
                                     });
                                 }}
                             >
-                                zurück
+                                ◁
                             </Button>
                             <Form.Control
                                 className="dateView"
@@ -90,7 +90,7 @@ function DateSelector(props) {
                                     });
                                 }}
                             >
-                                vor
+                                ▷
                             </Button>
                         </InputGroup>
                     </Col>
