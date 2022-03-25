@@ -2,7 +2,7 @@ import React, { useState, Fragment } from "react";
 import { Button, Form, Col, Row, InputGroup } from "react-bootstrap";
 import moment from "moment";
 import "./DateSelector.scss";
-//import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IoChevronBack, IoChevronForward } from "react-icons/io5";
 
 function DateSelector(props) {
     const [dateSlectorInput, setDateSelectorInput] = useState({
@@ -47,7 +47,7 @@ function DateSelector(props) {
                                     });
                                 }}
                             >
-                                ◁
+                                <IoChevronBack />
                             </Button>
                             <Form.Control
                                 className="dateView"
@@ -90,7 +90,7 @@ function DateSelector(props) {
                                     });
                                 }}
                             >
-                                ▷
+                                <IoChevronForward />
                             </Button>
                         </InputGroup>
                     </Col>
