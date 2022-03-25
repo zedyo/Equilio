@@ -14,7 +14,7 @@ function Day(props) {
     return (
         <div
             className={
-                moment(`${props.year}-${month}-${day}`).format("dd") == "So"
+                moment(`${props.year}-${month}-${day}`).format("dd") == "So" || moment(`${props.year}-${month}-${day}`).format("dd") == "Sa"
                     ? "weekendDayBig"
                     : "day"
             }
