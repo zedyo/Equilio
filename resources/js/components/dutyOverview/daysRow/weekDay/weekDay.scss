@@ -1,11 +1,17 @@
-.weekDay {
+.weekday {
     font-size: 0.8rem;
     font-weight: 100;
     color: rgb(61, 61, 61);
 }
 
-.weekendDay {
+.weekendWeekday {
     font-size: 0.8rem;
     font-weight: 100;
     color: #ababab;
+}
+
+.holidayWeekday {
+    font-size: 0.8rem;
+    font-weight: 100;
+    color: #ff2d2d;
 }

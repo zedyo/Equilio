@@ -1,9 +1,37 @@
 .day {
     font-size: 1.1rem;
+    border-style: solid;
+    border-width: 1.5px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 1.7rem;
+    text-align: center;
+
 }
 
-.weekendDayBig {
+.weekendDay {
     font-size: 1.1rem;
     font-weight: 100;
     color: #ababab;
+    border-style: solid;
+    border-width: 1.5px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 1.7rem;
+    text-align: center;
+}
+
+.holiday {
+    font-size: 1.1rem;
+    font-weight: 100;
+    color: #ff2d2d;
+    border-style: solid;
+    border-width: 1.5px;
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    width: 1.7rem;
+    text-align: center;
 }
