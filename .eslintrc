@@ -1,0 +1,9 @@
+{
+  "extends": "project_yeti",
+  "plugins": [
+    "prettier"
+  ],
+  "rules": {
+    "prettier/prettier": "error"
+  }
+}
