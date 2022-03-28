@@ -1,0 +1,21 @@
+.employeeContainer {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: 11rem 4rem;
+  align-items: center;
+
+  .employeeName {
+      align-content: center;
+      font-weight: 500;
+      font-size: 1rem;
+      line-height: 1;
+      margin: 0 0.8rem 0 0;
+  }
+
+  .employeeQualification {
+      font-size: 0.75rem;
+      font-weight: 100;
+      line-height: 1;
+      margin: 0.1rem 0 0.8rem 0;
+  }
+}

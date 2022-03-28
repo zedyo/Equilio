@@ -8156,7 +8156,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _dutiesRow_DutiesRow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dutiesRow/DutiesRow */ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js");
+/* harmony import */ var _employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./employeeRow/EmployeeRow */ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.js");
 /* harmony import */ var _daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./daysRow/DaysRow */ "./resources/js/components/dutyOverview/daysRow/DaysRow.js");
 /* harmony import */ var _dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./dateSelector/DateSelector */ "./resources/js/components/dutyOverview/dateSelector/DateSelector.js");
 /* harmony import */ var _shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer */ "./resources/js/components/dutyOverview/shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer.js");
@@ -8202,13 +8202,15 @@ function Duties() {
 
   var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
       _useState2 = _slicedToArray(_useState, 2),
-      dutiesData = _useState2[0],
-      setDuty = _useState2[1];
+      employeeData = _useState2[0],
+      setEmployeeData = _useState2[1];
 
   var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState4 = _slicedToArray(_useState3, 2),
       allDuties = _useState4[0],
       setAllDuties = _useState4[1];
+
+  console.log(employeeData);
 
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     month: "".concat(moment__WEBPACK_IMPORTED_MODULE_7___default()().format('M')),
@@ -8216,8 +8218,7 @@ function Duties() {
   }),
       _useState6 = _slicedToArray(_useState5, 2),
       dateSelectorData = _useState6[0],
-      setDateSelector = _useState6[1]; //console.log(dateSelectorData);
-
+      setDateSelector = _useState6[1];
 
   var days = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_8__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -8239,7 +8240,7 @@ function Duties() {
               case 2:
                 _yield$axios$get = _context.sent;
                 data = _yield$axios$get.data;
-                setDuty(data.employees);
+                setEmployeeData(data.employees);
 
               case 5:
               case "end":
@@ -8292,14 +8293,14 @@ function Duties() {
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
             days: days,
-            checkerData: dateSelectorData
+            dateSelectorData: dateSelectorData
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-        children: dutiesData && dutiesData.map(function (dutyObject) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_dutiesRow_DutiesRow__WEBPACK_IMPORTED_MODULE_3__["default"], {
-            dutiesData: dutyObject,
-            checkerData: dateSelectorData,
+        children: employeeData && employeeData.map(function (employeeObject) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_3__["default"], {
+            employeeData: employeeObject,
+            dateSelectorData: dateSelectorData,
             days: days,
             allDuties: allDuties
           }, Math.random());
@@ -8308,7 +8309,7 @@ function Duties() {
         className: "separator"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_6__["default"], {
         days: days,
-        checkerData: dateSelectorData,
+        dateSelectorData: dateSelectorData,
         allDuties: allDuties
       }, 'd')]
     }, "container")
@@ -8465,18 +8466,18 @@ function Days(props) {
       children: days.map(function (day) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_day_Day__WEBPACK_IMPORTED_MODULE_2__["default"], {
           day: day,
-          month: props.checkerData.month,
-          year: props.checkerData.year
-        }, "wd2" + day);
+          month: props.dateSelectorData.month,
+          year: props.dateSelectorData.year
+        }, 'wd2' + day);
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "daysRow",
       children: days.map(function (day) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_3__["default"], {
           day: day,
-          month: props.checkerData.month,
-          year: props.checkerData.year
-        }, "wd" + day);
+          month: props.dateSelectorData.month,
+          year: props.dateSelectorData.year
+        }, 'wd' + day);
       })
     })]
   });
@@ -8726,10 +8727,10 @@ function WeekDay(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js":
-/*!*********************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/DutiesRow.js ***!
-  \*********************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.js":
+/*!*************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/EmployeeRow.js ***!
+  \*************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8738,10 +8739,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dutyCell/DutyCell */ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.js");
-/* harmony import */ var _workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingTimeCell/WorkingTimeCell */ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js");
-/* harmony import */ var _DutiesRow_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DutiesRow.scss */ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var _dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dutyCell/DutyCell */ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.js");
+/* harmony import */ var _workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingTimeCell/WorkingTimeCell */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js");
+/* harmony import */ var _EmployeeRow_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EmployeeRow.scss */ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss");
+/* harmony import */ var _employeeCell_EmployeeCell__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./employeeCell/EmployeeCell */ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
@@ -8749,47 +8751,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function DutyRowContainer(props) {
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
+
+
+function EmployeeRow(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "employeeRow",
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-        className: "employeeContainer",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("p", {
-            className: "employeeName",
-            children: [props.dutiesData.first_name, " ", props.dutiesData.last_name]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
-            className: "employeeQualification",
-            children: props.dutiesData.qualification.description
-          })]
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-        children: [props.days.map(function (day) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
-            day: day,
-            month: props.checkerData.month,
-            year: props.checkerData.year,
-            employee_id: props.dutiesData.id,
-            allDuties: props.allDuties
-          }, day);
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          allDuties: props.allDuties,
-          employee_id: props.dutiesData.id
-        })]
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_employeeCell_EmployeeCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
+        employeeData: props.employeeData
+      }), props.days.map(function (day) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          day: day,
+          month: props.dateSelectorData.month,
+          year: props.dateSelectorData.year,
+          allDuties: props.allDuties
+        }, day);
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        allDuties: props.allDuties
       })]
     })
   });
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DutyRowContainer);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployeeRow);
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.js":
-/*!*****************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.js ***!
-  \*****************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.js":
+/*!*******************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.js ***!
+  \*******************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8800,7 +8791,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _DutyCell_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DutyCell.scss */ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss");
+/* harmony import */ var _DutyCell_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DutyCell.scss */ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -8938,10 +8929,10 @@ function InputDuty(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js":
-/*!*******************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.js ***!
-  \*******************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.js":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.js ***!
+  \***************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -8950,7 +8941,48 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var _EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmployeeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+
+
+function EmployeeCell(props) {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "employeeContainer",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+          className: "employeeName",
+          children: [props.employeeData.first_name, " ", props.employeeData.last_name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+          className: "employeeQualification",
+          children: props.employeeData.qualification.description
+        })]
+      })
+    })
+  });
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (EmployeeCell);
+
+/***/ }),
+
+/***/ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js ***!
+  \*********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -9029,7 +9061,7 @@ function ShiftTypesOverview(props) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get("http://127.0.0.1:8000/api/shift_types", {});
+                return axios.get('http://127.0.0.1:8000/api/shift_types', {});
 
               case 2:
                 _yield$axios$get = _context.sent;
@@ -9052,7 +9084,7 @@ function ShiftTypesOverview(props) {
     children: shiftTypeData.map(function (shiftTypeObject) {
       return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_shiftTypeStatisticsColumn_ShiftTypeStatisticsColumn__WEBPACK_IMPORTED_MODULE_2__["default"], {
         days: props.days,
-        checkerData: props.checkerData,
+        dateSelectorData: props.dateSelectorData,
         shiftTypeName: shiftTypeObject.name,
         shiftTypeData: props.allDuties.filter(function (duty) {
           return duty.shift.shift_type.id === shiftTypeObject.id;
@@ -9089,7 +9121,7 @@ __webpack_require__.r(__webpack_exports__);
 
 function ShiftTypeStatistics(props) {
   var shiftTypeName = {
-    color: "grey"
+    color: 'grey'
   }; // --- Abholen aus der Datenbank unnütz ---
   // async function loadData() {
   //     const data = await axios.get(
@@ -9111,8 +9143,8 @@ function ShiftTypeStatistics(props) {
       }), props.days.map(function (day) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_shiftTypeStatisticCell_ShiftTypeStatisticCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
           day: day,
-          month: props.checkerData.month,
-          year: props.checkerData.year,
+          month: props.dateSelectorData.month,
+          year: props.dateSelectorData.year,
           shiftTypeDayData: props.shiftTypeData.filter(function (duty) {
             return duty.day === day;
           })
@@ -17407,10 +17439,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".weekday {\n  font-size: 0.8rem;\n  fo
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss":
+/*!*****************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss ***!
+  \*****************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17424,17 +17456,17 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".employeeRow {\n  display: grid;\n  grid-auto-flow: column;\n  grid-template-columns: 16rem repeat(31, 2.2rem);\n  align-items: center;\n}\n.employeeRow .employeeContainer {\n  display: grid;\n  grid-auto-flow: column;\n  grid-template-columns: 11rem 4rem;\n  align-items: center;\n}\n.employeeRow .employeeContainer .employeeName {\n  align-content: center;\n  font-weight: 500;\n  font-size: 1rem;\n  line-height: 1;\n  margin: 0 0.8rem 0 0;\n}\n.employeeRow .employeeContainer .employeeQualification {\n  font-size: 0.75rem;\n  font-weight: 100;\n  line-height: 1;\n  margin: 0.1rem 0 0.8rem 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".employeeRow {\n  display: grid;\n  grid-auto-flow: column;\n  grid-template-columns: 16rem repeat(31, 2.2rem);\n  align-items: center;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss":
-/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss ***!
-  \*********************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss":
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -17456,10 +17488,34 @@ ___CSS_LOADER_EXPORT___.push([module.id, "@charset \"UTF-8\";\n/*!\n * Bootstrap
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss":
-/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss ***!
-  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss":
+/*!*******************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss ***!
+  \*******************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ ((module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../../../../../node_modules/css-loader/dist/runtime/api.js */ "./node_modules/css-loader/dist/runtime/api.js");
+/* harmony import */ var _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0__);
+// Imports
+
+var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
+// Module
+___CSS_LOADER_EXPORT___.push([module.id, ".employeeContainer {\n  display: grid;\n  grid-auto-flow: column;\n  grid-template-columns: 11rem 4rem;\n  align-items: center;\n}\n.employeeContainer .employeeName {\n  align-content: center;\n  font-weight: 500;\n  font-size: 1rem;\n  line-height: 1;\n  margin: 0 0.8rem 0 0;\n}\n.employeeContainer .employeeQualification {\n  font-size: 0.75rem;\n  font-weight: 100;\n  line-height: 1;\n  margin: 0.1rem 0 0.8rem 0;\n}", ""]);
+// Exports
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
+
+
+/***/ }),
+
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss":
+/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss ***!
+  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -117208,10 +117264,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss":
-/*!***********************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss ***!
-  \***********************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss":
+/*!***************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss ***!
+  \***************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -117221,7 +117277,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_DutiesRow_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./DutiesRow.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/DutiesRow.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeRow_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./EmployeeRow.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss");
 
             
 
@@ -117230,18 +117286,18 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_DutiesRow_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeRow_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_DutiesRow_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeRow_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss":
-/*!*******************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss ***!
-  \*******************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss ***!
+  \*********************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -117251,7 +117307,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_DutyCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./DutyCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/dutyCell/DutyCell.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_DutyCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./DutyCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss");
 
             
 
@@ -117268,10 +117324,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss":
-/*!*********************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss ***!
-  \*********************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss ***!
+  \*****************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -117281,7 +117337,37 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingTimeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/dutiesRow/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./EmployeeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss");
+
+            
+
+var options = {};
+
+options.insert = "head";
+options.singleton = false;
+
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+
+/***/ }),
+
+/***/ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss ***!
+  \***********************************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
+/* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingTimeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
 
             
 

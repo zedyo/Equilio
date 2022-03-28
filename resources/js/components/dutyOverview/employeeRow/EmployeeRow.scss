@@ -1,0 +1,6 @@
+.employeeRow {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-columns: 16rem repeat(31, 2.2rem);
+    align-items: center;
+}
