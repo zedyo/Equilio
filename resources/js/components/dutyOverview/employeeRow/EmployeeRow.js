@@ -16,6 +16,7 @@ function EmployeeRow(props) {
             month={props.dateSelectorData.month}
             year={props.dateSelectorData.year}
             allDuties={props.allDuties}
+            employee_id={props.employeeData.id}
           />
         ))}
         <WorkingTimeCell allDuties={props.allDuties} />
