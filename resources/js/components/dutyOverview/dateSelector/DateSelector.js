@@ -1,101 +1,79 @@
-import React, { useState, Fragment } from "react";
-import { Button, Form, Col, Row, InputGroup } from "react-bootstrap";
-import moment from "moment";
-import "./DateSelector.scss";
-import { IoChevronBack, IoChevronForward } from "react-icons/io5";
+import React, { useState, Fragment } from 'react'
+import { Button, Form, Col, Row, InputGroup } from 'react-bootstrap'
+import moment from 'moment'
+import './DateSelector.scss'
+import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 function DateSelector(props) {
-    const [dateSlectorInput, setDateSelectorInput] = useState({
-        month: `${moment().format("M")}`,
-        year: `${moment().format("YYYY")}`,
-    });
+  const [dateSlectorInput, setDateSelectorInput] = useState({
+    month: `${moment().format('M')}`,
+    year: `${moment().format('YYYY')}`,
+  })
 
-    console.log(moment(`${props.dateSelectorData.month}`, "M").format("MMM"));
-    return (
-        <Fragment>
-            <Form>
-                <Row>
-                    <Col xs="auto">
-                        <InputGroup className="mb-3">
-                            <Button
-                                variant="outline-secondary"
-                                size="text"
-                                id="prev-month-button"
-                                onClick={(e) => {
-                                    props.dateSelectorData.month === "1"
-                                        ? setDateSelectorInput({
-                                              month: "12",
-                                              year: (
-                                                  Number(
-                                                      props.dateSelectorData
-                                                          .year
-                                                  ) - 1
-                                              ).toString(),
-                                          })
-                                        : setDateSelectorInput({
-                                              ...dateSlectorInput,
-                                              month: (
-                                                  Number(
-                                                      props.dateSelectorData
-                                                          .month
-                                                  ) - 1
-                                              ).toString(),
-                                          });
-
-                                    props.setDateSelector({
-                                        ...dateSlectorInput,
-                                    });
-                                }}
-                            >
-                                <IoChevronBack />
-                            </Button>
-                            <Form.Control
-                                className="dateView"
-                                placeholder={`${moment(
-                                    `${props.dateSelectorData.month}`,
-                                    "M"
-                                ).format("MMMM")} ${
-                                    props.dateSelectorData.year
-                                }`}
-                                disabled
-                                size="text"
-                            />
-                            <Button
-                                variant="outline-secondary"
-                                size="text"
-                                id="next-month-button"
-                                onClick={(e) => {
-                                    props.dateSelectorData.month === "12"
-                                        ? setDateSelectorInput({
-                                              month: "1",
-                                              year: (
-                                                  Number(
-                                                      props.dateSelectorData
-                                                          .year
-                                                  ) + 1
-                                              ).toString(),
-                                          })
-                                        : setDateSelectorInput({
-                                              ...dateSlectorInput,
-                                              month: (
-                                                  Number(
-                                                      props.dateSelectorData
-                                                          .month
-                                                  ) + 1
-                                              ).toString(),
-                                          });
-
-                                    props.setDateSelector({
-                                        ...dateSlectorInput,
-                                    });
-                                }}
-                            >
-                                <IoChevronForward />
-                            </Button>
-                        </InputGroup>
-                    </Col>
-                </Row>
-                {/* <Row>
+  console.log(moment(`${props.dateSelectorData.month}`, 'M').format('MMM'))
+  return (
+    <Fragment>
+      <Form>
+        <Row>
+          <Col xs="auto">
+            <InputGroup className="mb-3">
+              <Button
+                variant="outline-secondary"
+                size="text"
+                id="prev-month-button"
+                onClick={(e) => {
+                  props.dateSelectorData.month === '1'
+                    ? props.setDateSelector({
+                        month: '12',
+                        year: (
+                          Number(props.dateSelectorData.year) - 1
+                        ).toString(),
+                      })
+                    : props.setDateSelector({
+                        ...dateSlectorInput,
+                        month: (
+                          Number(props.dateSelectorData.month) - 1
+                        ).toString(),
+                      })
+                }}
+              >
+                <IoChevronBack />
+              </Button>
+              <Form.Control
+                className="dateView"
+                placeholder={`${moment(
+                  `${props.dateSelectorData.month}`,
+                  'M'
+                ).format('MMMM')} ${props.dateSelectorData.year}`}
+                disabled
+                size="text"
+              />
+              <Button
+                variant="outline-secondary"
+                size="text"
+                id="next-month-button"
+                onClick={(e) => {
+                  props.dateSelectorData.month === '12'
+                    ? props.setDateSelector({
+                        month: '1',
+                        year: (
+                          Number(props.dateSelectorData.year) + 1
+                        ).toString(),
+                      })
+                    : props.setDateSelector({
+                        ...dateSlectorInput,
+                        month: (
+                          Number(props.dateSelectorData.month) + 1
+                        ).toString(),
+                      })
+                }}
+              >
+                <IoChevronForward />
+              </Button>
+            </InputGroup>
+          </Col>
+        </Row>
+        {/* <Row>
                     <Col xs={2}>
                         <InputGroup className="mb-2">
                             <InputGroup.Text>Monat</InputGroup.Text>
@@ -140,9 +118,9 @@ function DateSelector(props) {
                         </Button>
                     </Col>
                 </Row> */}
-            </Form>
-        </Fragment>
-    );
+      </Form>
+    </Fragment>
+  )
 }
 
-export default DateSelector;
+export default DateSelector
