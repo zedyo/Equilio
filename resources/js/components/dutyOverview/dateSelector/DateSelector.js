@@ -1,18 +1,12 @@
-import React, { useState, Fragment } from 'react'
+import React from 'react'
 import { Button, Form, Col, Row, InputGroup } from 'react-bootstrap'
 import moment from 'moment'
 import './DateSelector.scss'
 import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
 
 function DateSelector(props) {
-  const [dateSlectorInput, setDateSelectorInput] = useState({
-    month: `${moment().format('M')}`,
-    year: `${moment().format('YYYY')}`,
-  })
-
-  console.log(moment(`${props.dateSelectorData.month}`, 'M').format('MMM'))
   return (
-    <Fragment>
+    <>
       <Form>
         <Row>
           <Col xs="auto">
@@ -30,7 +24,7 @@ function DateSelector(props) {
                         ).toString(),
                       })
                     : props.setDateSelector({
-                        ...dateSlectorInput,
+                        ...props.dateSelectorData,
                         month: (
                           Number(props.dateSelectorData.month) - 1
                         ).toString(),
@@ -61,7 +55,7 @@ function DateSelector(props) {
                         ).toString(),
                       })
                     : props.setDateSelector({
-                        ...dateSlectorInput,
+                        ...props.dateSelectorData,
                         month: (
                           Number(props.dateSelectorData.month) + 1
                         ).toString(),
@@ -119,7 +113,7 @@ function DateSelector(props) {
                     </Col>
                 </Row> */}
       </Form>
-    </Fragment>
+    </>
   )
 }
 
