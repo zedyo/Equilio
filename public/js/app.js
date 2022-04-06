@@ -8440,15 +8440,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _util_daysToArray__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../util/daysToArray */ "./resources/js/util/daysToArray.js");
-/* harmony import */ var _day_Day__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./day/Day */ "./resources/js/components/dutyOverview/daysRow/day/Day.js");
-/* harmony import */ var _weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./weekDay/WeekDay */ "./resources/js/components/dutyOverview/daysRow/weekDay/WeekDay.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
-/* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_4__);
-/* harmony import */ var _daysRow_scss__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./daysRow.scss */ "./resources/js/components/dutyOverview/daysRow/daysRow.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
+/* harmony import */ var _day_Day__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./day/Day */ "./resources/js/components/dutyOverview/daysRow/day/Day.js");
+/* harmony import */ var _weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./weekDay/WeekDay */ "./resources/js/components/dutyOverview/daysRow/weekDay/WeekDay.js");
+/* harmony import */ var _daysRow_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./daysRow.scss */ "./resources/js/components/dutyOverview/daysRow/daysRow.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
 
@@ -8458,20 +8453,20 @@ __webpack_require__.r(__webpack_exports__);
 
 function Days(props) {
   var days = props.days;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "daysRow",
       children: days.map(function (day) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_day_Day__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_day_Day__WEBPACK_IMPORTED_MODULE_1__["default"], {
           day: day,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
         }, 'wd2' + day);
       })
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "daysRow",
       children: days.map(function (day) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)(_weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_3__["default"], {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_2__["default"], {
           day: day,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
@@ -8514,10 +8509,10 @@ __webpack_require__.r(__webpack_exports__);
 function Day(props) {
   var _holidays$find;
 
-  var day = Intl.NumberFormat("de", {
+  var day = Intl.NumberFormat('de', {
     minimumIntegerDigits: 2
   }).format(props.day);
-  var month = Intl.NumberFormat("de", {
+  var month = Intl.NumberFormat('de', {
     minimumIntegerDigits: 2
   }).format(props.month);
   return ((_holidays$find = _utils_holidays__WEBPACK_IMPORTED_MODULE_3__.holidays.find(function (holiday) {
@@ -8530,11 +8525,11 @@ function Day(props) {
       }).holiday
     }),
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      className: "holiday",
+      className: 'holiday',
       children: props.day
     })
   }) : /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-    className: moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format("dd") == "So" || moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format("dd") == "Sa" ? "weekendDay" : "day",
+    className: moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('dd') == 'So' || moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('dd') == 'Sa' ? 'weekendDay' : 'day',
     children: props.day
   });
 }
@@ -8555,107 +8550,107 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "holidays": () => (/* binding */ holidays)
 /* harmony export */ });
 var holidays = [{
-  date: "2022-01-01",
+  date: '2022-01-01',
   day: 1,
   month: 1,
   year: 2022,
-  holiday: "Neujahr"
+  holiday: 'Neujahr'
 }, {
-  date: "2022-01-06",
+  date: '2022-01-06',
   day: 6,
   month: 1,
   year: 2022,
-  holiday: "Hl. Drei Könige"
+  holiday: 'Hl. Drei Könige'
 }, {
-  date: "2022-04-15",
+  date: '2022-04-15',
   day: 15,
   month: 4,
   year: 2022,
-  holiday: "Karfreitag"
+  holiday: 'Karfreitag'
 }, {
-  date: "2022-04-17",
+  date: '2022-04-17',
   day: 17,
   month: 4,
   year: 2022,
-  holiday: "Ostersonntag"
+  holiday: 'Ostersonntag'
 }, {
-  date: "2022-04-18",
+  date: '2022-04-18',
   day: 18,
   month: 4,
   year: 2022,
-  holiday: "Ostermontag"
+  holiday: 'Ostermontag'
 }, {
-  date: "2022-05-01",
+  date: '2022-05-01',
   day: 1,
   month: 5,
   year: 2022,
-  holiday: "Tag der Arbeit"
+  holiday: 'Tag der Arbeit'
 }, {
-  date: "2022-05-26",
+  date: '2022-05-26',
   day: 26,
   month: 5,
   year: 2022,
-  holiday: "Christi Himmelfahrt"
+  holiday: 'Christi Himmelfahrt'
 }, {
-  date: "2022-06-05",
+  date: '2022-06-05',
   day: 5,
   month: 6,
   year: 2022,
-  holiday: "Pfingstsonntag"
+  holiday: 'Pfingstsonntag'
 }, {
-  date: "2022-06-06",
+  date: '2022-06-06',
   day: 6,
   month: 6,
   year: 2022,
-  holiday: "Pfingstmontag"
+  holiday: 'Pfingstmontag'
 }, {
-  date: "2022-06-16",
+  date: '2022-06-16',
   day: 16,
   month: 6,
   year: 2022,
-  holiday: "Fronleichnam"
+  holiday: 'Fronleichnam'
 }, {
-  date: "2022-08-15",
+  date: '2022-08-15',
   day: 15,
   month: 8,
   year: 2022,
-  holiday: "Mariä Himmelfahrt"
+  holiday: 'Mariä Himmelfahrt'
 }, {
-  date: "2022-10-03",
+  date: '2022-10-03',
   day: 3,
   month: 10,
   year: 2022,
-  holiday: "Tag der Deutschen Einheit"
+  holiday: 'Tag der Deutschen Einheit'
 }, {
-  date: "2022-11-01",
+  date: '2022-11-01',
   day: 1,
   month: 11,
   year: 2022,
-  holiday: "Allerheiligen"
+  holiday: 'Allerheiligen'
 }, {
-  date: "2022-12-24",
+  date: '2022-12-24',
   day: 24,
   month: 12,
   year: 2022,
-  holiday: "Heiligabend"
+  holiday: 'Heiligabend'
 }, {
-  date: "2022-12-25",
+  date: '2022-12-25',
   day: 25,
   month: 12,
   year: 2022,
-  holiday: "1. Weihnachtstag"
+  holiday: '1. Weihnachtstag'
 }, {
-  date: "2022-12-26",
+  date: '2022-12-26',
   day: 26,
   month: 12,
   year: 2022,
-  holiday: "2. Weihnachtstag"
+  holiday: '2. Weihnachtstag'
 }, {
-  date: "2022-12-31",
+  date: '2022-12-31',
   day: 31,
   month: 12,
   year: 2022,
-  holiday: "Silverster"
+  holiday: 'Silverster'
 }];
 
 /***/ }),
@@ -8687,10 +8682,10 @@ __webpack_require__.r(__webpack_exports__);
 function WeekDay(props) {
   var _holidays$find;
 
-  var day = Intl.NumberFormat("de", {
+  var day = Intl.NumberFormat('de', {
     minimumIntegerDigits: 2
   }).format(props.day);
-  var month = Intl.NumberFormat("de", {
+  var month = Intl.NumberFormat('de', {
     minimumIntegerDigits: 2
   }).format(props.month); // return (
   //     holidays.find((holiday) => holiday.date === moment(`${props.year}-${month}-${day}`).format('YYYY-MM-DD'))?.holiday.length > 0 ?
@@ -8716,8 +8711,8 @@ function WeekDay(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
     className: ((_holidays$find = _utils_holidays__WEBPACK_IMPORTED_MODULE_3__.holidays.find(function (holiday) {
       return holiday.date === moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('YYYY-MM-DD');
-    })) === null || _holidays$find === void 0 ? void 0 : _holidays$find.holiday.length) > 0 ? "holidayWeekday" : moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format("dd") == "So" || moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format("dd") == "Sa" ? "weekendWeekday" : "weekday",
-    children: moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format("dd")
+    })) === null || _holidays$find === void 0 ? void 0 : _holidays$find.holiday.length) > 0 ? 'holidayWeekday' : moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('dd') == 'So' || moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('dd') == 'Sa' ? 'weekendWeekday' : 'weekday',
+    children: moment__WEBPACK_IMPORTED_MODULE_1___default()("".concat(props.year, "-").concat(month, "-").concat(day)).format('dd')
   });
 }
 
@@ -8810,7 +8805,6 @@ function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Sy
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
- // import "../../../../../sass/duty.scss";
 
 
 
@@ -9501,7 +9495,7 @@ function Employees() {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("http://127.0.0.1:8000/api/employees");
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/employees');
 
               case 2:
                 _yield$axios$get = _context.sent;
@@ -9600,7 +9594,7 @@ function Employees() {
               href: "/employee/create",
               variant: "outline-success",
               children: "Erstellen"
-            }), " "]
+            }), ' ']
           })]
         })]
       })
@@ -9744,7 +9738,7 @@ function CreateEmployee() {
               });
 
             case 3:
-              history.push("/employees");
+              history.push('/employees');
               _context2.next = 9;
               break;
 
@@ -9841,7 +9835,7 @@ function CreateEmployee() {
             onClick: submitFormHandler,
             variant: "outline-success",
             children: "Speichern"
-          }), " "]
+          }), ' ']
         })]
       })
     })
@@ -9888,14 +9882,14 @@ function Employee(props) {
           variant: "outline-secondary",
           size: "sm",
           children: "Bearbeiten"
-        }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_2__["default"], {
           onClick: function onClick() {
             return props.deleteHandler(props.employeeData.id);
           },
           variant: "outline-danger",
           size: "sm",
           children: "L\xF6schen"
-        }), " "]
+        }), ' ']
       })]
     })
   });
@@ -10070,7 +10064,7 @@ function UpdateEmployee() {
               });
 
             case 3:
-              history.push("/employees");
+              history.push('/employees');
               _context3.next = 9;
               break;
 
@@ -10187,7 +10181,7 @@ function UpdateEmployee() {
             onClick: submitFormHandler,
             variant: "outline-success",
             children: "Speichern"
-          }), " "]
+          }), ' ']
         })]
       })
     })
@@ -10265,7 +10259,7 @@ function Qualifications() {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("http://127.0.0.1:8000/api/qualifications", {});
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/qualifications', {});
 
               case 3:
                 _yield$axios$get = _context.sent;
@@ -10346,7 +10340,7 @@ function Qualifications() {
               className: "card-body",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
                 style: {
-                  margin: "0.3rem"
+                  margin: '0.3rem'
                 },
                 fluid: "sm",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -10456,7 +10450,7 @@ function CreateQualification() {
               });
 
             case 3:
-              history.push("/qualifications");
+              history.push('/qualifications');
               _context.next = 9;
               break;
 
@@ -10506,7 +10500,7 @@ function CreateQualification() {
                 onClick: submitFormHandler,
                 variant: "outline-success",
                 children: "Speichern"
-              }), " "]
+              }), ' ']
             })]
           })
         })
@@ -10547,8 +10541,8 @@ function Qualification(props) {
       md: "auto",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"], {
         style: {
-          width: "18rem",
-          margin: "0.3rem"
+          width: '18rem',
+          margin: '0.3rem'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Title, {
@@ -10561,14 +10555,14 @@ function Qualification(props) {
             variant: "outline-secondary",
             size: "sm",
             children: "Bearbeiten"
-          }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
             onClick: function onClick() {
               return props.deleteHandler(props.qualificationData.id);
             },
             variant: "outline-danger",
             size: "sm",
             children: "L\xF6schen"
-          }), " "]
+          }), ' ']
         })
       })
     })
@@ -10702,7 +10696,7 @@ function UpdateQualification() {
               });
 
             case 3:
-              history.push("/qualifications");
+              history.push('/qualifications');
               _context2.next = 9;
               break;
 
@@ -10757,7 +10751,7 @@ function UpdateQualification() {
                 onClick: submitFormHandler,
                 variant: "outline-success",
                 children: "Speichern"
-              }), " "]
+              }), ' ']
             })]
           })
         })
@@ -10836,7 +10830,7 @@ function ShiftTypes() {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("http://127.0.0.1:8000/api/shift_types", {});
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/shift_types', {});
 
               case 2:
                 _yield$axios$get = _context.sent;
@@ -10910,7 +10904,7 @@ function ShiftTypes() {
               className: "card-body",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
                 style: {
-                  margin: "0.3rem"
+                  margin: '0.3rem'
                 },
                 fluid: "sm",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
@@ -11020,7 +11014,7 @@ function CreateShiftType() {
               });
 
             case 3:
-              history.push("/shift_types");
+              history.push('/shift_types');
               _context.next = 9;
               break;
 
@@ -11111,8 +11105,8 @@ function ShiftType(props) {
       md: "auto",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"], {
         style: {
-          width: "18rem",
-          margin: "0.3rem"
+          width: '18rem',
+          margin: '0.3rem'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Title, {
@@ -11125,14 +11119,14 @@ function ShiftType(props) {
             variant: "outline-secondary",
             size: "sm",
             children: "Bearbeiten"
-          }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
             onClick: function onClick() {
               return props.deleteHandler(props.shiftTypeData.id);
             },
             variant: "outline-danger",
             size: "sm",
             children: "L\xF6schen"
-          }), " "]
+          }), ' ']
         })
       })
     })
@@ -11266,7 +11260,7 @@ function UpdateShiftType() {
               });
 
             case 3:
-              history.push("/shift_types");
+              history.push('/shift_types');
               _context2.next = 9;
               break;
 
@@ -11321,7 +11315,7 @@ function UpdateShiftType() {
                 onClick: submitFormHandler,
                 variant: "outline-success",
                 children: "Speichern"
-              }), " "]
+              }), ' ']
             })]
           })
         })
@@ -11401,7 +11395,7 @@ function Shifts() {
               case 0:
                 _context.prev = 0;
                 _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default().get("http://127.0.0.1:8000/api/shifts", {});
+                return axios__WEBPACK_IMPORTED_MODULE_2___default().get('http://127.0.0.1:8000/api/shifts', {});
 
               case 3:
                 _yield$axios$get = _context.sent;
@@ -11482,14 +11476,14 @@ function Shifts() {
               className: "card-body",
               children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
                 style: {
-                  margin: "0.3rem"
+                  margin: '0.3rem'
                 },
                 fluid: "sm",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
                   href: "/shift/create",
                   variant: "outline-success",
                   children: "Neue Schicht anlegen"
-                }), " "]
+                }), ' ']
               }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
                 fluid: "sm",
                 children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"], {
@@ -11640,7 +11634,7 @@ function CreateShift() {
               });
 
             case 3:
-              history.push("/shifts");
+              history.push('/shifts');
               _context2.next = 9;
               break;
 
@@ -11727,7 +11721,7 @@ function CreateShift() {
                 onClick: submitFormHandler,
                 variant: "outline-success",
                 children: "Speichern"
-              }), " "]
+              }), ' ']
             })]
           })
         })
@@ -11769,8 +11763,8 @@ function Shift(props) {
       md: "auto",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"], {
         style: {
-          width: "18rem",
-          margin: "0.3rem"
+          width: '18rem',
+          margin: '0.3rem'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Title, {
@@ -11792,14 +11786,14 @@ function Shift(props) {
             variant: "outline-secondary",
             size: "sm",
             children: "Bearbeiten"
-          }), " ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
+          }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_1__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
             onClick: function onClick() {
               return props.deleteHandler(props.shiftsData.id);
             },
             variant: "outline-danger",
             size: "sm",
             children: "L\xF6schen"
-          }), " "]
+          }), ' ']
         })
       })
     })
@@ -11979,7 +11973,7 @@ function UpdateShift() {
               });
 
             case 3:
-              history.push("/shifts");
+              history.push('/shifts');
               _context3.next = 9;
               break;
 
@@ -12071,7 +12065,7 @@ function UpdateShift() {
                 onClick: submitFormHandler,
                 variant: "outline-success",
                 children: "Speichern"
-              }), " "]
+              }), ' ']
             })]
           })
         })

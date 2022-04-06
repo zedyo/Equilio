@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-// import "../../../../../sass/duty.scss";
 import './DutyCell.scss'
 
 function InputDuty(props) {

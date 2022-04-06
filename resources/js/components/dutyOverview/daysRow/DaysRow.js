@@ -1,8 +1,6 @@
-import React, { useState, Fragment } from 'react'
-import { daysToArray } from '../../../util/daysToArray'
+import React, { Fragment } from 'react'
 import Day from './day/Day'
 import WeekDay from './weekDay/WeekDay'
-import moment from 'moment'
 import './daysRow.scss'
 
 function Days(props) {
