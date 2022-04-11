@@ -14,7 +14,6 @@ function Duties() {
 
   const [employeeData, setEmployeeData] = useState(null)
   const [allDuties, setAllDuties] = useState([])
-  console.log(employeeData)
   const [dateSelectorData, setDateSelector] = useState({
     month: `${moment().format('M')}`,
     year: `${moment().format('YYYY')}`,
@@ -61,7 +60,12 @@ function Duties() {
           {employeeData &&
             employeeData.map((employeeObject) => (
               <EmployeeRow
-                key={Math.random()}
+                key={
+                  'EmployeeRow:' +
+                  employeeObject.id +
+                  dateSelectorData.year +
+                  dateSelectorData.month
+                }
                 employeeData={employeeObject}
                 dateSelectorData={dateSelectorData}
                 days={days}

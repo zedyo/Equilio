@@ -11,7 +11,13 @@ function EmployeeRow(props) {
         <EmployeeCell employeeData={props.employeeData} />
         {props.days.map((day) => (
           <DutyCell
-            key={day}
+            key={
+              'DutyCell:' +
+              props.employeeData.id +
+              props.dateSelectorData.year +
+              props.dateSelectorData.month +
+              day
+            }
             day={day}
             month={props.dateSelectorData.month}
             year={props.dateSelectorData.year}

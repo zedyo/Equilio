@@ -12,7 +12,12 @@ function Days(props) {
         {days.map((day) => {
           return (
             <Day
-              key={'wd2' + day}
+              key={
+                'Day: ' +
+                props.dateSelectorData.year +
+                props.dateSelectorData.month +
+                day
+              }
               day={day}
               month={props.dateSelectorData.month}
               year={props.dateSelectorData.year}
@@ -25,7 +30,12 @@ function Days(props) {
         {days.map((day) => {
           return (
             <WeekDay
-              key={'wd' + day}
+              key={
+                'Weekday: ' +
+                props.dateSelectorData.year +
+                props.dateSelectorData.month +
+                day
+              }
               day={day}
               month={props.dateSelectorData.month}
               year={props.dateSelectorData.year}

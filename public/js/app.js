@@ -8210,8 +8210,6 @@ function Duties() {
       allDuties = _useState4[0],
       setAllDuties = _useState4[1];
 
-  console.log(employeeData);
-
   var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     month: "".concat(moment__WEBPACK_IMPORTED_MODULE_7___default()().format('M')),
     year: "".concat(moment__WEBPACK_IMPORTED_MODULE_7___default()().format('YYYY'))
@@ -8303,7 +8301,7 @@ function Duties() {
             dateSelectorData: dateSelectorData,
             days: days,
             allDuties: allDuties
-          }, Math.random());
+          }, 'EmployeeRow:' + employeeObject.id + dateSelectorData.year + dateSelectorData.month);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         className: "separator"
@@ -8441,7 +8439,7 @@ function Days(props) {
           day: day,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
-        }, 'wd2' + day);
+        }, 'Day: ' + props.dateSelectorData.year + props.dateSelectorData.month + day);
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "daysRow",
@@ -8450,7 +8448,7 @@ function Days(props) {
           day: day,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
-        }, 'wd' + day);
+        }, 'Weekday: ' + props.dateSelectorData.year + props.dateSelectorData.month + day);
       })
     })]
   });
@@ -9453,7 +9451,7 @@ function EmployeeRow(props) {
           year: props.dateSelectorData.year,
           allDuties: props.allDuties,
           employee_id: props.employeeData.id
-        }, day);
+        }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
         allDuties: props.allDuties
       })]
