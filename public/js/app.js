@@ -8218,6 +8218,10 @@ function Duties() {
       dateSelectorData = _useState6[0],
       setDateSelector = _useState6[1];
 
+  console.log('DutyOverview dateSelectorData:');
+  console.log(dateSelectorData); // console.log('DutyOverview allDuties:')
+  // console.log(allDuties)
+
   var days = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_8__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     function getData() {
@@ -9439,6 +9443,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function EmployeeRow(props) {
+  // console.log('EmployeeRow allduties:')
+  // console.log(props.allDuties)
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "employeeRow",
@@ -9504,7 +9510,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function InputDuty(props) {
   var allDuties = props.allDuties;
 
-  if (allDuties) {
+  if (allDuties.length > 0) {
     var sendDuty = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
         var _yield$axios$patch, data, hex;
@@ -9531,7 +9537,7 @@ function InputDuty(props) {
               case 4:
                 _yield$axios$patch = _context.sent;
                 data = _yield$axios$patch.data;
-                hex = data.new_duty.shift.color_hex; // console.log(data.new_duty.shift.color_hex, "undefined");
+                hex = data.new_duty.shift.color_hex;
 
                 if (data.length !== 0 || hex) {
                   // console.log("UPDATE DONE!");
@@ -9545,8 +9551,6 @@ function InputDuty(props) {
               case 10:
                 _context.prev = 10;
                 _context.t0 = _context["catch"](1);
-                //TODO: Nur bei richtigem Statuscode 404 ausführen nicht nur bei error
-                // console.loge(data.exception);
                 setCellStyle('error');
                 setInputDuty('');
 
@@ -9566,13 +9570,14 @@ function InputDuty(props) {
     var dutie = allDuties.find(function (d) {
       return d.day === props.day && d.employee_id === props.employee_id;
     });
-    var dutyVal = dutie ? dutie.shift.abrv : '';
-    var dutyColor = dutie ? dutie.shift.color_hex : 'black';
+    var dutyVal = dutie ? dutie.shift.abrv : '-';
 
     var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(dutyVal),
         _useState2 = _slicedToArray(_useState, 2),
-        _InputDuty = _useState2[0],
+        inputDutyValue = _useState2[0],
         setInputDuty = _useState2[1];
+
+    var dutyColor = dutie ? dutie.shift.color_hex : 'black';
 
     var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(dutyColor),
         _useState4 = _slicedToArray(_useState3, 2),
@@ -9582,25 +9587,21 @@ function InputDuty(props) {
     var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('inputDutyForm'),
         _useState6 = _slicedToArray(_useState5, 2),
         CellStyle = _useState6[0],
-        setCellStyle = _useState6[1]; // let color = dutie ? dutie.shift.color_hex : DutyColor;
+        setCellStyle = _useState6[1];
 
-
-    var color = DutyColor; // TODO: Einbauen Fehler wenn Duty nicht vorhanden ist.
-    // TODO: Einbauen Farbe verändert sich nicht wenn Überschrieben wird
-    // TODO: WEnn per Tab ein eingetragenes Feld verlassen wird, wird das Feld geleert (zumindest sichtbar)
-
+    var color = DutyColor;
     var inputColor = {
       color: color
     };
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
       style: inputColor,
       className: CellStyle,
-      value: _InputDuty,
+      value: inputDutyValue,
       onChange: function onChange(e) {
         return setInputDuty(e.target.value);
       },
       onBlur: function onBlur(e) {
-        return sendDuty(_InputDuty, props.day, props.month, props.year, props.employee_id);
+        return sendDuty(inputDutyValue, props.day, props.month, props.year, props.employee_id);
       }
     });
   }

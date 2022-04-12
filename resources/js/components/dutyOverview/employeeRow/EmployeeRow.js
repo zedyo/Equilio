@@ -5,6 +5,9 @@ import './EmployeeRow.scss'
 import EmployeeCell from './employeeCell/EmployeeCell'
 
 function EmployeeRow(props) {
+  // console.log('EmployeeRow allduties:')
+  // console.log(props.allDuties)
+
   return (
     <>
       <div className="employeeRow">

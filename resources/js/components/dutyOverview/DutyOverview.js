@@ -18,6 +18,10 @@ function Duties() {
     month: `${moment().format('M')}`,
     year: `${moment().format('YYYY')}`,
   })
+  console.log('DutyOverview dateSelectorData:')
+  console.log(dateSelectorData)
+  // console.log('DutyOverview allDuties:')
+  // console.log(allDuties)
 
   const days = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
