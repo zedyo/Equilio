@@ -4,21 +4,21 @@ import WeekDay from './weekDay/WeekDay'
 import './daysRow.scss'
 
 function Days(props) {
-  const days = props.days
+  const monthlyDays = props.monthlyDays
 
   return (
     <Fragment>
       <div className="daysRow">
-        {days.map((day) => {
+        {monthlyDays.map((monthlyDay) => {
           return (
             <Day
               key={
                 'Day: ' +
                 props.dateSelectorData.year +
                 props.dateSelectorData.month +
-                day
+                monthlyDay
               }
-              day={day}
+              day={monthlyDay}
               month={props.dateSelectorData.month}
               year={props.dateSelectorData.year}
             />
@@ -27,16 +27,16 @@ function Days(props) {
       </div>
 
       <div className="daysRow">
-        {days.map((day) => {
+        {monthlyDays.map((monthlyDay) => {
           return (
             <WeekDay
               key={
                 'Weekday: ' +
                 props.dateSelectorData.year +
                 props.dateSelectorData.month +
-                day
+                monthlyDay
               }
-              day={day}
+              day={monthlyDay}
               month={props.dateSelectorData.month}
               year={props.dateSelectorData.year}
             />

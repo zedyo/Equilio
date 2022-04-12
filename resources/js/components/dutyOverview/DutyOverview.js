@@ -20,7 +20,7 @@ function Duties() {
   const [employeeData, setEmployeeData] = useState(null)
   const [allDuties, setAllDuties] = useState([])
 
-  const days = daysToArray(dateSelectorData.year, dateSelectorData.month)
+  const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
   useEffect(() => {
     async function getData() {
@@ -53,33 +53,40 @@ function Duties() {
           </div>
 
           <div>
-            <DaysRow days={days} dateSelectorData={dateSelectorData} />
+            <DaysRow
+              monthlyDays={monthlyDays}
+              dateSelectorData={dateSelectorData}
+            />
           </div>
         </div>
 
         <div>
           {employeeData &&
-            employeeData.map((employeeObject) => (
+            employeeData.map((employee) => (
               <EmployeeRow
                 key={
                   'EmployeeRow:' +
-                  employeeObject.id +
+                  employee.id +
                   dateSelectorData.year +
                   dateSelectorData.month
                 }
-                employeeData={employeeObject}
+                employeeData={employee}
                 dateSelectorData={dateSelectorData}
-                days={days}
+                days={monthlyDays}
                 employeeDuties={allDuties.filter(
-                  (d) => d.employee_id === employeeObject.id
+                  (d) => d.employee_id === employee.id
                 )}
               />
             ))}
         </div>
         <div className="separator" />
         <ShiftTypeStatisticsContainer
-          key={'d'}
-          days={days}
+          key={
+            'ShiftTypeStatisticsContainer: ' +
+            dateSelectorData.year +
+            dateSelectorData.month
+          }
+          days={monthlyDays}
           dateSelectorData={dateSelectorData}
           allDuties={allDuties}
         />

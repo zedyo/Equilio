@@ -8218,7 +8218,7 @@ function Duties() {
       allDuties = _useState6[0],
       setAllDuties = _useState6[1];
 
-  var days = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_8__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
+  var monthlyDays = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_8__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     function getData() {
       return _getData.apply(this, arguments);
@@ -8290,28 +8290,28 @@ function Duties() {
           }, "datechecker-render")
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_4__["default"], {
-            days: days,
+            monthlyDays: monthlyDays,
             dateSelectorData: dateSelectorData
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-        children: employeeData && employeeData.map(function (employeeObject) {
+        children: employeeData && employeeData.map(function (employee) {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_3__["default"], {
-            employeeData: employeeObject,
+            employeeData: employee,
             dateSelectorData: dateSelectorData,
-            days: days,
+            days: monthlyDays,
             employeeDuties: allDuties.filter(function (d) {
-              return d.employee_id === employeeObject.id;
+              return d.employee_id === employee.id;
             })
-          }, 'EmployeeRow:' + employeeObject.id + dateSelectorData.year + dateSelectorData.month);
+          }, 'EmployeeRow:' + employee.id + dateSelectorData.year + dateSelectorData.month);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         className: "separator"
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_6__["default"], {
-        days: days,
+        days: monthlyDays,
         dateSelectorData: dateSelectorData,
         allDuties: allDuties
-      }, 'd')]
+      }, 'ShiftTypeStatisticsContainer: ' + dateSelectorData.year + dateSelectorData.month)]
     }, "container")
   });
 }
@@ -8432,25 +8432,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function Days(props) {
-  var days = props.days;
+  var monthlyDays = props.monthlyDays;
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "daysRow",
-      children: days.map(function (day) {
+      children: monthlyDays.map(function (monthlyDay) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_day_Day__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          day: day,
+          day: monthlyDay,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
-        }, 'Day: ' + props.dateSelectorData.year + props.dateSelectorData.month + day);
+        }, 'Day: ' + props.dateSelectorData.year + props.dateSelectorData.month + monthlyDay);
       })
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "daysRow",
-      children: days.map(function (day) {
+      children: monthlyDays.map(function (monthlyDay) {
         return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_weekDay_WeekDay__WEBPACK_IMPORTED_MODULE_2__["default"], {
-          day: day,
+          day: monthlyDay,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year
-        }, 'Weekday: ' + props.dateSelectorData.year + props.dateSelectorData.month + day);
+        }, 'Weekday: ' + props.dateSelectorData.year + props.dateSelectorData.month + monthlyDay);
       })
     })]
   });
