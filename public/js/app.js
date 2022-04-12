@@ -8200,23 +8200,23 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function Duties() {
   moment__WEBPACK_IMPORTED_MODULE_7___default().locale('de');
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
-      _useState2 = _slicedToArray(_useState, 2),
-      employeeData = _useState2[0],
-      setEmployeeData = _useState2[1];
-
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
-      _useState4 = _slicedToArray(_useState3, 2),
-      allDuties = _useState4[0],
-      setAllDuties = _useState4[1];
-
-  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({
     month: "".concat(moment__WEBPACK_IMPORTED_MODULE_7___default()().format('M')),
     year: "".concat(moment__WEBPACK_IMPORTED_MODULE_7___default()().format('YYYY'))
   }),
+      _useState2 = _slicedToArray(_useState, 2),
+      dateSelectorData = _useState2[0],
+      setDateSelector = _useState2[1];
+
+  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(null),
+      _useState4 = _slicedToArray(_useState3, 2),
+      employeeData = _useState4[0],
+      setEmployeeData = _useState4[1];
+
+  var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
       _useState6 = _slicedToArray(_useState5, 2),
-      dateSelectorData = _useState6[0],
-      setDateSelector = _useState6[1];
+      allDuties = _useState6[0],
+      setAllDuties = _useState6[1];
 
   console.log('DutyOverview dateSelectorData:');
   console.log(dateSelectorData); // console.log('DutyOverview allDuties:')
@@ -9510,7 +9510,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function InputDuty(props) {
   var allDuties = props.allDuties;
 
-  if (allDuties.length > 0) {
+  if (allDuties) {
     var sendDuty = /*#__PURE__*/function () {
       var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
         var _yield$axios$patch, data, hex;
@@ -9567,22 +9567,28 @@ function InputDuty(props) {
       };
     }();
 
+    debugger;
     var dutie = allDuties.find(function (d) {
       return d.day === props.day && d.employee_id === props.employee_id;
     });
-    var dutyVal = dutie ? dutie.shift.abrv : '-';
 
-    var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(dutyVal),
+    var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('-'),
         _useState2 = _slicedToArray(_useState, 2),
         inputDutyValue = _useState2[0],
         setInputDuty = _useState2[1];
 
-    var dutyColor = dutie ? dutie.shift.color_hex : 'black';
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+      dutie !== undefined ? setInputDuty(dutie.shift.abrv) : setInputDuty('-');
+    }, [allDuties]);
 
-    var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)(dutyColor),
+    var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('black'),
         _useState4 = _slicedToArray(_useState3, 2),
         DutyColor = _useState4[0],
         setDutyColor = _useState4[1];
+
+    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+      dutie !== undefined ? setDutyColor(dutie.shift.color_hex) : setDutyColor('black');
+    }, [allDuties]);
 
     var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('inputDutyForm'),
         _useState6 = _slicedToArray(_useState5, 2),

@@ -1,19 +1,29 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './DutyCell.scss'
 
 function InputDuty(props) {
-  const allDuties = props.allDuties
-  if (allDuties.length > 0) {
-    const dutie = allDuties.find(
+  let allDuties = props.allDuties
+
+  if (allDuties) {
+    debugger
+    let dutie = allDuties.find(
       (d) => d.day === props.day && d.employee_id === props.employee_id
     )
-    let dutyVal = dutie ? dutie.shift.abrv : '-'
 
-    const [inputDutyValue, setInputDuty] = useState(dutyVal)
+    let [inputDutyValue, setInputDuty] = useState('-')
 
-    let dutyColor = dutie ? dutie.shift.color_hex : 'black'
+    useEffect(() => {
+      dutie !== undefined ? setInputDuty(dutie.shift.abrv) : setInputDuty('-')
+    }, [allDuties])
 
-    const [DutyColor, setDutyColor] = useState(dutyColor)
+    const [DutyColor, setDutyColor] = useState('black')
+
+    useEffect(() => {
+      dutie !== undefined
+        ? setDutyColor(dutie.shift.color_hex)
+        : setDutyColor('black')
+    }, [allDuties])
+
     const [CellStyle, setCellStyle] = useState('inputDutyForm')
 
     let color = DutyColor

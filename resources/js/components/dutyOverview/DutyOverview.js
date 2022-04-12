@@ -12,12 +12,14 @@ import './DutyOverview.scss'
 function Duties() {
   moment.locale('de')
 
-  const [employeeData, setEmployeeData] = useState(null)
-  const [allDuties, setAllDuties] = useState([])
   const [dateSelectorData, setDateSelector] = useState({
     month: `${moment().format('M')}`,
     year: `${moment().format('YYYY')}`,
   })
+
+  const [employeeData, setEmployeeData] = useState(null)
+  const [allDuties, setAllDuties] = useState([])
+
   console.log('DutyOverview dateSelectorData:')
   console.log(dateSelectorData)
   // console.log('DutyOverview allDuties:')
