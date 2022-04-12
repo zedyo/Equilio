@@ -20,11 +20,6 @@ function Duties() {
   const [employeeData, setEmployeeData] = useState(null)
   const [allDuties, setAllDuties] = useState([])
 
-  console.log('DutyOverview dateSelectorData:')
-  console.log(dateSelectorData)
-  // console.log('DutyOverview allDuties:')
-  // console.log(allDuties)
-
   const days = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
   useEffect(() => {
@@ -75,7 +70,9 @@ function Duties() {
                 employeeData={employeeObject}
                 dateSelectorData={dateSelectorData}
                 days={days}
-                allDuties={allDuties}
+                employeeDuties={allDuties.filter(
+                  (d) => d.employee_id === employeeObject.id
+                )}
               />
             ))}
         </div>

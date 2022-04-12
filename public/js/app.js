@@ -8218,10 +8218,6 @@ function Duties() {
       allDuties = _useState6[0],
       setAllDuties = _useState6[1];
 
-  console.log('DutyOverview dateSelectorData:');
-  console.log(dateSelectorData); // console.log('DutyOverview allDuties:')
-  // console.log(allDuties)
-
   var days = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_8__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
     function getData() {
@@ -8304,7 +8300,9 @@ function Duties() {
             employeeData: employeeObject,
             dateSelectorData: dateSelectorData,
             days: days,
-            allDuties: allDuties
+            employeeDuties: allDuties.filter(function (d) {
+              return d.employee_id === employeeObject.id;
+            })
           }, 'EmployeeRow:' + employeeObject.id + dateSelectorData.year + dateSelectorData.month);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
@@ -9443,8 +9441,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 function EmployeeRow(props) {
-  // console.log('EmployeeRow allduties:')
-  // console.log(props.allDuties)
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("div", {
       className: "employeeRow",
@@ -9455,11 +9451,13 @@ function EmployeeRow(props) {
           day: day,
           month: props.dateSelectorData.month,
           year: props.dateSelectorData.year,
-          allDuties: props.allDuties,
-          employee_id: props.employeeData.id
+          employeeDuty: props.employeeDuties.filter(function (d) {
+            return d.day === day;
+          }),
+          employeeId: props.employeeData.id
         }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
-        allDuties: props.allDuties
+        allDuties: props.employeeDuties
       })]
     })
   });
@@ -9508,11 +9506,11 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function InputDuty(props) {
-  var allDuties = props.allDuties;
+  var employeeDuty = props.employeeDuty;
 
-  if (allDuties) {
+  if (employeeDuty) {
     var sendDuty = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employeeId) {
         var _yield$axios$patch, data, hex;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -9531,7 +9529,7 @@ function InputDuty(props) {
                   day: day,
                   month: month,
                   year: year,
-                  employee_id: employee_id
+                  employeeId: employeeId
                 });
 
               case 4:
@@ -9567,9 +9565,8 @@ function InputDuty(props) {
       };
     }();
 
-    debugger;
-    var dutie = allDuties.find(function (d) {
-      return d.day === props.day && d.employee_id === props.employee_id;
+    var duty = employeeDuty.find(function (d) {
+      return d.day === props.day && d.employee_id === props.employeeId;
     });
 
     var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('-'),
@@ -9578,8 +9575,8 @@ function InputDuty(props) {
         setInputDuty = _useState2[1];
 
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-      dutie !== undefined ? setInputDuty(dutie.shift.abrv) : setInputDuty('-');
-    }, [allDuties]);
+      duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('-');
+    }, [employeeDuty]);
 
     var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('black'),
         _useState4 = _slicedToArray(_useState3, 2),
@@ -9587,8 +9584,8 @@ function InputDuty(props) {
         setDutyColor = _useState4[1];
 
     (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-      dutie !== undefined ? setDutyColor(dutie.shift.color_hex) : setDutyColor('black');
-    }, [allDuties]);
+      duty !== undefined ? setDutyColor(duty.shift.color_hex) : setDutyColor('black');
+    }, [employeeDuty]);
 
     var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('inputDutyForm'),
         _useState6 = _slicedToArray(_useState5, 2),
@@ -9607,7 +9604,7 @@ function InputDuty(props) {
         return setInputDuty(e.target.value);
       },
       onBlur: function onBlur(e) {
-        return sendDuty(inputDutyValue, props.day, props.month, props.year, props.employee_id);
+        return sendDuty(inputDutyValue, props.day, props.month, props.year, props.employeeId);
       }
     });
   }

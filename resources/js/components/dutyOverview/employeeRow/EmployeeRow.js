@@ -5,9 +5,6 @@ import './EmployeeRow.scss'
 import EmployeeCell from './employeeCell/EmployeeCell'
 
 function EmployeeRow(props) {
-  // console.log('EmployeeRow allduties:')
-  // console.log(props.allDuties)
-
   return (
     <>
       <div className="employeeRow">
@@ -24,11 +21,11 @@ function EmployeeRow(props) {
             day={day}
             month={props.dateSelectorData.month}
             year={props.dateSelectorData.year}
-            allDuties={props.allDuties}
-            employee_id={props.employeeData.id}
+            employeeDuty={props.employeeDuties.filter((d) => d.day === day)}
+            employeeId={props.employeeData.id}
           />
         ))}
-        <WorkingTimeCell allDuties={props.allDuties} />
+        <WorkingTimeCell allDuties={props.employeeDuties} />
       </div>
     </>
   )

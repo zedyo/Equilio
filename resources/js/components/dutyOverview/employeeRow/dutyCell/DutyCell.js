@@ -2,27 +2,26 @@ import React, { useState, useEffect } from 'react'
 import './DutyCell.scss'
 
 function InputDuty(props) {
-  let allDuties = props.allDuties
+  let employeeDuty = props.employeeDuty
 
-  if (allDuties) {
-    debugger
-    let dutie = allDuties.find(
-      (d) => d.day === props.day && d.employee_id === props.employee_id
+  if (employeeDuty) {
+    let duty = employeeDuty.find(
+      (d) => d.day === props.day && d.employee_id === props.employeeId
     )
 
     let [inputDutyValue, setInputDuty] = useState('-')
 
     useEffect(() => {
-      dutie !== undefined ? setInputDuty(dutie.shift.abrv) : setInputDuty('-')
-    }, [allDuties])
+      duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('-')
+    }, [employeeDuty])
 
     const [DutyColor, setDutyColor] = useState('black')
 
     useEffect(() => {
-      dutie !== undefined
-        ? setDutyColor(dutie.shift.color_hex)
+      duty !== undefined
+        ? setDutyColor(duty.shift.color_hex)
         : setDutyColor('black')
-    }, [allDuties])
+    }, [employeeDuty])
 
     const [CellStyle, setCellStyle] = useState('inputDutyForm')
 
@@ -32,7 +31,7 @@ function InputDuty(props) {
       color: color,
     }
 
-    async function sendDuty(value, day, month, year, employee_id) {
+    async function sendDuty(value, day, month, year, employeeId) {
       if (value !== '') {
         try {
           const { data } = await axios.patch(
@@ -42,7 +41,7 @@ function InputDuty(props) {
               day,
               month,
               year,
-              employee_id,
+              employeeId,
             }
           )
 
@@ -72,7 +71,7 @@ function InputDuty(props) {
             props.day,
             props.month,
             props.year,
-            props.employee_id
+            props.employeeId
           )
         }
       />
