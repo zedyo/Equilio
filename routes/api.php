@@ -39,3 +39,4 @@ Route::resources([
 ]);
 
 Route::post('/wish', [WishController::class, 'create']);
+Route::get('/wishes/{employee_id}', [WishController::class, 'getEmployeeWishData']);

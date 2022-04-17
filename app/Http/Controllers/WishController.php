@@ -19,6 +19,18 @@ class WishController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getEmployeeWishData(Request $request)
+    {
+        $wishes = Wish::where('employee_id', $request->employee_id)->get();
+
+        return $wishes;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @param  \Illuminate\Http\Request  $request
