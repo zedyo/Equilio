@@ -2,6 +2,8 @@ import React from 'react'
 import { Button, Col, Modal, Form, FloatingLabel, Row } from 'react-bootstrap'
 
 function WishCreatorModal(props) {
+  async function sendWish(shift_id, day, month, year, employee_id) {}
+
   return (
     <Modal
       {...props}
