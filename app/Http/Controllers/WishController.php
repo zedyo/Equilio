@@ -114,6 +114,10 @@ class WishController extends Controller
      */
     public function destroy(Wish $wish)
     {
-        //
+        $deleted_wish = $wish;
+
+        $wish->delete();
+
+        return ['deleted_wish' => $deleted_wish];
     }
 }

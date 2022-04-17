@@ -5,7 +5,6 @@ use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
-use App\Http\Controllers\SummarizeDutyShiftTypeController;
 use App\Http\Controllers\WishController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -35,8 +34,9 @@ Route::resources([
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,
     'shifts' => ShiftController::class,
-    'shift_types' => ShiftTypeController::class
+    'shift_types' => ShiftTypeController::class,
+    'wishes' => WishController::class
 ]);
 
 Route::post('/wish', [WishController::class, 'create']);
-Route::get('/wishes/{employee_id}', [WishController::class, 'getEmployeeWishData']);
+Route::get('/wishesByEmployee/{employee_id}', [WishController::class, 'getEmployeeWishData']);
