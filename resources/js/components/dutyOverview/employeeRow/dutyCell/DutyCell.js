@@ -31,7 +31,7 @@ function InputDuty(props) {
       color: color,
     }
 
-    async function sendDuty(value, day, month, year, employeeId) {
+    async function sendDuty(value, day, month, year, employee_id) {
       if (value !== '') {
         try {
           const { data } = await axios.patch(
@@ -41,7 +41,7 @@ function InputDuty(props) {
               day,
               month,
               year,
-              employeeId,
+              employee_id,
             }
           )
 

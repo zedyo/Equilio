@@ -9510,7 +9510,7 @@ function InputDuty(props) {
 
   if (employeeDuty) {
     var sendDuty = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employeeId) {
+      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
         var _yield$axios$patch, data, hex;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
@@ -9529,7 +9529,7 @@ function InputDuty(props) {
                   day: day,
                   month: month,
                   year: year,
-                  employeeId: employeeId
+                  employee_id: employee_id
                 });
 
               case 4:
