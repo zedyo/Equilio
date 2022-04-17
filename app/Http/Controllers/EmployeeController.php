@@ -28,7 +28,7 @@ class EmployeeController extends Controller
 
     public function show(Employee $employee)
     {
-        return ['employee' => $employee];
+        return ['employee' => $employee->with('qualification')->where('id', $employee->id)->first()];
     }
 
     public function update(Request $request, Employee $employee)
@@ -46,6 +46,6 @@ class EmployeeController extends Controller
 
         $employee->delete();
 
-        return['deleted_employee' => $deleted_employee];
+        return ['deleted_employee' => $deleted_employee];
     }
 }

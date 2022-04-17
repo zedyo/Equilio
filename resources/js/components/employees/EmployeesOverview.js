@@ -16,9 +16,6 @@ function Employees() {
   // const [var1, var2] = blahMethode() -> ich vergebe 2 Variablen für 2 Returnwerte von blahMethode
 
   useEffect(() => {
-    // --MEMO Anonyme Methoden--
-    // ()=>{} ist eine Anonyme "wegwerf" Methode die nur hier verwendet wird
-
     async function getData() {
       // --MEMO async function--
       // async Funktion - damit asynchroner Datenaustausch möglich ist

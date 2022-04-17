@@ -4,7 +4,7 @@ import NavigationBar from '../components/NavigationBar'
 import QualificationOverview from '../components/qualifications/QualificationOverview'
 import UpdateQualification from '../components/qualifications/update/UpdateQualification'
 import CreateQualification from '../components/qualifications/create/CreateQualification'
-import EmployeeOverview from '../components/employees/EmployeeOverview'
+import EmployeesOverview from '../components/employees/EmployeesOverview'
 import DutyOverview from '../components/dutyOverview/DutyOverview'
 import UpdateEmployee from '../components/employees/update/UpdateEmployee'
 import CreateEmployee from '../components/employees/create/CreateEmployee'
@@ -15,6 +15,7 @@ import CreateShift from '../components/shifts/create/CreateShift'
 import UpdateShiftType from '../components/shiftTypes/update/UpdateShiftType'
 import CreateShiftType from '../components/shiftTypes/create/CreateShiftType'
 import WishCreator from '../components/dutyOverview/wishCreator/WishCreator'
+import EmployeeOverview from '../components/employees/show/employeeOverview/EmployeeOverview'
 
 function Router() {
   return (
@@ -39,8 +40,9 @@ function Router() {
             <Route path="/shift_type/create" component={CreateShiftType} />
             <Route path="/shift_types" component={ShiftTypeOverview} />
             <Route path="/employee/edit/:id" component={UpdateEmployee} />
+            <Route path="/employee/show/:id" component={EmployeeOverview} />
             <Route path="/employee/create" component={CreateEmployee} />
-            <Route path="/employees" component={EmployeeOverview} />
+            <Route path="/employees" component={EmployeesOverview} />
             <Route path="/duties" component={DutyOverview} />
             <Route path="/wish_creator" component={WishCreator} />
             <Route exact path="/" component={DutyOverview} />

@@ -11,6 +11,13 @@ function Employee(props) {
         <td>{props.employeeData.qualification.description}</td>
         <td>
           <Button
+            href={`/employee/show/${props.employeeData.id}`}
+            variant="outline-primary"
+            size="sm"
+          >
+            Details
+          </Button>{' '}
+          <Button
             href={`/employee/edit/${props.employeeData.id}`}
             variant="outline-secondary"
             size="sm"

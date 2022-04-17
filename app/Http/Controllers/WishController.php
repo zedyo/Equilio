@@ -25,7 +25,7 @@ class WishController extends Controller
      */
     public function getEmployeeWishData(Request $request)
     {
-        $wishes = Wish::where('employee_id', $request->employee_id)->get();
+        $wishes = Wish::with('shift')->where('employee_id', $request->employee_id)->get();
 
         return $wishes;
     }
