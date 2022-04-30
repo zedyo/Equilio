@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Duty;
 use App\Models\Wish;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WishController extends Controller
 {
@@ -15,7 +16,9 @@ class WishController extends Controller
      */
     public function index()
     {
-        //
+        $wishes = Wish::with(['employee', 'shift'])->get();
+
+        return ['wishes' => $wishes];
     }
 
     /**
@@ -37,27 +40,28 @@ class WishController extends Controller
      * @param  \App\Models\Wish  $wish
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, Wish $wish)
+    public function create(Request $request, Wish $wish): JsonResponse
     {
-        $wish_check = Wish::where('employee_id', $request->employee_id);
-        $wish_check->where('day', $request->day);
-        $wish_check->where('month', $request->month);
-        $wish_check->where('year', $request->year);
+        $wish_check = Wish::where('employee_id', $request->wishData['employee_id']);
+        $wish_check->where('day', $request->wishData['day']);
+        $wish_check->where('month', $request->wishData['month']);
+        $wish_check->where('year', $request->wishData['year']);
         $wish = $wish_check->get();
 
         if ($wish->isEmpty()) {
             $new_wish = new Wish();
-            $new_wish->employee_id = $request->employee_id;
-            $new_wish->shift_id = $request->shift_id;
-            $new_wish->day = $request->day;
-            $new_wish->month = $request->month;
-            $new_wish->year = $request->year;
+            $new_wish->employee_id = $request->wishData['employee_id'];
+            $new_wish->shift_id = $request->wishData['shift_id'];
+            $new_wish->day = $request->wishData['day'];
+            $new_wish->month = $request->wishData['month'];
+            $new_wish->year = $request->wishData['year'];
 
             $new_wish->save();
 
             $wish = Wish::with('shift')->where('id', $new_wish->id)->first();
 
-            return ['new_wish' => $wish];
+            //TODO: Saubere Responses in alle Controllern
+            return response()->json(['new_wish' => $wish], 201);
         }
     }
 

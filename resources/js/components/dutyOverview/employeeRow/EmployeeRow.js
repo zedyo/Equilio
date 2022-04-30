@@ -22,6 +22,7 @@ function EmployeeRow(props) {
             month={props.dateSelectorData.month}
             year={props.dateSelectorData.year}
             employeeDuty={props.employeeDuties.filter((d) => d.day === day)}
+            employeeWish={props.employeeWishes.filter((d) => d.day === day)}
             employeeId={props.employeeData.id}
           />
         ))}

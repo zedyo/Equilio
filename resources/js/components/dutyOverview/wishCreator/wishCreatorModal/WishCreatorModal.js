@@ -1,8 +1,32 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Col, Modal, Form, FloatingLabel, Row } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 function WishCreatorModal(props) {
-  async function sendWish(shift_id, day, month, year, employee_id) {}
+  const [wishData, setWish] = useState({})
+  const employees = useSelector(
+    (store) => store.employees.employeesData.payload
+  )
+  // auch hier Object Destructioring möglich
+  // const {name} = useSelector((store) => store.employees)
+
+  function emptyWishState() {
+    setWish({})
+  }
+
+  async function submitWish() {
+    try {
+      console.log(wishData)
+      await axios.post(`http://127.0.0.1:8000/api/wish`, {
+        wishData,
+      })
+    } catch (error) {
+      debugger
+      console.log(error.message)
+    }
+  }
+
+  //TODO: WunschModal hübscher gestalten
 
   return (
     <Modal
@@ -22,25 +46,47 @@ function WishCreatorModal(props) {
             <Row className="g-3">
               <Col md>
                 <FloatingLabel controlId="floatingSelect" label="Mitarbeiter">
-                  <Form.Select aria-label="Floating label select example">
-                    <option disabled selected>
+                  <Form.Select
+                    aria-label="Floating label select example"
+                    onChange={(e) =>
+                      e.target.value !== null &&
+                      setWish({
+                        ...wishData,
+                        employee_id: parseInt(e.target.value),
+                      })
+                    }
+                  >
+                    <option key="employee: null" value={null}>
                       Bitte Mitarbeiter auswählen
                     </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                    {employees !== undefined &&
+                      employees.map((employee) => (
+                        <option
+                          key={'Employee: ' + employee.id}
+                          value={employee.id}
+                        >
+                          {employee.first_name} {employee.last_name}
+                        </option>
+                      ))}
                   </Form.Select>
                 </FloatingLabel>
               </Col>
               <Col md>
                 <FloatingLabel controlId="floatingSelect" label="Wunschschicht">
-                  <Form.Select aria-label="Floating label select example">
-                    <option disabled selected>
-                      Bitte Wunschschicht auswählen
-                    </option>
-                    <option value="1">One</option>
-                    <option value="2">Two</option>
-                    <option value="3">Three</option>
+                  <Form.Select
+                    aria-label="Floating label select example"
+                    onChange={(e) =>
+                      e.target.value !== null &&
+                      setWish({
+                        ...wishData,
+                        shift_id: parseInt(e.target.value),
+                      })
+                    }
+                  >
+                    <option value={null}>Bitte Wunschschicht auswählen</option>
+                    <option value={1}>F1</option>
+                    <option value={2}>F2</option>
+                    <option value={3}>S1</option>
                   </Form.Select>
                 </FloatingLabel>
               </Col>
@@ -52,7 +98,13 @@ function WishCreatorModal(props) {
                   label="Tag"
                   className="mb-3"
                 >
-                  <Form.Control type="wish_day" placeholder="01" />
+                  <Form.Control
+                    type="wish_day"
+                    placeholder="01"
+                    onChange={(e) =>
+                      setWish({ ...wishData, day: parseInt(e.target.value) })
+                    }
+                  />
                 </FloatingLabel>
               </Col>
               <Col md className="g-3">
@@ -61,13 +113,26 @@ function WishCreatorModal(props) {
                   label="Monat"
                   className="mb-3"
                 >
-                  <Form.Select aria-label="Floating label select example">
-                    <option disabled selected>
-                      Bitte Monat auswählen
-                    </option>
-                    <option value="1">Januar</option>
-                    <option value="2">Februar</option>
-                    <option value="3">März</option>
+                  <Form.Select
+                    aria-label="Floating label select example"
+                    onChange={(e) =>
+                      e.target.value !== null &&
+                      setWish({ ...wishData, month: parseInt(e.target.value) })
+                    }
+                  >
+                    <option value={null}>Bitte Monat auswählen</option>
+                    <option value={1}>Januar</option>
+                    <option value={2}>Februar</option>
+                    <option value={3}>März</option>
+                    <option value={4}>April</option>
+                    <option value={5}>Mai</option>
+                    <option value={6}>Juni</option>
+                    <option value={7}>Juli</option>
+                    <option value={8}>August</option>
+                    <option value={9}>September</option>
+                    <option value={10}>Oktober</option>
+                    <option value={11}>November</option>
+                    <option value={12}>Dezember</option>
                   </Form.Select>
                 </FloatingLabel>
               </Col>
@@ -78,9 +143,11 @@ function WishCreatorModal(props) {
                   className="mb-3"
                 >
                   <Form.Control
-                    value="2022"
                     type="wish_year"
                     placeholder="1986"
+                    onChange={(e) =>
+                      setWish({ ...wishData, year: parseInt(e.target.value) })
+                    }
                   />
                 </FloatingLabel>
               </Col>
@@ -88,10 +155,17 @@ function WishCreatorModal(props) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-secondary" onClick={props.onHide}>
+          <Button variant="outline-secondary" onClick={emptyWishState}>
             Abbrechen
           </Button>
-          <Button variant="primary" onClick={props.onHide} type="submit">
+          <Button
+            variant="primary"
+            onClick={
+              //TODO: Braucht man das onHide im Wunschmodal?
+              /*props.onHide*/ submitWish
+            }
+            type="submit"
+          >
             Speichern
           </Button>
         </Modal.Footer>

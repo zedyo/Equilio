@@ -4,15 +4,20 @@ import './DutyCell.scss'
 function InputDuty(props) {
   let employeeDuty = props.employeeDuty
 
+  let wish = props.employeeWish.find(
+    (d) => d.day == props.day && d.month == props.month
+  )
+
+  //TODO: CSS Hervorhebung, falls Wish und Duty nicht übereinstimmen
+  //TODO: Etwas helleres grau eines Wunsches
+
   if (employeeDuty) {
-    let duty = employeeDuty.find(
-      (d) => d.day === props.day && d.employee_id === props.employeeId
-    )
+    let duty = employeeDuty.find((d) => d.day === props.day)
 
     let [inputDutyValue, setInputDuty] = useState('-')
 
     useEffect(() => {
-      duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('-')
+      duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('')
     }, [employeeDuty])
 
     const [DutyColor, setDutyColor] = useState('black')
@@ -48,7 +53,6 @@ function InputDuty(props) {
           const hex = data.new_duty.shift.color_hex
 
           if (data.length !== 0 || hex) {
-            // console.log("UPDATE DONE!");
             setDutyColor(data.new_duty.shift.color_hex)
             setCellStyle('inputDutyForm')
           }
@@ -64,6 +68,7 @@ function InputDuty(props) {
         style={inputColor}
         className={CellStyle}
         value={inputDutyValue}
+        placeholder={wish !== undefined && wish.shift.abrv}
         onChange={(e) => setInputDuty(e.target.value)}
         onBlur={(e) =>
           sendDuty(
