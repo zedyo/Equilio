@@ -1,6 +1,5 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
+import { useParams } from 'react-router-dom'
 import {
   Button,
   Card,
@@ -8,46 +7,28 @@ import {
   FormControl,
   InputGroup,
 } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { updateQualificationsData } from '../../../features/qualifications/qualificationSlice'
 
 function UpdateQualification() {
   const params = useParams()
-  const history = useHistory()
-  const [qualificationsData, setQualification] = useState({})
+  const dispatch = useDispatch()
+  const { qualificationsData } = useSelector((store) => store.qualifications)
+  const qualification = qualificationsData.find(
+    (qualification) => qualification.id == params.id
+  )
+
+  const [qualificationData, setQualification] = useState({})
 
   useEffect(() => {
-    async function getData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/qualifications/${params.id}/`,
-          {}
-        )
-        setQualification(data.qualification)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getData()
-  }, [])
+    qualification !== undefined && setQualification(qualification)
+  }, [qualification])
 
-  async function submitFormHandler() {
-    try {
-      await axios.patch(
-        `http://127.0.0.1:8000/api/qualifications/${params.id}/`,
-        { qualificationsData }
-      )
-      history.push('/qualifications')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
-  // Untkontrollierten Input kontrollieren
-  if (Object.keys(qualificationsData).length === 0)
+  if (Object.keys(qualificationData).length === 0)
     return <h1>...this loading</h1>
 
-  // Kontrollierter Input (nachdem JS oben durch ist und qualificationsData aufgefüllt wurde)
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -55,7 +36,7 @@ function UpdateQualification() {
               <Card.Header>Bearbeitung der Qualifikation</Card.Header>
               <Card.Body>
                 <Card.Title>
-                  ID: {qualificationsData.id}
+                  ID: {qualificationData.id}
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="qualification_description">
                       Bezeichnung
@@ -64,17 +45,23 @@ function UpdateQualification() {
                       placeholder="Berufsbeziechnung"
                       aria-label="Bezeichnung"
                       aria-describedby="qualification_description"
-                      value={qualificationsData.description}
+                      value={qualificationData.description}
                       onChange={(e) =>
                         setQualification({
-                          ...qualificationsData,
+                          ...qualificationData,
                           description: e.target.value,
                         })
                       }
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() =>
+                    dispatch(updateQualificationsData(qualificationData))
+                  }
+                  variant="outline-success"
+                  href={`/qualifications`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -82,7 +69,7 @@ function UpdateQualification() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

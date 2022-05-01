@@ -27,7 +27,6 @@ class QualificationController extends Controller
             return [
                 'qualifications' => $qualifications
             ];
-
         } catch (Exception $exception) {
             return response()->json([
                 'exception' => $exception->getMessage()
@@ -51,9 +50,11 @@ class QualificationController extends Controller
 
     public function update(Request $request, Qualification $qualification)
     {
-        $qualification->description = $request->qualificationsData['description'];
+        $qualification->description = $request->qualificationData['description'];
 
         $qualification->save();
+
+        return response()->json(['qualification' => $qualification], 201);
     }
 
     public function destroy(Qualification $qualification)
@@ -62,6 +63,6 @@ class QualificationController extends Controller
 
         $qualification->delete();
 
-        return['deleted_qualification' => $deleted_qualification];
+        return ['deleted_qualification' => $deleted_qualification];
     }
 }

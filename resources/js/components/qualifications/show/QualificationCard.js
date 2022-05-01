@@ -1,10 +1,12 @@
 import React from 'react'
-import { Fragment } from 'react'
 import { Card, Col, Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { deleteQualificationsData } from '../../../features/qualifications/qualificationSlice'
 
 function Qualification(props) {
+  const dispatch = useDispatch()
   return (
-    <Fragment>
+    <>
       <Col md="auto">
         <Card style={{ width: '18rem', margin: '0.3rem' }}>
           <Card.Body>
@@ -20,7 +22,9 @@ function Qualification(props) {
               Bearbeiten
             </Button>{' '}
             <Button
-              onClick={() => props.deleteHandler(props.qualificationData.id)}
+              onClick={() =>
+                dispatch(deleteQualificationsData(props.qualificationData.id))
+              }
               variant="outline-danger"
               size="sm"
             >
@@ -29,7 +33,7 @@ function Qualification(props) {
           </Card.Body>
         </Card>
       </Col>
-    </Fragment>
+    </>
   )
 }
 

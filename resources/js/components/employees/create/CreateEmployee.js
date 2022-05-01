@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
   Col,
   Row,
@@ -8,29 +8,13 @@ import {
   Card,
   Button,
 } from 'react-bootstrap'
-import axios from 'axios'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { postEmployeeData } from '../../../features/employees/employeeSlice'
 
 function CreateEmployee() {
   const dispatch = useDispatch()
-
-  const [qualificationData, setQualification] = useState([])
+  const { qualificationsData } = useSelector((store) => store.qualifications)
   const [employeeData, setEmployee] = useState({})
-
-  useEffect(() => {
-    async function getQualificationData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/qualifications`
-        )
-        setQualification(data.qualifications)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getQualificationData()
-  }, [])
 
   return (
     <>
@@ -89,7 +73,7 @@ function CreateEmployee() {
                     }
                   >
                     <option key="0">Bitte auswählen</option>
-                    {qualificationData.map((qualificationObject) => (
+                    {qualificationsData.map((qualificationObject) => (
                       <option
                         key={qualificationObject.id}
                         value={qualificationObject.id}

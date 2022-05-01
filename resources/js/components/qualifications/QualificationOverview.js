@@ -1,44 +1,13 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import axios from 'axios'
+import React from 'react'
 import QualificationCard from './show/QualificationCard'
 import { Button, Row, Container } from 'react-bootstrap'
+import { useSelector } from 'react-redux'
 
 function Qualifications() {
-  const [qualificationsData, setQualification] = useState([])
-
-  useEffect(() => {
-    async function getData() {
-      try {
-        const { data } = await axios.get(
-          'http://127.0.0.1:8000/api/qualifications',
-          {}
-        )
-        setQualification(data.qualifications)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getData()
-  }, [])
-
-  async function destroyData(deletedQualificationId) {
-    try {
-      const deleted_data = await axios.delete(
-        `http://127.0.0.1:8000/api/qualifications/${deletedQualificationId}/`
-      )
-      setQualification(
-        qualificationsData.filter(
-          (qualification) =>
-            qualification.id !== deleted_data.data.deleted_qualification.id
-        )
-      )
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
+  const { qualificationsData } = useSelector((store) => store.qualifications)
 
   return (
-    <Fragment>
+    <>
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -60,7 +29,6 @@ function Qualifications() {
                       <QualificationCard
                         key={qualificationObject.id}
                         qualificationData={qualificationObject}
-                        deleteHandler={destroyData}
                       />
                     ))}
                   </Row>
@@ -70,7 +38,7 @@ function Qualifications() {
           </div>
         </div>
       </div>
-    </Fragment>
+    </>
   )
 }
 

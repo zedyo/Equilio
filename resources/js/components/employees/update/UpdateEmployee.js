@@ -16,32 +16,17 @@ function UpdateEmployee() {
   const params = useParams()
   const dispatch = useDispatch()
   const { employeesData } = useSelector((store) => store.employees)
+  const { qualificationsData } = useSelector((store) => store.qualifications)
   const employee = employeesData.find((employee) => employee.id == params.id)
 
   const [employeeData, setEmployee] = useState({})
-  const [qualificationData, setQualification] = useState([])
 
   useEffect(() => {
     employee !== undefined && setEmployee(employee)
   }, [employee])
 
-  useEffect(() => {
-    async function getQualificationData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/qualifications`
-        )
-        setQualification(data.qualifications)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-
-    getQualificationData()
-  }, [])
-
   if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
-  if (Object.keys(qualificationData).length === 0) return <h1>... loading</h1>
+  if (Object.keys(qualificationsData).length === 0) return <h1>... loading</h1>
 
   return (
     <>
@@ -112,7 +97,7 @@ function UpdateEmployee() {
                     }
                   >
                     <option key="0">Bitte auswählen</option>
-                    {qualificationData.map((qualificationObject) => (
+                    {qualificationsData.map((qualificationObject) => (
                       <option
                         key={qualificationObject.id}
                         value={qualificationObject.id}

@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -7,25 +6,15 @@ import {
   FormControl,
   InputGroup,
 } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { postQualificationsData } from '../../../features/qualifications/qualificationSlice'
 
 function CreateQualification() {
-  const history = useHistory()
+  const dispatch = useDispatch()
   const [qualificationsData, setQualification] = useState({})
 
-  async function submitFormHandler() {
-    try {
-      await axios.post(`http://127.0.0.1:8000/api/qualifications/`, {
-        qualificationsData,
-      })
-      history.push('/qualifications')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -50,7 +39,13 @@ function CreateQualification() {
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() =>
+                    dispatch(postQualificationsData(qualificationsData))
+                  }
+                  variant="outline-success"
+                  href={`/qualifications`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -58,7 +53,7 @@ function CreateQualification() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 
