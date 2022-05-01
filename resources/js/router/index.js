@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Switch, BrowserRouter, Route } from 'react-router-dom'
 import NavigationBar from '../components/NavigationBar'
 import QualificationOverview from '../components/qualifications/QualificationOverview'
@@ -16,8 +16,16 @@ import UpdateShiftType from '../components/shiftTypes/update/UpdateShiftType'
 import CreateShiftType from '../components/shiftTypes/create/CreateShiftType'
 import WishCreator from '../components/dutyOverview/wishCreator/WishCreator'
 import EmployeeOverview from '../components/employees/show/employeeOverview/EmployeeOverview'
+import { useDispatch } from 'react-redux'
+import { getEmployeeData } from '../features/employees/employeeSlice'
 
 function Router() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(getEmployeeData())
+  }, [])
+
   return (
     <div>
       <BrowserRouter>

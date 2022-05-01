@@ -4,11 +4,7 @@ import { useSelector } from 'react-redux'
 
 function WishCreatorModal(props) {
   const [wishData, setWish] = useState({})
-  const employees = useSelector(
-    (store) => store.employees.employeesData.payload
-  )
-  // auch hier Object Destructioring möglich
-  // const {name} = useSelector((store) => store.employees)
+  const { employeesData } = useSelector((store) => store.employees)
 
   function emptyWishState() {
     setWish({})
@@ -59,8 +55,8 @@ function WishCreatorModal(props) {
                     <option key="employee: null" value={null}>
                       Bitte Mitarbeiter auswählen
                     </option>
-                    {employees !== undefined &&
-                      employees.map((employee) => (
+                    {employeesData !== undefined &&
+                      employeesData.map((employee) => (
                         <option
                           key={'Employee: ' + employee.id}
                           value={employee.id}

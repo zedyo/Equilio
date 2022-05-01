@@ -12,7 +12,7 @@ class EmployeeController extends Controller
     {
         $employees = Employee::with('qualification')->get();
 
-        return ['employees' => $employees];
+        return response()->json(['employees' => $employees]);
     }
 
     public function store(Request $request): JsonResponse
@@ -38,6 +38,8 @@ class EmployeeController extends Controller
         $employee->qualification_id = $request->employeeData['qualification_id'];
 
         $employee->save();
+
+        return response()->json(['employee' => $employee], 201);
     }
 
     public function destroy(Employee $employee)

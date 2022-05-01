@@ -8,8 +8,8 @@ import axios from 'axios'
 import moment from 'moment'
 import { Container } from 'react-bootstrap'
 import { daysToArray } from '../../util/daysToArray'
-import { fillEmployees } from '../../features/employees/employeeSlice'
-import { useDispatch } from 'react-redux'
+import { getEmployeeData } from '../../features/employees/employeeSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 function Duties() {
   moment.locale('de')
@@ -19,21 +19,17 @@ function Duties() {
     year: `${moment().format('YYYY')}`,
   })
 
-  const [employeeData, setEmployeeData] = useState(null)
   const [allDuties, setAllDuties] = useState([])
   const [allWishes, setAllWishes] = useState([])
-  const employeeDispatch = useDispatch()
+  const dispatch = useDispatch()
 
   const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
-  useEffect(() => {
-    async function getData() {
-      const { data } = await axios.get('http://127.0.0.1:8000/api/duties/')
-      setEmployeeData(data.employees)
-      employeeDispatch(fillEmployees(data.employees))
-    }
-    getData()
-  }, [])
+  // useEffect(() => {
+  //   dispatch(getEmployeeData())
+  // }, [])
+
+  const { employeesData } = useSelector((store) => store.employees)
 
   useEffect(() => {
     async function getData() {
@@ -75,8 +71,8 @@ function Duties() {
         </div>
 
         <div>
-          {employeeData &&
-            employeeData.map((employee) => (
+          {employeesData &&
+            employeesData.map((employee) => (
               <EmployeeRow
                 key={
                   'EmployeeRow:' +

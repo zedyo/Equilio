@@ -8,28 +8,24 @@ import {
   Card,
   Table,
 } from 'react-bootstrap'
-import { useHistory, useParams } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 import WishColumn from './wishColumn/WishColumn'
 
 function EmployeeOverview() {
   const params = useParams()
-  const history = useHistory()
+
+  const { employeesData } = useSelector((store) => store.employees)
+  const employee = employeesData.find((employee) => employee.id == params.id)
+
   const [employeeData, setEmployee] = useState({})
   const [wishesData, setWishes] = useState([])
 
   useEffect(() => {
-    async function getEmployeeData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/employees/${params.id}/`,
-          {}
-        )
-        setEmployee(data.employee)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
+    employee !== undefined && setEmployee(employee)
+  }, [employee])
 
+  useEffect(() => {
     async function getWishesData() {
       try {
         const { data } = await axios.get(
@@ -43,7 +39,6 @@ function EmployeeOverview() {
     }
 
     getWishesData()
-    getEmployeeData()
   }, [])
 
   async function destroyWish(deletedWishId) {
@@ -60,8 +55,6 @@ function EmployeeOverview() {
       console.log(error)
     }
   }
-
-  console.log(employeeData)
 
   if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
 

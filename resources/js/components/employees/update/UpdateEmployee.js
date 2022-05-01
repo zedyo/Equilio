@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Col,
   Row,
@@ -8,27 +8,24 @@ import {
   Card,
   Button,
 } from 'react-bootstrap'
-import { useHistory, useParams } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { updateEmployeeData } from '../../../features/employees/employeeSlice'
 
 function UpdateEmployee() {
   const params = useParams()
-  const history = useHistory()
+  const dispatch = useDispatch()
+  const { employeesData } = useSelector((store) => store.employees)
+  const employee = employeesData.find((employee) => employee.id == params.id)
+
   const [employeeData, setEmployee] = useState({})
   const [qualificationData, setQualification] = useState([])
 
   useEffect(() => {
-    async function getEmployeeData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/employees/${params.id}/`,
-          {}
-        )
-        setEmployee(data.employee)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
+    employee !== undefined && setEmployee(employee)
+  }, [employee])
 
+  useEffect(() => {
     async function getQualificationData() {
       try {
         const { data } = await axios.get(
@@ -40,26 +37,14 @@ function UpdateEmployee() {
       }
     }
 
-    getEmployeeData()
     getQualificationData()
   }, [])
-
-  async function submitFormHandler() {
-    try {
-      await axios.patch(`http://127.0.0.1:8000/api/employees/${params.id}/`, {
-        employeeData,
-      })
-      history.push('/employees')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
 
   if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
   if (Object.keys(qualificationData).length === 0) return <h1>... loading</h1>
 
   return (
-    <Fragment>
+    <>
       <Container>
         <Card>
           <Card.Header>Bearbeitung von Mitarbeiterdaten</Card.Header>
@@ -139,13 +124,17 @@ function UpdateEmployee() {
                 </FloatingLabel>
               </Col>
             </Row>
-            <Button onClick={submitFormHandler} variant="outline-success">
+            <Button
+              onClick={() => dispatch(updateEmployeeData(employeeData))}
+              variant="outline-success"
+              href={`/employees`}
+            >
               Speichern
             </Button>{' '}
           </Card.Body>
         </Card>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
   Col,
   Row,
@@ -8,11 +8,13 @@ import {
   Card,
   Button,
 } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
 import axios from 'axios'
+import { useDispatch } from 'react-redux'
+import { postEmployeeData } from '../../../features/employees/employeeSlice'
 
 function CreateEmployee() {
-  const history = useHistory()
+  const dispatch = useDispatch()
+
   const [qualificationData, setQualification] = useState([])
   const [employeeData, setEmployee] = useState({})
 
@@ -30,19 +32,8 @@ function CreateEmployee() {
     getQualificationData()
   }, [])
 
-  async function submitFormHandler() {
-    try {
-      await axios.post(`http://127.0.0.1:8000/api/employees/`, {
-        employeeData,
-      })
-      history.push('/employees')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   return (
-    <Fragment>
+    <>
       <Container>
         <Card>
           <Card.Header>Anlegen von Mitarbeiterdaten</Card.Header>
@@ -110,13 +101,17 @@ function CreateEmployee() {
                 </FloatingLabel>
               </Col>
             </Row>
-            <Button onClick={submitFormHandler} variant="outline-success">
+            <Button
+              onClick={() => dispatch(postEmployeeData(employeeData))}
+              variant="outline-success"
+              href={`/employees`}
+            >
               Speichern
             </Button>{' '}
           </Card.Body>
         </Card>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

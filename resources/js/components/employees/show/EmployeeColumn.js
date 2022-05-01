@@ -1,7 +1,10 @@
 import React, { Fragment } from 'react'
 import { Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { deleteEmployeeData } from '../../../features/employees/employeeSlice'
 
 function Employee(props) {
+  const dispatch = useDispatch()
   return (
     <Fragment>
       <tr>
@@ -25,7 +28,7 @@ function Employee(props) {
             Bearbeiten
           </Button>{' '}
           <Button
-            onClick={() => props.deleteHandler(props.employeeData.id)}
+            onClick={() => dispatch(deleteEmployeeData(props.employeeData.id))}
             variant="outline-danger"
             size="sm"
           >
