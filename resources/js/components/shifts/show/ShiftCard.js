@@ -1,11 +1,13 @@
 import React from 'react'
-import { Fragment } from 'react'
-import { Card, Col, Button } from 'react-bootstrap'
+import { Button, Card, Col } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { deleteShiftsData } from '../../../features/shifts/shiftSlice'
 
 function Shift(props) {
-  console.log(props.shiftsData.shift_type.name)
+  const dispatch = useDispatch()
+
   return (
-    <Fragment>
+    <>
       <Col md="auto">
         <Card style={{ width: '18rem', margin: '0.3rem' }}>
           <Card.Body>
@@ -29,7 +31,7 @@ function Shift(props) {
               Bearbeiten
             </Button>{' '}
             <Button
-              onClick={() => props.deleteHandler(props.shiftsData.id)}
+              onClick={() => dispatch(deleteShiftsData(props.shiftsData.id))}
               variant="outline-danger"
               size="sm"
             >
@@ -38,7 +40,7 @@ function Shift(props) {
           </Card.Body>
         </Card>
       </Col>
-    </Fragment>
+    </>
   )
 }
 

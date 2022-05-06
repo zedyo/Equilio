@@ -18,10 +18,10 @@ class ShiftController extends Controller
     public function store(Request $request): JsonResponse
     {
         $shift = new Shift();
-        $shift->abrv = $request->shiftData['abrv'];
-        $shift->color_hex = $request->shiftData['color_hex'];
-        $shift->h_duration = $request->shiftData['h_duration'];
-        $shift->shift_type_id = $request->shiftData['shift_type_id'];
+        $shift->abrv = $request->shiftsData['abrv'];
+        $shift->color_hex = $request->shiftsData['color_hex'];
+        $shift->h_duration = $request->shiftsData['h_duration'];
+        $shift->shift_type_id = $request->shiftsData['shift_type_id'];
         $shift->save();
 
         return response()->json([null], 201);
@@ -34,10 +34,12 @@ class ShiftController extends Controller
 
     public function update(Request $request, Shift $shift)
     {
-        $shift->abrv = $request->shiftData['abrv'];
-        $shift->color_hex = $request->shiftData['color_hex'];
-        $shift->h_duration = $request->shiftData['h_duration'];
+        $shift->abrv = $request->shiftsData['abrv'];
+        $shift->color_hex = $request->shiftsData['color_hex'];
+        $shift->h_duration = $request->shiftsData['h_duration'];
         $shift->save();
+
+        return response()->json(['shift' => $shift], 201);
     }
 
     public function destroy(Shift $shift)
@@ -46,6 +48,6 @@ class ShiftController extends Controller
 
         $shift->delete();
 
-        return['deleted_shift' => $deleted_shift];
+        return ['deleted_shift' => $deleted_shift];
     }
 }

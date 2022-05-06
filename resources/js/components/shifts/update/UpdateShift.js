@@ -1,35 +1,29 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
 import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
   Container,
   FormControl,
-  InputGroup,
   FormSelect,
+  InputGroup,
 } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { updateShiftsData } from '../../../features/shifts/shiftSlice'
 
 function UpdateShift() {
   const params = useParams()
-  const history = useHistory()
+  const dispatch = useDispatch()
+  const { shiftsData } = useSelector((store) => store.shifts)
+  const shift = shiftsData.find((shift) => shift.id == params.id)
+
   const [shiftTypeData, setShiftType] = useState([])
   const [shiftData, setShift] = useState({})
 
   useEffect(() => {
-    async function getData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/shifts/${params.id}/`,
-          {}
-        )
-        setShift(data.shift)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getData()
-  }, [])
+    shift !== undefined && setShift(shift)
+  }, [shift])
 
   useEffect(() => {
     async function getShiftTypeData() {
@@ -45,21 +39,10 @@ function UpdateShift() {
     getShiftTypeData()
   }, [])
 
-  async function submitFormHandler() {
-    try {
-      await axios.patch(`http://127.0.0.1:8000/api/shifts/${params.id}/`, {
-        shiftData,
-      })
-      history.push('/shifts')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   if (Object.keys(shiftData).length === 0) return <h1>...this loading</h1>
 
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -130,7 +113,11 @@ function UpdateShift() {
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() => dispatch(updateShiftsData(shiftData))}
+                  variant="outline-success"
+                  href={`/shifts`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -138,7 +125,7 @@ function UpdateShift() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

@@ -19,6 +19,7 @@ import EmployeeOverview from '../components/employees/show/employeeOverview/Empl
 import { useDispatch } from 'react-redux'
 import { getEmployeeData } from '../features/employees/employeeSlice'
 import { getQualificationsData } from '../features/qualifications/qualificationSlice'
+import { getShiftsData } from '../features/shifts/shiftSlice'
 
 function Router() {
   const dispatch = useDispatch()
@@ -26,6 +27,7 @@ function Router() {
   useEffect(() => {
     dispatch(getEmployeeData())
     dispatch(getQualificationsData())
+    dispatch(getShiftsData())
   }, [])
 
   return (

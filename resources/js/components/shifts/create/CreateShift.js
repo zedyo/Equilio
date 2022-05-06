@@ -1,19 +1,22 @@
-import React, { Fragment, useState, useEffect } from 'react'
 import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
   Container,
   FormControl,
-  InputGroup,
   FormSelect,
+  InputGroup,
 } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { postShiftsData } from '../../../features/shifts/shiftSlice'
 
 function CreateShift() {
-  const history = useHistory()
+  const dispatch = useDispatch()
+
   const [shiftTypeData, setShiftType] = useState([])
-  const [shiftData, setShift] = useState({})
+  const [shiftsData, setShift] = useState({})
+  console.log(shiftsData)
 
   useEffect(() => {
     async function getShiftTypeData() {
@@ -29,19 +32,8 @@ function CreateShift() {
     getShiftTypeData()
   }, [])
 
-  async function submitFormHandler() {
-    try {
-      await axios.post(`http://127.0.0.1:8000/api/shifts/`, {
-        shiftData,
-      })
-      history.push('/shifts')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -57,7 +49,7 @@ function CreateShift() {
                       aria-describedby="shift_abrv"
                       onChange={(event) =>
                         setShift({
-                          ...shiftData,
+                          ...shiftsData,
                           abrv: event.target.value,
                         })
                       }
@@ -69,7 +61,7 @@ function CreateShift() {
                       aria-describedby="h_duration"
                       onChange={(event) =>
                         setShift({
-                          ...shiftData,
+                          ...shiftsData,
                           h_duration: event.target.value,
                         })
                       }
@@ -78,7 +70,7 @@ function CreateShift() {
                       aria-label="Floating label select example"
                       onChange={(e) =>
                         setShift({
-                          ...shiftData,
+                          ...shiftsData,
                           shift_type_id: parseInt(e.target.value),
                         })
                       }
@@ -100,14 +92,18 @@ function CreateShift() {
                       title="Choose your color"
                       onChange={(e) =>
                         setShift({
-                          ...shiftData,
+                          ...shiftsData,
                           color_hex: e.target.value,
                         })
                       }
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() => dispatch(postShiftsData(shiftsData))}
+                  variant="outline-success"
+                  href={`/shifts`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -115,7 +111,7 @@ function CreateShift() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
-import { Button, Col, Modal, Form, FloatingLabel, Row } from 'react-bootstrap'
+import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 
 function WishCreatorModal(props) {
   const [wishData, setWish] = useState({})
   const { employeesData } = useSelector((store) => store.employees)
+  const { shiftsData } = useSelector((store) => store.shifts)
 
   function emptyWishState() {
     setWish({})
@@ -17,7 +18,6 @@ function WishCreatorModal(props) {
         wishData,
       })
     } catch (error) {
-      debugger
       console.log(error.message)
     }
   }
@@ -69,7 +69,7 @@ function WishCreatorModal(props) {
               </Col>
               <Col md>
                 <FloatingLabel controlId="floatingSelect" label="Wunschschicht">
-                  <Form.Select
+                  {/* <Form.Select
                     aria-label="Floating label select example"
                     onChange={(e) =>
                       e.target.value !== null &&
@@ -83,6 +83,26 @@ function WishCreatorModal(props) {
                     <option value={1}>F1</option>
                     <option value={2}>F2</option>
                     <option value={3}>S1</option>
+                  </Form.Select> */}
+                  <Form.Select
+                    aria-label="Floating label select example"
+                    onChange={(e) =>
+                      e.target.value !== null &&
+                      setWish({
+                        ...wishData,
+                        shift_id: parseInt(e.target.value),
+                      })
+                    }
+                  >
+                    <option key="shift: null" value={null}>
+                      Bitte Schicht auswählen
+                    </option>
+                    {shiftsData !== undefined &&
+                      shiftsData.map((shift) => (
+                        <option key={'Shift: ' + shift.id} value={shift.id}>
+                          {`${shift.abrv} ( ${shift.shift_type.name} )`}
+                        </option>
+                      ))}
                   </Form.Select>
                 </FloatingLabel>
               </Col>
@@ -151,7 +171,10 @@ function WishCreatorModal(props) {
           </Form.Group>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="outline-secondary" onClick={emptyWishState}>
+          <Button
+            variant="outline-secondary"
+            onClick={(emptyWishState, props.onHide)}
+          >
             Abbrechen
           </Button>
           <Button
