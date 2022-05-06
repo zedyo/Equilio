@@ -23,7 +23,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');
+
 
 Route::patch('/duty', [DutyController::class, 'update']);
 Route::get('/duties/{year}/{month}/', [DutyController::class, 'getAllDutiesData'])->name('getAllDutiesData');
@@ -38,5 +38,6 @@ Route::resources([
     'wishes' => WishController::class
 ]);
 
+// Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');
 Route::post('/wish', [WishController::class, 'create']);
 Route::get('/wishesByEmployee/{employee_id}', [WishController::class, 'getEmployeeWishData']);

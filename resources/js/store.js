@@ -3,6 +3,7 @@ import employeeSlice from './features/employees/employeeSlice'
 import dutySlice from './features/duties/dutySlice'
 import shiftsSlice from './features/shifts/shiftSlice'
 import qualificationSlice from './features/qualifications/qualificationSlice'
+import shiftTypeSlice from './features/shiftTypes/shiftTypeSlice'
 
 export const store = configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export const store = configureStore({
     qualifications: qualificationSlice,
     duties: dutySlice,
     shifts: shiftsSlice,
+    shiftTypes: shiftTypeSlice,
   },
 })

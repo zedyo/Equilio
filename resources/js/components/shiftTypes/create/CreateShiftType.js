@@ -1,5 +1,4 @@
-import React, { Fragment, useState } from 'react'
-import axios from 'axios'
+import React, { useState } from 'react'
 import {
   Button,
   Card,
@@ -7,25 +6,17 @@ import {
   FormControl,
   InputGroup,
 } from 'react-bootstrap'
-import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { postShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
 
 function CreateShiftType() {
-  const history = useHistory()
-  const [shiftTypeData, setShiftType] = useState({})
+  const dispatch = useDispatch()
 
-  async function submitFormHandler() {
-    try {
-      await axios.post(`http://127.0.0.1:8000/api/shift_types/`, {
-        shiftTypeData,
-      })
-      history.push('/shift_types')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
+  const [shiftTypesData, setShiftType] = useState({})
+  console.log(shiftTypesData)
 
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -43,14 +34,18 @@ function CreateShiftType() {
                       aria-describedby="shift_type_name"
                       onChange={(event) =>
                         setShiftType({
-                          ...shiftTypeData,
+                          ...shiftTypesData,
                           name: event.target.value,
                         })
                       }
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() => dispatch(postShiftTypesData(shiftTypesData))}
+                  variant="outline-success"
+                  href={`/shift_types`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -58,7 +53,7 @@ function CreateShiftType() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

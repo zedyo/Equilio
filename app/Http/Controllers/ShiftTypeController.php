@@ -6,6 +6,7 @@ use App\Models\ShiftType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\Duty;
+use Illuminate\Support\Facades\Log;
 
 class ShiftTypeController extends Controller
 {
@@ -31,7 +32,7 @@ class ShiftTypeController extends Controller
     public function store(Request $request)
     {
         $shift_type = new ShiftType();
-        $shift_type->name = $request->shiftTypeData['name'];
+        $shift_type->name = $request->shiftTypesData['name'];
         $shift_type->save();
 
         return response()->json([null], 201);
@@ -39,7 +40,7 @@ class ShiftTypeController extends Controller
 
     public function show(ShiftType $shift_type)
     {
-        return ['shift_type' => $shift_type]; 
+        return ['shift_type' => $shift_type];
     }
 
     public function update(Request $request, ShiftType $shift_type)
@@ -47,6 +48,8 @@ class ShiftTypeController extends Controller
         $shift_type->name = $request->shiftTypeData['name'];
 
         $shift_type->save();
+
+        return response()->json(['shift_type' => $shift_type], 201);
     }
 
     /**
@@ -61,8 +64,6 @@ class ShiftTypeController extends Controller
 
         $shift_type->delete();
 
-        return['deleted_shift_type' => $deleted_shift_type]; 
+        return ['deleted_shift_type' => $deleted_shift_type];
     }
-
-
 }

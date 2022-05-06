@@ -1,6 +1,4 @@
-import React, { Fragment, useEffect, useState } from 'react'
-import { useParams, useHistory } from 'react-router-dom'
-import axios from 'axios'
+import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
@@ -8,45 +6,28 @@ import {
   FormControl,
   InputGroup,
 } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { updateShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
 
 function UpdateShiftType() {
   const params = useParams()
-  const history = useHistory()
+  const dispatch = useDispatch()
+  const { shiftTypesData } = useSelector((store) => store.shiftTypes)
+  const shiftType = shiftTypesData.find(
+    (shiftType) => shiftType.id == params.id
+  )
+
   const [shiftTypeData, setShiftType] = useState({})
 
   useEffect(() => {
-    async function getData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/shift_types/${params.id}/`,
-          {}
-        )
+    shiftType !== undefined && setShiftType(shiftType)
+  }, [shiftType])
 
-        setShiftType(data.shift_type)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-    getData()
-  }, [])
-
-  async function submitFormHandler() {
-    try {
-      await axios.patch(`http://127.0.0.1:8000/api/shift_types/${params.id}/`, {
-        shiftTypeData,
-      })
-      history.push('/shift_types')
-    } catch (error) {
-      console.log(error.message)
-    }
-  }
-
-  // Untkontrollierten Input kontrollieren
   if (Object.keys(shiftTypeData).length === 0) return <h1>...this loading</h1>
 
-  // Kontrollierter Input (nachdem JS oben durch ist und qualificationsData aufgefüllt wurde)
   return (
-    <Fragment>
+    <>
       <Container>
         <div className="row justify-content-center">
           <div className="col-md-12">
@@ -73,7 +54,11 @@ function UpdateShiftType() {
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button onClick={submitFormHandler} variant="outline-success">
+                <Button
+                  onClick={() => dispatch(updateShiftTypesData(shiftTypeData))}
+                  variant="outline-success"
+                  href={`/shift_types`}
+                >
                   Speichern
                 </Button>{' '}
               </Card.Body>
@@ -81,7 +66,7 @@ function UpdateShiftType() {
           </div>
         </div>
       </Container>
-    </Fragment>
+    </>
   )
 }
 
