@@ -26,7 +26,7 @@ function EmployeeRow(props) {
             employeeId={props.employeeData.id}
           />
         ))}
-        <WorkingTimeCell allDuties={props.employeeDuties} />
+        {/* <WorkingTimeCell allDuties={props.employeeDuties} /> */}
       </div>
     </>
   )

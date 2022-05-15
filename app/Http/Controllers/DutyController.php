@@ -6,6 +6,7 @@ use App\Models\Duty;
 use App\Models\Employee;
 use App\Models\Shift;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class DutyController extends Controller
 {
@@ -44,7 +45,7 @@ class DutyController extends Controller
         $duty_check->where('month', $request->month);
         $duty_check->where('year', $request->year);
 
-        $duty = $duty_check->get()->first(); 
+        $duty = $duty_check->get()->first();
 
         $shift_check = Shift::where('id', $duty->shift_id);
         $shift = $shift_check->get()->first();
@@ -54,7 +55,7 @@ class DutyController extends Controller
 
     public function update(Request $request)
     {
-        $shift_check = Shift::where('abrv', $request->value);
+        $shift_check = Shift::where('abrv', $request->dutyData['value']);
         $request_shift = $shift_check->get();
 
         if ($request_shift->isEmpty()) {
@@ -62,21 +63,21 @@ class DutyController extends Controller
             // return 'Keine Schicht mit dieser Abkürzung!';
         }
 
-        $duty_check = Duty::where('employee_id', $request->employee_id);
-        $duty_check->where('day', $request->day);
-        $duty_check->where('month', $request->month);
-        $duty_check->where('year', $request->year);
+        $duty_check = Duty::where('employee_id', $request->dutyData['employee_id']);
+        $duty_check->where('day', $request->dutyData['day']);
+        $duty_check->where('month', $request->dutyData['month']);
+        $duty_check->where('year', $request->dutyData['year']);
 
         $duty = $duty_check->get();
 
 
         if ($duty->isEmpty()) {
             $new_duty = new Duty();
-            $new_duty->employee_id = $request->employee_id;
+            $new_duty->employee_id = $request->dutyData['employee_id'];
             $new_duty->shift_id = $request_shift[0]->id;
-            $new_duty->day = $request->day;
-            $new_duty->month = $request->month;
-            $new_duty->year = $request->year;
+            $new_duty->day = $request->dutyData['day'];
+            $new_duty->month = $request->dutyData['month'];
+            $new_duty->year = $request->dutyData['year'];
 
             $new_duty->save();
 
@@ -86,7 +87,7 @@ class DutyController extends Controller
         } else if ($duty[0]->shift_id !== $request_shift[0]->id) {
             $update_duty = Duty::where('id', $duty[0]->id)->first();
             $update_duty->shift_id = $request_shift[0]->id;
-            
+
             $update_duty->save();
 
             $duty = Duty::with('shift')->where('id', $update_duty->id)->first();
@@ -98,7 +99,8 @@ class DutyController extends Controller
         }
     }
 
-    public function showDutiesByShiftTypeAndDate(int $shift_type_id, $day, $month, $year) {
+    public function showDutiesByShiftTypeAndDate(int $shift_type_id, $day, $month, $year)
+    {
         $duties_db = Duty::with('shift.shift_type');
         $duties_db->where('day', $day);
         $duties_db->where('month', $month);

@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react'
+import { useDispatch } from 'react-redux'
+import { postDuty } from '../../../../features/duties/dutySlice'
 import './DutyCell.scss'
 
-function InputDuty(props) {
+function DutyCell(props) {
   let employeeDuty = props.employeeDuty
+  const dispatch = useDispatch()
 
   let wish = props.employeeWish.find(
     (d) => d.day == props.day && d.month == props.month
@@ -68,17 +71,28 @@ function InputDuty(props) {
         style={inputColor}
         className={CellStyle}
         value={inputDutyValue}
-        placeholder={wish !== undefined && wish.shift.abrv}
+        placeholder={wish !== undefined ? wish.shift.abrv : ''}
         onChange={(e) => setInputDuty(e.target.value)}
-        onBlur={(e) =>
-          sendDuty(
-            inputDutyValue,
-            props.day,
-            props.month,
-            props.year,
-            props.employeeId
+        onBlur={() =>
+          dispatch(
+            postDuty({
+              value: inputDutyValue,
+              day: props.day,
+              month: props.month,
+              year: props.year,
+              employee_id: props.employeeId,
+            })
           )
         }
+        // onBlur={(e) =>
+        //   sendDuty(
+        //     inputDutyValue,
+        //     props.day,
+        //     props.month,
+        //     props.year,
+        //     props.employeeId
+        //   )
+        // }
       />
     )
   }
@@ -86,4 +100,4 @@ function InputDuty(props) {
   return <p>Loading...</p>
 }
 
-export default InputDuty
+export default DutyCell

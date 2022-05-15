@@ -1,35 +1,31 @@
-import './DutyOverview.scss'
-import DateSelector from './dateSelector/DateSelector'
-import DaysRow from './daysRow/DaysRow'
-import EmployeeRow from './employeeRow/EmployeeRow'
-import React, { useEffect, useState, Fragment } from 'react'
-import ShiftTypeStatisticsContainer from './shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer'
 import axios from 'axios'
 import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
-import { daysToArray } from '../../util/daysToArray'
-import { getEmployeeData } from '../../features/employees/employeeSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { getDutiesDataByMonth } from '../../features/duties/dutySlice'
+import { daysToArray } from '../../util/daysToArray'
+import DateSelector from './dateSelector/DateSelector'
+import DaysRow from './daysRow/DaysRow'
+import './DutyOverview.scss'
+import EmployeeRow from './employeeRow/EmployeeRow'
 
-function Duties() {
+function DutyOverview() {
   moment.locale('de')
 
   const [dateSelectorData, setDateSelector] = useState({
     month: `${moment().format('M')}`,
     year: `${moment().format('YYYY')}`,
   })
-
-  const [allDuties, setAllDuties] = useState([])
+  const { dutiesData } = useSelector((store) => store.duties)
+  const { employeesData } = useSelector((store) => store.employees)
   const [allWishes, setAllWishes] = useState([])
   const dispatch = useDispatch()
-
   const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
-  // useEffect(() => {
-  //   dispatch(getEmployeeData())
-  // }, [])
-
-  const { employeesData } = useSelector((store) => store.employees)
+  useEffect(() => {
+    dispatch(getDutiesDataByMonth(dateSelectorData))
+  }, [dateSelectorData])
 
   useEffect(() => {
     async function getData() {
@@ -40,18 +36,8 @@ function Duties() {
     getData()
   }, [])
 
-  useEffect(() => {
-    ;(async () => {
-      const { data } = await axios.get(
-        `http://127.0.0.1:8000/api/duties/${dateSelectorData.year}/${dateSelectorData.month}`,
-        {}
-      )
-      setAllDuties(data.duties)
-    })()
-  }, [dateSelectorData])
-
   return (
-    <Fragment>
+    <>
       <Container key="container">
         <div className="dateRow">
           <div className="dateSelector">
@@ -83,7 +69,7 @@ function Duties() {
                 employeeData={employee}
                 dateSelectorData={dateSelectorData}
                 days={monthlyDays}
-                employeeDuties={allDuties.filter(
+                employeeDuties={dutiesData.filter(
                   (d) => d.employee_id === employee.id
                 )}
                 employeeWishes={allWishes.filter(
@@ -93,7 +79,7 @@ function Duties() {
             ))}
         </div>
         <div className="separator" />
-        <ShiftTypeStatisticsContainer
+        {/* <ShiftTypeStatisticsContainer
           key={
             'ShiftTypeStatisticsContainer: ' +
             dateSelectorData.year +
@@ -101,11 +87,11 @@ function Duties() {
           }
           days={monthlyDays}
           dateSelectorData={dateSelectorData}
-          allDuties={allDuties}
-        />
+          allDuties={dutiesData}
+        /> */}
       </Container>
-    </Fragment>
+    </>
   )
 }
 
-export default Duties
+export default DutyOverview
