@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Duty extends Model
 {
@@ -16,6 +17,8 @@ class Duty extends Model
         'day',
         'month',
         'year',
+        'wish_injury',
+        'preference_injury',
         'creation_date'
     ];
 

@@ -20,6 +20,8 @@ class CreateDutiesTable extends Migration
             $table->unsignedInteger('day');
             $table->unsignedInteger('month');
             $table->unsignedInteger('year');
+            $table->boolean('wish_injury');
+            $table->boolean('preference_injury');
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees');

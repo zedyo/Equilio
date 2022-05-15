@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
-import { postDuty } from '../../../../features/duties/dutySlice'
+import { deleteDuty, postDuty } from '../../../../features/duties/dutySlice'
 import style from './DutyCell.scss'
 
 function DutyCell(props) {
@@ -13,11 +13,12 @@ function DutyCell(props) {
 
   //TODO: CSS Hervorhebung, falls Wish und Duty nicht übereinstimmen
   //TODO: Etwas helleres grau eines Wunsches
+  //TODO: Error Handling bei Inputeingabe
 
   if (employeeDuty) {
-    let duty = employeeDuty.find((d) => d.day === props.day)
+    const duty = employeeDuty.find((d) => d.day === props.day)
 
-    let [inputDutyValue, setInputDuty] = useState('-')
+    let [inputDutyValue, setInputDuty] = useState('')
 
     useEffect(() => {
       duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('')
@@ -69,20 +70,39 @@ function DutyCell(props) {
     return (
       <input
         style={inputColor}
-        className={wish !== undefined ? 'wishForm' : CellStyle}
+        className={
+          duty === undefined
+            ? CellStyle
+            : duty.wish_injury == true
+            ? 'wishInjury'
+            : duty.preference_injury == true
+            ? 'preferenceInjury'
+            : wish !== undefined
+            ? 'wishForm'
+            : CellStyle
+        }
         value={inputDutyValue}
         placeholder={wish !== undefined ? wish.shift.abrv : ''}
         onChange={(e) => setInputDuty(e.target.value)}
         onBlur={() =>
-          dispatch(
-            postDuty({
-              value: inputDutyValue,
-              day: props.day,
-              month: props.month,
-              year: props.year,
-              employee_id: props.employeeId,
-            })
-          )
+          inputDutyValue == ''
+            ? dispatch(
+                deleteDuty({
+                  day: props.day,
+                  month: props.month,
+                  year: props.year,
+                  employee_id: props.employeeId,
+                })
+              )
+            : dispatch(
+                postDuty({
+                  value: inputDutyValue,
+                  day: props.day,
+                  month: props.month,
+                  year: props.year,
+                  employee_id: props.employeeId,
+                })
+              )
         }
         // onBlur={(e) =>
         //   sendDuty(

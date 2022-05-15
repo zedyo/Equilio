@@ -26,6 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::patch('/duty', [DutyController::class, 'update']);
+Route::post('/duty', [DutyController::class, 'delete']);
+
 Route::get('/duties/{year}/{month}/', [DutyController::class, 'getAllDutiesData'])->name('getAllDutiesData');
 Route::get('/duties/{year}/{month}/{employee_id}', [DutyController::class, 'getDutiesData'])->name('getDutiesData');
 Route::get('/duties', [DutyController::class, 'overview'])->name('overview');

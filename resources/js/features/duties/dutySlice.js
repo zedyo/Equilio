@@ -42,6 +42,20 @@ export const postDuty = createAsyncThunk(
   }
 )
 
+export const deleteDuty = createAsyncThunk(
+  'duties/deleteDuty',
+  async (dutyData, thunkAPI) => {
+    try {
+      const { data } = await axios.post(`http://127.0.0.1:8000/api/duty/`, {
+        dutyData,
+      })
+      return data.deleted_duty
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Fehler beim löschen von der duty')
+    }
+  }
+)
+
 export const postDutiesData = createAsyncThunk(
   'duties/postDutiesData',
   async (dutiesData, thunkAPI) => {
@@ -141,6 +155,21 @@ const dutySlice = createSlice({
       state.hasError = true
     },
 
+    [deleteDuty.pending]: (state) => {
+      state.isLoading = true
+    },
+    [deleteDuty.fulfilled]: (state, { payload }) => {
+      state.isLoading = false
+      state.dutiesData = state.dutiesData.filter(
+        (duty) => duty.id != payload.id
+      )
+    },
+    [deleteDuty.rejected]: (state, { payload }) => {
+      state.errorMessage = payload
+      state.isLoading = false
+      state.hasError = true
+    },
+
     // [postDutiesData.pending]: (state) => {
     //   state.isLoading = true
     // },
@@ -168,20 +197,20 @@ const dutySlice = createSlice({
     //   state.hasError = true
     // },
 
-    // [deleteDutiesData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [deleteDutiesData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   state.dutiesData = state.dutiesData.filter(
-    //     (duty) => duty.id !== payload.id
-    //   )
-    // },
-    // [deleteDutiesData.rejected]: (state, { payload }) => {
-    //   state.errorMessage = payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
+    [deleteDutiesData.pending]: (state) => {
+      state.isLoading = true
+    },
+    [deleteDutiesData.fulfilled]: (state, { payload }) => {
+      state.isLoading = false
+      state.dutiesData = state.dutiesData.filter(
+        (duty) => duty.id !== payload.id
+      )
+    },
+    [deleteDutiesData.rejected]: (state, { payload }) => {
+      state.errorMessage = payload
+      state.isLoading = false
+      state.hasError = true
+    },
   },
 })
 

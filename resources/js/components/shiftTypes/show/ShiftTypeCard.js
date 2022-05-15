@@ -5,7 +5,6 @@ import { deleteShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlic
 
 function ShiftType(props) {
   const dispatch = useDispatch()
-  console.log(props.shiftTypeData)
 
   return (
     <>

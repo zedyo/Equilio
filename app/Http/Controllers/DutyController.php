@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Duty;
 use App\Models\Employee;
 use App\Models\Shift;
+use App\Models\Wish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -55,12 +56,14 @@ class DutyController extends Controller
 
     public function update(Request $request)
     {
-        $shift_check = Shift::where('abrv', $request->dutyData['value']);
-        $request_shift = $shift_check->get();
+        if ($request->dutyData['value'] !== null) {
+            $shift_check = Shift::where('abrv', $request->dutyData['value']);
+            $request_shift = $shift_check->get();
 
-        if ($request_shift->isEmpty()) {
-            return response()->json(['exception' => 'Schicht mit diesem Kürzel nicht gefunden.'], 404);
-            // return 'Keine Schicht mit dieser Abkürzung!';
+            if ($request_shift->isEmpty()) {
+                return response()->json(['exception' => 'Schicht mit diesem Kürzel nicht gefunden.'], 404);
+                // return 'Keine Schicht mit dieser Abkürzung!';
+            }
         }
 
         $duty_check = Duty::where('employee_id', $request->dutyData['employee_id']);
@@ -78,6 +81,20 @@ class DutyController extends Controller
             $new_duty->day = $request->dutyData['day'];
             $new_duty->month = $request->dutyData['month'];
             $new_duty->year = $request->dutyData['year'];
+
+            $wish_check = Wish::where('employee_id', $request->dutyData['employee_id']);
+            $wish_check->where('day', $request->dutyData['day']);
+            $wish_check->where('month', $request->dutyData['month']);
+            $wish_check->where('year', $request->dutyData['year']);
+            $wish = $wish_check->get();
+
+            if ($wish->isEmpty()) {
+                $new_duty->wish_injury = false;
+            } else {
+                $new_duty->wish_injury = true;
+            }
+
+            $new_duty->preference_injury = false;
 
             $new_duty->save();
 
@@ -110,5 +127,25 @@ class DutyController extends Controller
         $duties = $duties->where('shift.shift_type_id', $shift_type_id);
 
         return ['duties' => $duties];
+    }
+
+    public function delete(Request $request, Duty $duty)
+    {
+        // Log::debug('DASDASDASD');
+        // Log::debug($request);
+
+
+        $duty_check = Duty::where('employee_id', $request->dutyData['employee_id']);
+        $duty_check->where('day', $request->dutyData['day']);
+        $duty_check->where('month', $request->dutyData['month']);
+        $duty_check->where('year', $request->dutyData['year']);
+
+        $deleted_duty = $duty_check->first();
+
+
+        $duty_check->delete();
+
+
+        return ['deleted_duty' => $deleted_duty];
     }
 }
