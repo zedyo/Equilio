@@ -39,32 +39,32 @@ function DutyCell(props) {
       color: color,
     }
 
-    async function sendDuty(value, day, month, year, employee_id) {
-      if (value !== '') {
-        try {
-          const { data } = await axios.patch(
-            `http://127.0.0.1:8000/api/duty/`,
-            {
-              value,
-              day,
-              month,
-              year,
-              employee_id,
-            }
-          )
+    // async function sendDuty(value, day, month, year, employee_id) {
+    //   if (value !== '') {
+    //     try {
+    //       const { data } = await axios.patch(
+    //         `http://127.0.0.1:8000/api/duty/`,
+    //         {
+    //           value,
+    //           day,
+    //           month,
+    //           year,
+    //           employee_id,
+    //         }
+    //       )
 
-          const hex = data.new_duty.shift.color_hex
+    //       const hex = data.new_duty.shift.color_hex
 
-          if (data.length !== 0 || hex) {
-            setDutyColor(data.new_duty.shift.color_hex)
-            setCellStyle('inputDutyForm')
-          }
-        } catch (error) {
-          setCellStyle('error')
-          setInputDuty('')
-        }
-      }
-    }
+    //       if (data.length !== 0 || hex) {
+    //         setDutyColor(data.new_duty.shift.color_hex)
+    //         setCellStyle('inputDutyForm')
+    //       }
+    //     } catch (error) {
+    //       setCellStyle('error')
+    //       setInputDuty('')
+    //     }
+    //   }
+    // }
 
     return (
       <input

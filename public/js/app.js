@@ -11294,19 +11294,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../features/duties/dutySlice */ "./resources/js/features/duties/dutySlice.js");
-/* harmony import */ var _DutyCell_scss__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DutyCell.scss */ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../features/duties/dutySlice */ "./resources/js/features/duties/dutySlice.js");
+/* harmony import */ var _DutyCell_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DutyCell.scss */ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -11327,91 +11319,36 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 function DutyCell(props) {
   var employeeDuty = props.employeeDuty;
-  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   var wish = props.employeeWish.find(function (d) {
     return d.day == props.day && d.month == props.month;
   }); //TODO: CSS Hervorhebung, falls Wish und Duty nicht übereinstimmen
   //TODO: Etwas helleres grau eines Wunsches
 
   if (employeeDuty) {
-    var sendDuty = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(value, day, month, year, employee_id) {
-        var _yield$axios$patch, data, hex;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                if (!(value !== '')) {
-                  _context.next = 14;
-                  break;
-                }
-
-                _context.prev = 1;
-                _context.next = 4;
-                return axios.patch("http://127.0.0.1:8000/api/duty/", {
-                  value: value,
-                  day: day,
-                  month: month,
-                  year: year,
-                  employee_id: employee_id
-                });
-
-              case 4:
-                _yield$axios$patch = _context.sent;
-                data = _yield$axios$patch.data;
-                hex = data.new_duty.shift.color_hex;
-
-                if (data.length !== 0 || hex) {
-                  setDutyColor(data.new_duty.shift.color_hex);
-                  setCellStyle('inputDutyForm');
-                }
-
-                _context.next = 14;
-                break;
-
-              case 10:
-                _context.prev = 10;
-                _context.t0 = _context["catch"](1);
-                setCellStyle('error');
-                setInputDuty('');
-
-              case 14:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[1, 10]]);
-      }));
-
-      return function sendDuty(_x, _x2, _x3, _x4, _x5) {
-        return _ref.apply(this, arguments);
-      };
-    }();
-
     var duty = employeeDuty.find(function (d) {
       return d.day === props.day;
     });
 
-    var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('-'),
+    var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('-'),
         _useState2 = _slicedToArray(_useState, 2),
         inputDutyValue = _useState2[0],
         setInputDuty = _useState2[1];
 
-    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
       duty !== undefined ? setInputDuty(duty.shift.abrv) : setInputDuty('');
     }, [employeeDuty]);
 
-    var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('black'),
+    var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('black'),
         _useState4 = _slicedToArray(_useState3, 2),
         DutyColor = _useState4[0],
         setDutyColor = _useState4[1];
 
-    (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+    (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
       duty !== undefined ? setDutyColor(duty.shift.color_hex) : setDutyColor('black');
     }, [employeeDuty]);
 
-    var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)('inputDutyForm'),
+    var _useState5 = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)('inputDutyForm'),
         _useState6 = _slicedToArray(_useState5, 2),
         CellStyle = _useState6[0],
         setCellStyle = _useState6[1];
@@ -11419,8 +11356,32 @@ function DutyCell(props) {
     var color = DutyColor;
     var inputColor = {
       color: color
-    };
-    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("input", {
+    }; // async function sendDuty(value, day, month, year, employee_id) {
+    //   if (value !== '') {
+    //     try {
+    //       const { data } = await axios.patch(
+    //         `http://127.0.0.1:8000/api/duty/`,
+    //         {
+    //           value,
+    //           day,
+    //           month,
+    //           year,
+    //           employee_id,
+    //         }
+    //       )
+    //       const hex = data.new_duty.shift.color_hex
+    //       if (data.length !== 0 || hex) {
+    //         setDutyColor(data.new_duty.shift.color_hex)
+    //         setCellStyle('inputDutyForm')
+    //       }
+    //     } catch (error) {
+    //       setCellStyle('error')
+    //       setInputDuty('')
+    //     }
+    //   }
+    // }
+
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
       style: inputColor,
       className: CellStyle,
       value: inputDutyValue,
@@ -11429,7 +11390,7 @@ function DutyCell(props) {
         return setInputDuty(e.target.value);
       },
       onBlur: function onBlur() {
-        return dispatch((0,_features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_3__.postDuty)({
+        return dispatch((0,_features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_2__.postDuty)({
           value: inputDutyValue,
           day: props.day,
           month: props.month,
@@ -11449,7 +11410,7 @@ function DutyCell(props) {
     });
   }
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
     children: "Loading..."
   });
 }
@@ -15356,7 +15317,7 @@ function Router() {
     dispatch((0,_features_qualifications_qualificationSlice__WEBPACK_IMPORTED_MODULE_19__.getQualificationsData)());
     dispatch((0,_features_shifts_shiftSlice__WEBPACK_IMPORTED_MODULE_20__.getShiftsData)());
     dispatch((0,_features_shiftTypes_shiftTypeSlice__WEBPACK_IMPORTED_MODULE_21__.getShiftTypesData)());
-    dispatch(_features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_22__.getDutiesData);
+    dispatch((0,_features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_22__.getDutiesData)());
   }, []);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_23__.jsx)("div", {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_23__.jsxs)(react_router_dom__WEBPACK_IMPORTED_MODULE_24__.BrowserRouter, {
@@ -20644,7 +20605,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".day {\n  font-size: 1.1rem;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.weekendDay {\n  font-size: 1.1rem;\n  font-weight: 100;\n  color: #ababab;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.holiday {\n  font-size: 1.1rem;\n  font-weight: 100;\n  color: #ff2d2d;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".day {\n  font-size: 1.1rem;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.weekendDay {\n  font-size: 1.1rem;\n  color: #ababab;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.holiday {\n  font-size: 1.1rem;\n  color: #ff2d2d;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
