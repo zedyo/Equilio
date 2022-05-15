@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { postDuty } from '../../../../features/duties/dutySlice'
-import './DutyCell.scss'
+import style from './DutyCell.scss'
 
 function DutyCell(props) {
   let employeeDuty = props.employeeDuty
@@ -69,7 +69,7 @@ function DutyCell(props) {
     return (
       <input
         style={inputColor}
-        className={CellStyle}
+        className={wish !== undefined ? 'wishForm' : CellStyle}
         value={inputDutyValue}
         placeholder={wish !== undefined ? wish.shift.abrv : ''}
         onChange={(e) => setInputDuty(e.target.value)}

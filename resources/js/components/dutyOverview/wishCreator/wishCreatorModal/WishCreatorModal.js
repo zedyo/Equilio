@@ -1,25 +1,16 @@
 import React, { useState } from 'react'
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { postWishesData } from '../../../../features/wishes/wishSlice'
 
 function WishCreatorModal(props) {
+  const dispatch = useDispatch()
   const [wishData, setWish] = useState({})
   const { employeesData } = useSelector((store) => store.employees)
   const { shiftsData } = useSelector((store) => store.shifts)
 
   function emptyWishState() {
     setWish({})
-  }
-
-  async function submitWish() {
-    try {
-      console.log(wishData)
-      await axios.post(`http://127.0.0.1:8000/api/wish`, {
-        wishData,
-      })
-    } catch (error) {
-      console.log(error.message)
-    }
   }
 
   //TODO: WunschModal hübscher gestalten
@@ -69,21 +60,6 @@ function WishCreatorModal(props) {
               </Col>
               <Col md>
                 <FloatingLabel controlId="floatingSelect" label="Wunschschicht">
-                  {/* <Form.Select
-                    aria-label="Floating label select example"
-                    onChange={(e) =>
-                      e.target.value !== null &&
-                      setWish({
-                        ...wishData,
-                        shift_id: parseInt(e.target.value),
-                      })
-                    }
-                  >
-                    <option value={null}>Bitte Wunschschicht auswählen</option>
-                    <option value={1}>F1</option>
-                    <option value={2}>F2</option>
-                    <option value={3}>S1</option>
-                  </Form.Select> */}
                   <Form.Select
                     aria-label="Floating label select example"
                     onChange={(e) =>
@@ -179,10 +155,7 @@ function WishCreatorModal(props) {
           </Button>
           <Button
             variant="primary"
-            onClick={
-              //TODO: Braucht man das onHide im Wunschmodal?
-              /*props.onHide*/ submitWish
-            }
+            onClick={() => dispatch(postWishesData(wishData))}
             type="submit"
           >
             Speichern

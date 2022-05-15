@@ -1,4 +1,3 @@
-import axios from 'axios'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { Container } from 'react-bootstrap'
@@ -19,22 +18,13 @@ function DutyOverview() {
   })
   const { dutiesData } = useSelector((store) => store.duties)
   const { employeesData } = useSelector((store) => store.employees)
-  const [allWishes, setAllWishes] = useState([])
+  const { wishesData } = useSelector((store) => store.wishes)
   const dispatch = useDispatch()
   const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
   useEffect(() => {
     dispatch(getDutiesDataByMonth(dateSelectorData))
   }, [dateSelectorData])
-
-  useEffect(() => {
-    async function getData() {
-      const { data } = await axios.get('http://127.0.0.1:8000/api/wishes/')
-      setAllWishes(data.wishes)
-      //TODO: Abholen für den jeweiligen Monat/Jahr direkt?
-    }
-    getData()
-  }, [])
 
   return (
     <>
@@ -72,7 +62,7 @@ function DutyOverview() {
                 employeeDuties={dutiesData.filter(
                   (d) => d.employee_id === employee.id
                 )}
-                employeeWishes={allWishes.filter(
+                employeeWishes={wishesData.filter(
                   (d) => d.employee_id === employee.id
                 )}
               />

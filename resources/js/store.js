@@ -4,6 +4,7 @@ import dutySlice from './features/duties/dutySlice'
 import shiftsSlice from './features/shifts/shiftSlice'
 import qualificationSlice from './features/qualifications/qualificationSlice'
 import shiftTypeSlice from './features/shiftTypes/shiftTypeSlice'
+import wishSlice from './features/wishes/wishSlice'
 
 export const store = configureStore({
   reducer: {
@@ -12,5 +13,6 @@ export const store = configureStore({
     duties: dutySlice,
     shifts: shiftsSlice,
     shiftTypes: shiftTypeSlice,
+    wishes: wishSlice,
   },
 })

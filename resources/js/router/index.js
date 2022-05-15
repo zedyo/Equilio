@@ -22,6 +22,7 @@ import { getQualificationsData } from '../features/qualifications/qualificationS
 import { getShiftsData } from '../features/shifts/shiftSlice'
 import { getShiftTypesData } from '../features/shiftTypes/shiftTypeSlice'
 import { getDutiesData } from '../features/duties/dutySlice'
+import { getWishesData } from '../features/wishes/wishSlice'
 
 function Router() {
   const dispatch = useDispatch()
@@ -31,7 +32,8 @@ function Router() {
     dispatch(getQualificationsData())
     dispatch(getShiftsData())
     dispatch(getShiftTypesData())
-    dispatch(getDutiesData)
+    dispatch(getDutiesData())
+    dispatch(getWishesData())
   }, [])
 
   return (
