@@ -32,7 +32,6 @@ export const postDuty = createAsyncThunk(
   'duties/postDuty',
   async (dutyData, thunkAPI) => {
     try {
-      console.log(dutyData)
       const { data } = await axios.patch(`http://127.0.0.1:8000/api/duty/`, {
         dutyData,
       })

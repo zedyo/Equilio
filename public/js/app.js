@@ -14052,28 +14052,27 @@ var postDuty = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk
         switch (_context3.prev = _context3.next) {
           case 0:
             _context3.prev = 0;
-            console.log(dutyData);
-            _context3.next = 4;
+            _context3.next = 3;
             return axios.patch("http://127.0.0.1:8000/api/duty/", {
               dutyData: dutyData
             });
 
-          case 4:
+          case 3:
             _yield$axios$patch = _context3.sent;
             data = _yield$axios$patch.data;
             return _context3.abrupt("return", data.new_duty);
 
-          case 9:
-            _context3.prev = 9;
+          case 8:
+            _context3.prev = 8;
             _context3.t0 = _context3["catch"](0);
             return _context3.abrupt("return", thunkAPI.rejectWithValue('Fehler beim abholen von duties'));
 
-          case 12:
+          case 11:
           case "end":
             return _context3.stop();
         }
       }
-    }, _callee3, null, [[0, 9]]);
+    }, _callee3, null, [[0, 8]]);
   }));
 
   return function (_x5, _x6) {
