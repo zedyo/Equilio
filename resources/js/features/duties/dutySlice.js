@@ -35,7 +35,7 @@ export const postDuty = createAsyncThunk(
       const { data } = await axios.patch(`http://127.0.0.1:8000/api/duty/`, {
         dutyData,
       })
-      return data.new_duty
+      return data != null && data.new_duty
     } catch (error) {
       return thunkAPI.rejectWithValue('Fehler beim abholen von duties')
     }
@@ -160,9 +160,11 @@ const dutySlice = createSlice({
     },
     [deleteDuty.fulfilled]: (state, { payload }) => {
       state.isLoading = false
-      state.dutiesData = state.dutiesData.filter(
-        (duty) => duty.id != payload.id
-      )
+      if (payload != null) {
+        state.dutiesData = state.dutiesData.filter(
+          (duty) => duty.id != payload.id
+        )
+      }
     },
     [deleteDuty.rejected]: (state, { payload }) => {
       state.errorMessage = payload

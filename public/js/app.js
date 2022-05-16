@@ -13981,7 +13981,7 @@ var postDuty = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk
           case 3:
             _yield$axios$patch = _context3.sent;
             data = _yield$axios$patch.data;
-            return _context3.abrupt("return", data.new_duty);
+            return _context3.abrupt("return", data != null && data.new_duty);
 
           case 8:
             _context3.prev = 8;
@@ -14190,9 +14190,12 @@ var dutySlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   }), _defineProperty(_extraReducers, deleteDuty.fulfilled, function (state, _ref13) {
     var payload = _ref13.payload;
     state.isLoading = false;
-    state.dutiesData = state.dutiesData.filter(function (duty) {
-      return duty.id != payload.id;
-    });
+
+    if (payload != null) {
+      state.dutiesData = state.dutiesData.filter(function (duty) {
+        return duty.id != payload.id;
+      });
+    }
   }), _defineProperty(_extraReducers, deleteDuty.rejected, function (state, _ref14) {
     var payload = _ref14.payload;
     state.errorMessage = payload;

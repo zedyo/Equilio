@@ -70,9 +70,7 @@ class DutyController extends Controller
         $duty_check->where('day', $request->dutyData['day']);
         $duty_check->where('month', $request->dutyData['month']);
         $duty_check->where('year', $request->dutyData['year']);
-
         $duty = $duty_check->get();
-
 
         if ($duty->isEmpty()) {
             $new_duty = new Duty();
@@ -95,24 +93,38 @@ class DutyController extends Controller
             }
 
             $new_duty->preference_injury = false;
-
             $new_duty->save();
 
             $duty = Duty::with('shift')->where('id', $new_duty->id)->first();
 
             return ['new_duty' => $duty];
-        } else if ($duty[0]->shift_id !== $request_shift[0]->id) {
+            // NEUE DUTY ANGELEGT
+        } else if ($duty[0]->shift_id != $request_shift[0]->id) {
             $update_duty = Duty::where('id', $duty[0]->id)->first();
             $update_duty->shift_id = $request_shift[0]->id;
 
-            $update_duty->save();
+            $wish_check = Wish::where('employee_id', $duty[0]->employee_id);
+            $wish_check->where('day', $duty[0]->day);
+            $wish_check->where('month', $duty[0]->month);
+            $wish_check->where('year', $duty[0]->year);
+            $wish = $wish_check->first();
 
+            if ($wish != null) {
+                if ($wish->shift_id === $update_duty->shift_id) {
+                    $update_duty->wish_injury = false;
+                } else {
+                    $update_duty->wish_injury = true;
+                }
+            }
+
+            $update_duty->save();
             $duty = Duty::with('shift')->where('id', $update_duty->id)->first();
 
             return ['new_duty' => $duty];
-            // return 'Eintrag verändert';
+            // DUTY BEARBEITET;
         } else {
-            // return 'Keine Änderung';
+            return ['new_duty' => $duty];
+            // KEINE ÄNDERUNG';
         }
     }
 
