@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Duty;
 use App\Models\Wish;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -58,9 +59,22 @@ class WishController extends Controller
 
             $new_wish->save();
 
+            $duty_check = Duty::where('employee_id', $request->wishData['employee_id']);
+            $duty_check->where('day', $request->wishData['day']);
+            $duty_check->where('month', $request->wishData['month']);
+            $duty_check->where('year', $request->wishData['year']);
+            $duty = $duty_check->get();
+
+            if ($duty->isEmpty() == false) {
+                $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
+                $update_duty_wish->wish_injury = 1;
+                $update_duty_wish->save();
+            }
+
             $wish = Wish::with('shift')->where('id', $new_wish->id)->first();
 
-            //TODO: Saubere Responses in alle Controllern
+            return response()->json(['new_wish' => $wish], 201);
+        } else {
             return response()->json(['new_wish' => $wish], 201);
         }
     }
@@ -119,6 +133,18 @@ class WishController extends Controller
     public function destroy(Wish $wish)
     {
         $deleted_wish = $wish;
+
+        $duty_check = Duty::where('employee_id', $wish->employee_id);
+        $duty_check->where('day', $wish->day);
+        $duty_check->where('month', $wish->month);
+        $duty_check->where('year', $wish->year);
+        $duty = $duty_check->get();
+
+        if ($duty->isEmpty() == false) {
+            $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
+            $update_duty_wish->wish_injury = 0;
+            $update_duty_wish->save();
+        }
 
         $wish->delete();
 

@@ -87,9 +87,11 @@ class DutyController extends Controller
             $wish = $wish_check->get();
 
             if ($wish->isEmpty()) {
-                $new_duty->wish_injury = false;
+                $new_duty->wish_injury = 0;
+            } else if ($wish[0]->shift_id == $request_shift[0]->id) {
+                $new_duty->wish_injury = 0;
             } else {
-                $new_duty->wish_injury = true;
+                $new_duty->wish_injury = 1;
             }
 
             $new_duty->preference_injury = false;
