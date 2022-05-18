@@ -65,9 +65,13 @@ class WishController extends Controller
             $duty_check->where('year', $request->wishData['year']);
             $duty = $duty_check->get();
 
-            if ($duty->isEmpty() == false) {
+            if ($duty->isEmpty() == false && ($duty[0]->shift_id != $request->wishData['shift_id'])) {
                 $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
                 $update_duty_wish->wish_injury = 1;
+                $update_duty_wish->save();
+            } else {
+                $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
+                $update_duty_wish->wish_injury = 0;
                 $update_duty_wish->save();
             }
 
