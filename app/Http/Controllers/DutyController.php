@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Duty;
 use App\Models\Employee;
+use App\Models\Preference;
 use App\Models\Shift;
 use App\Models\Wish;
 use Illuminate\Http\Request;
@@ -73,6 +74,7 @@ class DutyController extends Controller
         $duty = $duty_check->get();
 
         if ($duty->isEmpty()) {
+            Log::debug($request->dutyData);
             $new_duty = new Duty();
             $new_duty->employee_id = $request->dutyData['employee_id'];
             $new_duty->shift_id = $request_shift[0]->id;
@@ -86,6 +88,10 @@ class DutyController extends Controller
             $wish_check->where('year', $request->dutyData['year']);
             $wish = $wish_check->get();
 
+            $preference_check = Preference::where('employee_id', $request->dutyData['employee_id']);
+            $preference_check->where('shift_id', $request_shift[0]->id);
+            $preference = $preference_check->get();
+
             if ($wish->isEmpty()) {
                 $new_duty->wish_injury = 0;
             } else if ($wish[0]->shift_id == $request_shift[0]->id) {
@@ -94,7 +100,15 @@ class DutyController extends Controller
                 $new_duty->wish_injury = 1;
             }
 
-            $new_duty->preference_injury = false;
+            if ($preference->isEmpty()) {
+                $new_duty->preference_injury = 1;
+            } else if ($preference[0]->shift_id == $request_shift[0]->id) {
+                $new_duty->preference_injury = 0;
+            } else {
+                $new_duty->preference_injury = 1;
+            }
+
+            // $new_duty->preference_injury = false;
             $new_duty->save();
 
             $duty = Duty::with('shift')->where('id', $new_duty->id)->first();
@@ -117,6 +131,18 @@ class DutyController extends Controller
                 } else {
                     $update_duty->wish_injury = true;
                 }
+            }
+
+            $preference_check = Preference::where('employee_id', $request->dutyData['employee_id']);
+            $preference_check->where('shift_id', $request_shift[0]->id);
+            $preference = $preference_check->get();
+
+            if ($preference->isEmpty()) {
+                $update_duty->preference_injury = 1;
+            } else if ($preference[0]->shift_id == $request_shift[0]->id) {
+                $update_duty->preference_injury = 0;
+            } else {
+                $update_duty->preference_injury = 1;
             }
 
             $update_duty->save();

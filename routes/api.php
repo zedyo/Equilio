@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\PreferenceController;
 use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
@@ -37,9 +38,13 @@ Route::resources([
     'employees' => EmployeeController::class,
     'shifts' => ShiftController::class,
     'shift_types' => ShiftTypeController::class,
-    'wishes' => WishController::class
+    'wishes' => WishController::class,
+    // 'preferences' => PreferenceController::class
 ]);
 
 // Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');
 Route::post('/wish', [WishController::class, 'create']);
 Route::get('/wishesByEmployee/{employee_id}', [WishController::class, 'getEmployeeWishData']);
+Route::post('/preference', [PreferenceController::class, 'create']);
+Route::patch('/preference', [PreferenceController::class, 'delete']);
+// Route::get('/preferencesByEmployee/{employee_id}', [WishController::class, 'getEmployeePreferenceData']);

@@ -23,6 +23,7 @@ import { getShiftsData } from '../features/shifts/shiftSlice'
 import { getShiftTypesData } from '../features/shiftTypes/shiftTypeSlice'
 import { getDutiesData } from '../features/duties/dutySlice'
 import { getWishesData } from '../features/wishes/wishSlice'
+import { getPreferenceData } from '../features/preferences/preferenceSlice'
 
 function Router() {
   const dispatch = useDispatch()
@@ -34,6 +35,7 @@ function Router() {
     dispatch(getShiftTypesData())
     dispatch(getDutiesData())
     dispatch(getWishesData())
+    dispatch(getPreferenceData())
   }, [])
 
   return (

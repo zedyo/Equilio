@@ -7,9 +7,11 @@ import {
   Container,
   Card,
   Table,
+  Stack,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import Preferences from './preferences/Preferences'
 import WishColumn from './wishColumn/WishColumn'
 
 function EmployeeOverview() {
@@ -41,6 +43,7 @@ function EmployeeOverview() {
     getWishesData()
   }, [])
 
+  //TODO: Auf Redux umbauen
   async function destroyWish(deletedWishId) {
     try {
       const deleted_data = await axios.delete(
@@ -64,75 +67,95 @@ function EmployeeOverview() {
         <Card>
           <Card.Header>Bearbeitung von Mitarbeiterdaten</Card.Header>
           <Card.Body>
-            <Col md>
-              <FloatingLabel controlId="floatingInputGrid" label="ID">
-                <Form.Control
-                  type="text"
-                  placeholder="Klara"
-                  value={employeeData.id}
-                  disabled
-                />
-              </FloatingLabel>
-            </Col>
-            <Row className="g-2">
+            <Stack gap={2}>
               <Col md>
-                <FloatingLabel controlId="floatingInputGrid" label="Vorname">
+                <FloatingLabel controlId="floatingInputGrid" label="ID">
                   <Form.Control
                     type="text"
                     placeholder="Klara"
-                    value={employeeData.first_name}
+                    value={employeeData.id}
                     disabled
                   />
                 </FloatingLabel>
               </Col>
-              <Col md>
-                <FloatingLabel controlId="floatingInputGrid" label="Nachname">
-                  <Form.Control
-                    type="text"
-                    placeholder="Musterstein"
-                    value={employeeData.last_name}
-                    disabled
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-            <Row className="g-2">
-              <Col md>
-                <FloatingLabel controlId="floatingInputGrid" label="Irgendwas">
-                  <Form.Control type="text" placeholder="Dings" disabled />
-                </FloatingLabel>
-              </Col>
-              <Col md>
-                <FloatingLabel
-                  controlId="floatingInputGrid"
-                  label="Qualification"
-                >
-                  <Form.Control
-                    type="text"
-                    value={employeeData.qualification.description}
-                    placeholder="Dings"
-                    disabled
-                  />
-                </FloatingLabel>
-              </Col>
-            </Row>
-            <Table>
-              <thead>
-                <tr>
-                  <th>Datum</th>
-                  <th>Dienst</th>
-                </tr>
-              </thead>
-              <tbody>
-                {wishesData.map((wishObject) => (
-                  <WishColumn
-                    key={wishObject.id}
-                    wish={wishObject}
-                    deleteWish={destroyWish}
-                  />
-                ))}
-              </tbody>
-            </Table>
+              <Row className="g-2">
+                <Col md>
+                  <FloatingLabel controlId="floatingInputGrid" label="Vorname">
+                    <Form.Control
+                      type="text"
+                      placeholder="Klara"
+                      value={employeeData.first_name}
+                      disabled
+                    />
+                  </FloatingLabel>
+                </Col>
+                <Col md>
+                  <FloatingLabel controlId="floatingInputGrid" label="Nachname">
+                    <Form.Control
+                      type="text"
+                      placeholder="Musterstein"
+                      value={employeeData.last_name}
+                      disabled
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
+              <Row className="g-2">
+                <Col md>
+                  <FloatingLabel
+                    controlId="floatingInputGrid"
+                    label="Irgendwas"
+                  >
+                    <Form.Control type="text" placeholder="Dings" disabled />
+                  </FloatingLabel>
+                </Col>
+                <Col md>
+                  <FloatingLabel
+                    controlId="floatingInputGrid"
+                    label="Qualification"
+                  >
+                    <Form.Control
+                      type="text"
+                      value={employeeData.qualification.description}
+                      placeholder="Dings"
+                      disabled
+                    />
+                  </FloatingLabel>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  {/* <Card> */}
+                  <Card.Body>
+                    <Card.Title>Dienst Wünsche</Card.Title>
+                    <Table>
+                      <thead>
+                        <tr>
+                          <th>Datum</th>
+                          <th>Dienst</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {wishesData.map((wishObject) => (
+                          <WishColumn
+                            key={wishObject.id}
+                            wish={wishObject}
+                            deleteWish={destroyWish}
+                          />
+                        ))}
+                      </tbody>
+                    </Table>
+                  </Card.Body>
+                  {/* </Card> */}
+                </Col>
+                <Col>
+                  <Card.Body>
+                    <Card.Title>Dienst Präferenzen</Card.Title>
+                    <Preferences employeeId={employee.id} />
+                  </Card.Body>
+                </Col>
+              </Row>
+            </Stack>
           </Card.Body>
         </Card>
       </Container>
