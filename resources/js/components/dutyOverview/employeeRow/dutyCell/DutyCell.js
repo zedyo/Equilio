@@ -11,7 +11,6 @@ function DutyCell(props) {
     (d) => d.day == props.day && d.month == props.month
   )
 
-  //TODO: CSS Hervorhebung, falls Wish und Duty nicht übereinstimmen
   //TODO: Etwas helleres grau eines Wunsches
   //TODO: Error Handling bei Inputeingabe
 
@@ -40,33 +39,6 @@ function DutyCell(props) {
       color: color,
     }
 
-    // async function sendDuty(value, day, month, year, employee_id) {
-    //   if (value !== '') {
-    //     try {
-    //       const { data } = await axios.patch(
-    //         `http://127.0.0.1:8000/api/duty/`,
-    //         {
-    //           value,
-    //           day,
-    //           month,
-    //           year,
-    //           employee_id,
-    //         }
-    //       )
-
-    //       const hex = data.new_duty.shift.color_hex
-
-    //       if (data.length !== 0 || hex) {
-    //         setDutyColor(data.new_duty.shift.color_hex)
-    //         setCellStyle('inputDutyForm')
-    //       }
-    //     } catch (error) {
-    //       setCellStyle('error')
-    //       setInputDuty('')
-    //     }
-    //   }
-    // }
-
     return (
       <input
         style={inputColor}
@@ -75,7 +47,7 @@ function DutyCell(props) {
             ? CellStyle
             : duty.wish_injury == true
             ? 'wishInjury'
-            : duty.preference_injury == true
+            : duty.preference_injury == true && wish == undefined
             ? 'preferenceInjury'
             : wish !== undefined
             ? 'wishForm'
@@ -104,15 +76,6 @@ function DutyCell(props) {
                 })
               )
         }
-        // onBlur={(e) =>
-        //   sendDuty(
-        //     inputDutyValue,
-        //     props.day,
-        //     props.month,
-        //     props.year,
-        //     props.employeeId
-        //   )
-        // }
       />
     )
   }

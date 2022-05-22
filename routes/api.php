@@ -39,7 +39,7 @@ Route::resources([
     'shifts' => ShiftController::class,
     'shift_types' => ShiftTypeController::class,
     'wishes' => WishController::class,
-    // 'preferences' => PreferenceController::class
+    'preferences' => PreferenceController::class
 ]);
 
 // Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');

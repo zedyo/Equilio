@@ -9,9 +9,10 @@ import {
 function Preferences(props) {
   const dispatch = useDispatch()
 
-  const [preferenceData, setPreference] = useState({})
   const { shiftsData } = useSelector((store) => store.shifts)
   const { shiftTypesData } = useSelector((store) => store.shiftTypes)
+  const { preferenceData } = useSelector((store) => store.preferences)
+
   return (
     <>
       <Container fluid>
@@ -37,6 +38,17 @@ function Preferences(props) {
                           )
                           .map((shift) => (
                             <Form.Check
+                              checked={
+                                //TODO: Fehler beim Ändern der Präferenz
+                                preferenceData.find(
+                                  (preference) =>
+                                    preference.employee_id ==
+                                      props.employeeId &&
+                                    preference.shift_id == shift.id
+                                )
+                                  ? true
+                                  : false
+                              }
                               type="switch"
                               id={shift.id}
                               label={shift.abrv}

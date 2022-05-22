@@ -17,7 +17,9 @@ class PreferenceController extends Controller
      */
     public function index()
     {
-        //
+        $preferences = Preference::all();
+
+        return response()->json(['preferences' => $preferences]);
     }
 
     /**
