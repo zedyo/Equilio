@@ -1,21 +1,30 @@
 .employeeContainer {
+
+  height: 2rem;
+  // border: 0.01rem solid rgb(128, 128, 128);
+  // border-radius: 0.2rem;
+
   display: grid;
-  grid-auto-flow: column;
-  grid-template-columns: 11rem 4rem;
+  grid-auto-flow: row;
+  // grid-template-rows: min-content auto;
+  grid-template-rows: auto;
   align-items: center;
+  margin: 0.1rem 1rem 0.1rem 0;
+  padding: 0.1rem;
 
   .employeeName {
+    width: auto;
       align-content: center;
       font-weight: 500;
-      font-size: 1rem;
+      font-size: 0.9rem;
       line-height: 1;
-      margin: 0 0.8rem 0 0;
+      // margin:  0.4rem 0 0 0;
   }
 
   .employeeQualification {
-      font-size: 0.75rem;
+      font-size: 0.6rem;
       font-weight: 100;
       line-height: 1;
-      margin: 0.1rem 0 0.8rem 0;
+      // margin: 0 0 0.4rem 0;
   }
 }

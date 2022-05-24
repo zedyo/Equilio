@@ -11363,7 +11363,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmployeeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss");
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Popover.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/OverlayTrigger.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -11388,21 +11387,16 @@ function EmployeeCell(props) {
   });
 
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      trigger: "hover",
-      placement: "top",
-      overlay: popover,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-        className: "employeeContainer",
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
-            className: "employeeName",
-            children: [props.employeeData.first_name, " ", props.employeeData.last_name]
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-            className: "employeeQualification",
-            children: props.employeeData.qualification.description
-          })]
-        })
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+      className: "employeeContainer",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          className: "employeeName",
+          children: [props.employeeData.first_name, " ", props.employeeData.last_name]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+          className: "employeeQualification",
+          children: props.employeeData.qualification.description
+        })]
       })
     })
   });
@@ -21350,7 +21344,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".employeeContainer {\n  display: grid;\n  grid-auto-flow: column;\n  grid-template-columns: 11rem 4rem;\n  align-items: center;\n}\n.employeeContainer .employeeName {\n  align-content: center;\n  font-weight: 500;\n  font-size: 1rem;\n  line-height: 1;\n  margin: 0 0.8rem 0 0;\n}\n.employeeContainer .employeeQualification {\n  font-size: 0.75rem;\n  font-weight: 100;\n  line-height: 1;\n  margin: 0.1rem 0 0.8rem 0;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".employeeContainer {\n  height: 2rem;\n  display: grid;\n  grid-auto-flow: row;\n  grid-template-rows: auto;\n  align-items: center;\n  margin: 0.1rem 1rem 0.1rem 0;\n  padding: 0.1rem;\n}\n.employeeContainer .employeeName {\n  width: auto;\n  align-content: center;\n  font-weight: 500;\n  font-size: 0.9rem;\n  line-height: 1;\n}\n.employeeContainer .employeeQualification {\n  font-size: 0.6rem;\n  font-weight: 100;\n  line-height: 1;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
