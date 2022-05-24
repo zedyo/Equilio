@@ -1,10 +1,24 @@
-.input {
+
+
+.workingTimeCell {
     height: 2rem;
     width: 4rem;
     border: 0.01rem solid rgb(128, 128, 128);
     border-radius: 0.2rem;
     text-align: center;
-    font-weight: 600;
-    font-size: 1rem;
+
     margin-left: 1rem;
+    display:grid;
+    grid-template-columns: auto;
+
+
+    .sum {
+        font-weight: 600;
+        font-size: 0.7rem;
+    }
+
+    .diff{
+        font-weight: 300;
+        font-size: 0.5rem;
+    }
 }

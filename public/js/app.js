@@ -11230,6 +11230,8 @@ function EmployeeRow(props) {
           }),
           employeeId: props.employeeData.id
         }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
+        employeeId: props.employeeData.id
       })]
     })
   });
@@ -11360,6 +11362,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _EmployeeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./EmployeeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.scss");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Popover.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/OverlayTrigger.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -11367,18 +11371,38 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 function EmployeeCell(props) {
+  var popover = /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"], {
+    id: "popover-basic",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Header, {
+      as: "h3",
+      children: [props.employeeData.first_name, " ", props.employeeData.last_name]
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"].Body, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: "Neuer Wunsch"
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: "Mitarbeiterdetails"
+      })]
+    })]
+  });
+
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-      className: "employeeContainer",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
-          className: "employeeName",
-          children: [props.employeeData.first_name, " ", props.employeeData.last_name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
-          className: "employeeQualification",
-          children: props.employeeData.qualification.description
-        })]
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
+      trigger: "hover",
+      placement: "top",
+      overlay: popover,
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        className: "employeeContainer",
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("p", {
+            className: "employeeName",
+            children: [props.employeeData.first_name, " ", props.employeeData.last_name]
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("p", {
+            className: "employeeQualification",
+            children: props.employeeData.qualification.description
+          })]
+        })
       })
     })
   });
@@ -11400,20 +11424,39 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
 
 function WorkingTime(props) {
-  var value = props.allDuties.map(function (dutyData) {// console.log(dutyData);
-  }); // console.log("Test: " + props.allDuties);
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (store) {
+    return store.duties;
+  }),
+      dutiesData = _useSelector.dutiesData;
 
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("input", {
-    className: "input",
-    value: "--.--",
-    disabled: true
+  var employeeDuties = dutiesData.filter(function (duty) {
+    return duty.employee_id == props.employeeId;
+  });
+  var workingTime = 0.0;
+  employeeDuties.map(function (duty) {
+    return workingTime = workingTime + parseFloat(duty.shift.h_duration);
+  });
+  console.log(workingTime); // console.log("Test: " + props.allDuties);
+
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("div", {
+    className: "workingTimeCell",
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "sum",
+      children: workingTime.toFixed(2)
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
+      className: "diff",
+      children: "123"
+    })]
   });
 }
 
@@ -21331,7 +21374,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".input {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  font-weight: 600;\n  font-size: 1rem;\n  margin-left: 1rem;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".workingTimeCell {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  margin-left: 1rem;\n  display: grid;\n  grid-template-columns: auto;\n}\n.workingTimeCell .sum {\n  font-weight: 600;\n  font-size: 0.7rem;\n}\n.workingTimeCell .diff {\n  font-weight: 300;\n  font-size: 0.5rem;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
