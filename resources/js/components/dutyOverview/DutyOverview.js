@@ -8,6 +8,7 @@ import DateSelector from './dateSelector/DateSelector'
 import DaysRow from './daysRow/DaysRow'
 import './DutyOverview.scss'
 import EmployeeRow from './employeeRow/EmployeeRow'
+import { holidays } from './daysRow/utils/holidays'
 
 function DutyOverview() {
   moment.locale('de')
@@ -25,6 +26,23 @@ function DutyOverview() {
   useEffect(() => {
     dispatch(getDutiesDataByMonth(dateSelectorData))
   }, [dateSelectorData])
+
+  const workingDays = monthlyDays.filter(
+    (day) =>
+      moment(
+        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+      ).format('dd') !== 'So' &&
+      moment(
+        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+      ).format('dd') !== 'Sa' &&
+      holidays.find(
+        (holiday) =>
+          holiday.date ===
+          moment(
+            `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+          ).format('YYYY-MM-DD')
+      ) == undefined
+  )
 
   return (
     <>
@@ -59,6 +77,7 @@ function DutyOverview() {
                 employeeData={employee}
                 dateSelectorData={dateSelectorData}
                 days={monthlyDays}
+                workingDays={workingDays}
                 employeeDuties={dutiesData.filter(
                   (d) => d.employee_id === employee.id
                 )}

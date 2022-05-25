@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import './WorkingTimeCell.scss'
+import { holidays } from '../../daysRow/utils/holidays'
 
 function WorkingTime(props) {
   const { dutiesData } = useSelector((store) => store.duties)
@@ -15,13 +16,13 @@ function WorkingTime(props) {
     (duty) => (workingTime = workingTime + parseFloat(duty.shift.h_duration))
   )
 
-  console.log(workingTime)
+  let workingHours = parseFloat(props.workingDays.length * 8)
+  let diff = workingTime - workingHours
 
-  // console.log("Test: " + props.allDuties);
   return (
     <div className="workingTimeCell">
       <div className="sum">{workingTime.toFixed(2)}</div>
-      <div className="diff">123</div>
+      <div className="diff">{diff.toFixed(2)}</div>
     </div>
   )
 }

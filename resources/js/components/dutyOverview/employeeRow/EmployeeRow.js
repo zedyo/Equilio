@@ -26,7 +26,10 @@ function EmployeeRow(props) {
             employeeId={props.employeeData.id}
           />
         ))}
-        <WorkingTimeCell employeeId={props.employeeData.id} />
+        <WorkingTimeCell
+          employeeId={props.employeeData.id}
+          workingDays={props.workingDays}
+        />
       </div>
     </>
   )
