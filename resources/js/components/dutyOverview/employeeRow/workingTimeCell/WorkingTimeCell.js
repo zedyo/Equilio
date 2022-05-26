@@ -7,7 +7,7 @@ function WorkingTime(props) {
   const { dutiesData } = useSelector((store) => store.duties)
 
   const employeeDuties = dutiesData.filter(
-    (duty) => duty.employee_id == props.employeeId
+    (duty) => duty.employee_id == props.employeeData.id
   )
 
   let workingTime = 0.0
@@ -16,7 +16,10 @@ function WorkingTime(props) {
     (duty) => (workingTime = workingTime + parseFloat(duty.shift.h_duration))
   )
 
-  let workingHours = parseFloat(props.workingDays.length * 8)
+  let workingHours = parseFloat(
+    ((props.workingDays.length * props.employeeData.daily_worktime) / 100) *
+      props.employeeData.employment_ratio
+  )
   let diff = workingTime - workingHours
 
   return (

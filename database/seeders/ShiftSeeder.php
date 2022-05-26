@@ -26,11 +26,27 @@ class ShiftSeeder extends Seeder
         ]);
         $dummyF1Shift->save();
 
+        $dummyF2Shift = new Shift([
+            'abrv' => 'F2',
+            'shift_type_id' => 1,
+            'h_duration' => 6.00,
+            'color_hex' => '#fe7000'
+        ]);
+        $dummyF1Shift->save();
+
         $dummyS1Shift = new Shift([
             'abrv' => 'S1',
             'shift_type_id' => 2,
             'h_duration' => 8.00,
             'color_hex' => '#598ec7'
+        ]);
+        $dummyS1Shift->save();
+
+        $dummyS1Shift = new Shift([
+            'abrv' => 'S2',
+            'shift_type_id' => 2,
+            'h_duration' => 6.00,
+            'color_hex' => '#318ab7'
         ]);
         $dummyS1Shift->save();
 
@@ -43,10 +59,26 @@ class ShiftSeeder extends Seeder
         $dummyFreeShift->save();
 
         $dummyFreeShift = new Shift([
-            'abrv' => '-',
+            'abrv' => 'N2',
+            'shift_type_id' => 3,
+            'h_duration' => 6.00,
+            'color_hex' => '#702092'
+        ]);
+        $dummyFreeShift->save();
+
+        $dummyFreeShift = new Shift([
+            'abrv' => 'U1',
             'shift_type_id' => 4,
-            'h_duration' => 0.00,
-            'color_hex' => '#000000'
+            'h_duration' => 8.00,
+            'color_hex' => '#1ddce2'
+        ]);
+        $dummyFreeShift->save();
+
+        $dummyFreeShift = new Shift([
+            'abrv' => 'K1',
+            'shift_type_id' => 4,
+            'h_duration' => 8.00,
+            'color_hex' => '#a00000'
         ]);
         $dummyFreeShift->save();
     }

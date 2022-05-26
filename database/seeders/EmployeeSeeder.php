@@ -18,7 +18,9 @@ class EmployeeSeeder extends Seeder
         $dummyEmployee = new Employee([
             'qualification_id' => 1,
             'first_name' => 'Vince',
-            'last_name' => 'Testy'
+            'last_name' => 'Testy',
+            'daily_worktime' => 8.00,
+            'employment_ratio' => 100
         ]);
         $dummyEmployee->save();
 

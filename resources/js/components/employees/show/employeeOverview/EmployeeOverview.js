@@ -8,6 +8,7 @@ import {
   Card,
   Table,
   Stack,
+  InputGroup,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -65,19 +66,9 @@ function EmployeeOverview() {
     <Fragment>
       <Container>
         <Card>
-          <Card.Header>Bearbeitung von Mitarbeiterdaten</Card.Header>
+          <Card.Header>Mitarbeiterdetails</Card.Header>
           <Card.Body>
             <Stack gap={2}>
-              <Col md>
-                <FloatingLabel controlId="floatingInputGrid" label="ID">
-                  <Form.Control
-                    type="text"
-                    placeholder="Klara"
-                    value={employeeData.id}
-                    disabled
-                  />
-                </FloatingLabel>
-              </Col>
               <Row className="g-2">
                 <Col md>
                   <FloatingLabel controlId="floatingInputGrid" label="Vorname">
@@ -101,15 +92,33 @@ function EmployeeOverview() {
                 </Col>
               </Row>
               <Row className="g-2">
-                <Col md>
+                <Col md={3}>
                   <FloatingLabel
                     controlId="floatingInputGrid"
-                    label="Irgendwas"
+                    label="Anstellung in %"
                   >
-                    <Form.Control type="text" placeholder="Dings" disabled />
+                    <Form.Control
+                      type="text"
+                      placeholder="Dings"
+                      value={employeeData.employment_ratio}
+                      disabled
+                    />
                   </FloatingLabel>
                 </Col>
-                <Col md>
+                <Col md={3}>
+                  <FloatingLabel
+                    controlId="floatingInputGrid"
+                    label="Tägliche Stundenarbeitszeit"
+                  >
+                    <Form.Control
+                      type="text"
+                      placeholder="Dings"
+                      value={employeeData.daily_worktime}
+                      disabled
+                    />
+                  </FloatingLabel>
+                </Col>
+                <Col md={6}>
                   <FloatingLabel
                     controlId="floatingInputGrid"
                     label="Qualification"

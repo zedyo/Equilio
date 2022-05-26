@@ -15,10 +15,13 @@ class Employee extends Model
     protected $fillable = [
         'first_name',
         'last_name',
-        'qualification_id'
+        'qualification_id',
+        'daily_worktime',
+        'employment_ratio'
     ];
 
-    public function qualification(){
+    public function qualification()
+    {
         return $this->belongsTo(Qualification::class, 'qualification_id');
     }
 
@@ -27,7 +30,8 @@ class Employee extends Model
         return $this->hasMany(Duty::class);
     }
 
-    public function getDiffForHumansAttribute() {
+    public function getDiffForHumansAttribute()
+    {
         $now = Date::now();
         return $this->created_at->diffForHumans($now);
     }

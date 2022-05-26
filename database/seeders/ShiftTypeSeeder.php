@@ -14,10 +14,10 @@ class ShiftTypeSeeder extends Seeder
      */
     public function run()
     {
-        
     }
 
-    public function runForShiftSeeder() {
+    public function runForShiftSeeder()
+    {
         $dummyShiftType1 = new ShiftType([
             'name' => 'Frühschicht'
         ]);
@@ -34,7 +34,7 @@ class ShiftTypeSeeder extends Seeder
         $dummyShiftType3->save();
 
         $dummyShiftType4 = new ShiftType([
-            'name' => 'Frei (unbezahlt)'
+            'name' => 'Frei (bezahlt)'
         ]);
         $dummyShiftType4->save();
     }

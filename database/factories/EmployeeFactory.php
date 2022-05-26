@@ -24,7 +24,9 @@ class EmployeeFactory extends Factory
         return [
             'qualification_id' => 1,
             'first_name' => $this->faker->firstName(),
-            'last_name' => $this->faker->unique()->lastName()
+            'last_name' => $this->faker->unique()->lastName(),
+            'daily_worktime' => 8.00,
+            'employment_ratio' => 100
         ];
     }
 }

@@ -18,6 +18,8 @@ class CreateEmployeesTable extends Migration
             $table->unsignedBigInteger('qualification_id')->comment('Qualification ID of Employe');
             $table->string('first_name');
             $table->string('last_name');
+            $table->decimal('daily_worktime', 10);
+            $table->unsignedBigInteger('employment_ratio');
             $table->timestamps();
             $table->softDeletes();
 

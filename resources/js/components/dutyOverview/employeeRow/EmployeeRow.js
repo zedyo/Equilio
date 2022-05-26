@@ -27,7 +27,7 @@ function EmployeeRow(props) {
           />
         ))}
         <WorkingTimeCell
-          employeeId={props.employeeData.id}
+          employeeData={props.employeeData}
           workingDays={props.workingDays}
         />
       </div>
