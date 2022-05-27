@@ -32,7 +32,7 @@ class ShiftSeeder extends Seeder
             'h_duration' => 6.00,
             'color_hex' => '#fe7000'
         ]);
-        $dummyF1Shift->save();
+        $dummyF2Shift->save();
 
         $dummyS1Shift = new Shift([
             'abrv' => 'S1',
