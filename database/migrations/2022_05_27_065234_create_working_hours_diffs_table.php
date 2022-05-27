@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWorkingTimeDiffsTable extends Migration
+class CreateWorkingHoursDiffsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class CreateWorkingTimeDiffsTable extends Migration
      */
     public function up()
     {
-        Schema::create('working_time_diffs', function (Blueprint $table) {
+        Schema::create('working_hours_diffs', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('month');

@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkingTimeDiff extends Model
+class WorkingHoursDiff extends Model
 {
     use HasFactory;
 }

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\WorkingTimeDiff;
+use App\Models\WorkingHoursDiff;
 use Illuminate\Http\Request;
 
-class WorkingTimeDiffController extends Controller
+class WorkingHoursDiffController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -41,10 +41,10 @@ class WorkingTimeDiffController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\WorkingTimeDiff  $workingTimeDiff
+     * @param  \App\Models\WorkingHoursDiff  $workingHoursDiff
      * @return \Illuminate\Http\Response
      */
-    public function show(WorkingTimeDiff $workingTimeDiff)
+    public function show(WorkingHoursDiff $workingHoursDiff)
     {
         //
     }
@@ -52,10 +52,10 @@ class WorkingTimeDiffController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\WorkingTimeDiff  $workingTimeDiff
+     * @param  \App\Models\WorkingHoursDiff  $workingHoursDiff
      * @return \Illuminate\Http\Response
      */
-    public function edit(WorkingTimeDiff $workingTimeDiff)
+    public function edit(WorkingHoursDiff $workingHoursDiff)
     {
         //
     }
@@ -64,10 +64,10 @@ class WorkingTimeDiffController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\WorkingTimeDiff  $workingTimeDiff
+     * @param  \App\Models\WorkingHoursDiff  $workingHoursDiff
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, WorkingTimeDiff $workingTimeDiff)
+    public function update(Request $request, WorkingHoursDiff $workingHoursDiff)
     {
         //
     }
@@ -75,10 +75,10 @@ class WorkingTimeDiffController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\WorkingTimeDiff  $workingTimeDiff
+     * @param  \App\Models\WorkingHoursDiff  $workingHoursDiff
      * @return \Illuminate\Http\Response
      */
-    public function destroy(WorkingTimeDiff $workingTimeDiff)
+    public function destroy(WorkingHoursDiff $workingHoursDiff)
     {
         //
     }
