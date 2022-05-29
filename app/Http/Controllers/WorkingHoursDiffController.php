@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WorkingHoursDiff;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class WorkingHoursDiffController extends Controller
 {
@@ -35,7 +36,29 @@ class WorkingHoursDiffController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $workingHoursDiffCheck = WorkingHoursDiff::where('employee_id', $request->workingHoursDiffData['employee_id']);
+        $workingHoursDiffCheck->where('month', $request->workingHoursDiffData['month']);
+        $workingHoursDiffCheck->where('year', $request->workingHoursDiffData['year']);
+        $workingHoursDiff = $workingHoursDiffCheck->get();
+
+        if ($workingHoursDiff->isEmpty()) {
+            $new_working_hours_diff = new WorkingHoursDiff();
+            $new_working_hours_diff->employee_id = $request->workingHoursDiffData['employee_id'];
+            $new_working_hours_diff->month = $request->workingHoursDiffData['month'];
+            $new_working_hours_diff->year = $request->workingHoursDiffData['year'];
+            $new_working_hours_diff->diff = $request->workingHoursDiffData['diff'];
+            $new_working_hours_diff->save();
+
+
+
+            Log::debug('Empty');
+        } else {
+
+            Log::debug($workingHoursDiff);
+            Log::debug('NOT Empty');
+        };
+        // $workingHoursDiff = new WorkingHoursDiff();
+        // Log::debug($request);
     }
 
     /**

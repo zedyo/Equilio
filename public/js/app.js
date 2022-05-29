@@ -11185,7 +11185,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var _dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dutyCell/DutyCell */ "./resources/js/components/dutyOverview/employeeRow/dutyCell/DutyCell.js");
-/* harmony import */ var _workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingTimeCell/WorkingTimeCell */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js");
+/* harmony import */ var _workingHoursCell_WorkingHoursCell__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./workingHoursCell/WorkingHoursCell */ "./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.js");
 /* harmony import */ var _EmployeeRow_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./EmployeeRow.scss */ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.scss");
 /* harmony import */ var _employeeCell_EmployeeCell__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./employeeCell/EmployeeCell */ "./resources/js/components/dutyOverview/employeeRow/employeeCell/EmployeeCell.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
@@ -11217,9 +11217,11 @@ function EmployeeRow(props) {
           }),
           employeeId: props.employeeData.id
         }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingTimeCell_WorkingTimeCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingHoursCell_WorkingHoursCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
         employeeData: props.employeeData,
-        workingDays: props.workingDays
+        workingDays: props.workingDays,
+        month: props.dateSelectorData.month,
+        year: props.dateSelectorData.year
       })]
     })
   });
@@ -11394,10 +11396,10 @@ function EmployeeCell(props) {
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js":
-/*!*********************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.js ***!
-  \*********************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.js":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.js ***!
+  \***********************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -11407,8 +11409,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var _WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./WorkingTimeCell.scss */ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
-/* harmony import */ var _daysRow_utils_holidays__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../daysRow/utils/holidays */ "./resources/js/components/dutyOverview/daysRow/utils/holidays.js");
+/* harmony import */ var _features_workingHoursDiffs_workingHoursDiffSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../features/workingHoursDiffs/workingHoursDiffSlice */ "./resources/js/features/workingHoursDiffs/workingHoursDiffSlice.js");
+/* harmony import */ var _WorkingHoursCell_scss__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./WorkingHoursCell.scss */ "./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 
 
@@ -11417,7 +11419,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-function WorkingTime(props) {
+function WorkingHoursCell(props) {
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
+
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (store) {
     return store.duties;
   }),
@@ -11426,25 +11430,33 @@ function WorkingTime(props) {
   var employeeDuties = dutiesData.filter(function (duty) {
     return duty.employee_id == props.employeeData.id;
   });
-  var workingTime = 0.0;
+  var dutyWorkingHours = 0.0;
   employeeDuties.map(function (duty) {
-    return workingTime = workingTime + parseFloat(duty.shift.h_duration);
+    return dutyWorkingHours = dutyWorkingHours + parseFloat(duty.shift.h_duration);
   });
-  var workingHours = parseFloat(props.workingDays.length * props.employeeData.daily_worktime / 100 * props.employeeData.employment_ratio);
-  var diff = workingTime - workingHours;
+  var maxMonthlyWorkingHours = parseFloat(props.workingDays.length * props.employeeData.daily_worktime / 100 * props.employeeData.employment_ratio);
+  var workingHoursDiff = dutyWorkingHours - maxMonthlyWorkingHours;
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
+    dispatch((0,_features_workingHoursDiffs_workingHoursDiffSlice__WEBPACK_IMPORTED_MODULE_2__.postWorkingHoursDiff)({
+      employee_id: props.employeeData.id,
+      month: props.month,
+      year: props.year,
+      diff: workingHoursDiff
+    }));
+  }, [dutyWorkingHours]);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-    className: "workingTimeCell",
+    className: "workingHoursCell",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
       className: "sum",
-      children: workingTime.toFixed(2)
+      children: dutyWorkingHours.toFixed(2)
     }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
-      className: "diff",
-      children: diff.toFixed(2)
+      className: "workingHoursDiff",
+      children: workingHoursDiff.toFixed(2)
     })]
   });
 }
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WorkingTime);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (WorkingHoursCell);
 
 /***/ }),
 
@@ -15843,6 +15855,263 @@ var fillWishes = wishSlice.actions.fillWishes;
 
 /***/ }),
 
+/***/ "./resources/js/features/workingHoursDiffs/workingHoursDiffSlice.js":
+/*!**************************************************************************!*\
+  !*** ./resources/js/features/workingHoursDiffs/workingHoursDiffSlice.js ***!
+  \**************************************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "clearWorkingHoursDiffs": () => (/* binding */ clearWorkingHoursDiffs),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   "deleteWorkingHoursDiffData": () => (/* binding */ deleteWorkingHoursDiffData),
+/* harmony export */   "fillWorkingHoursDiffs": () => (/* binding */ fillWorkingHoursDiffs),
+/* harmony export */   "getWorkingHoursDiffData": () => (/* binding */ getWorkingHoursDiffData),
+/* harmony export */   "postWorkingHoursDiff": () => (/* binding */ postWorkingHoursDiff),
+/* harmony export */   "updateWorkingHoursDiffData": () => (/* binding */ updateWorkingHoursDiffData)
+/* harmony export */ });
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+var _extraReducers;
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+
+var initialState = {
+  workingHoursDiffsData: [],
+  isLoading: true
+};
+var getWorkingHoursDiffData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('workingHoursDiff/getWorkingHoursDiffData', /*#__PURE__*/function () {
+  var _ref = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee(workingHoursDiff, thunkAPI) {
+    var _yield$axios$get, data;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            _context.prev = 0;
+            _context.next = 3;
+            return axios.get('http://127.0.0.1:8000/api/working_hours_diffs');
+
+          case 3:
+            _yield$axios$get = _context.sent;
+            data = _yield$axios$get.data;
+            return _context.abrupt("return", data.working_hours_diffs);
+
+          case 8:
+            _context.prev = 8;
+            _context.t0 = _context["catch"](0);
+            return _context.abrupt("return", thunkAPI.rejectWithValue('Fehler beim abholen von Working Hours Diffs'));
+
+          case 11:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, null, [[0, 8]]);
+  }));
+
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}());
+var postWorkingHoursDiff = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('workingHoursDiff/postWorkingHoursDiff', /*#__PURE__*/function () {
+  var _ref2 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(workingHoursDiffData, thunkAPI) {
+    var _yield$axios$post, data;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return axios.post("http://127.0.0.1:8000/api/working_hours_diffs/", {
+              workingHoursDiffData: workingHoursDiffData
+            });
+
+          case 3:
+            _yield$axios$post = _context2.sent;
+            data = _yield$axios$post.data;
+            _context2.next = 10;
+            break;
+
+          case 7:
+            _context2.prev = 7;
+            _context2.t0 = _context2["catch"](0);
+            return _context2.abrupt("return", thunkAPI.rejectWithValue('Fehler beim anlegen des Working Hours Diffs'));
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, null, [[0, 7]]);
+  }));
+
+  return function (_x3, _x4) {
+    return _ref2.apply(this, arguments);
+  };
+}());
+var updateWorkingHoursDiffData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('workingHoursDiff/updateWorkingHoursDiffData', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(workingHoursDiffData, thunkAPI) {
+    var _yield$axios$patch, data;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
+      while (1) {
+        switch (_context3.prev = _context3.next) {
+          case 0:
+            _context3.prev = 0;
+            _context3.next = 3;
+            return axios.patch("http://127.0.0.1:8000/api/working_hours_diffs/".concat(workingHoursDiffData.id), {
+              workingHoursDiffData: workingHoursDiffData
+            });
+
+          case 3:
+            _yield$axios$patch = _context3.sent;
+            data = _yield$axios$patch.data;
+            return _context3.abrupt("return", data.workingHoursDiff);
+
+          case 8:
+            _context3.prev = 8;
+            _context3.t0 = _context3["catch"](0);
+            return _context3.abrupt("return", thunkAPI.rejectWithValue('Fehler beim anlegen des Working Hours Diffs'));
+
+          case 11:
+          case "end":
+            return _context3.stop();
+        }
+      }
+    }, _callee3, null, [[0, 8]]);
+  }));
+
+  return function (_x5, _x6) {
+    return _ref3.apply(this, arguments);
+  };
+}());
+var deleteWorkingHoursDiffData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('workingHoursDiff/deleteWorkingHoursDiffData', /*#__PURE__*/function () {
+  var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(working_hours_diff_id, thunkAPI) {
+    var _yield$axios$delete, data;
+
+    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
+      while (1) {
+        switch (_context4.prev = _context4.next) {
+          case 0:
+            _context4.prev = 0;
+            _context4.next = 3;
+            return axios["delete"]("http://127.0.0.1:8000/api/working_hours_diffs/".concat(working_hours_diff_id));
+
+          case 3:
+            _yield$axios$delete = _context4.sent;
+            data = _yield$axios$delete.data;
+            return _context4.abrupt("return", data.deleted_working_hours_diff);
+
+          case 8:
+            _context4.prev = 8;
+            _context4.t0 = _context4["catch"](0);
+            return _context4.abrupt("return", thunkAPI.rejectWithValue('Fehler beim löschen von des Working Hours Diffs'));
+
+          case 11:
+          case "end":
+            return _context4.stop();
+        }
+      }
+    }, _callee4, null, [[0, 8]]);
+  }));
+
+  return function (_x7, _x8) {
+    return _ref4.apply(this, arguments);
+  };
+}());
+var workingHoursDiffSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
+  name: 'working_hours_diffs',
+  initialState: initialState,
+  reducers: {
+    clearWorkingHoursDiffs: function clearWorkingHoursDiffs(state) {
+      state.workingHoursDiffsData = [];
+    },
+    fillWorkingHoursDiffs: function fillWorkingHoursDiffs(state, actions) {
+      state.workingHoursDiffsData = actions;
+    },
+    removeWorkingHoursDiffs: function removeWorkingHoursDiffs(state, _ref5) {
+      var payload = _ref5.payload;
+      state.workingHoursDiffsData = state.workingHoursDiffsData.find(function (workingHoursDiff) {
+        return workingHoursDiff.id === payload.id;
+      });
+    }
+  },
+  extraReducers: (_extraReducers = {}, _defineProperty(_extraReducers, getWorkingHoursDiffData.pending, function (state) {
+    state.isLoading = true;
+  }), _defineProperty(_extraReducers, getWorkingHoursDiffData.fulfilled, function (state, _ref6) {
+    var payload = _ref6.payload;
+    state.isLoading = false;
+    state.workingHoursDiffsData = payload;
+  }), _defineProperty(_extraReducers, getWorkingHoursDiffData.rejected, function (state, _ref7) {
+    var payload = _ref7.payload;
+    state.errorMessage = payload;
+    state.isLoading = false;
+    state.hasError = true;
+  }), _defineProperty(_extraReducers, postWorkingHoursDiff.pending, function (state) {
+    state.isLoading = true;
+  }), _defineProperty(_extraReducers, postWorkingHoursDiff.fulfilled, function (state, _ref8) {
+    var payload = _ref8.payload;
+    state.isLoading = false;
+    state.workingHoursDiffsData.push(payload);
+  }), _defineProperty(_extraReducers, postWorkingHoursDiff.rejected, function (state, _ref9) {
+    var payload = _ref9.payload;
+    state.errorMessage = payload;
+    state.isLoading = false;
+    state.hasError = true;
+  }), _defineProperty(_extraReducers, updateWorkingHoursDiffData.pending, function (state) {
+    state.isLoading = true;
+  }), _defineProperty(_extraReducers, updateWorkingHoursDiffData.fulfilled, function (state, _ref10) {
+    var payload = _ref10.payload;
+    state.isLoading = false;
+    var workingHoursDiff = state.workingHoursDiffsData.filter(function (workingHoursDiff) {
+      return workingHoursDiff.id !== payload.id;
+    });
+    state.workingHoursDiffsData = _objectSpread(_objectSpread({}, workingHoursDiff), {}, {
+      payload: payload
+    });
+  }), _defineProperty(_extraReducers, updateWorkingHoursDiffData.rejected, function (state, error) {
+    state.errorMessage = error.payload;
+    state.isLoading = false;
+    state.hasError = true;
+  }), _defineProperty(_extraReducers, deleteWorkingHoursDiffData.pending, function (state) {
+    state.isLoading = true;
+  }), _defineProperty(_extraReducers, deleteWorkingHoursDiffData.fulfilled, function (state, _ref11) {
+    var payload = _ref11.payload;
+    state.isLoading = false;
+    state.workingHoursDiffsData = state.workingHoursDiffsData.filter(function (workingHoursDiff) {
+      return workingHoursDiff.id !== payload.id;
+    });
+  }), _defineProperty(_extraReducers, deleteWorkingHoursDiffData.rejected, function (state, _ref12) {
+    var payload = _ref12.payload;
+    state.errorMessage = error.payload;
+    state.isLoading = false;
+    state.hasError = true;
+  }), _extraReducers)
+});
+var _workingHoursDiffSlic = workingHoursDiffSlice.actions,
+    clearWorkingHoursDiffs = _workingHoursDiffSlic.clearWorkingHoursDiffs,
+    fillWorkingHoursDiffs = _workingHoursDiffSlic.fillWorkingHoursDiffs;
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (workingHoursDiffSlice.reducer);
+
+/***/ }),
+
 /***/ "./resources/js/router/index.js":
 /*!**************************************!*\
   !*** ./resources/js/router/index.js ***!
@@ -15998,7 +16267,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "store": () => (/* binding */ store)
 /* harmony export */ });
-/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
+/* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 /* harmony import */ var _features_employees_employeeSlice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./features/employees/employeeSlice */ "./resources/js/features/employees/employeeSlice.js");
 /* harmony import */ var _features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./features/duties/dutySlice */ "./resources/js/features/duties/dutySlice.js");
 /* harmony import */ var _features_shifts_shiftSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./features/shifts/shiftSlice */ "./resources/js/features/shifts/shiftSlice.js");
@@ -16006,6 +16275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _features_shiftTypes_shiftTypeSlice__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./features/shiftTypes/shiftTypeSlice */ "./resources/js/features/shiftTypes/shiftTypeSlice.js");
 /* harmony import */ var _features_wishes_wishSlice__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./features/wishes/wishSlice */ "./resources/js/features/wishes/wishSlice.js");
 /* harmony import */ var _features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./features/preferences/preferenceSlice */ "./resources/js/features/preferences/preferenceSlice.js");
+/* harmony import */ var _features_workingHoursDiffs_workingHoursDiffSlice__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./features/workingHoursDiffs/workingHoursDiffSlice */ "./resources/js/features/workingHoursDiffs/workingHoursDiffSlice.js");
 
 
 
@@ -16014,7 +16284,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-var store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_7__.configureStore)({
+
+var store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_8__.configureStore)({
   reducer: {
     employees: _features_employees_employeeSlice__WEBPACK_IMPORTED_MODULE_0__["default"],
     qualifications: _features_qualifications_qualificationSlice__WEBPACK_IMPORTED_MODULE_3__["default"],
@@ -16022,7 +16293,8 @@ var store = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_7__.configureStore)({
     shifts: _features_shifts_shiftSlice__WEBPACK_IMPORTED_MODULE_2__["default"],
     shiftTypes: _features_shiftTypes_shiftTypeSlice__WEBPACK_IMPORTED_MODULE_4__["default"],
     wishes: _features_wishes_wishSlice__WEBPACK_IMPORTED_MODULE_5__["default"],
-    preferences: _features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_6__["default"]
+    preferences: _features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_6__["default"],
+    workingHoursDiffs: _features_workingHoursDiffs_workingHoursDiffSlice__WEBPACK_IMPORTED_MODULE_7__["default"]
   }
 });
 
@@ -21342,10 +21614,10 @@ ___CSS_LOADER_EXPORT___.push([module.id, ".employeeContainer {\n  height: 2rem;\
 
 /***/ }),
 
-/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss":
-/*!*************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss ***!
-  \*************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss":
+/*!***************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss ***!
+  \***************************************************************************************************************************************************************************************************************************************************************************************************************************************/
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -21359,7 +21631,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".workingTimeCell {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  margin-left: 1rem;\n  display: grid;\n  grid-template-columns: auto;\n}\n.workingTimeCell .sum {\n  font-weight: 600;\n  font-size: 0.7rem;\n}\n.workingTimeCell .diff {\n  font-weight: 300;\n  font-size: 0.5rem;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".workingHoursCell {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  margin-left: 1rem;\n  display: grid;\n  grid-template-columns: auto;\n}\n.workingHoursCell .sum {\n  font-weight: 600;\n  font-size: 0.7rem;\n}\n.workingHoursCell .workingHoursDiff {\n  font-weight: 300;\n  font-size: 0.5rem;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -124382,10 +124654,10 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 
 /***/ }),
 
-/***/ "./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss":
-/*!***********************************************************************************************!*\
-  !*** ./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss ***!
-  \***********************************************************************************************/
+/***/ "./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss ***!
+  \*************************************************************************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -124395,7 +124667,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! !../../../../../../node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js */ "./node_modules/style-loader/dist/runtime/injectStylesIntoStyleTag.js");
 /* harmony import */ var _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingTimeCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingTimeCell/WorkingTimeCell.scss");
+/* harmony import */ var _node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingHoursCell_scss__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! !!../../../../../../node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!../../../../../../node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!../../../../../../node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./WorkingHoursCell.scss */ "./node_modules/css-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[1]!./node_modules/postcss-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[2]!./node_modules/sass-loader/dist/cjs.js??ruleSet[1].rules[7].oneOf[1].use[3]!./resources/js/components/dutyOverview/employeeRow/workingHoursCell/WorkingHoursCell.scss");
 
             
 
@@ -124404,11 +124676,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingHoursCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingTimeCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_1_node_modules_postcss_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_2_node_modules_sass_loader_dist_cjs_js_ruleSet_1_rules_7_oneOf_1_use_3_WorkingHoursCell_scss__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 

@@ -7,6 +7,7 @@ use App\Http\Controllers\QualificationController;
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\ShiftTypeController;
 use App\Http\Controllers\WishController;
+use App\Http\Controllers\WorkingHoursDiffController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -39,7 +40,8 @@ Route::resources([
     'shifts' => ShiftController::class,
     'shift_types' => ShiftTypeController::class,
     'wishes' => WishController::class,
-    'preferences' => PreferenceController::class
+    'preferences' => PreferenceController::class,
+    'working_hours_diffs' => WorkingHoursDiffController::class
 ]);
 
 // Route::get('/shift_types/{shift_type_id}/{day}/{month}/{year}/', [DutyController::class, 'showDutiesByShiftTypeAndDate'])->name('showShiftType');

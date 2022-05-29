@@ -18,7 +18,7 @@ class CreateWorkingHoursDiffsTable extends Migration
             $table->unsignedBigInteger('employee_id');
             $table->unsignedBigInteger('month');
             $table->unsignedBigInteger('year');
-            $table->unsignedBigInteger('diff');
+            $table->float('diff')->decimal(8, 2);
             $table->timestamps();
 
             $table->foreign('employee_id')->references('id')->on('employees');

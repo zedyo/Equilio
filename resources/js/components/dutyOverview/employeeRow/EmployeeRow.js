@@ -1,6 +1,6 @@
 import React from 'react'
 import DutyCell from './dutyCell/DutyCell'
-import WorkingTimeCell from './workingTimeCell/WorkingTimeCell'
+import WorkingHoursCell from './workingHoursCell/WorkingHoursCell'
 import './EmployeeRow.scss'
 import EmployeeCell from './employeeCell/EmployeeCell'
 
@@ -26,9 +26,11 @@ function EmployeeRow(props) {
             employeeId={props.employeeData.id}
           />
         ))}
-        <WorkingTimeCell
+        <WorkingHoursCell
           employeeData={props.employeeData}
           workingDays={props.workingDays}
+          month={props.dateSelectorData.month}
+          year={props.dateSelectorData.year}
         />
       </div>
     </>
