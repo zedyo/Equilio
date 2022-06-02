@@ -74,7 +74,6 @@ class DutyController extends Controller
         $duty = $duty_check->get();
 
         if ($duty->isEmpty()) {
-            Log::debug($request->dutyData);
             $new_duty = new Duty();
             $new_duty->employee_id = $request->dutyData['employee_id'];
             $new_duty->shift_id = $request_shift[0]->id;

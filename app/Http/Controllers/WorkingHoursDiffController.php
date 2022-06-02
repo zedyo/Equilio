@@ -15,7 +15,11 @@ class WorkingHoursDiffController extends Controller
      */
     public function index()
     {
-        //
+        $workingHoursDiffs = WorkingHoursDiff::with('employee')->get();
+
+        return response()->json(['workingHoursDiffs' => $workingHoursDiffs]);
+
+        // Log::debug($workingHoursDiffs);
     }
 
     /**
@@ -49,13 +53,24 @@ class WorkingHoursDiffController extends Controller
             $new_working_hours_diff->diff = $request->workingHoursDiffData['diff'];
             $new_working_hours_diff->save();
 
+            $working_hours_diff = WorkingHoursDiff::with('employee')->where('id', $new_working_hours_diff->id)->first();
+            // Log::debug($working_hours_diff);
 
-
-            Log::debug('Empty');
+            Log::debug($working_hours_diff);
+            return ['new_working_hours_diff' => $working_hours_diff];
         } else {
 
-            Log::debug($workingHoursDiff);
-            Log::debug('NOT Empty');
+            $update_working_hours_diff = WorkingHoursDiff::where('id', $workingHoursDiff[0]->id)->first();
+
+            $update_working_hours_diff->diff = $request->workingHoursDiffData['diff'];
+            $update_working_hours_diff->save();
+
+            $working_hours_diff = WorkingHoursDiff::with('employee')->where('id', $update_working_hours_diff->id)->first();
+
+            Log::debug($working_hours_diff);
+            return ['new_working_hours_diff' => $working_hours_diff];
+            // Log::debug($update_workingHoursDiff);
+            // Log::debug('NOT Empty');
         };
         // $workingHoursDiff = new WorkingHoursDiff();
         // Log::debug($request);
