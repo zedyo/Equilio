@@ -30,16 +30,19 @@ function DutyOverview() {
   const workingDays = monthlyDays.filter(
     (day) =>
       moment(
-        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`,
+        'YYYY-M-D'
       ).format('dd') !== 'So' &&
       moment(
-        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+        `${dateSelectorData.year}-${dateSelectorData.month}-${day}`,
+        'YYYY-M-D'
       ).format('dd') !== 'Sa' &&
       holidays.find(
         (holiday) =>
           holiday.date ===
           moment(
-            `${dateSelectorData.year}-${dateSelectorData.month}-${day}`
+            `${dateSelectorData.year}-${dateSelectorData.month}-${day}`,
+            'YYYY-M-D'
           ).format('YYYY-MM-DD')
       ) == undefined
   )

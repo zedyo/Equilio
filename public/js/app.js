@@ -10053,8 +10053,8 @@ function DutyOverview() {
     dispatch((0,_features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_3__.getDutiesDataByMonth)(dateSelectorData));
   }, [dateSelectorData]);
   var workingDays = monthlyDays.filter(function (day) {
-    return moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day)).format('dd') !== 'So' && moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day)).format('dd') !== 'Sa' && _daysRow_utils_holidays__WEBPACK_IMPORTED_MODULE_9__.holidays.find(function (holiday) {
-      return holiday.date === moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day)).format('YYYY-MM-DD');
+    return moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('dd') !== 'So' && moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('dd') !== 'Sa' && _daysRow_utils_holidays__WEBPACK_IMPORTED_MODULE_9__.holidays.find(function (holiday) {
+      return holiday.date === moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('YYYY-MM-DD');
     }) == undefined;
   });
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
@@ -11467,11 +11467,11 @@ function WorkingHoursCell(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)("div", {
     className: "workingHoursCell",
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
-      className: "sum",
-      children: dutyWorkingHours.toFixed(2)
-    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
       className: "workingHoursDiff ".concat(percentColor),
       children: workingHoursDiff.toFixed(2)
+    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("div", {
+      className: "sum",
+      children: dutyWorkingHours.toFixed(2)
     })]
   });
 }
@@ -21515,7 +21515,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".workingHoursCell {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  margin-left: 1rem;\n  display: grid;\n  grid-template-columns: auto;\n}\n.workingHoursCell .sum {\n  font-weight: 600;\n  font-size: 0.7rem;\n}\n.workingHoursCell .workingHoursDiff {\n  font-weight: 300;\n  font-size: 0.5rem;\n}\n.workingHoursCell .percent-20 {\n  color: #ff0000;\n}\n.workingHoursCell .percent-15 {\n  color: #b80000;\n}\n.workingHoursCell .percent-10 {\n  color: #7c0000;\n}\n.workingHoursCell .percent-5 {\n  color: #440000;\n}\n.workingHoursCell .percent0 {\n  color: black;\n}\n.workingHoursCell .percent5 {\n  color: #020044;\n}\n.workingHoursCell .percent10 {\n  color: #040085;\n}\n.workingHoursCell .percent15 {\n  color: #0500ba;\n}\n.workingHoursCell .percent20 {\n  color: #0700ff;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".workingHoursCell {\n  height: 2rem;\n  width: 4rem;\n  border: 0.01rem solid rgb(128, 128, 128);\n  border-radius: 0.2rem;\n  text-align: center;\n  margin-left: 1rem;\n  display: grid;\n  grid-template-columns: auto;\n}\n.workingHoursCell .sum {\n  font-weight: 300;\n  font-size: 0.5rem;\n  color: grey;\n}\n.workingHoursCell .workingHoursDiff {\n  font-weight: 600;\n  font-size: 0.7rem;\n}\n.workingHoursCell .percent-20 {\n  color: #ff0000;\n}\n.workingHoursCell .percent-15 {\n  color: #b80000;\n}\n.workingHoursCell .percent-10 {\n  color: #7c0000;\n}\n.workingHoursCell .percent-5 {\n  color: #440000;\n}\n.workingHoursCell .percent0 {\n  color: black;\n}\n.workingHoursCell .percent5 {\n  color: #020044;\n}\n.workingHoursCell .percent10 {\n  color: #040085;\n}\n.workingHoursCell .percent15 {\n  color: #0500ba;\n}\n.workingHoursCell .percent20 {\n  color: #0700ff;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

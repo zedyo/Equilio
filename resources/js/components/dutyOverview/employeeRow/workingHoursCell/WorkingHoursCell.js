@@ -85,10 +85,10 @@ function WorkingHoursCell(props) {
 
   return (
     <div className="workingHoursCell">
-      <div className="sum">{dutyWorkingHours.toFixed(2)}</div>
       <div className={`workingHoursDiff ${percentColor}`}>
         {workingHoursDiff.toFixed(2)}
       </div>
+      <div className="sum">{dutyWorkingHours.toFixed(2)}</div>
     </div>
   )
 }
