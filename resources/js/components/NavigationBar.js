@@ -7,7 +7,7 @@ function Navigation() {
     <>
       <Navbar bg="light" variant="light">
         <Container>
-          <Navbar.Brand href="/duties">Project Yeti</Navbar.Brand>
+          <Navbar.Brand href="/duties">Dienstplan</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link href="/employees">Angestellte</Nav.Link>
             <Nav.Link href="/qualifications">Qualifikationen</Nav.Link>
