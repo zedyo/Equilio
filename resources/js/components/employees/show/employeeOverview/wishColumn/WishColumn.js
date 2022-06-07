@@ -1,9 +1,12 @@
 import moment from 'moment'
 import React from 'react'
 import { Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { deleteWishesData } from '../../../../../features/wishes/wishSlice'
 
 function WishColumn(props) {
   moment.locale('de')
+  const dispatch = useDispatch()
 
   return (
     <>
@@ -20,7 +23,7 @@ function WishColumn(props) {
 
         <td>
           <Button
-            onClick={() => props.deleteWish(props.wish.id)}
+            onClick={() => dispatch(deleteWishesData(props.wish.id))}
             variant="outline-danger"
             size="sm"
           >

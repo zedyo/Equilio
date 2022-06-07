@@ -38,19 +38,6 @@ const workingHoursDiffSlice = createSlice({
     },
   },
   extraReducers: {
-    // [getWorkingHoursDiffData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [getWorkingHoursDiffData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   state.workingHoursDiffsData = payload
-    // },
-    // [getWorkingHoursDiffData.rejected]: (state, { payload }) => {
-    //   state.errorMessage = payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
-
     [postWorkingHoursDiff.pending]: (state) => {
       state.isLoading = true
     },
@@ -66,22 +53,6 @@ const workingHoursDiffSlice = createSlice({
       state.isLoading = false
       state.hasError = true
     },
-
-    // [updateWorkingHoursDiffData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [updateWorkingHoursDiffData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   const workingHoursDiff = state.workingHoursDiffsData.filter(
-    //     (workingHoursDiff) => workingHoursDiff.id !== payload.id
-    //   )
-    //   state.workingHoursDiffsData = { ...workingHoursDiff, payload }
-    // },
-    // [updateWorkingHoursDiffData.rejected]: (state, error) => {
-    //   state.errorMessage = error.payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
   },
 })
 

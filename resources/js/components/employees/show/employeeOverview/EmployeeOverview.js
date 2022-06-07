@@ -8,7 +8,6 @@ import {
   Card,
   Table,
   Stack,
-  InputGroup,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -19,46 +18,18 @@ function EmployeeOverview() {
   const params = useParams()
 
   const { employeesData } = useSelector((store) => store.employees)
+  const { wishesData } = useSelector((store) => store.wishes)
+
   const employee = employeesData.find((employee) => employee.id == params.id)
+  const employeeWishesData = wishesData.filter(
+    (data) => data.employee_id == params.id
+  )
 
   const [employeeData, setEmployee] = useState({})
-  const [wishesData, setWishes] = useState([])
 
   useEffect(() => {
     employee !== undefined && setEmployee(employee)
   }, [employee])
-
-  useEffect(() => {
-    async function getWishesData() {
-      try {
-        const { data } = await axios.get(
-          `http://127.0.0.1:8000/api/wishesByEmployee/${params.id}/`,
-          {}
-        )
-        setWishes(data)
-      } catch (error) {
-        console.log(error.message)
-      }
-    }
-
-    getWishesData()
-  }, [])
-
-  //TODO: Auf Redux umbauen
-  async function destroyWish(deletedWishId) {
-    try {
-      const deleted_data = await axios.delete(
-        `http://127.0.0.1:8000/api/wishes/${deletedWishId}/`
-      )
-      setWishes(
-        wishesData.filter(
-          (wish) => wish.id !== deleted_data.data.deleted_wish.id
-        )
-      )
-    } catch (error) {
-      console.log(error)
-    }
-  }
 
   if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
 
@@ -99,7 +70,7 @@ function EmployeeOverview() {
                   >
                     <Form.Control
                       type="text"
-                      placeholder="Dings"
+                      placeholder="100"
                       value={employeeData.employment_ratio}
                       disabled
                     />
@@ -112,7 +83,7 @@ function EmployeeOverview() {
                   >
                     <Form.Control
                       type="text"
-                      placeholder="Dings"
+                      placeholder="8.0"
                       value={employeeData.daily_worktime}
                       disabled
                     />
@@ -121,10 +92,10 @@ function EmployeeOverview() {
                 <Col md={6}>
                   <FloatingLabel
                     controlId="floatingInputGrid"
-                    label="Qualification"
+                    label="Qualifikation"
                   >
                     <Form.Control
-                      type="text"
+                      type="Pflger:in"
                       value={employeeData.qualification.description}
                       placeholder="Dings"
                       disabled
@@ -134,7 +105,6 @@ function EmployeeOverview() {
               </Row>
               <Row>
                 <Col>
-                  {/* <Card> */}
                   <Card.Body>
                     <Card.Title>Dienst Wünsche</Card.Title>
                     <Table>
@@ -145,17 +115,12 @@ function EmployeeOverview() {
                         </tr>
                       </thead>
                       <tbody>
-                        {wishesData.map((wishObject) => (
-                          <WishColumn
-                            key={wishObject.id}
-                            wish={wishObject}
-                            deleteWish={destroyWish}
-                          />
+                        {employeeWishesData.map((wishObject) => (
+                          <WishColumn key={wishObject.id} wish={wishObject} />
                         ))}
                       </tbody>
                     </Table>
                   </Card.Body>
-                  {/* </Card> */}
                 </Col>
                 <Col>
                   <Card.Body>

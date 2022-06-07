@@ -1,10 +1,7 @@
-import React, { useState } from 'react'
-import { Button, Card, Col, Container, Form, Row } from 'react-bootstrap'
+import React from 'react'
+import { Card, Col, Container, Form, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import {
-  deletePreferencesData,
-  postPreferenceData,
-} from '../../../../../features/preferences/preferenceSlice'
+import { postPreferenceData } from '../../../../../features/preferences/preferenceSlice'
 
 function Preferences(props) {
   const dispatch = useDispatch()
@@ -39,7 +36,6 @@ function Preferences(props) {
                           .map((shift) => (
                             <Form.Check
                               checked={
-                                //TODO: Fehler beim Ändern der Präferenz
                                 preferenceData.find(
                                   (preference) =>
                                     preference.employee_id ==
@@ -53,7 +49,6 @@ function Preferences(props) {
                               id={shift.id}
                               label={shift.abrv}
                               key={shift.id}
-                              // onChange={(e) => console.log(e.target.checked)}
                               onChange={(e) =>
                                 e.target.checked
                                   ? dispatch(

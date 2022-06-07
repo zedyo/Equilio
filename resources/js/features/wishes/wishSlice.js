@@ -27,23 +27,6 @@ export const postWishesData = createAsyncThunk(
   }
 )
 
-export const updateWishesData = createAsyncThunk(
-  'wishes/updateWishesData',
-  async (wishData, thunkAPI) => {
-    try {
-      const { data } = await axios.patch(
-        `http://127.0.0.1:8000/api/wishes/${wishData.id}`,
-        {
-          wishData,
-        }
-      )
-      return data.wish
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Fehler beim updaten des Wishes')
-    }
-  }
-)
-
 export const deleteWishesData = createAsyncThunk(
   'wishes/deleteWishesData',
   async (wish_id, thunkAPI) => {
@@ -88,20 +71,6 @@ const wishSlice = createSlice({
       state.wishesData.push(payload)
     },
     [postWishesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updateWishesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updateWishesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const wish = state.wishesData.filter((wish) => wish.id !== payload.id)
-      state.wishData = { ...wish, payload }
-    },
-    [updateWishesData.rejected]: (state, { payload }) => {
       state.errorMessage = payload
       state.isLoading = false
       state.hasError = true

@@ -30,40 +30,6 @@ export const postPreferenceData = createAsyncThunk(
   }
 )
 
-export const updatePreferenceData = createAsyncThunk(
-  'preferences/updatePreferenceData',
-  async (preferenceData, thunkAPI) => {
-    try {
-      const { data } = await axios.patch(
-        `http://127.0.0.1:8000/api/preferences/${preferenceData.id}`,
-        {
-          preferenceData,
-        }
-      )
-      return data.preference
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Fehler beim updaten des Preferences')
-    }
-  }
-)
-
-export const deletePreferencesData = createAsyncThunk(
-  'preferences/deletePreferencesData',
-  async (preferenceData, thunkAPI) => {
-    try {
-      const { data } = await axios.patch(
-        `http://127.0.0.1:8000/api/preference/`,
-        {
-          preferenceData,
-        }
-      )
-      return data.deleted_preference
-    } catch (error) {
-      return thunkAPI.rejectWithValue('Fehler beim löschen von des preferences')
-    }
-  }
-)
-
 const preferenceSlice = createSlice({
   name: 'preferences',
   initialState,
@@ -94,37 +60,6 @@ const preferenceSlice = createSlice({
       state.preferenceData.push(payload)
     },
     [postPreferenceData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updatePreferenceData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updatePreferenceData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const preference = state.preferenceData.filter(
-        (preference) => preference.id !== payload.id
-      )
-      state.preferenceData = { ...preference, payload }
-    },
-    [updatePreferenceData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deletePreferencesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deletePreferencesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.preferenceData = state.preferenceData.filter(
-        (preference) => preference.id !== payload.id
-      )
-    },
-    [deletePreferencesData.rejected]: (state, { payload }) => {
       state.errorMessage = payload
       state.isLoading = false
       state.hasError = true

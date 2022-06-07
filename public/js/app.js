@@ -12093,28 +12093,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
-/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Card.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Stack.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Col.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/FloatingLabel.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Form.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Table.js");
-/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
-/* harmony import */ var _preferences_Preferences__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./preferences/Preferences */ "./resources/js/components/employees/show/employeeOverview/preferences/Preferences.js");
-/* harmony import */ var _wishColumn_WishColumn__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./wishColumn/WishColumn */ "./resources/js/components/employees/show/employeeOverview/wishColumn/WishColumn.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
-
-
-function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
-
-function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
-
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Card.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Stack.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Col.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/FloatingLabel.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Form.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Table.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _preferences_Preferences__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./preferences/Preferences */ "./resources/js/components/employees/show/employeeOverview/preferences/Preferences.js");
+/* harmony import */ var _wishColumn_WishColumn__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./wishColumn/WishColumn */ "./resources/js/components/employees/show/employeeOverview/wishColumn/WishColumn.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -12137,141 +12129,64 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function EmployeeOverview() {
-  var params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_6__.useParams)();
+  var params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_5__.useParams)();
 
-  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (store) {
+  var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (store) {
     return store.employees;
   }),
       employeesData = _useSelector.employeesData;
 
+  var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useSelector)(function (store) {
+    return store.wishes;
+  }),
+      wishesData = _useSelector2.wishesData;
+
   var employee = employeesData.find(function (employee) {
     return employee.id == params.id;
   });
+  var employeeWishesData = wishesData.filter(function (data) {
+    return data.employee_id == params.id;
+  });
 
-  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)({}),
+  var _useState = (0,react__WEBPACK_IMPORTED_MODULE_0__.useState)({}),
       _useState2 = _slicedToArray(_useState, 2),
       employeeData = _useState2[0],
       setEmployee = _useState2[1];
 
-  var _useState3 = (0,react__WEBPACK_IMPORTED_MODULE_1__.useState)([]),
-      _useState4 = _slicedToArray(_useState3, 2),
-      wishesData = _useState4[0],
-      setWishes = _useState4[1];
-
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
+  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     employee !== undefined && setEmployee(employee);
   }, [employee]);
-  (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
-    function getWishesData() {
-      return _getWishesData.apply(this, arguments);
-    }
-
-    function _getWishesData() {
-      _getWishesData = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee() {
-        var _yield$axios$get, data;
-
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee$(_context) {
-          while (1) {
-            switch (_context.prev = _context.next) {
-              case 0:
-                _context.prev = 0;
-                _context.next = 3;
-                return axios.get("http://127.0.0.1:8000/api/wishesByEmployee/".concat(params.id, "/"), {});
-
-              case 3:
-                _yield$axios$get = _context.sent;
-                data = _yield$axios$get.data;
-                setWishes(data);
-                _context.next = 11;
-                break;
-
-              case 8:
-                _context.prev = 8;
-                _context.t0 = _context["catch"](0);
-                console.log(_context.t0.message);
-
-              case 11:
-              case "end":
-                return _context.stop();
-            }
-          }
-        }, _callee, null, [[0, 8]]);
-      }));
-      return _getWishesData.apply(this, arguments);
-    }
-
-    getWishesData();
-  }, []); //TODO: Auf Redux umbauen
-
-  function destroyWish(_x) {
-    return _destroyWish.apply(this, arguments);
-  }
-
-  function _destroyWish() {
-    _destroyWish = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee2(deletedWishId) {
-      var deleted_data;
-      return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee2$(_context2) {
-        while (1) {
-          switch (_context2.prev = _context2.next) {
-            case 0:
-              _context2.prev = 0;
-              _context2.next = 3;
-              return axios["delete"]("http://127.0.0.1:8000/api/wishes/".concat(deletedWishId, "/"));
-
-            case 3:
-              deleted_data = _context2.sent;
-              setWishes(wishesData.filter(function (wish) {
-                return wish.id !== deleted_data.data.deleted_wish.id;
-              }));
-              _context2.next = 10;
-              break;
-
-            case 7:
-              _context2.prev = 7;
-              _context2.t0 = _context2["catch"](0);
-              console.log(_context2.t0);
-
-            case 10:
-            case "end":
-              return _context2.stop();
-          }
-        }
-      }, _callee2, null, [[0, 7]]);
-    }));
-    return _destroyWish.apply(this, arguments);
-  }
-
-  if (Object.keys(employeeData).length === 0) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("h1", {
+  if (Object.keys(employeeData).length === 0) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("h1", {
     children: "... loading"
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react__WEBPACK_IMPORTED_MODULE_1__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"], {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"], {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Header, {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"], {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Header, {
           children: "Mitarbeiterdetails"
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Body, {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["default"], {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Body, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"], {
             gap: 2,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["default"], {
               className: "g-2",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
                 md: true,
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
                   controlId: "floatingInputGrid",
                   label: "Vorname",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"].Control, {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"].Control, {
                     type: "text",
                     placeholder: "Klara",
                     value: employeeData.first_name,
                     disabled: true
                   })
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
                 md: true,
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
                   controlId: "floatingInputGrid",
                   label: "Nachname",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"].Control, {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"].Control, {
                     type: "text",
                     placeholder: "Musterstein",
                     value: employeeData.last_name,
@@ -12279,74 +12194,73 @@ function EmployeeOverview() {
                   })
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["default"], {
               className: "g-2",
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
                 md: 3,
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
                   controlId: "floatingInputGrid",
                   label: "Anstellung in %",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"].Control, {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"].Control, {
                     type: "text",
-                    placeholder: "Dings",
+                    placeholder: "100",
                     value: employeeData.employment_ratio,
                     disabled: true
                   })
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
                 md: 3,
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
                   controlId: "floatingInputGrid",
                   label: "T\xE4gliche Stundenarbeitszeit",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"].Control, {
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"].Control, {
                     type: "text",
-                    placeholder: "Dings",
+                    placeholder: "8.0",
                     value: employeeData.daily_worktime,
                     disabled: true
                   })
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
                 md: 6,
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
                   controlId: "floatingInputGrid",
-                  label: "Qualification",
-                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"].Control, {
-                    type: "text",
+                  label: "Qualifikation",
+                  children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"].Control, {
+                    type: "Pflger:in",
                     value: employeeData.qualification.description,
                     placeholder: "Dings",
                     disabled: true
                   })
                 })
               })]
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
-              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Body, {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Title, {
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["default"], {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Body, {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Title, {
                     children: "Dienst W\xFCnsche"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_14__["default"], {
-                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("thead", {
-                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)("tr", {
-                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
+                    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("thead", {
+                      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+                        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                           children: "Datum"
-                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("th", {
+                        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("th", {
                           children: "Dienst"
                         })]
                       })
-                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("tbody", {
-                      children: wishesData.map(function (wishObject) {
-                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_wishColumn_WishColumn__WEBPACK_IMPORTED_MODULE_4__["default"], {
-                          wish: wishObject,
-                          deleteWish: destroyWish
+                    }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("tbody", {
+                      children: employeeWishesData.map(function (wishObject) {
+                        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_wishColumn_WishColumn__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                          wish: wishObject
                         }, wishObject.id);
                       })
                     })]
                   })]
                 })
-              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
-                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Body, {
-                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Title, {
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_10__["default"], {
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Body, {
+                  children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Title, {
                     children: "Dienst Pr\xE4ferenzen"
-                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_preferences_Preferences__WEBPACK_IMPORTED_MODULE_3__["default"], {
+                  }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_preferences_Preferences__WEBPACK_IMPORTED_MODULE_2__["default"], {
                     employeeId: employee.id
                   })]
                 })
@@ -12430,14 +12344,12 @@ function Preferences(props) {
                     return shift.shift_type.id === shiftType.id;
                   }).map(function (shift) {
                     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Check, {
-                      checked: //TODO: Fehler beim Ändern der Präferenz
-                      preferenceData.find(function (preference) {
+                      checked: preferenceData.find(function (preference) {
                         return preference.employee_id == props.employeeId && preference.shift_id == shift.id;
                       }) ? true : false,
                       type: "switch",
                       id: shift.id,
                       label: shift.abrv,
-                      // onChange={(e) => console.log(e.target.checked)}
                       onChange: function onChange(e) {
                         return e.target.checked ? dispatch((0,_features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__.postPreferenceData)({
                           employee_id: props.employeeId,
@@ -12479,8 +12391,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Button.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Button.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var _features_wishes_wishSlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../../../../features/wishes/wishSlice */ "./resources/js/features/wishes/wishSlice.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
 
 
 
@@ -12490,16 +12406,17 @@ __webpack_require__.r(__webpack_exports__);
 
 function WishColumn(props) {
   moment__WEBPACK_IMPORTED_MODULE_0___default().locale('de');
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("tr", {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+  var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("tr", {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
         children: moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(props.wish.year, "-") + "".concat(props.wish.month, "-") + "".concat(props.wish.day), 'YYYY-M-D').format('LL')
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("td", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("td", {
         children: props.wish.shift.abrv
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("td", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_3__["default"], {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("td", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
           onClick: function onClick() {
-            return props.deleteWish(props.wish.id);
+            return dispatch((0,_features_wishes_wishSlice__WEBPACK_IMPORTED_MODULE_3__.deleteWishesData)(props.wish.id));
           },
           variant: "outline-danger",
           size: "sm",
@@ -14641,20 +14558,14 @@ var _employeesSlice$actio = employeesSlice.actions,
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   "deletePreferencesData": () => (/* binding */ deletePreferencesData),
 /* harmony export */   "fillPreferences": () => (/* binding */ fillPreferences),
 /* harmony export */   "getPreferenceData": () => (/* binding */ getPreferenceData),
-/* harmony export */   "postPreferenceData": () => (/* binding */ postPreferenceData),
-/* harmony export */   "updatePreferenceData": () => (/* binding */ updatePreferenceData)
+/* harmony export */   "postPreferenceData": () => (/* binding */ postPreferenceData)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 var _extraReducers;
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -14740,78 +14651,6 @@ var postPreferenceData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.create
     return _ref2.apply(this, arguments);
   };
 }());
-var updatePreferenceData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('preferences/updatePreferenceData', /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(preferenceData, thunkAPI) {
-    var _yield$axios$patch, data;
-
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
-      while (1) {
-        switch (_context3.prev = _context3.next) {
-          case 0:
-            _context3.prev = 0;
-            _context3.next = 3;
-            return axios.patch("http://127.0.0.1:8000/api/preferences/".concat(preferenceData.id), {
-              preferenceData: preferenceData
-            });
-
-          case 3:
-            _yield$axios$patch = _context3.sent;
-            data = _yield$axios$patch.data;
-            return _context3.abrupt("return", data.preference);
-
-          case 8:
-            _context3.prev = 8;
-            _context3.t0 = _context3["catch"](0);
-            return _context3.abrupt("return", thunkAPI.rejectWithValue('Fehler beim updaten des Preferences'));
-
-          case 11:
-          case "end":
-            return _context3.stop();
-        }
-      }
-    }, _callee3, null, [[0, 8]]);
-  }));
-
-  return function (_x5, _x6) {
-    return _ref3.apply(this, arguments);
-  };
-}());
-var deletePreferencesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('preferences/deletePreferencesData', /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(preferenceData, thunkAPI) {
-    var _yield$axios$patch2, data;
-
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
-            return axios.patch("http://127.0.0.1:8000/api/preference/", {
-              preferenceData: preferenceData
-            });
-
-          case 3:
-            _yield$axios$patch2 = _context4.sent;
-            data = _yield$axios$patch2.data;
-            return _context4.abrupt("return", data.deleted_preference);
-
-          case 8:
-            _context4.prev = 8;
-            _context4.t0 = _context4["catch"](0);
-            return _context4.abrupt("return", thunkAPI.rejectWithValue('Fehler beim löschen von des preferences'));
-
-          case 11:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, null, [[0, 8]]);
-  }));
-
-  return function (_x7, _x8) {
-    return _ref4.apply(this, arguments);
-  };
-}());
 var preferenceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'preferences',
   initialState: initialState,
@@ -14822,52 +14661,23 @@ var preferenceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
   },
   extraReducers: (_extraReducers = {}, _defineProperty(_extraReducers, getPreferenceData.pending, function (state) {
     state.isLoading = true;
-  }), _defineProperty(_extraReducers, getPreferenceData.fulfilled, function (state, _ref5) {
-    var payload = _ref5.payload;
+  }), _defineProperty(_extraReducers, getPreferenceData.fulfilled, function (state, _ref3) {
+    var payload = _ref3.payload;
     state.isLoading = false;
     state.preferenceData = payload;
-  }), _defineProperty(_extraReducers, getPreferenceData.rejected, function (state, _ref6) {
-    var payload = _ref6.payload;
+  }), _defineProperty(_extraReducers, getPreferenceData.rejected, function (state, _ref4) {
+    var payload = _ref4.payload;
     state.errorMessage = payload;
     state.isLoading = false;
     state.hasError = true;
   }), _defineProperty(_extraReducers, postPreferenceData.pending, function (state) {
     state.isLoading = true;
-  }), _defineProperty(_extraReducers, postPreferenceData.fulfilled, function (state, _ref7) {
-    var payload = _ref7.payload;
+  }), _defineProperty(_extraReducers, postPreferenceData.fulfilled, function (state, _ref5) {
+    var payload = _ref5.payload;
     state.isLoading = false;
     state.preferenceData.push(payload);
-  }), _defineProperty(_extraReducers, postPreferenceData.rejected, function (state, _ref8) {
-    var payload = _ref8.payload;
-    state.errorMessage = payload;
-    state.isLoading = false;
-    state.hasError = true;
-  }), _defineProperty(_extraReducers, updatePreferenceData.pending, function (state) {
-    state.isLoading = true;
-  }), _defineProperty(_extraReducers, updatePreferenceData.fulfilled, function (state, _ref9) {
-    var payload = _ref9.payload;
-    state.isLoading = false;
-    var preference = state.preferenceData.filter(function (preference) {
-      return preference.id !== payload.id;
-    });
-    state.preferenceData = _objectSpread(_objectSpread({}, preference), {}, {
-      payload: payload
-    });
-  }), _defineProperty(_extraReducers, updatePreferenceData.rejected, function (state, _ref10) {
-    var payload = _ref10.payload;
-    state.errorMessage = payload;
-    state.isLoading = false;
-    state.hasError = true;
-  }), _defineProperty(_extraReducers, deletePreferencesData.pending, function (state) {
-    state.isLoading = true;
-  }), _defineProperty(_extraReducers, deletePreferencesData.fulfilled, function (state, _ref11) {
-    var payload = _ref11.payload;
-    state.isLoading = false;
-    state.preferenceData = state.preferenceData.filter(function (preference) {
-      return preference.id !== payload.id;
-    });
-  }), _defineProperty(_extraReducers, deletePreferencesData.rejected, function (state, _ref12) {
-    var payload = _ref12.payload;
+  }), _defineProperty(_extraReducers, postPreferenceData.rejected, function (state, _ref6) {
+    var payload = _ref6.payload;
     state.errorMessage = payload;
     state.isLoading = false;
     state.hasError = true;
@@ -15642,17 +15452,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "deleteWishesData": () => (/* binding */ deleteWishesData),
 /* harmony export */   "fillWishes": () => (/* binding */ fillWishes),
 /* harmony export */   "getWishesData": () => (/* binding */ getWishesData),
-/* harmony export */   "postWishesData": () => (/* binding */ postWishesData),
-/* harmony export */   "updateWishesData": () => (/* binding */ updateWishesData)
+/* harmony export */   "postWishesData": () => (/* binding */ postWishesData)
 /* harmony export */ });
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @reduxjs/toolkit */ "./node_modules/@reduxjs/toolkit/dist/redux-toolkit.esm.js");
 var _extraReducers;
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -15738,9 +15543,9 @@ var postWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyn
     return _ref2.apply(this, arguments);
   };
 }());
-var updateWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('wishes/updateWishesData', /*#__PURE__*/function () {
-  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(wishData, thunkAPI) {
-    var _yield$axios$patch, data;
+var deleteWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('wishes/deleteWishesData', /*#__PURE__*/function () {
+  var _ref3 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee3(wish_id, thunkAPI) {
+    var _yield$axios$delete, data;
 
     return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee3$(_context3) {
       while (1) {
@@ -15748,19 +15553,17 @@ var updateWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
           case 0:
             _context3.prev = 0;
             _context3.next = 3;
-            return axios.patch("http://127.0.0.1:8000/api/wishes/".concat(wishData.id), {
-              wishData: wishData
-            });
+            return axios["delete"]("http://127.0.0.1:8000/api/wishes/".concat(wish_id));
 
           case 3:
-            _yield$axios$patch = _context3.sent;
-            data = _yield$axios$patch.data;
-            return _context3.abrupt("return", data.wish);
+            _yield$axios$delete = _context3.sent;
+            data = _yield$axios$delete.data;
+            return _context3.abrupt("return", data.deleted_wish);
 
           case 8:
             _context3.prev = 8;
             _context3.t0 = _context3["catch"](0);
-            return _context3.abrupt("return", thunkAPI.rejectWithValue('Fehler beim updaten des Wishes'));
+            return _context3.abrupt("return", thunkAPI.rejectWithValue('Fehler beim löschen von des Wishes'));
 
           case 11:
           case "end":
@@ -15774,40 +15577,6 @@ var updateWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAs
     return _ref3.apply(this, arguments);
   };
 }());
-var deleteWishesData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createAsyncThunk)('wishes/deleteWishesData', /*#__PURE__*/function () {
-  var _ref4 = _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().mark(function _callee4(wish_id, thunkAPI) {
-    var _yield$axios$delete, data;
-
-    return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default().wrap(function _callee4$(_context4) {
-      while (1) {
-        switch (_context4.prev = _context4.next) {
-          case 0:
-            _context4.prev = 0;
-            _context4.next = 3;
-            return axios["delete"]("http://127.0.0.1:8000/api/wishes/".concat(wish_id));
-
-          case 3:
-            _yield$axios$delete = _context4.sent;
-            data = _yield$axios$delete.data;
-            return _context4.abrupt("return", data.deleted_wish);
-
-          case 8:
-            _context4.prev = 8;
-            _context4.t0 = _context4["catch"](0);
-            return _context4.abrupt("return", thunkAPI.rejectWithValue('Fehler beim löschen von des Wishes'));
-
-          case 11:
-          case "end":
-            return _context4.stop();
-        }
-      }
-    }, _callee4, null, [[0, 8]]);
-  }));
-
-  return function (_x7, _x8) {
-    return _ref4.apply(this, arguments);
-  };
-}());
 var wishSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   name: 'wishes',
   initialState: initialState,
@@ -15818,52 +15587,36 @@ var wishSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSlice)({
   },
   extraReducers: (_extraReducers = {}, _defineProperty(_extraReducers, getWishesData.pending, function (state) {
     state.isLoading = true;
-  }), _defineProperty(_extraReducers, getWishesData.fulfilled, function (state, _ref5) {
-    var payload = _ref5.payload;
+  }), _defineProperty(_extraReducers, getWishesData.fulfilled, function (state, _ref4) {
+    var payload = _ref4.payload;
     state.isLoading = false;
     state.wishesData = payload;
-  }), _defineProperty(_extraReducers, getWishesData.rejected, function (state, _ref6) {
-    var payload = _ref6.payload;
+  }), _defineProperty(_extraReducers, getWishesData.rejected, function (state, _ref5) {
+    var payload = _ref5.payload;
     state.errorMessage = payload;
     state.isLoading = false;
     state.hasError = true;
   }), _defineProperty(_extraReducers, postWishesData.pending, function (state) {
     state.isLoading = true;
-  }), _defineProperty(_extraReducers, postWishesData.fulfilled, function (state, _ref7) {
-    var payload = _ref7.payload;
+  }), _defineProperty(_extraReducers, postWishesData.fulfilled, function (state, _ref6) {
+    var payload = _ref6.payload;
     state.isLoading = false;
     state.wishesData.push(payload);
-  }), _defineProperty(_extraReducers, postWishesData.rejected, function (state, _ref8) {
-    var payload = _ref8.payload;
-    state.errorMessage = payload;
-    state.isLoading = false;
-    state.hasError = true;
-  }), _defineProperty(_extraReducers, updateWishesData.pending, function (state) {
-    state.isLoading = true;
-  }), _defineProperty(_extraReducers, updateWishesData.fulfilled, function (state, _ref9) {
-    var payload = _ref9.payload;
-    state.isLoading = false;
-    var wish = state.wishesData.filter(function (wish) {
-      return wish.id !== payload.id;
-    });
-    state.wishData = _objectSpread(_objectSpread({}, wish), {}, {
-      payload: payload
-    });
-  }), _defineProperty(_extraReducers, updateWishesData.rejected, function (state, _ref10) {
-    var payload = _ref10.payload;
+  }), _defineProperty(_extraReducers, postWishesData.rejected, function (state, _ref7) {
+    var payload = _ref7.payload;
     state.errorMessage = payload;
     state.isLoading = false;
     state.hasError = true;
   }), _defineProperty(_extraReducers, deleteWishesData.pending, function (state) {
     state.isLoading = true;
-  }), _defineProperty(_extraReducers, deleteWishesData.fulfilled, function (state, _ref11) {
-    var payload = _ref11.payload;
+  }), _defineProperty(_extraReducers, deleteWishesData.fulfilled, function (state, _ref8) {
+    var payload = _ref8.payload;
     state.isLoading = false;
     state.wishesData = state.wishesData.filter(function (wish) {
       return wish.id !== payload.id;
     });
-  }), _defineProperty(_extraReducers, deleteWishesData.rejected, function (state, _ref12) {
-    var payload = _ref12.payload;
+  }), _defineProperty(_extraReducers, deleteWishesData.rejected, function (state, _ref9) {
+    var payload = _ref9.payload;
     state.errorMessage = payload;
     state.isLoading = false;
     state.hasError = true;
