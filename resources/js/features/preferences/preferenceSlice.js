@@ -24,6 +24,7 @@ export const postPreferenceData = createAsyncThunk(
           preferenceData,
         }
       )
+      return { preference: data.preference, active: preferenceData.active }
     } catch (error) {
       return thunkAPI.rejectWithValue('Fehler beim anlegen der Preferences')
     }
@@ -57,7 +58,11 @@ const preferenceSlice = createSlice({
     },
     [postPreferenceData.fulfilled]: (state, { payload }) => {
       state.isLoading = false
-      state.preferenceData.push(payload)
+      payload.active === 1
+        ? state.preferenceData.push(payload.preference)
+        : (state.preferenceData = state.preferenceData.filter(
+            (preference) => preference.id !== payload.preference.id
+          ))
     },
     [postPreferenceData.rejected]: (state, { payload }) => {
       state.errorMessage = payload

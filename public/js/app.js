@@ -12323,6 +12323,7 @@ function Preferences(props) {
   }),
       preferenceData = _useSelector3.preferenceData;
 
+  console.log(preferenceData);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
       fluid: true,
@@ -14631,20 +14632,22 @@ var postPreferenceData = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.create
           case 3:
             _yield$axios$post = _context2.sent;
             data = _yield$axios$post.data;
-            _context2.next = 10;
-            break;
+            return _context2.abrupt("return", {
+              preference: data.preference,
+              active: preferenceData.active
+            });
 
-          case 7:
-            _context2.prev = 7;
+          case 8:
+            _context2.prev = 8;
             _context2.t0 = _context2["catch"](0);
             return _context2.abrupt("return", thunkAPI.rejectWithValue('Fehler beim anlegen der Preferences'));
 
-          case 10:
+          case 11:
           case "end":
             return _context2.stop();
         }
       }
-    }, _callee2, null, [[0, 7]]);
+    }, _callee2, null, [[0, 8]]);
   }));
 
   return function (_x3, _x4) {
@@ -14675,7 +14678,9 @@ var preferenceSlice = (0,_reduxjs_toolkit__WEBPACK_IMPORTED_MODULE_1__.createSli
   }), _defineProperty(_extraReducers, postPreferenceData.fulfilled, function (state, _ref5) {
     var payload = _ref5.payload;
     state.isLoading = false;
-    state.preferenceData.push(payload);
+    payload.active === 1 ? state.preferenceData.push(payload.preference) : state.preferenceData = state.preferenceData.filter(function (preference) {
+      return preference.id !== payload.preference.id;
+    });
   }), _defineProperty(_extraReducers, postPreferenceData.rejected, function (state, _ref6) {
     var payload = _ref6.payload;
     state.errorMessage = payload;

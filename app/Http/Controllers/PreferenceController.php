@@ -43,13 +43,17 @@ class PreferenceController extends Controller
 
                 DB::table('duties')->where('employee_id', '=', $request->preferenceData['employee_id'])->where('shift_id', '=', $request->preferenceData['shift_id'])->update(['preference_injury' => 0]);
 
-                return response()->json(['new_preference' => $new_preference], 201);
+                return response()->json(['preference' => $new_preference], 201);
             }
         } else {
             DB::table('duties')->where('employee_id', '=', $request->preferenceData['employee_id'])->where('shift_id', '=', $request->preferenceData['shift_id'])->update(['preference_injury' => 1]);
 
+            // $preference = $preference[0];
             $preference[0]->delete();
-            return response()->json(['deleted_preference' => $preference], 201);
+
+            Log::debug($preference);
+
+            return response()->json(['preference' => $preference[0]], 201);
         };
         // $wish_check = Wish::where('employee_id', $request->wishData['employee_id']);
         // $wish_check->where('day', $request->wishData['day']);

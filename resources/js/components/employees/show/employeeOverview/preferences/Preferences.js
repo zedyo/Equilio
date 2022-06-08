@@ -10,6 +10,8 @@ function Preferences(props) {
   const { shiftTypesData } = useSelector((store) => store.shiftTypes)
   const { preferenceData } = useSelector((store) => store.preferences)
 
+  console.log(preferenceData)
+
   return (
     <>
       <Container fluid>
