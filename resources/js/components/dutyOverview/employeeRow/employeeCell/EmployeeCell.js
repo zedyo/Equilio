@@ -24,9 +24,6 @@ function EmployeeCell(props) {
             {props.employeeData.first_name} {props.employeeData.last_name}
           </div>
           {/* </OverlayTrigger> */}
-          <div className="employeeQualification">
-            {props.employeeData.qualification.description}
-          </div>
         </div>
       </div>
     </>

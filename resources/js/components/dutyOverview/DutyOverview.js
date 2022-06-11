@@ -20,6 +20,7 @@ function DutyOverview() {
   const { dutiesData } = useSelector((store) => store.duties)
   const { employeesData } = useSelector((store) => store.employees)
   const { wishesData } = useSelector((store) => store.wishes)
+  const { qualificationsData } = useSelector((store) => store.qualifications)
   const dispatch = useDispatch()
   const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
@@ -47,6 +48,9 @@ function DutyOverview() {
       ) == undefined
   )
 
+  console.log(qualificationsData)
+  console.log(employeesData)
+
   return (
     <>
       <Container key="container">
@@ -68,27 +72,40 @@ function DutyOverview() {
         </div>
 
         <div>
-          {employeesData &&
-            employeesData.map((employee) => (
-              <EmployeeRow
-                key={
-                  'EmployeeRow:' +
-                  employee.id +
-                  dateSelectorData.year +
-                  dateSelectorData.month
-                }
-                employeeData={employee}
-                dateSelectorData={dateSelectorData}
-                days={monthlyDays}
-                workingDays={workingDays}
-                employeeDuties={dutiesData.filter(
-                  (d) => d.employee_id === employee.id
-                )}
-                employeeWishes={wishesData.filter(
-                  (d) => d.employee_id === employee.id
-                )}
-              />
-            ))}
+          {qualificationsData.map((qualification) => {
+            return (
+              <div key={'qualifcationSection:' + qualification.id}>
+                <div className="qualificationSection">
+                  {qualification.description}
+                </div>
+                {employeesData
+                  .filter(
+                    (employee) => employee.qualification.id == qualification.id
+                  )
+                  .map((employee) => (
+                    <EmployeeRow
+                      key={
+                        'EmployeeRow:' +
+                        employee.id +
+                        dateSelectorData.year +
+                        dateSelectorData.month +
+                        qualification.id
+                      }
+                      employeeData={employee}
+                      dateSelectorData={dateSelectorData}
+                      days={monthlyDays}
+                      workingDays={workingDays}
+                      employeeDuties={dutiesData.filter(
+                        (d) => d.employee_id === employee.id
+                      )}
+                      employeeWishes={wishesData.filter(
+                        (d) => d.employee_id === employee.id
+                      )}
+                    />
+                  ))}
+              </div>
+            )
+          })}
         </div>
         <div className="separator" />
         {/* <ShiftTypeStatisticsContainer

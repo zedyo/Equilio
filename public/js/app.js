@@ -10047,6 +10047,11 @@ function DutyOverview() {
   }),
       wishesData = _useSelector3.wishesData;
 
+  var _useSelector4 = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (store) {
+    return store.qualifications;
+  }),
+      qualificationsData = _useSelector4.qualificationsData;
+
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useDispatch)();
   var monthlyDays = (0,_util_daysToArray__WEBPACK_IMPORTED_MODULE_4__.daysToArray)(dateSelectorData.year, dateSelectorData.month);
   (0,react__WEBPACK_IMPORTED_MODULE_1__.useEffect)(function () {
@@ -10057,6 +10062,8 @@ function DutyOverview() {
       return holiday.date === moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('YYYY-MM-DD');
     }) == undefined;
   });
+  console.log(qualificationsData);
+  console.log(employeesData);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
@@ -10074,19 +10081,28 @@ function DutyOverview() {
           })
         })]
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-        children: employeesData && employeesData.map(function (employee) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
-            employeeData: employee,
-            dateSelectorData: dateSelectorData,
-            days: monthlyDays,
-            workingDays: workingDays,
-            employeeDuties: dutiesData.filter(function (d) {
-              return d.employee_id === employee.id;
-            }),
-            employeeWishes: wishesData.filter(function (d) {
-              return d.employee_id === employee.id;
-            })
-          }, 'EmployeeRow:' + employee.id + dateSelectorData.year + dateSelectorData.month);
+        children: qualificationsData.map(function (qualification) {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+              className: "qualificationSection",
+              children: qualification.description
+            }), employeesData.filter(function (employee) {
+              return employee.qualification.id == qualification.id;
+            }).map(function (employee) {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                employeeData: employee,
+                dateSelectorData: dateSelectorData,
+                days: monthlyDays,
+                workingDays: workingDays,
+                employeeDuties: dutiesData.filter(function (d) {
+                  return d.employee_id === employee.id;
+                }),
+                employeeWishes: wishesData.filter(function (d) {
+                  return d.employee_id === employee.id;
+                })
+              }, 'EmployeeRow:' + employee.id + dateSelectorData.year + dateSelectorData.month + qualification.id);
+            })]
+          }, 'qualifcationSection:' + qualification.id);
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
         className: "separator"
@@ -11379,14 +11395,11 @@ function EmployeeCell(props) {
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
       className: "employeeContainer",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsxs)("div", {
           className: "employeeName",
           children: [props.employeeData.first_name, " ", props.employeeData.last_name]
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)("div", {
-          className: "employeeQualification",
-          children: props.employeeData.qualification.description
-        })]
+        })
       })
     })
   });
@@ -21080,7 +21093,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".dateRow {\n  display: grid;\n  grid-template-columns: 16rem auto;\n  align-items: center;\n}\n.dateRow .dateSelector {\n  margin-top: 1rem;\n  margin-right: 1rem;\n}\n\n.separator {\n  height: 2rem;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".dateRow {\n  display: grid;\n  grid-template-columns: 16rem auto;\n  align-items: center;\n}\n.dateRow .dateSelector {\n  margin-top: 1rem;\n  margin-right: 1rem;\n}\n\n.separator {\n  height: 2rem;\n}\n\n.qualificationSection {\n  width: 16rem;\n  font-size: 0.7rem;\n  border-width: 1px;\n  border-style: none none solid none;\n  padding: 1rem 0 0 0;\n  -o-border-image: linear-gradient(to right, rgb(0, 0, 0), rgba(0, 0, 0, 0)) 100% 1;\n     border-image: linear-gradient(to right, rgb(0, 0, 0), rgba(0, 0, 0, 0)) 100% 1;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
