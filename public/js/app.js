@@ -10085,7 +10085,9 @@ function DutyOverview() {
           return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
             children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
               className: "qualificationSection",
-              children: qualification.description
+              children: "".concat(qualification.description).concat(employeesData.filter(function (employee) {
+                return employee.qualification.id == qualification.id;
+              }).length > 1 ? 'nen' : '')
             }), employeesData.filter(function (employee) {
               return employee.qualification.id == qualification.id;
             }).map(function (employee) {

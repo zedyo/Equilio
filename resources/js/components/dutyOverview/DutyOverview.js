@@ -76,7 +76,14 @@ function DutyOverview() {
             return (
               <div key={'qualifcationSection:' + qualification.id}>
                 <div className="qualificationSection">
-                  {qualification.description}
+                  {`${qualification.description}${
+                    employeesData.filter(
+                      (employee) =>
+                        employee.qualification.id == qualification.id
+                    ).length > 1
+                      ? 'nen'
+                      : ''
+                  }`}
                 </div>
                 {employeesData
                   .filter(
