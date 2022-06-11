@@ -20,6 +20,8 @@ class EmployeeController extends Controller
         $employee = new Employee();
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
+        $employee->daily_worktime = $request->employeeData['daily_worktime'];
+        $employee->employment_ratio = $request->employeeData['employment_ratio'];
         $employee->qualification_id = $request->employeeData['qualification_id'];
         $employee->save();
 
@@ -35,6 +37,8 @@ class EmployeeController extends Controller
     {
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
+        $employee->daily_worktime = $request->employeeData['daily_worktime'];
+        $employee->employment_ratio = $request->employeeData['employment_ratio'];
         $employee->qualification_id = $request->employeeData['qualification_id'];
 
         $employee->save();

@@ -3,6 +3,7 @@ import React from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteWishesData } from '../../../../../features/wishes/wishSlice'
+import { FaRegTrashAlt } from 'react-icons/fa'
 
 function WishColumn(props) {
   moment.locale('de')
@@ -27,7 +28,7 @@ function WishColumn(props) {
             variant="outline-danger"
             size="sm"
           >
-            Löschen
+            <FaRegTrashAlt />
           </Button>{' '}
         </td>
       </tr>

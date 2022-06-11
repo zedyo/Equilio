@@ -2,6 +2,7 @@ import React from 'react'
 import { Card, Col, Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteQualificationsData } from '../../../features/qualifications/qualificationSlice'
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
 
 function Qualification(props) {
   const dispatch = useDispatch()
@@ -19,7 +20,7 @@ function Qualification(props) {
               variant="outline-secondary"
               size="sm"
             >
-              Bearbeiten
+              <FaRegEdit />
             </Button>{' '}
             <Button
               onClick={() =>
@@ -28,7 +29,7 @@ function Qualification(props) {
               variant="outline-danger"
               size="sm"
             >
-              Löschen
+              <FaRegTrashAlt />
             </Button>{' '}
           </Card.Body>
         </Card>

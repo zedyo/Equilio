@@ -8,11 +8,13 @@ import {
   Card,
   Table,
   Stack,
+  Button,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import Preferences from './preferences/Preferences'
 import WishColumn from './wishColumn/WishColumn'
+import { FaUserEdit } from 'react-icons/fa'
 
 function EmployeeOverview() {
   const params = useParams()
@@ -37,7 +39,19 @@ function EmployeeOverview() {
     <Fragment>
       <Container>
         <Card>
-          <Card.Header>Mitarbeiterdetails</Card.Header>
+          <Card.Header>
+            <Stack direction="horizontal" gap={3}>
+              <div>Mitarbeiterdetails</div>
+              <div className="ms-auto">
+                <Button
+                  href={`/employee/edit/${employeeData.id}`}
+                  variant="outline-secondary"
+                >
+                  <FaUserEdit /> Mitarbeiterdaten bearbeiten
+                </Button>
+              </div>
+            </Stack>
+          </Card.Header>
           <Card.Body>
             <Stack gap={2}>
               <Row className="g-2">

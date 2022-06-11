@@ -1,7 +1,8 @@
 import React from 'react'
 import EmployeeColumn from './show/EmployeeColumn'
-import { Button, Card, Container, Table } from 'react-bootstrap'
+import { Button, Card, Container, Stack, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 function Employees() {
   const { employeesData } = useSelector((store) => store.employees)
@@ -10,16 +11,27 @@ function Employees() {
     <>
       <Container>
         <Card>
-          <Card.Header>Angestellten Übersicht</Card.Header>
+          <Card.Header>
+            <Stack direction="horizontal" gap={3}>
+              <div>Angestellte</div>
+              <div className="ms-auto">
+                <Button href={`/employee/create`} variant="outline-success">
+                  <AiOutlinePlus /> Neuer Angestelle
+                </Button>
+              </div>
+            </Stack>
+          </Card.Header>
           <Card.Body>
-            <Table>
+            <Table responsive>
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Vorname</th>
                   <th>Nachname</th>
                   <th>Qualifikation</th>
-                  <th> </th>
+                  <th>Einstellungsverhältnis</th>
+                  <th>tgl. Arbeitszeit</th>
+                  <th></th>
                 </tr>
               </thead>
               <tbody>
@@ -28,11 +40,6 @@ function Employees() {
                 ))}
               </tbody>
             </Table>
-            <Container fluid="sm">
-              <Button href={`/employee/create`} variant="outline-success">
-                Erstellen
-              </Button>{' '}
-            </Container>
           </Card.Body>
         </Card>
       </Container>

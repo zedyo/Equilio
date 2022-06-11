@@ -1,39 +1,40 @@
 import React from 'react'
-import { Button, Container, Row } from 'react-bootstrap'
+import { Button, Card, Container, Row, Stack } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import ShiftTypeCard from './show/ShiftTypeCard'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 function ShiftTypes() {
   const { shiftTypesData } = useSelector((store) => store.shiftTypes)
 
   return (
     <>
-      <div className="container">
-        <div className="row justify-content-center">
-          <div className="col-md-12">
-            <div className="card">
-              <div className="card-header">Schicht Arten</div>
-              <div className="card-body">
-                <Container style={{ margin: '0.3rem' }} fluid="sm">
-                  <Button href={`/shift_type/create`} variant="outline-success">
-                    Neue Schicht Art anlegen
-                  </Button>
-                </Container>
-                <Container fluid="sm">
-                  <Row>
-                    {shiftTypesData.map((shiftTypeData) => (
-                      <ShiftTypeCard
-                        key={shiftTypeData.id}
-                        shiftTypeData={shiftTypeData}
-                      />
-                    ))}
-                  </Row>
-                </Container>
+      <Container>
+        <Card>
+          <Card.Header>
+            <Stack direction="horizontal" gap={3}>
+              <div>Schicht Arten</div>
+              <div className="ms-auto">
+                <Button href={`/shift_type/create`} variant="outline-success">
+                  <AiOutlinePlus /> Neue Schicht Art
+                </Button>
               </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            </Stack>
+          </Card.Header>
+          <Card.Body>
+            <Container fluid="sm">
+              <Row>
+                {shiftTypesData.map((shiftTypeData) => (
+                  <ShiftTypeCard
+                    key={shiftTypeData.id}
+                    shiftTypeData={shiftTypeData}
+                  />
+                ))}
+              </Row>
+            </Container>
+          </Card.Body>
+        </Card>
+      </Container>
     </>
   )
 }

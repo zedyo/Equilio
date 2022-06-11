@@ -2,6 +2,7 @@ import React from 'react'
 import { Button, Card, Col } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
+import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
 
 function ShiftType(props) {
   const dispatch = useDispatch()
@@ -20,7 +21,7 @@ function ShiftType(props) {
               variant="outline-secondary"
               size="sm"
             >
-              Bearbeiten
+              <FaRegEdit />
             </Button>{' '}
             <Button
               onClick={() =>
@@ -29,7 +30,7 @@ function ShiftType(props) {
               variant="outline-danger"
               size="sm"
             >
-              Löschen
+              <FaRegTrashAlt />
             </Button>{' '}
           </Card.Body>
         </Card>
