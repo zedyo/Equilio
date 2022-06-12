@@ -9984,7 +9984,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! moment */ "./node_modules/moment/moment.js");
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../features/duties/dutySlice */ "./resources/js/features/duties/dutySlice.js");
 /* harmony import */ var _util_daysToArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util/daysToArray */ "./resources/js/util/daysToArray.js");
@@ -9993,7 +9993,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _DutyOverview_scss__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./DutyOverview.scss */ "./resources/js/components/dutyOverview/DutyOverview.scss");
 /* harmony import */ var _employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./employeeRow/EmployeeRow */ "./resources/js/components/dutyOverview/employeeRow/EmployeeRow.js");
 /* harmony import */ var _daysRow_utils_holidays__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./daysRow/utils/holidays */ "./resources/js/components/dutyOverview/daysRow/utils/holidays.js");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
+/* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_10__);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
@@ -10005,6 +10007,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -10062,28 +10065,26 @@ function DutyOverview() {
       return holiday.date === moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('YYYY-MM-DD');
     }) == undefined;
   });
-  console.log(qualificationsData);
-  console.log(employeesData);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_11__["default"], {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_12__["default"], {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
         className: "dateRow",
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
           className: "dateSelector",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
             dateSelectorData: dateSelectorData,
             setDateSelector: setDateSelector
           }, "datechecker-render")
-        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
             monthlyDays: monthlyDays,
             dateSelectorData: dateSelectorData
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
         children: qualificationsData.map(function (qualification) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsxs)("div", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsxs)("div", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
               className: "qualificationSection",
               children: "".concat(qualification.description).concat(employeesData.filter(function (employee) {
                 return employee.qualification.id == qualification.id;
@@ -10091,7 +10092,7 @@ function DutyOverview() {
             }), employeesData.filter(function (employee) {
               return employee.qualification.id == qualification.id;
             }).map(function (employee) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
+              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
                 employeeData: employee,
                 dateSelectorData: dateSelectorData,
                 days: monthlyDays,
@@ -10106,7 +10107,7 @@ function DutyOverview() {
             })]
           }, 'qualifcationSection:' + qualification.id);
         })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_10__.jsx)("div", {
+      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_11__.jsx)("div", {
         className: "separator"
       })]
     }, "container")
@@ -11223,20 +11224,18 @@ function EmployeeRow(props) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_employeeCell_EmployeeCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
         employeeData: props.employeeData
       }), props.days.map(function (day) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
-            day: day,
-            month: props.dateSelectorData.month,
-            year: props.dateSelectorData.year,
-            employeeDuty: props.employeeDuties.filter(function (d) {
-              return d.day === day;
-            }),
-            employeeWish: props.employeeWishes.filter(function (d) {
-              return d.day === day;
-            }),
-            employeeId: props.employeeData.id
-          }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day)
-        });
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
+          day: day,
+          month: props.dateSelectorData.month,
+          year: props.dateSelectorData.year,
+          employeeDuty: props.employeeDuties.filter(function (d) {
+            return d.day === day;
+          }),
+          employeeWish: props.employeeWishes.filter(function (d) {
+            return d.day === day;
+          }),
+          employeeId: props.employeeData.id
+        }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingHoursCell_WorkingHoursCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
         employeeData: props.employeeData,
         workingDays: props.workingDays,
