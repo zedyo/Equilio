@@ -9,23 +9,27 @@ function EmployeeRow(props) {
     <>
       <div className="employeeRow">
         <EmployeeCell employeeData={props.employeeData} />
-        {props.days.map((day) => (
-          <DutyCell
-            key={
-              'DutyCell:' +
-              props.employeeData.id +
-              props.dateSelectorData.year +
-              props.dateSelectorData.month +
-              day
-            }
-            day={day}
-            month={props.dateSelectorData.month}
-            year={props.dateSelectorData.year}
-            employeeDuty={props.employeeDuties.filter((d) => d.day === day)}
-            employeeWish={props.employeeWishes.filter((d) => d.day === day)}
-            employeeId={props.employeeData.id}
-          />
-        ))}
+        {props.days.map((day) => {
+          return (
+            <div>
+              <DutyCell
+                key={
+                  'DutyCell:' +
+                  props.employeeData.id +
+                  props.dateSelectorData.year +
+                  props.dateSelectorData.month +
+                  day
+                }
+                day={day}
+                month={props.dateSelectorData.month}
+                year={props.dateSelectorData.year}
+                employeeDuty={props.employeeDuties.filter((d) => d.day === day)}
+                employeeWish={props.employeeWishes.filter((d) => d.day === day)}
+                employeeId={props.employeeData.id}
+              />
+            </div>
+          )
+        })}
         <WorkingHoursCell
           employeeData={props.employeeData}
           workingDays={props.workingDays}

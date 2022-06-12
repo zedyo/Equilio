@@ -11223,18 +11223,20 @@ function EmployeeRow(props) {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_employeeCell_EmployeeCell__WEBPACK_IMPORTED_MODULE_4__["default"], {
         employeeData: props.employeeData
       }), props.days.map(function (day) {
-        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
-          day: day,
-          month: props.dateSelectorData.month,
-          year: props.dateSelectorData.year,
-          employeeDuty: props.employeeDuties.filter(function (d) {
-            return d.day === day;
-          }),
-          employeeWish: props.employeeWishes.filter(function (d) {
-            return d.day === day;
-          }),
-          employeeId: props.employeeData.id
-        }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day);
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_dutyCell_DutyCell__WEBPACK_IMPORTED_MODULE_1__["default"], {
+            day: day,
+            month: props.dateSelectorData.month,
+            year: props.dateSelectorData.year,
+            employeeDuty: props.employeeDuties.filter(function (d) {
+              return d.day === day;
+            }),
+            employeeWish: props.employeeWishes.filter(function (d) {
+              return d.day === day;
+            }),
+            employeeId: props.employeeData.id
+          }, 'DutyCell:' + props.employeeData.id + props.dateSelectorData.year + props.dateSelectorData.month + day)
+        });
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(_workingHoursCell_WorkingHoursCell__WEBPACK_IMPORTED_MODULE_2__["default"], {
         employeeData: props.employeeData,
         workingDays: props.workingDays,
@@ -12357,11 +12359,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Col.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Card.js");
-/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Form.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Col.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Card.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Form.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../features/preferences/preferenceSlice */ "./resources/js/features/preferences/preferenceSlice.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
@@ -12394,49 +12395,45 @@ function Preferences(props) {
   console.log(preferenceData);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      fluid: true,
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
-        children: shiftTypesData !== undefined && shiftTypesData.map(function (shiftType) {
-          return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            md: "auto",
-            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"], {
-              style: {
-                width: '15rem',
-                margin: '0.3rem'
-              },
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Body, {
-                children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Subtitle, {
-                  className: "mb-2 text-muted",
-                  children: shiftType.name
-                }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"], {
-                  children: shiftsData !== undefined && shiftsData.filter(function (shift) {
-                    return shift.shift_type.id === shiftType.id;
-                  }).map(function (shift) {
-                    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_8__["default"].Check, {
-                      checked: preferenceData.find(function (preference) {
-                        return preference.employee_id == props.employeeId && preference.shift_id == shift.id;
-                      }) ? true : false,
-                      type: "switch",
-                      id: shift.id,
-                      label: shift.abrv,
-                      onChange: function onChange(e) {
-                        return e.target.checked ? dispatch((0,_features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__.postPreferenceData)({
-                          employee_id: props.employeeId,
-                          shift_id: shift.id,
-                          active: 1
-                        })) : dispatch((0,_features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__.postPreferenceData)({
-                          employee_id: props.employeeId,
-                          shift_id: shift.id,
-                          active: 0
-                        }));
-                      }
-                    }, shift.id);
-                  })
-                }, shiftType.id)]
-              })
+      children: shiftTypesData !== undefined && shiftTypesData.map(function (shiftType) {
+        return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
+          md: 6,
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
+            style: {
+              margin: '0.8rem 0'
+            },
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"].Body, {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"].Subtitle, {
+                className: "mb-2 text-muted",
+                children: shiftType.name
+              }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"], {
+                children: shiftsData !== undefined && shiftsData.filter(function (shift) {
+                  return shift.shift_type.id === shiftType.id;
+                }).map(function (shift) {
+                  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_7__["default"].Check, {
+                    checked: preferenceData.find(function (preference) {
+                      return preference.employee_id == props.employeeId && preference.shift_id == shift.id;
+                    }) ? true : false,
+                    type: "switch",
+                    id: shift.id,
+                    label: shift.abrv,
+                    onChange: function onChange(e) {
+                      return e.target.checked ? dispatch((0,_features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__.postPreferenceData)({
+                        employee_id: props.employeeId,
+                        shift_id: shift.id,
+                        active: 1
+                      })) : dispatch((0,_features_preferences_preferenceSlice__WEBPACK_IMPORTED_MODULE_2__.postPreferenceData)({
+                        employee_id: props.employeeId,
+                        shift_id: shift.id,
+                        active: 0
+                      }));
+                    }
+                  }, shift.id);
+                })
+              }, shiftType.id)]
             })
-          }, shiftType.id);
-        })
+          })
+        }, shiftType.id);
       })
     })
   });
@@ -12761,7 +12758,7 @@ function Qualifications() {
           })
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Body, {
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-            fluid: "sm",
+            md: 3,
             children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_9__["default"], {
               children: qualificationsData.map(function (qualificationObject) {
                 return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_show_QualificationCard__WEBPACK_IMPORTED_MODULE_1__["default"], {
@@ -12913,18 +12910,14 @@ function Qualification(props) {
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      md: "auto",
+      md: 4,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
         style: {
-          width: '18rem',
-          margin: '0.3rem'
+          margin: '0.8rem 0'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
             children: props.qualificationData.description
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Subtitle, {
-            className: "mb-2 text-muted",
-            children: ["ID: ", props.qualificationData.id]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
             href: "/qualification/edit/".concat(props.qualificationData.id),
             variant: "outline-secondary",
@@ -13277,18 +13270,14 @@ function ShiftType(props) {
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      md: "auto",
+      md: 4,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
         style: {
-          width: '18rem',
-          margin: '0.3rem'
+          margin: '0.8rem 0'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
             children: props.shiftTypeData.name
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Subtitle, {
-            className: "mb-2 text-muted",
-            children: ["ID: ", props.shiftTypeData.id]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_6__["default"], {
             href: "/shift_type/edit/".concat(props.shiftTypeData.id),
             variant: "outline-secondary",
@@ -13736,11 +13725,10 @@ function Shift(props) {
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_1__.useDispatch)();
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
-      md: "auto",
+      md: 4,
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"], {
         style: {
-          width: '18rem',
-          margin: '0.3rem'
+          margin: '0.8rem 0'
         },
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Body, {
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Title, {
@@ -13748,9 +13736,6 @@ function Shift(props) {
               color: "".concat(props.shiftsData.color_hex)
             },
             children: props.shiftsData.abrv
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Subtitle, {
-            className: "mb-2 text-muted",
-            children: ["ID: ", props.shiftsData.id]
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_5__["default"].Subtitle, {
             className: "mb-2 text-muted",
             children: ["T\xE4gliche Arbeitszeit: ", props.shiftsData.h_duration]

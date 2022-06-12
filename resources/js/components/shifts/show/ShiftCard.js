@@ -9,15 +9,16 @@ function Shift(props) {
 
   return (
     <>
-      <Col md="auto">
-        <Card style={{ width: '18rem', margin: '0.3rem' }}>
+      <Col md={4}>
+        <Card
+          style={{
+            margin: '0.8rem 0',
+          }}
+        >
           <Card.Body>
             <Card.Title style={{ color: `${props.shiftsData.color_hex}` }}>
               {props.shiftsData.abrv}
             </Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              ID: {props.shiftsData.id}
-            </Card.Subtitle>
             <Card.Subtitle className="mb-2 text-muted">
               Tägliche Arbeitszeit: {props.shiftsData.h_duration}
             </Card.Subtitle>

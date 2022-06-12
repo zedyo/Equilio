@@ -26,7 +26,7 @@ function Qualifications() {
           </Card.Header>
 
           <Card.Body>
-            <Container fluid="sm">
+            <Container md={3}>
               <Row>
                 {qualificationsData.map((qualificationObject) => (
                   <QualificationCard

@@ -9,13 +9,14 @@ function ShiftType(props) {
 
   return (
     <>
-      <Col md="auto">
-        <Card style={{ width: '18rem', margin: '0.3rem' }}>
+      <Col md={4}>
+        <Card
+          style={{
+            margin: '0.8rem 0',
+          }}
+        >
           <Card.Body>
             <Card.Title>{props.shiftTypeData.name}</Card.Title>
-            <Card.Subtitle className="mb-2 text-muted">
-              ID: {props.shiftTypeData.id}
-            </Card.Subtitle>
             <Button
               href={`/shift_type/edit/${props.shiftTypeData.id}`}
               variant="outline-secondary"
