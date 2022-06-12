@@ -1,6 +1,7 @@
 .dateRow {
-    display: grid;
-    grid-template-columns: 16rem auto;
+    // display: grid;
+    // grid-template-columns: auto repeat($days, 2.2rem) 8.2rem;
+    // grid-template-rows: 1fr;
     align-items: center;
 
     .dateSelector {

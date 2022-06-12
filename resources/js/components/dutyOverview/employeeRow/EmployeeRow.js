@@ -7,7 +7,14 @@ import EmployeeCell from './employeeCell/EmployeeCell'
 function EmployeeRow(props) {
   return (
     <>
-      <div className="employeeRow">
+      <div
+        className="employeeRow"
+        style={{
+          display: 'grid',
+          gridTemplateColumns: `auto repeat(${props.days.length}, 2.2rem) 6rem`,
+          alignItems: 'center',
+        }}
+      >
         <EmployeeCell employeeData={props.employeeData} />
         {props.days.map((day) => {
           return (

@@ -1,6 +1,6 @@
 .employeeRow {
-    display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: 16rem repeat(31, 2.2rem);
-    align-items: center;
+    // display: grid;
+    // grid-auto-flow: column;
+    // grid-template-columns: auto repeat(31, 2.2rem) 6rem;
+    // align-items: center;
 }

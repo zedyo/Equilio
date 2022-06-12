@@ -23,11 +23,11 @@ require('./bootstrap')
 
 function App() {
   return (
-    <div>
+    <>
       <Provider store={store}>
         <Router />
       </Provider>
-    </div>
+    </>
   )
 }
 

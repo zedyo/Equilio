@@ -51,8 +51,15 @@ function DutyOverview() {
 
   return (
     <>
-      <Container key="container">
-        <div className="dateRow">
+      <Container fluid style={{ padding: '0 5rem' }}>
+        <div
+          className="dateRow"
+          style={{
+            display: 'grid',
+            gridTemplateColumns: `auto ${monthlyDays.length * 2.2}rem 6rem`,
+            alignItems: 'center',
+          }}
+        >
           <div className="dateSelector">
             <DateSelector
               key="datechecker-render"

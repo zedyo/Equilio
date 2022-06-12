@@ -39,37 +39,34 @@ function Router() {
   }, [])
 
   return (
-    <div>
+    <>
       <BrowserRouter>
         <NavigationBar />
-        <div className="py-4">
-          <Switch>
-            <Route
-              path="/qualification/edit/:id"
-              component={UpdateQualification}
-            />
-            <Route
-              path="/qualification/create"
-              component={CreateQualification}
-            />
-            <Route path="/qualifications" component={QualificationOverview} />
-            <Route path="/shift/edit/:id" component={UpdateShift} />
-            <Route path="/shift/create" component={CreateShift} />
-            <Route path="/shifts" component={ShiftOverview} />
-            <Route path="/shift_type/edit/:id" component={UpdateShiftType} />
-            <Route path="/shift_type/create" component={CreateShiftType} />
-            <Route path="/shift_types" component={ShiftTypeOverview} />
-            <Route path="/employee/edit/:id" component={UpdateEmployee} />
-            <Route path="/employee/show/:id" component={EmployeeOverview} />
-            <Route path="/employee/create" component={CreateEmployee} />
-            <Route path="/employees" component={EmployeesOverview} />
-            <Route path="/duties" component={DutyOverview} />
-            <Route path="/wish_creator" component={WishCreator} />
-            <Route exact path="/" component={DutyOverview} />
-          </Switch>
-        </div>
+        {/* <div className="py-4"> */}
+        <Switch>
+          <Route
+            path="/qualification/edit/:id"
+            component={UpdateQualification}
+          />
+          <Route path="/qualification/create" component={CreateQualification} />
+          <Route path="/qualifications" component={QualificationOverview} />
+          <Route path="/shift/edit/:id" component={UpdateShift} />
+          <Route path="/shift/create" component={CreateShift} />
+          <Route path="/shifts" component={ShiftOverview} />
+          <Route path="/shift_type/edit/:id" component={UpdateShiftType} />
+          <Route path="/shift_type/create" component={CreateShiftType} />
+          <Route path="/shift_types" component={ShiftTypeOverview} />
+          <Route path="/employee/edit/:id" component={UpdateEmployee} />
+          <Route path="/employee/show/:id" component={EmployeeOverview} />
+          <Route path="/employee/create" component={CreateEmployee} />
+          <Route path="/employees" component={EmployeesOverview} />
+          <Route path="/duties" component={DutyOverview} />
+          <Route path="/wish_creator" component={WishCreator} />
+          <Route exact path="/" component={DutyOverview} />
+        </Switch>
+        {/* </div> */}
       </BrowserRouter>
-    </div>
+    </>
   )
 }
 
