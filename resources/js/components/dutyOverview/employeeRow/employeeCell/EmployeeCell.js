@@ -1,6 +1,7 @@
 import React from 'react'
 import './EmployeeCell.scss'
-import { Popover, OverlayTrigger } from 'react-bootstrap'
+import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 function EmployeeCell(props) {
   const popover = (
@@ -23,8 +24,13 @@ function EmployeeCell(props) {
           <div className="employeeName">
             {props.employeeData.first_name} {props.employeeData.last_name}
           </div>
+
           {/* </OverlayTrigger> */}
         </div>
+        <Button variant="outline-info" size="sm">
+          <AiOutlinePlus />
+          Wunsch
+        </Button>
       </div>
     </>
   )
