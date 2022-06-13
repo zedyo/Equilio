@@ -110,7 +110,7 @@ class DutyController extends Controller
             // $new_duty->preference_injury = false;
             $new_duty->save();
 
-            $duty = Duty::with('shift')->where('id', $new_duty->id)->first();
+            $duty = Duty::with('shift.shift_type')->where('id', $new_duty->id)->first();
 
             return ['new_duty' => $duty];
             // NEUE DUTY ANGELEGT
@@ -145,7 +145,7 @@ class DutyController extends Controller
             }
 
             $update_duty->save();
-            $duty = Duty::with('shift')->where('id', $update_duty->id)->first();
+            $duty = Duty::with('shift.shift_type')->where('id', $update_duty->id)->first();
 
             return ['new_duty' => $duty];
             // DUTY BEARBEITET;

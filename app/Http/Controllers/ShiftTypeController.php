@@ -3,10 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ShiftType;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use App\Models\Duty;
-use Illuminate\Support\Facades\Log;
 
 class ShiftTypeController extends Controller
 {
@@ -33,6 +30,7 @@ class ShiftTypeController extends Controller
     {
         $shift_type = new ShiftType();
         $shift_type->name = $request->shiftTypesData['name'];
+        $shift_type->active_duty = $request->shiftTypesData['active_duty'];
         $shift_type->save();
 
         return response()->json([null], 201);
@@ -46,6 +44,7 @@ class ShiftTypeController extends Controller
     public function update(Request $request, ShiftType $shift_type)
     {
         $shift_type->name = $request->shiftTypeData['name'];
+        $shift_type->active_duty = $request->shiftTypesData['active_duty'];
 
         $shift_type->save();
 

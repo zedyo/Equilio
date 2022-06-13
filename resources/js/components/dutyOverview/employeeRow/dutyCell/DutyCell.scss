@@ -24,6 +24,21 @@
     }
 }
 
+.passiveDuty {
+    width: 2rem;
+    height: 2rem;
+    border: 0.03rem solid grey;
+    border-radius: 0.2rem;
+    text-align: center;
+    justify-self: center;
+    font-weight: 200;
+    font-size: 1rem;
+
+    .wishInjury {
+        background-color: lightsalmon
+    }
+}
+
 .wishForm {
     width: 2rem;
     height: 2rem;
@@ -46,7 +61,7 @@
     border-radius: 0.2rem;
     text-align: center;
     justify-self: center;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 1rem;
     background-color: lightsalmon
 }
@@ -58,7 +73,7 @@
     border-radius: 0.2rem;
     text-align: center;
     justify-self: center;
-    font-weight: 600;
+    font-weight: 800;
     font-size: 1rem;
     background-color: lightgoldenrodyellow
 }

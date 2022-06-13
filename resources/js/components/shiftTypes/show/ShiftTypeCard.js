@@ -17,6 +17,17 @@ function ShiftType(props) {
         >
           <Card.Body>
             <Card.Title>{props.shiftTypeData.name}</Card.Title>
+            <Card.Subtitle
+              style={
+                props.shiftTypeData.active_duty == 1
+                  ? { color: 'blue', padding: '0 0 1rem 0' }
+                  : { color: 'orange', padding: '0 0 1rem 0' }
+              }
+            >
+              {props.shiftTypeData.active_duty == 1
+                ? 'Aktive Schicht'
+                : 'Passive Schicht'}
+            </Card.Subtitle>
             <Button
               href={`/shift_type/edit/${props.shiftTypeData.id}`}
               variant="outline-secondary"

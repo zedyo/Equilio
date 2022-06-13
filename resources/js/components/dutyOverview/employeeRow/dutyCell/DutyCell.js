@@ -39,19 +39,24 @@ function DutyCell(props) {
       color: color,
     }
 
+    console.log(duty)
+
     return (
       <input
         style={inputColor}
         className={
           duty === undefined
-            ? CellStyle
+            ? 'inputDutyForm'
+            : duty.shift.shift_type.active_duty == 0 ||
+              duty.shift.shift_type.active_duty == undefined
+            ? 'passiveDuty'
             : duty.wish_injury == true
             ? 'wishInjury'
             : duty.preference_injury == true && wish == undefined
             ? 'preferenceInjury'
             : wish !== undefined
             ? 'wishForm'
-            : CellStyle
+            : 'inputDutyForm'
         }
         value={inputDutyValue}
         placeholder={wish !== undefined ? wish.shift.abrv : ''}

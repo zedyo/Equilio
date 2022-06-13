@@ -22,6 +22,7 @@ function UpdateShift() {
 
   const [shiftTypeData, setShiftType] = useState([])
   const [shiftData, setShift] = useState({})
+  console.log(shiftData)
 
   useEffect(() => {
     shift !== undefined && setShift(shift)
@@ -65,7 +66,6 @@ function UpdateShift() {
               </Card.Header>
               <Card.Body>
                 <Card.Title>
-                  ID: {shiftData.id}
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="qualification_description">
                       Abkürzung

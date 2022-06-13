@@ -16,6 +16,7 @@ class CreateShiftTypesTable extends Migration
         Schema::create('shift_types', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->boolean('active_duty');
             $table->timestamps();
             $table->softDeletes();
         });

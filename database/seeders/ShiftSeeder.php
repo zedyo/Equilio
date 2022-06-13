@@ -68,7 +68,7 @@ class ShiftSeeder extends Seeder
 
         $dummyFreeShift = new Shift([
             'abrv' => 'U1',
-            'shift_type_id' => 4,
+            'shift_type_id' => 5,
             'h_duration' => 8.00,
             'color_hex' => '#1ddce2'
         ]);
@@ -76,7 +76,7 @@ class ShiftSeeder extends Seeder
 
         $dummyFreeShift = new Shift([
             'abrv' => 'K1',
-            'shift_type_id' => 4,
+            'shift_type_id' => 5,
             'h_duration' => 8.00,
             'color_hex' => '#a00000'
         ]);

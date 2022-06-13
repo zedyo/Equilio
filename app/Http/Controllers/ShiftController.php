@@ -37,6 +37,8 @@ class ShiftController extends Controller
         $shift->abrv = $request->shiftsData['abrv'];
         $shift->color_hex = $request->shiftsData['color_hex'];
         $shift->h_duration = $request->shiftsData['h_duration'];
+        $shift->shift_type_id = $request->shiftsData['shift_type_id'];
+
         $shift->save();
 
         return response()->json(['shift' => $shift], 201);
