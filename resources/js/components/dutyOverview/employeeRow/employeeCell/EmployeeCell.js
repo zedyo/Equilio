@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState } from 'react'
 import './EmployeeCell.scss'
 import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
 import { AiOutlinePlus } from 'react-icons/ai'
+import WishCreator from './wishCreator/WishCreator'
+import { Link } from 'react-router-dom'
 
 function EmployeeCell(props) {
+  const [isShown, setIsShown] = useState(false)
+
   const popover = (
     <Popover id="popover-basic">
       <Popover.Header as="h3">
@@ -18,19 +22,30 @@ function EmployeeCell(props) {
 
   return (
     <>
-      <div className="employeeContainer">
+      <div
+        className="employeeContainer"
+        onMouseEnter={() => setIsShown(true)}
+        onMouseLeave={() => setIsShown(false)}
+      >
         <div>
           {/* <OverlayTrigger trigger="click" placement="right" overlay={popover}> */}
-          <div className="employeeName">
+          <a
+            href={`/employee/show/${props.employeeData.id}`}
+            className="employeeName"
+          >
             {props.employeeData.first_name} {props.employeeData.last_name}
-          </div>
+          </a>
 
           {/* </OverlayTrigger> */}
         </div>
-        <Button variant="outline-info" size="sm">
-          <AiOutlinePlus />
-          Wunsch
-        </Button>
+        {isShown && (
+          <WishCreator isShown={isShown} employeeId={props.employeeData.id} />
+
+          // <Button variant="outline-info" size="sm" className="wishButton">
+          //   <AiOutlinePlus />
+          //   Wunsch
+          // </Button>
+        )}
       </div>
     </>
   )

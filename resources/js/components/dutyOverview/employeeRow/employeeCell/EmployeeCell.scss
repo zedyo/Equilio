@@ -1,6 +1,6 @@
 .employeeContainer {
 
-  height: 2rem;
+  height: 2.1rem;
   // border: 0.01rem solid rgb(128, 128, 128);
   // border-radius: 0.2rem;
 
@@ -16,9 +16,11 @@
     width: auto;
       align-content: center;
       font-weight: 500;
-      font-size: 0.9rem;
+      font-size: 1rem;
       line-height: 1;
       // margin:  0.4rem 0 0 0;
+      text-decoration: none;
+      color: black;
   }
 
   .employeeQualification {
@@ -27,4 +29,6 @@
       line-height: 1;
       // margin: 0 0 0.4rem 0;
   }
+
+
 }

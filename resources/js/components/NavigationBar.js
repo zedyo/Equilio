@@ -16,7 +16,7 @@ function Navigation() {
             <Nav.Link href="/shifts">Schichten</Nav.Link>
             <WishCreator />
           </Nav> */}
-          {/* <WishCreator /> */}
+
           <Dropdown>
             <Dropdown.Toggle variant="secondary" id="dropdown-start">
               <FiSettings /> Einstellungen
