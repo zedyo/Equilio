@@ -14,8 +14,8 @@ import UpdateShift from '../components/shifts/update/UpdateShift'
 import CreateShift from '../components/shifts/create/CreateShift'
 import UpdateShiftType from '../components/shiftTypes/update/UpdateShiftType'
 import CreateShiftType from '../components/shiftTypes/create/CreateShiftType'
-import WishCreator from '../components/dutyOverview/wishCreator/WishCreator'
-import EmployeeOverview from '../components/employees/show/employeeOverview/EmployeeOverview'
+import WishCreator from '../components/dutyOverview/employeeRow/employeeCell/wishCreator/WishCreator'
+import EmployeeDetails from '../components/employees/show/employeeOverview/EmployeeDetails'
 import { useDispatch } from 'react-redux'
 import { getEmployeeData } from '../features/employees/employeeSlice'
 import { getQualificationsData } from '../features/qualifications/qualificationSlice'
@@ -57,7 +57,7 @@ function Router() {
           <Route path="/shift_type/create" component={CreateShiftType} />
           <Route path="/shift_types" component={ShiftTypeOverview} />
           <Route path="/employee/edit/:id" component={UpdateEmployee} />
-          <Route path="/employee/show/:id" component={EmployeeOverview} />
+          <Route path="/employee/show/:id" component={EmployeeDetails} />
           <Route path="/employee/create" component={CreateEmployee} />
           <Route path="/employees" component={EmployeesOverview} />
           <Route path="/duties" component={DutyOverview} />

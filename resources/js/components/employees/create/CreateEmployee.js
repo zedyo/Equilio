@@ -11,6 +11,7 @@ import {
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { postEmployeeData } from '../../../features/employees/employeeSlice'
+import { BsFillPersonCheckFill } from 'react-icons/bs'
 
 function CreateEmployee() {
   const dispatch = useDispatch()
@@ -19,9 +20,22 @@ function CreateEmployee() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <Card>
-          <Card.Header>Anlegen von Mitarbeiterdaten</Card.Header>
+          <Card.Header>
+            <Stack direction="horizontal" gap={3}>
+              <div>Neuer Angestellter</div>
+              <div className="ms-auto">
+                <Button
+                  onClick={() => dispatch(postEmployeeData(employeeData))}
+                  variant="outline-success"
+                  href={`/employees`}
+                >
+                  <BsFillPersonCheckFill /> Speichern
+                </Button>
+              </div>
+            </Stack>
+          </Card.Header>
           <Card.Body>
             <Stack gap={2}>
               <Row className="g-2">
@@ -36,6 +50,7 @@ function CreateEmployee() {
                           first_name: e.target.value,
                         })
                       }
+                      autoComplete="off"
                     />
                   </FloatingLabel>
                 </Col>
@@ -50,6 +65,7 @@ function CreateEmployee() {
                           last_name: e.target.value,
                         })
                       }
+                      autoComplete="off"
                     />
                   </FloatingLabel>
                 </Col>
@@ -69,6 +85,7 @@ function CreateEmployee() {
                           employment_ratio: e.target.value,
                         })
                       }
+                      autoComplete="off"
                     />
                   </FloatingLabel>
                 </Col>
@@ -86,6 +103,7 @@ function CreateEmployee() {
                           daily_worktime: e.target.value,
                         })
                       }
+                      autoComplete="off"
                     />
                   </FloatingLabel>
                 </Col>
@@ -103,7 +121,7 @@ function CreateEmployee() {
                         })
                       }
                     >
-                      <option key="0">Bitte auswählen</option>
+                      <option key="0">-- Bitte auswählen --</option>
                       {qualificationsData.map((qualificationObject) => (
                         <option
                           key={qualificationObject.id}
@@ -116,13 +134,6 @@ function CreateEmployee() {
                   </FloatingLabel>
                 </Col>
               </Row>
-              <Button
-                onClick={() => dispatch(postEmployeeData(employeeData))}
-                variant="outline-success"
-                href={`/employees`}
-              >
-                Speichern
-              </Button>
             </Stack>
           </Card.Body>
         </Card>

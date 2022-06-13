@@ -5,9 +5,11 @@ import {
   Container,
   FormControl,
   InputGroup,
+  Stack,
 } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { postQualificationsData } from '../../../features/qualifications/qualificationSlice'
+import { FaCheck } from 'react-icons/fa'
 
 function CreateQualification() {
   const dispatch = useDispatch()
@@ -15,11 +17,26 @@ function CreateQualification() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
-              <Card.Header>Anlegen einer Qualifikation</Card.Header>
+              <Card.Header>
+                <Stack direction="horizontal" gap={3}>
+                  <div>Neue Qualifikation</div>
+                  <div className="ms-auto">
+                    <Button
+                      onClick={() =>
+                        dispatch(postQualificationsData(qualificationsData))
+                      }
+                      variant="outline-success"
+                      href={`/qualifications`}
+                    >
+                      <FaCheck /> Speichern
+                    </Button>
+                  </div>
+                </Stack>
+              </Card.Header>
               <Card.Body>
                 <Card.Title>
                   <InputGroup className="mb-3">
@@ -39,15 +56,6 @@ function CreateQualification() {
                     />
                   </InputGroup>
                 </Card.Title>
-                <Button
-                  onClick={() =>
-                    dispatch(postQualificationsData(qualificationsData))
-                  }
-                  variant="outline-success"
-                  href={`/qualifications`}
-                >
-                  Speichern
-                </Button>{' '}
               </Card.Body>
             </Card>
           </div>

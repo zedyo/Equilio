@@ -7,15 +7,18 @@ import {
   FormControl,
   FormSelect,
   InputGroup,
+  Stack,
 } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { postShiftsData } from '../../../features/shifts/shiftSlice'
+import { FaCheck } from 'react-icons/fa'
 
 function CreateShift() {
   const dispatch = useDispatch()
 
   const [shiftTypeData, setShiftType] = useState([])
-  const [shiftsData, setShift] = useState({})
+  const [shiftsData, setShift] = useState({ color_hex: '#000000' })
+
   console.log(shiftsData)
 
   useEffect(() => {
@@ -34,14 +37,28 @@ function CreateShift() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
-              <Card.Header>Anlegen einer Schicht</Card.Header>
+              <Card.Header>
+                <Stack direction="horizontal" gap={3}>
+                  <div>Neue Schicht</div>
+                  <div className="ms-auto">
+                    <Button
+                      onClick={() => dispatch(postShiftsData(shiftsData))}
+                      variant="outline-success"
+                      href={`/shifts`}
+                    >
+                      <FaCheck /> Speichern
+                    </Button>
+                  </div>
+                </Stack>
+              </Card.Header>
+
               <Card.Body>
                 <Card.Title>
-                  <InputGroup className="mb-3">
+                  <InputGroup className="mb-6">
                     <InputGroup.Text id="shift_abrv">Abkürzung</InputGroup.Text>
                     <FormControl
                       placeholder="F1"
@@ -75,7 +92,7 @@ function CreateShift() {
                         })
                       }
                     >
-                      <option key="0">Bitte Schicht Art auswählen</option>
+                      <option key="0"> -- Schicht Art wählen --</option>
                       {shiftTypeData.map((shiftTypeObject) => (
                         <option
                           key={shiftTypeObject.id}
@@ -98,14 +115,7 @@ function CreateShift() {
                       }
                     />
                   </InputGroup>
-                </Card.Title>
-                <Button
-                  onClick={() => dispatch(postShiftsData(shiftsData))}
-                  variant="outline-success"
-                  href={`/shifts`}
-                >
-                  Speichern
-                </Button>{' '}
+                </Card.Title>{' '}
               </Card.Body>
             </Card>
           </div>

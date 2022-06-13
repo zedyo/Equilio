@@ -65,7 +65,7 @@ function WishCreatorModal(props) {
               <Col md>
                 <FloatingLabel controlId="floatingSelect" label="Wunschschicht">
                   <Form.Select
-                    aria-label="Floating label select example"
+                    aria-label="Wish"
                     onChange={(e) =>
                       e.target.value !== null &&
                       setWish({
@@ -100,6 +100,7 @@ function WishCreatorModal(props) {
                     onChange={(e) =>
                       setWish({ ...wishData, day: parseInt(e.target.value) })
                     }
+                    autoComplete="off"
                   />
                 </FloatingLabel>
               </Col>
@@ -145,6 +146,7 @@ function WishCreatorModal(props) {
                       setWish({ ...wishData, year: parseInt(e.target.value) })
                     }
                     value="2022"
+                    autoComplete="off"
                   />
                 </FloatingLabel>
               </Col>

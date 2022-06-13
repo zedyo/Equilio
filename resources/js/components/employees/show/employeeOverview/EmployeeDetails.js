@@ -36,8 +36,8 @@ function EmployeeOverview() {
   if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
 
   return (
-    <Fragment>
-      <Container>
+    <>
+      <Container style={{ padding: '2rem 0' }}>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
@@ -147,7 +147,7 @@ function EmployeeOverview() {
           </Card.Body>
         </Card>
       </Container>
-    </Fragment>
+    </>
   )
 }
 

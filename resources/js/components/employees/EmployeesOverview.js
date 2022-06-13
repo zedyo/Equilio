@@ -9,7 +9,7 @@ function Employees() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>

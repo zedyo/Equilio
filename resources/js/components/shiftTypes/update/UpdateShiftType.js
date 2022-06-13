@@ -5,10 +5,12 @@ import {
   Container,
   FormControl,
   InputGroup,
+  Stack,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
+import { FaCheck } from 'react-icons/fa'
 
 function UpdateShiftType() {
   const params = useParams()
@@ -28,14 +30,28 @@ function UpdateShiftType() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
-              <Card.Header>Bearbeitung der Qualifikation</Card.Header>
+              <Card.Header>
+                <Stack direction="horizontal" gap={3}>
+                  <div>Schichtart bearbeiten</div>
+                  <div className="ms-auto">
+                    <Button
+                      onClick={() =>
+                        dispatch(updateShiftTypesData(shiftTypeData))
+                      }
+                      variant="outline-success"
+                      href={`/shift_types`}
+                    >
+                      <FaCheck /> Speichern
+                    </Button>
+                  </div>
+                </Stack>
+              </Card.Header>
               <Card.Body>
                 <Card.Title>
-                  ID: {shiftTypeData.id}
                   <InputGroup className="mb-3">
                     <InputGroup.Text id="shift_type_name">
                       Bezeichnung
@@ -53,14 +69,7 @@ function UpdateShiftType() {
                       }
                     />
                   </InputGroup>
-                </Card.Title>
-                <Button
-                  onClick={() => dispatch(updateShiftTypesData(shiftTypeData))}
-                  variant="outline-success"
-                  href={`/shift_types`}
-                >
-                  Speichern
-                </Button>{' '}
+                </Card.Title>{' '}
               </Card.Body>
             </Card>
           </div>

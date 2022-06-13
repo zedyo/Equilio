@@ -7,10 +7,12 @@ import {
   FormControl,
   FormSelect,
   InputGroup,
+  Stack,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateShiftsData } from '../../../features/shifts/shiftSlice'
+import { FaCheck } from 'react-icons/fa'
 
 function UpdateShift() {
   const params = useParams()
@@ -43,11 +45,24 @@ function UpdateShift() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
-              <Card.Header>Bearbeitung der Schicht</Card.Header>
+              <Card.Header>
+                <Stack direction="horizontal" gap={3}>
+                  <div>Schicht bearbeiten</div>
+                  <div className="ms-auto">
+                    <Button
+                      onClick={() => dispatch(updateShiftsData(shiftData))}
+                      variant="outline-success"
+                      href={`/shifts`}
+                    >
+                      <FaCheck /> Speichern
+                    </Button>
+                  </div>
+                </Stack>
+              </Card.Header>
               <Card.Body>
                 <Card.Title>
                   ID: {shiftData.id}
@@ -88,6 +103,7 @@ function UpdateShift() {
                           shift_type_id: parseInt(e.target.value),
                         })
                       }
+                      defaultValue={shiftData.shift_type_id}
                     >
                       <option key="0">Bitte auswählen</option>
                       {shiftTypeData.map((shiftTypeObject) => (
@@ -112,14 +128,7 @@ function UpdateShift() {
                       }
                     />
                   </InputGroup>
-                </Card.Title>
-                <Button
-                  onClick={() => dispatch(updateShiftsData(shiftData))}
-                  variant="outline-success"
-                  href={`/shifts`}
-                >
-                  Speichern
-                </Button>{' '}
+                </Card.Title>{' '}
               </Card.Body>
             </Card>
           </div>

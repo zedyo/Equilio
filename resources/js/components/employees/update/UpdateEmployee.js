@@ -12,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateEmployeeData } from '../../../features/employees/employeeSlice'
+import { BsFillPersonCheckFill } from 'react-icons/bs'
 
 function UpdateEmployee() {
   const params = useParams()
@@ -31,9 +32,22 @@ function UpdateEmployee() {
 
   return (
     <>
-      <Container>
+      <Container style={{ padding: '2rem 0' }}>
         <Card>
-          <Card.Header>Bearbeitung von Mitarbeiterdaten</Card.Header>
+          <Card.Header>
+            <Stack direction="horizontal" gap={3}>
+              <div>Bearbeitung von Mitarbeiterdaten</div>
+              <div className="ms-auto">
+                <Button
+                  onClick={() => dispatch(updateEmployeeData(employeeData))}
+                  variant="outline-success"
+                  href={`/employees`}
+                >
+                  <BsFillPersonCheckFill /> Speichern
+                </Button>
+              </div>
+            </Stack>
+          </Card.Header>
           <Card.Body>
             <Stack gap={2}>
               <Row className="g-2">
@@ -132,14 +146,7 @@ function UpdateEmployee() {
                     </Form.Select>
                   </FloatingLabel>
                 </Col>
-              </Row>
-              <Button
-                onClick={() => dispatch(updateEmployeeData(employeeData))}
-                variant="outline-success"
-                href={`/employees`}
-              >
-                Speichern
-              </Button>{' '}
+              </Row>{' '}
             </Stack>
           </Card.Body>
         </Card>
