@@ -13,7 +13,9 @@ class ShiftType extends Model
 
     protected $fillable = [
         'name',
-        'active_duty'
+        'active_duty',
+        'min_occupation',
+        'opt_occupation'
     ];
 
     public function shifts(): HasMany

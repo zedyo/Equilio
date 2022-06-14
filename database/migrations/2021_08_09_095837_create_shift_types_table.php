@@ -17,6 +17,8 @@ class CreateShiftTypesTable extends Migration
             $table->id();
             $table->string('name');
             $table->boolean('active_duty');
+            $table->unsignedInteger('min_occupation');
+            $table->unsignedInteger('opt_occupation');
             $table->timestamps();
             $table->softDeletes();
         });
