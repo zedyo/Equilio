@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\ShiftType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class ShiftTypeController extends Controller
 {
@@ -44,7 +45,7 @@ class ShiftTypeController extends Controller
     public function update(Request $request, ShiftType $shift_type)
     {
         $shift_type->name = $request->shiftTypeData['name'];
-        $shift_type->active_duty = $request->shiftTypesData['active_duty'];
+        $shift_type->active_duty = $request->shiftTypeData['active_duty'];
 
         $shift_type->save();
 

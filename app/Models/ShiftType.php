@@ -12,11 +12,12 @@ class ShiftType extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'name'
+        'name',
+        'active_duty'
     ];
 
-   public function shifts(): HasMany
-   {
-       return $this->hasMany(Shift::class);
-   }
+    public function shifts(): HasMany
+    {
+        return $this->hasMany(Shift::class);
+    }
 }

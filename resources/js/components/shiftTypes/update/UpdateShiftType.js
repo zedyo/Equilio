@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import {
   Button,
   Card,
+  Col,
   Container,
   Form,
   FormControl,
@@ -27,6 +28,7 @@ function UpdateShiftType() {
   useEffect(() => {
     shiftType !== undefined && setShiftType(shiftType)
   }, [shiftType])
+  console.log(shiftTypeData)
 
   if (Object.keys(shiftTypeData).length === 0) return <h1>...this loading</h1>
 
@@ -50,42 +52,49 @@ function UpdateShiftType() {
           </Card.Header>
           <Card.Body>
             <Container>
-              <Row></Row>
-              <InputGroup className="mb-3">
-                <InputGroup.Text id="shift_type_name">
-                  Bezeichnung
-                </InputGroup.Text>
-                <FormControl
-                  placeholder="Berufsbeziechnung"
-                  aria-label="Bezeichnung"
-                  aria-describedby="shift_type_name"
-                  value={shiftTypeData.name}
-                  onChange={(e) =>
-                    setShiftType({
-                      ...shiftTypeData,
-                      name: e.target.value,
-                    })
-                  }
-                />
-              </InputGroup>
-              <Form>
-                <Form.Check type="radio">
-                  <Form.Check type="radio" isValid />
-                  <Form.Check.Label>{`Aktive Schicht`}</Form.Check.Label>
-                  <Form.Control.Feedback type="valid">
-                    Aktive Schichten können Präferenziert werden und zählen in
-                    der Statistik
-                  </Form.Control.Feedback>
-                </Form.Check>
-                <Form.Check type="radio">
-                  <Form.Check type="radio" isValid />
-                  <Form.Check.Label>{`Passive Schicht`}</Form.Check.Label>
-                  <Form.Control.Feedback type="valid">
-                    Passive Schichten sind immer präferiert und kommen nicht in
-                    der Statistik vor
-                  </Form.Control.Feedback>
-                </Form.Check>
-              </Form>
+              <Row>
+                <Col>
+                  <InputGroup className="mb-3">
+                    <InputGroup.Text id="shift_type_name">
+                      Bezeichnung
+                    </InputGroup.Text>
+                    <FormControl
+                      placeholder="Berufsbeziechnung"
+                      aria-label="Bezeichnung"
+                      aria-describedby="shift_type_name"
+                      value={shiftTypeData.name}
+                      onChange={(e) =>
+                        setShiftType({
+                          ...shiftTypeData,
+                          name: e.target.value,
+                        })
+                      }
+                    />
+                  </InputGroup>
+                </Col>
+
+                <Col xs lg="2" style={{ margin: '0.3rem 0' }}>
+                  <Form>
+                    <Form.Check
+                      type="switch"
+                      checked={shiftTypeData.active_duty == true ? true : false}
+                      id={'active_duty'}
+                      label={'Aktive Schicht'}
+                      onChange={(e) =>
+                        e.target.checked
+                          ? setShiftType({
+                              ...shiftTypeData,
+                              active_duty: 1,
+                            })
+                          : setShiftType({
+                              ...shiftTypeData,
+                              active_duty: 0,
+                            })
+                      }
+                    />
+                  </Form>
+                </Col>
+              </Row>
             </Container>
           </Card.Body>
         </Card>
