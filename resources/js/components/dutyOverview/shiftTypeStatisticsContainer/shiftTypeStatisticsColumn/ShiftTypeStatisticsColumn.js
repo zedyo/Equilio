@@ -19,21 +19,42 @@ function ShiftTypeStatistics(props) {
 
   return (
     <Fragment>
-      <div className="statisticRow">
+      <div
+        style={{
+          display: 'grid',
+          gridAutoFlow: 'column',
+          gridTemplateColumns: `auto ${props.days.length * 2.2}rem 6rem`,
+          alignItems: 'center',
+        }}
+      >
         <div>
           <p style={shiftTypeName}>{props.shiftTypeName}</p>
         </div>
-        {props.days.map((day) => (
-          <ShiftTypeStatisticCell
-            key={day}
-            day={day}
-            month={props.dateSelectorData.month}
-            year={props.dateSelectorData.year}
-            shiftTypeDayData={props.shiftTypeData.filter(
-              (duty) => duty.day === day
-            )}
-          />
-        ))}
+        <div
+          style={{
+            display: 'grid',
+            gridAutoFlow: 'column',
+            // gridTemplateColumns: `auto ${props.days.length * 2.2}rem 6rem`,
+            alignItems: 'center',
+          }}
+        >
+          {props.days.map((day) => (
+            <div style={{ justifySelf: 'center' }}>
+              <ShiftTypeStatisticCell
+                key={day}
+                day={day}
+                month={props.dateSelectorData.month}
+                year={props.dateSelectorData.year}
+                shiftTypeDayData={props.shiftTypeData.filter(
+                  (duty) => duty.day === day
+                )}
+                desabled
+              />
+            </div>
+          ))}
+        </div>
+
+        <div></div>
       </div>
     </Fragment>
   )

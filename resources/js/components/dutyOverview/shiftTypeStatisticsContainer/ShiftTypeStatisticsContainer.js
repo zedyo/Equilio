@@ -1,35 +1,29 @@
 import React, { Fragment, useState, useEffect } from 'react'
+import { useSelector } from 'react-redux'
 import ShiftTypeStatisticsColumn from './shiftTypeStatisticsColumn/ShiftTypeStatisticsColumn'
 
-function ShiftTypesOverview(props) {
+function ShiftTypeStatisticsContainer(props) {
   const [shiftTypeData, setShiftType] = useState([])
-
-  useEffect(() => {
-    async function getData() {
-      const { data } = await axios.get(
-        'http://127.0.0.1:8000/api/shift_types',
-        {}
-      )
-      setShiftType(data.shift_types)
-    }
-    getData()
-  }, [])
+  const { dutiesData } = useSelector((store) => store.duties)
+  const { shiftTypesData } = useSelector((store) => store.shiftTypes)
 
   return (
     <Fragment>
-      {shiftTypeData.map((shiftTypeObject) => (
-        <ShiftTypeStatisticsColumn
-          days={props.days}
-          dateSelectorData={props.dateSelectorData}
-          key={shiftTypeObject.id}
-          shiftTypeName={shiftTypeObject.name}
-          shiftTypeData={props.allDuties.filter(
-            (duty) => duty.shift.shift_type.id === shiftTypeObject.id
-          )}
-        />
-      ))}
+      {shiftTypesData
+        .filter((shiftType) => shiftType.active_duty == true)
+        .map((shiftTypeObject) => (
+          <ShiftTypeStatisticsColumn
+            days={props.days}
+            dateSelectorData={props.dateSelectorData}
+            key={shiftTypeObject.id}
+            shiftTypeName={shiftTypeObject.name}
+            shiftTypeData={dutiesData.filter(
+              (duty) => duty.shift.shift_type.id === shiftTypeObject.id
+            )}
+          />
+        ))}
     </Fragment>
   )
 }
 
-export default ShiftTypesOverview
+export default ShiftTypeStatisticsContainer

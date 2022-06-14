@@ -10,6 +10,7 @@ import './DutyOverview.scss'
 import EmployeeRow from './employeeRow/EmployeeRow'
 import { holidays } from './daysRow/utils/holidays'
 import { random } from 'lodash'
+import ShiftTypeStatisticsContainer from './shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer'
 
 function DutyOverview() {
   moment.locale('de')
@@ -120,16 +121,18 @@ function DutyOverview() {
           })}
         </div>
         <div className="separator" />
-        {/* <ShiftTypeStatisticsContainer
-          key={
-            'ShiftTypeStatisticsContainer: ' +
-            dateSelectorData.year +
-            dateSelectorData.month
-          }
-          days={monthlyDays}
-          dateSelectorData={dateSelectorData}
-          allDuties={dutiesData}
-        /> */}
+
+        <div>
+          <ShiftTypeStatisticsContainer
+            key={
+              'ShiftTypeStatisticsContainer: ' +
+              dateSelectorData.year +
+              dateSelectorData.month
+            }
+            days={monthlyDays}
+            dateSelectorData={dateSelectorData}
+          />
+        </div>
       </Container>
     </>
   )
