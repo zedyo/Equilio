@@ -29,7 +29,7 @@ function CreateQualification() {
                       onClick={() =>
                         dispatch(postQualificationsData(qualificationsData))
                       }
-                      variant="outline-success"
+                      variant="outline-primary"
                       href={`/qualifications`}
                     >
                       <FaCheck /> Speichern

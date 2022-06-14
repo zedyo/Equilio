@@ -40,7 +40,7 @@ function UpdateEmployee() {
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(updateEmployeeData(employeeData))}
-                  variant="outline-success"
+                  variant="outline-primary"
                   href={`/employees`}
                 >
                   <BsFillPersonCheckFill /> Speichern

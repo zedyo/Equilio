@@ -28,7 +28,7 @@ function CreateEmployee() {
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(postEmployeeData(employeeData))}
-                  variant="outline-success"
+                  variant="outline-primary"
                   href={`/employees`}
                 >
                   <BsFillPersonCheckFill /> Speichern

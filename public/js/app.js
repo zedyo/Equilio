@@ -12426,7 +12426,7 @@ function CreateEmployee() {
                 onClick: function onClick() {
                   return dispatch((0,_features_employees_employeeSlice__WEBPACK_IMPORTED_MODULE_2__.postEmployeeData)(employeeData));
                 },
-                variant: "outline-success",
+                variant: "outline-primary",
                 href: "/employees",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_bs__WEBPACK_IMPORTED_MODULE_8__.BsFillPersonCheckFill, {}), " Speichern"]
               })
@@ -12583,7 +12583,7 @@ function Employee(props) {
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("td", {
         children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
           href: "/employee/show/".concat(props.employeeData.id),
-          variant: "outline-primary",
+          variant: "outline-secondary",
           size: "sm",
           children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_5__.FaRegEdit, {})
         }), ' ', /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
@@ -13076,7 +13076,7 @@ function UpdateEmployee() {
                 onClick: function onClick() {
                   return dispatch((0,_features_employees_employeeSlice__WEBPACK_IMPORTED_MODULE_2__.updateEmployeeData)(employeeData));
                 },
-                variant: "outline-success",
+                variant: "outline-primary",
                 href: "/employees",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_bs__WEBPACK_IMPORTED_MODULE_9__.BsFillPersonCheckFill, {}), " Speichern"]
               })
@@ -13347,7 +13347,7 @@ function CreateQualification() {
                     onClick: function onClick() {
                       return dispatch((0,_features_qualifications_qualificationSlice__WEBPACK_IMPORTED_MODULE_2__.postQualificationsData)(qualificationsData));
                     },
-                    variant: "outline-success",
+                    variant: "outline-primary",
                     href: "/qualifications",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_8__.FaCheck, {}), " Speichern"]
                   })
@@ -13544,7 +13544,7 @@ function UpdateQualification() {
                     onClick: function onClick() {
                       return dispatch((0,_features_qualifications_qualificationSlice__WEBPACK_IMPORTED_MODULE_2__.updateQualificationsData)(qualificationData));
                     },
-                    variant: "outline-success",
+                    variant: "outline-primary",
                     href: "/qualifications",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_9__.FaCheck, {}), " Speichern"]
                   })
@@ -13740,7 +13740,7 @@ function CreateShiftType() {
                     onClick: function onClick() {
                       return dispatch((0,_features_shiftTypes_shiftTypeSlice__WEBPACK_IMPORTED_MODULE_2__.postShiftTypesData)(shiftTypesData));
                     },
-                    variant: "outline-success",
+                    variant: "outline-primary",
                     href: "/shift_types",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_8__.FaCheck, {}), " Speichern"]
                   })
@@ -13944,7 +13944,7 @@ function UpdateShiftType() {
                 onClick: function onClick() {
                   return dispatch((0,_features_shiftTypes_shiftTypeSlice__WEBPACK_IMPORTED_MODULE_2__.updateShiftTypesData)(shiftTypeData));
                 },
-                variant: "outline-success",
+                variant: "outline-primary",
                 href: "/shift_types",
                 children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_9__.FaCheck, {}), " Speichern"]
               })
@@ -14222,7 +14222,7 @@ function CreateShift() {
                     onClick: function onClick() {
                       return dispatch((0,_features_shifts_shiftSlice__WEBPACK_IMPORTED_MODULE_4__.postShiftsData)(shiftsData));
                     },
-                    variant: "outline-success",
+                    variant: "outline-primary",
                     href: "/shifts",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_10__.FaCheck, {}), " Speichern"]
                   })
@@ -14524,7 +14524,7 @@ function UpdateShift() {
                     onClick: function onClick() {
                       return dispatch((0,_features_shifts_shiftSlice__WEBPACK_IMPORTED_MODULE_4__.updateShiftsData)(shiftData));
                     },
-                    variant: "outline-success",
+                    variant: "outline-primary",
                     href: "/shifts",
                     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)(react_icons_fa__WEBPACK_IMPORTED_MODULE_11__.FaCheck, {}), " Speichern"]
                   })

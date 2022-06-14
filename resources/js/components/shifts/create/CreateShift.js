@@ -47,7 +47,7 @@ function CreateShift() {
                   <div className="ms-auto">
                     <Button
                       onClick={() => dispatch(postShiftsData(shiftsData))}
-                      variant="outline-success"
+                      variant="outline-primary"
                       href={`/shifts`}
                     >
                       <FaCheck /> Speichern

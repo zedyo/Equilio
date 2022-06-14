@@ -18,7 +18,7 @@ function Employee(props) {
         <td>
           <Button
             href={`/employee/show/${props.employeeData.id}`}
-            variant="outline-primary"
+            variant="outline-secondary"
             size="sm"
           >
             <FaRegEdit />

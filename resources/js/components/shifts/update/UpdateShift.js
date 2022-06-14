@@ -56,7 +56,7 @@ function UpdateShift() {
                   <div className="ms-auto">
                     <Button
                       onClick={() => dispatch(updateShiftsData(shiftData))}
-                      variant="outline-success"
+                      variant="outline-primary"
                       href={`/shifts`}
                     >
                       <FaCheck /> Speichern

@@ -43,7 +43,7 @@ function UpdateQualification() {
                       onClick={() =>
                         dispatch(updateQualificationsData(qualificationData))
                       }
-                      variant="outline-success"
+                      variant="outline-primary"
                       href={`/qualifications`}
                     >
                       <FaCheck /> Speichern

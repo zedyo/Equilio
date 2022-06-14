@@ -31,7 +31,7 @@ function CreateShiftType() {
                       onClick={() =>
                         dispatch(postShiftTypesData(shiftTypesData))
                       }
-                      variant="outline-success"
+                      variant="outline-primary"
                       href={`/shift_types`}
                     >
                       <FaCheck /> Speichern
