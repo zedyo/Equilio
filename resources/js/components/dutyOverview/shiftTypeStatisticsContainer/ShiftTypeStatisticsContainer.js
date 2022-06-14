@@ -15,10 +15,13 @@ function ShiftTypeStatisticsContainer(props) {
           <ShiftTypeStatisticsColumn
             days={props.days}
             dateSelectorData={props.dateSelectorData}
-            key={shiftTypeObject.id}
+            key={'ShiftTypeStatisticsColumn:' + shiftTypeObject.id}
             shiftTypeName={shiftTypeObject.name}
+            shiftTypeObject={shiftTypeObject}
             shiftTypeData={dutiesData.filter(
-              (duty) => duty.shift.shift_type.id === shiftTypeObject.id
+              (duty) =>
+                duty.shift.shift_type !== undefined &&
+                duty.shift.shift_type.id === shiftTypeObject.id
             )}
           />
         ))}

@@ -18,7 +18,6 @@ function CreateShiftType() {
   const dispatch = useDispatch()
 
   const [shiftTypesData, setShiftType] = useState({ active_duty: 0 })
-  console.log(shiftTypesData)
 
   return (
     <>

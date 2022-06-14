@@ -11733,7 +11733,6 @@ function DutyCell(props) {
     var inputColor = {
       color: color
     };
-    console.log(duty);
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
       style: inputColor,
       className: duty === undefined ? 'inputDutyForm' : duty.shift.shift_type.active_duty == 0 || duty.shift.shift_type.active_duty == undefined ? 'passiveDuty' : duty.wish_injury == true ? 'wishInjury' : duty.preference_injury == true && wish == undefined ? 'preferenceInjury' : wish !== undefined ? 'wishForm' : 'inputDutyForm',
@@ -12313,10 +12312,11 @@ function ShiftTypeStatisticsContainer(props) {
         days: props.days,
         dateSelectorData: props.dateSelectorData,
         shiftTypeName: shiftTypeObject.name,
+        shiftTypeObject: shiftTypeObject,
         shiftTypeData: dutiesData.filter(function (duty) {
-          return duty.shift.shift_type.id === shiftTypeObject.id;
+          return duty.shift.shift_type !== undefined && duty.shift.shift_type.id === shiftTypeObject.id;
         })
-      }, shiftTypeObject.id);
+      }, 'ShiftTypeStatisticsColumn:' + shiftTypeObject.id);
     })
   });
 }
@@ -12391,8 +12391,9 @@ function ShiftTypeStatistics(props) {
               shiftTypeDayData: props.shiftTypeData.filter(function (duty) {
                 return duty.day === day;
               }),
+              shiftTypeObject: props.shiftTypeObject,
               desabled: true
-            }, day)
+            }, 'statisticCell:' + day + props.dateSelectorData.month + props.dateSelectorData.year + props.shiftTypeName)
           });
         })
       }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {})]
@@ -12419,7 +12420,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _sass_shift_type_scss__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../../sass/shift_type.scss */ "./resources/sass/shift_type.scss");
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+/* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
 
 
 
@@ -12428,13 +12431,21 @@ __webpack_require__.r(__webpack_exports__);
 
 function ShiftTypeStatistic(props) {
   //TODO: Instant aktualisierung wenn eine Änderung stattfindet in der Duty Übersicht
+  //   const { shiftTypesData } = useSelector((store) => store.shiftTypes)
   var shiftTypeDayData = props.shiftTypeDayData;
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("div", {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("input", {
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
         className: "dayStatisticForm",
         disabled: true,
-        value: shiftTypeDayData.length
+        value: shiftTypeDayData.length,
+        style: shiftTypeDayData.length < props.shiftTypeObject.min_occupation ? {
+          color: 'red'
+        } : shiftTypeDayData.length >= props.shiftTypeObject.min_occupation && shiftTypeDayData.length < props.shiftTypeObject.opt_occupation || props.shiftTypeObject.opt_occupation == 0 ? {
+          color: 'darkgrey'
+        } : {
+          color: 'blue'
+        }
       })
     })
   });
@@ -13916,7 +13927,6 @@ function CreateShiftType() {
       shiftTypesData = _useState2[0],
       setShiftType = _useState2[1];
 
-  console.log(shiftTypesData);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
     children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_4__["default"], {
       style: {
@@ -14144,7 +14154,6 @@ function UpdateShiftType() {
   (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(function () {
     shiftType !== undefined && setShiftType(shiftType);
   }, [shiftType]);
-  console.log(shiftTypeData);
   if (Object.keys(shiftTypeData).length === 0) return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)("h1", {
     children: "...this loading"
   });
@@ -14381,7 +14390,6 @@ function CreateShift() {
       shiftsData = _useState4[0],
       setShift = _useState4[1];
 
-  console.log(shiftsData);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     function getShiftTypeData() {
       return _getShiftTypeData.apply(this, arguments);
@@ -14677,7 +14685,6 @@ function UpdateShift() {
       shiftData = _useState4[0],
       setShift = _useState4[1];
 
-  console.log(shiftData);
   (0,react__WEBPACK_IMPORTED_MODULE_2__.useEffect)(function () {
     shift !== undefined && setShift(shift);
   }, [shift]);

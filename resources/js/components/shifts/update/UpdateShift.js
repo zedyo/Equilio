@@ -22,7 +22,6 @@ function UpdateShift() {
 
   const [shiftTypeData, setShiftType] = useState([])
   const [shiftData, setShift] = useState({})
-  console.log(shiftData)
 
   useEffect(() => {
     shift !== undefined && setShift(shift)

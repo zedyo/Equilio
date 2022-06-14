@@ -41,13 +41,20 @@ function ShiftTypeStatistics(props) {
           {props.days.map((day) => (
             <div style={{ justifySelf: 'center' }}>
               <ShiftTypeStatisticCell
-                key={day}
+                key={
+                  'statisticCell:' +
+                  day +
+                  props.dateSelectorData.month +
+                  props.dateSelectorData.year +
+                  props.shiftTypeName
+                }
                 day={day}
                 month={props.dateSelectorData.month}
                 year={props.dateSelectorData.year}
                 shiftTypeDayData={props.shiftTypeData.filter(
                   (duty) => duty.day === day
                 )}
+                shiftTypeObject={props.shiftTypeObject}
                 desabled
               />
             </div>

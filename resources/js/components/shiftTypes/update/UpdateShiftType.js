@@ -28,7 +28,6 @@ function UpdateShiftType() {
   useEffect(() => {
     shiftType !== undefined && setShiftType(shiftType)
   }, [shiftType])
-  console.log(shiftTypeData)
 
   if (Object.keys(shiftTypeData).length === 0) return <h1>...this loading</h1>
 

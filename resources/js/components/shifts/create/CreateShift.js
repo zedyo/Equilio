@@ -19,8 +19,6 @@ function CreateShift() {
   const [shiftTypeData, setShiftType] = useState([])
   const [shiftsData, setShift] = useState({ color_hex: '#000000' })
 
-  console.log(shiftsData)
-
   useEffect(() => {
     async function getShiftTypeData() {
       try {
