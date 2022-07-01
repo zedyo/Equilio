@@ -1,22 +1,9 @@
 import React, { Fragment } from 'react'
 import ShiftTypeStatisticCell from './shiftTypeStatisticCell/ShiftTypeStatisticCell'
 import '../../../../../sass/shift_type.scss'
+import style from './ShiftTypeStatisticsColumn.scss'
 
 function ShiftTypeStatistics(props) {
-  const shiftTypeName = {
-    color: 'grey',
-  }
-
-  // --- Abholen aus der Datenbank unnütz ---
-  // async function loadData() {
-  //     const data = await axios.get(
-  //         `http://127.0.0.1:8000/api/shift_types/1/${props.day}/${props.month}/${props.year}/`,
-  //         {}
-  //     );
-  //     console.log(data);
-  // }
-  // loadData();
-
   return (
     <Fragment>
       <div
@@ -25,19 +12,13 @@ function ShiftTypeStatistics(props) {
           gridAutoFlow: 'column',
           gridTemplateColumns: `auto ${props.days.length * 2.2}rem 6rem`,
           alignItems: 'center',
+          height: '1.6rem',
         }}
       >
-        <div>
-          <p style={shiftTypeName}>{props.shiftTypeName}</p>
+        <div className={'shiftTypeNameContainer'}>
+          <p className={'shiftTypeName'}>{props.shiftTypeName}</p>
         </div>
-        <div
-          style={{
-            display: 'grid',
-            gridAutoFlow: 'column',
-            // gridTemplateColumns: `auto ${props.days.length * 2.2}rem 6rem`,
-            alignItems: 'center',
-          }}
-        >
+        <div className={'sumCells'}>
           {props.days.map((day) => (
             <div style={{ justifySelf: 'center' }}>
               <ShiftTypeStatisticCell

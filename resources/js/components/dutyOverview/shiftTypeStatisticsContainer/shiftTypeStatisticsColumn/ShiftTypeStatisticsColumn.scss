@@ -1,0 +1,15 @@
+.sumCells {
+  display: grid;
+  grid-auto-flow: column;
+  align-items: center;
+}
+
+
+.shiftTypeNameContainer {
+  margin-top: 1.2rem;
+
+  .shiftTypeName {
+    color: grey;
+    // text-align: end
+  }
+}
