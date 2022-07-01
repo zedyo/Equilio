@@ -32,6 +32,8 @@ class ShiftTypeController extends Controller
         $shift_type = new ShiftType();
         $shift_type->name = $request->shiftTypesData['name'];
         $shift_type->active_duty = $request->shiftTypesData['active_duty'];
+        $shift_type->min_occupation = $request->shiftTypesData['min_occupation'];
+        $shift_type->opt_occupation = $request->shiftTypesData['opt_occupation'];
         $shift_type->save();
 
         return response()->json([null], 201);
@@ -46,6 +48,9 @@ class ShiftTypeController extends Controller
     {
         $shift_type->name = $request->shiftTypeData['name'];
         $shift_type->active_duty = $request->shiftTypeData['active_duty'];
+        $shift_type->min_occupation = $request->shiftTypeData['min_occupation'];
+        $shift_type->opt_occupation = $request->shiftTypeData['opt_occupation'];
+
 
         $shift_type->save();
 

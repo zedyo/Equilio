@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Card, Col } from 'react-bootstrap'
+import { Button, Card, Col, ListGroup, ListGroupItem } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
 import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
@@ -28,6 +28,18 @@ function ShiftType(props) {
                 ? 'Aktive Schicht'
                 : 'Passive Schicht'}
             </Card.Subtitle>
+            {props.shiftTypeData.active_duty == 1 ? (
+              <ListGroup className="list-group-flush">
+                <ListGroupItem>
+                  {`< ${props.shiftTypeData.min_occupation} : Unterbesetzung`}
+                </ListGroupItem>
+                <ListGroupItem>
+                  {`> ${props.shiftTypeData.opt_occupation} : Überbesetzung`}
+                </ListGroupItem>
+              </ListGroup>
+            ) : (
+              <div style={{ height: '5.3rem' }} />
+            )}
             <Button
               href={`/shift_type/edit/${props.shiftTypeData.id}`}
               variant="outline-secondary"

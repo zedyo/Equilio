@@ -17,7 +17,11 @@ import { FaCheck } from 'react-icons/fa'
 function CreateShiftType() {
   const dispatch = useDispatch()
 
-  const [shiftTypesData, setShiftType] = useState({ active_duty: 0 })
+  const [shiftTypesData, setShiftType] = useState({
+    active_duty: 0,
+    min_occupation: 0,
+    opt_occupation: 0,
+  })
 
   return (
     <>
@@ -60,11 +64,54 @@ function CreateShiftType() {
                     </InputGroup>
                   </Card.Title>
                 </Col>
+
+                <Col xs lg="3">
+                  <InputGroup>
+                    <InputGroup.Text id="shift_type_name">
+                      Mindestbesetzung unter
+                    </InputGroup.Text>
+                    <FormControl
+                      placeholder="Berufsbeziechnung"
+                      aria-label="Bezeichnung"
+                      aria-describedby="shift_type_name"
+                      value={shiftTypesData.min_occupation}
+                      onChange={(e) =>
+                        setShiftType({
+                          ...shiftTypesData,
+                          min_occupation: e.target.value,
+                        })
+                      }
+                    />
+                  </InputGroup>
+                </Col>
+
+                <Col xs lg="3">
+                  <InputGroup>
+                    <InputGroup.Text id="shift_type_name">
+                      Überbesetzung
+                    </InputGroup.Text>
+                    <FormControl
+                      placeholder="Berufsbeziechnung"
+                      aria-label="Bezeichnung"
+                      aria-describedby="shift_type_name"
+                      value={shiftTypesData.opt_occupation}
+                      onChange={(e) =>
+                        setShiftType({
+                          ...shiftTypesData,
+                          opt_occupation: e.target.value,
+                        })
+                      }
+                    />
+                  </InputGroup>
+                </Col>
+
                 <Col xs lg="2" style={{ margin: '0.3rem 0' }}>
                   <Form>
                     <Form.Check
                       type="switch"
-                      checked={false}
+                      checked={
+                        shiftTypesData.active_duty == true ? true : false
+                      }
                       id={'active_duty'}
                       label={'Aktive Schicht'}
                       onChange={(e) =>

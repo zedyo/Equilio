@@ -31,6 +31,7 @@ function UpdateShiftType() {
 
   if (Object.keys(shiftTypeData).length === 0) return <h1>...this loading</h1>
 
+  console.log(shiftTypeData)
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
@@ -71,6 +72,50 @@ function UpdateShiftType() {
                     />
                   </InputGroup>
                 </Col>
+
+                {shiftTypeData.active_duty == true && (
+                  <Col xs lg="3">
+                    <InputGroup>
+                      <InputGroup.Text id="shift_type_name">
+                        Mindestbesetzung unter
+                      </InputGroup.Text>
+                      <FormControl
+                        placeholder="Berufsbeziechnung"
+                        aria-label="Bezeichnung"
+                        aria-describedby="shift_type_name"
+                        value={shiftTypeData.min_occupation}
+                        onChange={(e) =>
+                          setShiftType({
+                            ...shiftTypeData,
+                            min_occupation: e.target.value,
+                          })
+                        }
+                      />
+                    </InputGroup>
+                  </Col>
+                )}
+
+                {shiftTypeData.active_duty == true && (
+                  <Col xs lg="3">
+                    <InputGroup>
+                      <InputGroup.Text id="shift_type_name">
+                        Überbesetzung
+                      </InputGroup.Text>
+                      <FormControl
+                        placeholder="Berufsbeziechnung"
+                        aria-label="Bezeichnung"
+                        aria-describedby="shift_type_name"
+                        value={shiftTypeData.opt_occupation}
+                        onChange={(e) =>
+                          setShiftType({
+                            ...shiftTypeData,
+                            opt_occupation: e.target.value,
+                          })
+                        }
+                      />
+                    </InputGroup>
+                  </Col>
+                )}
 
                 <Col xs lg="2" style={{ margin: '0.3rem 0' }}>
                   <Form>
