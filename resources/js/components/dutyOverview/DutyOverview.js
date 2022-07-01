@@ -80,43 +80,48 @@ function DutyOverview() {
         <div>
           {qualificationsData.map((qualification) => {
             return (
-              <div key={'qualifcationSection:' + qualification.id}>
-                <div className="qualificationSection">
-                  {`${qualification.description}${
-                    employeesData.filter(
+              employeesData.filter(
+                (employee) => employee.qualification.id == qualification.id
+              ).length > 0 && (
+                <div key={'qualifcationSection:' + qualification.id}>
+                  <div className="qualificationSection">
+                    {`${qualification.description}${
+                      employeesData.filter(
+                        (employee) =>
+                          employee.qualification.id == qualification.id
+                      ).length > 1
+                        ? 'nen'
+                        : ''
+                    }`}
+                  </div>
+                  {employeesData
+                    .filter(
                       (employee) =>
                         employee.qualification.id == qualification.id
-                    ).length > 1
-                      ? 'nen'
-                      : ''
-                  }`}
+                    )
+                    .map((employee) => (
+                      <EmployeeRow
+                        key={
+                          'EmployeeRow:' +
+                          employee.id +
+                          dateSelectorData.year +
+                          dateSelectorData.month +
+                          qualification.id
+                        }
+                        employeeData={employee}
+                        dateSelectorData={dateSelectorData}
+                        days={monthlyDays}
+                        workingDays={workingDays}
+                        employeeDuties={dutiesData.filter(
+                          (d) => d.employee_id === employee.id
+                        )}
+                        employeeWishes={wishesData.filter(
+                          (d) => d.employee_id === employee.id
+                        )}
+                      />
+                    ))}
                 </div>
-                {employeesData
-                  .filter(
-                    (employee) => employee.qualification.id == qualification.id
-                  )
-                  .map((employee) => (
-                    <EmployeeRow
-                      key={
-                        'EmployeeRow:' +
-                        employee.id +
-                        dateSelectorData.year +
-                        dateSelectorData.month +
-                        qualification.id
-                      }
-                      employeeData={employee}
-                      dateSelectorData={dateSelectorData}
-                      days={monthlyDays}
-                      workingDays={workingDays}
-                      employeeDuties={dutiesData.filter(
-                        (d) => d.employee_id === employee.id
-                      )}
-                      employeeWishes={wishesData.filter(
-                        (d) => d.employee_id === employee.id
-                      )}
-                    />
-                  ))}
-              </div>
+              )
             )
           })}
         </div>

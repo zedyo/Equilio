@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteDuty, postDuty } from '../../../../features/duties/dutySlice'
@@ -41,7 +42,19 @@ function DutyCell(props) {
 
     return (
       <input
-        style={inputColor}
+        style={
+          moment(`${props.year}-${props.month}-${props.day}`).format('dd') ==
+            'So' ||
+          moment(`${props.year}-${props.month}-${props.day}`).format('dd') ==
+            'Sa'
+            ? {
+                color: color,
+                borderColor: 'darkgrey',
+              }
+            : {
+                color: color,
+              }
+        }
         className={
           duty === undefined
             ? 'inputDutyForm'
