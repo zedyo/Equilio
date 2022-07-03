@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
+  Breadcrumb,
   Button,
   Card,
   Container,
@@ -32,12 +33,19 @@ function UpdateQualification() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/qualifications">
+            Einstellungen: Qualifikationen
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
               <Card.Header>
                 <Stack direction="horizontal" gap={3}>
-                  <div>Qualifikation bearbeiten</div>
+                  <div>Daten Bearbeitung</div>
                   <div className="ms-auto">
                     <Button
                       onClick={() =>

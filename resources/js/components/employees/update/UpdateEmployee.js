@@ -8,6 +8,7 @@ import {
   Card,
   Button,
   Stack,
+  Breadcrumb,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -33,15 +34,26 @@ function UpdateEmployee() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/employees">
+            Einstellungen: Team
+          </Breadcrumb.Item>
+          <Breadcrumb.Item href={`/employee/show/${employeeData.id}`}>
+            Teammitglied Details: {employeeData.first_name}{' '}
+            {employeeData.last_name}
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
-              <div>Bearbeitung von Mitarbeiterdaten</div>
+              <div>Daten Bearbeitung</div>
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(updateEmployeeData(employeeData))}
                   variant="outline-primary"
-                  href={`/employees`}
+                  href={`/employee/show/${employeeData.id}`}
                 >
                   <BsFillPersonCheckFill /> Speichern
                 </Button>

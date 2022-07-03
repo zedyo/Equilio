@@ -15,7 +15,7 @@ function Navigation() {
             </Dropdown.Toggle>
 
             <Dropdown.Menu>
-              <Dropdown.Item href="/employees">Angestellte</Dropdown.Item>
+              <Dropdown.Item href="/employees">Team</Dropdown.Item>
               <Dropdown.Item href="/qualifications">
                 Qualifikationen
               </Dropdown.Item>

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import {
+  Breadcrumb,
   Button,
   Card,
   Col,
@@ -29,16 +30,23 @@ function UpdateShiftType() {
     shiftType !== undefined && setShiftType(shiftType)
   }, [shiftType])
 
-  if (Object.keys(shiftTypeData).length === 0) return <h1>...this loading</h1>
+  if (Object.keys(shiftTypeData).length === 0) return <h1></h1>
 
   console.log(shiftTypeData)
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/shift_types">
+            Einstellungen: Schicht Arten
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
-              <div>Schichtart bearbeiten</div>
+              <div>Daten Bearbeitung</div>
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(updateShiftTypesData(shiftTypeData))}

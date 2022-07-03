@@ -1,6 +1,13 @@
 import React from 'react'
 import QualificationCard from './show/QualificationCard'
-import { Button, Row, Container, Card, Stack } from 'react-bootstrap'
+import {
+  Button,
+  Row,
+  Container,
+  Card,
+  Stack,
+  Breadcrumb,
+} from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { AiOutlinePlus } from 'react-icons/ai'
 
@@ -10,6 +17,12 @@ function Qualifications() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            Einstellungen: Qualifikationen
+          </Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>

@@ -21,7 +21,7 @@ function Qualification(props) {
               variant="outline-secondary"
               size="sm"
             >
-              <FaRegEdit />
+              <FaRegEdit /> Bearbeiten
             </Button>{' '}
             <Button
               onClick={() =>
@@ -30,7 +30,7 @@ function Qualification(props) {
               variant="outline-danger"
               size="sm"
             >
-              <FaRegTrashAlt />
+              <FaRegTrashAlt /> Löschen
             </Button>{' '}
           </Card.Body>
         </Card>

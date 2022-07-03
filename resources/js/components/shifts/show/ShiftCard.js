@@ -30,14 +30,14 @@ function Shift(props) {
               variant="outline-secondary"
               size="sm"
             >
-              <FaRegEdit />
+              <FaRegEdit /> Bearbeiten
             </Button>{' '}
             <Button
               onClick={() => dispatch(deleteShiftsData(props.shiftsData.id))}
               variant="outline-danger"
               size="sm"
             >
-              <FaRegTrashAlt />
+              <FaRegTrashAlt /> Löschen
             </Button>{' '}
           </Card.Body>
         </Card>

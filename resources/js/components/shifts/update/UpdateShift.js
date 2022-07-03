@@ -8,11 +8,15 @@ import {
   FormSelect,
   InputGroup,
   Stack,
+  Row,
+  Col,
+  Breadcrumb,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateShiftsData } from '../../../features/shifts/shiftSlice'
 import { FaCheck } from 'react-icons/fa'
+import style from '../../dutyOverview/employeeRow/dutyCell/DutyCell.scss'
 
 function UpdateShift() {
   const params = useParams()
@@ -41,17 +45,25 @@ function UpdateShift() {
     getShiftTypeData()
   }, [])
 
-  if (Object.keys(shiftData).length === 0) return <h1>...this loading</h1>
+  if (Object.keys(shiftData).length === 0) return <h1></h1>
+  console.log(shiftData.shift_type.active_duty)
 
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/shifts">
+            Einstellungen: Schichten
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
               <Card.Header>
                 <Stack direction="horizontal" gap={3}>
-                  <div>Schicht bearbeiten</div>
+                  <div>Daten Bearbeitung</div>
                   <div className="ms-auto">
                     <Button
                       onClick={() => dispatch(updateShiftsData(shiftData))}
@@ -64,70 +76,139 @@ function UpdateShift() {
                 </Stack>
               </Card.Header>
               <Card.Body>
-                <Card.Title>
-                  <InputGroup className="mb-3">
-                    <InputGroup.Text id="qualification_description">
-                      Abkürzung
-                    </InputGroup.Text>
-                    <FormControl
-                      placeholder="Abkürzung"
-                      aria-label="Abkürzung"
-                      aria-describedby="shift_abrv"
-                      value={shiftData.abrv}
-                      onChange={(e) =>
-                        setShift({
-                          ...shiftData,
-                          abrv: e.target.value,
-                        })
-                      }
-                    />
-                    <InputGroup.Text id="shift_abrv">Dauer</InputGroup.Text>
-                    <FormControl
-                      placeholder="8.0"
-                      aria-label="Abkürzung"
-                      aria-describedby="h_duration"
-                      value={shiftData.h_duration}
-                      onChange={(event) =>
-                        setShift({
-                          ...shiftData,
-                          h_duration: event.target.value,
-                        })
-                      }
-                    />
-                    <FormSelect
-                      aria-label="Floating label select example"
-                      onChange={(e) =>
-                        setShift({
-                          ...shiftData,
-                          shift_type_id: parseInt(e.target.value),
-                        })
-                      }
-                      defaultValue={shiftData.shift_type_id}
-                    >
-                      <option key="0">Bitte auswählen</option>
-                      {shiftTypeData.map((shiftTypeObject) => (
-                        <option
-                          key={shiftTypeObject.id}
-                          value={shiftTypeObject.id}
+                <Container>
+                  <Row>
+                    <Col xs>
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="qualification_description">
+                          Schichtart
+                        </InputGroup.Text>
+                        <FormSelect
+                          aria-label="Floating label select example"
+                          onChange={(e) =>
+                            setShift({
+                              ...shiftData,
+                              shift_type_id: parseInt(e.target.value),
+                            })
+                          }
+                          defaultValue={shiftData.shift_type_id}
                         >
-                          {shiftTypeObject.name}
-                        </option>
-                      ))}
-                    </FormSelect>
-                    <FormControl
-                      type="color"
-                      id="exampleColorInput"
-                      defaultValue={shiftData.color_hex}
-                      title="Choose your color"
-                      onChange={(e) =>
-                        setShift({
-                          ...shiftData,
-                          color_hex: e.target.value,
-                        })
-                      }
-                    />
-                  </InputGroup>
-                </Card.Title>{' '}
+                          <option key="0">Bitte auswählen</option>
+                          {shiftTypeData.map((shiftTypeObject) => (
+                            <option
+                              key={shiftTypeObject.id}
+                              value={shiftTypeObject.id}
+                            >
+                              {shiftTypeObject.name}
+                            </option>
+                          ))}
+                        </FormSelect>
+                      </InputGroup>
+                    </Col>
+
+                    <Col xs lg="2">
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="qualification_description">
+                          Abkürzung
+                        </InputGroup.Text>
+                        <FormControl
+                          placeholder="X1"
+                          aria-label="Abkürzung"
+                          aria-describedby="shift_abrv"
+                          value={shiftData.abrv}
+                          onChange={(e) =>
+                            setShift({
+                              ...shiftData,
+                              abrv: e.target.value,
+                            })
+                          }
+                        />
+                      </InputGroup>
+                    </Col>
+
+                    <Col xs lg="2">
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="shift_abrv">
+                          Dauer (Std.)
+                        </InputGroup.Text>
+                        <FormControl
+                          placeholder="8.0"
+                          aria-label="Abkürzung"
+                          aria-describedby="h_duration"
+                          value={shiftData.h_duration}
+                          onChange={(event) =>
+                            setShift({
+                              ...shiftData,
+                              h_duration: event.target.value,
+                            })
+                          }
+                        />
+                      </InputGroup>
+                    </Col>
+
+                    <Col xs lg="2">
+                      <InputGroup className="mb-3">
+                        <InputGroup.Text id="shift_abrv">Farbe</InputGroup.Text>
+                        <FormControl
+                          type="color"
+                          id="exampleColorInput"
+                          defaultValue={shiftData.color_hex}
+                          title="Choose your color"
+                          onChange={(e) =>
+                            setShift({
+                              ...shiftData,
+                              color_hex: e.target.value,
+                            })
+                          }
+                        />
+                      </InputGroup>
+                    </Col>
+
+                    {shiftData.shift_type.active_duty == 0 ? (
+                      <Col xs lg="2">
+                        Vorschau
+                        <input
+                          style={{
+                            marginTop: '0.2rem',
+                            marginLeft: '0.8rem',
+                            color: shiftData.color_hex,
+                          }}
+                          className={'passiveDuty'}
+                          value={shiftData.abrv}
+                        />
+                      </Col>
+                    ) : (
+                      <Col xs lg="2">
+                        Vorschau
+                        <input
+                          style={{
+                            marginTop: '0.2rem',
+                            marginLeft: '0.8rem',
+                            color: shiftData.color_hex,
+                          }}
+                          className={'inputDutyForm'}
+                          value={shiftData.abrv}
+                        />
+                        <input
+                          style={{
+                            marginLeft: '0.3rem',
+                            color: shiftData.color_hex,
+                          }}
+                          className={'preferenceInjury'}
+                          value={shiftData.abrv}
+                        />
+                        <input
+                          style={{
+                            marginLeft: '0.3rem',
+                            color: shiftData.color_hex,
+                          }}
+                          className={'wishInjury'}
+                          value={shiftData.abrv}
+                        />
+                      </Col>
+                    )}
+                  </Row>
+                </Container>
               </Card.Body>
             </Card>
           </div>

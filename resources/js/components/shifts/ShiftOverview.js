@@ -1,5 +1,12 @@
 import React from 'react'
-import { Button, Row, Container, Card, Stack } from 'react-bootstrap'
+import {
+  Button,
+  Row,
+  Container,
+  Card,
+  Stack,
+  Breadcrumb,
+} from 'react-bootstrap'
 import ShiftCard from './show/ShiftCard'
 import { useSelector } from 'react-redux'
 import { AiOutlinePlus } from 'react-icons/ai'
@@ -10,6 +17,10 @@ function Shifts() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item active>Schichten</Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>

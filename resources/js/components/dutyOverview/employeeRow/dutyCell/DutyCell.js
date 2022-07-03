@@ -36,10 +36,6 @@ function DutyCell(props) {
 
     let color = DutyColor
 
-    const inputColor = {
-      color: color,
-    }
-
     return (
       <input
         style={

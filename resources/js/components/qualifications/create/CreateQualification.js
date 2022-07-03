@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  Breadcrumb,
   Button,
   Card,
   Container,
@@ -18,6 +19,13 @@ function CreateQualification() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/qualifications">
+            Einstellungen: Qualifikationen
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Neue Qualifikation</Breadcrumb.Item>
+        </Breadcrumb>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>

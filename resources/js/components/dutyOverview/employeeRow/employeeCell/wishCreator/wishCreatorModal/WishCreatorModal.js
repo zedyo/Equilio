@@ -2,12 +2,16 @@ import React, { useState } from 'react'
 import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { postWishesData } from '../../../../../../features/wishes/wishSlice'
+import moment from 'moment'
 
 function WishCreatorModal(props) {
   const dispatch = useDispatch()
   const [wishData, setWish] = useState({
     employee_id: props.employeeId,
-    year: 2022,
+    year:
+      moment().format('M') == 12 || moment().format('M') == 11
+        ? ''
+        : moment().format('YYYY'),
   })
   const { employeesData } = useSelector((store) => store.employees)
   const { shiftsData } = useSelector((store) => store.shifts)
@@ -145,7 +149,11 @@ function WishCreatorModal(props) {
                     onChange={(e) =>
                       setWish({ ...wishData, year: parseInt(e.target.value) })
                     }
-                    value="2022"
+                    value={
+                      moment().format('M') == 12 || moment().format('M') == 11
+                        ? ''
+                        : moment().format('YYYY')
+                    }
                     autoComplete="off"
                   />
                 </FloatingLabel>

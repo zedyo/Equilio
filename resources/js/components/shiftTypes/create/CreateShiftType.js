@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import {
+  Breadcrumb,
   Button,
   Card,
   Col,
@@ -26,6 +27,13 @@ function CreateShiftType() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/shift_types">
+            Einstellungen: Schicht Arten
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>Neue Schichtart</Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
@@ -65,45 +73,49 @@ function CreateShiftType() {
                   </Card.Title>
                 </Col>
 
-                <Col xs lg="3">
-                  <InputGroup>
-                    <InputGroup.Text id="shift_type_name">
-                      Mindestbesetzung unter
-                    </InputGroup.Text>
-                    <FormControl
-                      placeholder="Berufsbeziechnung"
-                      aria-label="Bezeichnung"
-                      aria-describedby="shift_type_name"
-                      value={shiftTypesData.min_occupation}
-                      onChange={(e) =>
-                        setShiftType({
-                          ...shiftTypesData,
-                          min_occupation: e.target.value,
-                        })
-                      }
-                    />
-                  </InputGroup>
-                </Col>
+                {shiftTypesData.active_duty == true && (
+                  <Col xs lg="3">
+                    <InputGroup>
+                      <InputGroup.Text id="shift_type_name">
+                        Mindestbesetzung unter
+                      </InputGroup.Text>
+                      <FormControl
+                        placeholder="Berufsbeziechnung"
+                        aria-label="Bezeichnung"
+                        aria-describedby="shift_type_name"
+                        value={shiftTypesData.min_occupation}
+                        onChange={(e) =>
+                          setShiftType({
+                            ...shiftTypesData,
+                            min_occupation: e.target.value,
+                          })
+                        }
+                      />
+                    </InputGroup>
+                  </Col>
+                )}
 
-                <Col xs lg="3">
-                  <InputGroup>
-                    <InputGroup.Text id="shift_type_name">
-                      Überbesetzung
-                    </InputGroup.Text>
-                    <FormControl
-                      placeholder="Berufsbeziechnung"
-                      aria-label="Bezeichnung"
-                      aria-describedby="shift_type_name"
-                      value={shiftTypesData.opt_occupation}
-                      onChange={(e) =>
-                        setShiftType({
-                          ...shiftTypesData,
-                          opt_occupation: e.target.value,
-                        })
-                      }
-                    />
-                  </InputGroup>
-                </Col>
+                {shiftTypesData.active_duty == true && (
+                  <Col xs lg="3">
+                    <InputGroup>
+                      <InputGroup.Text id="shift_type_name">
+                        Überbesetzung
+                      </InputGroup.Text>
+                      <FormControl
+                        placeholder="Berufsbeziechnung"
+                        aria-label="Bezeichnung"
+                        aria-describedby="shift_type_name"
+                        value={shiftTypesData.opt_occupation}
+                        onChange={(e) =>
+                          setShiftType({
+                            ...shiftTypesData,
+                            opt_occupation: e.target.value,
+                          })
+                        }
+                      />
+                    </InputGroup>
+                  </Col>
+                )}
 
                 <Col xs lg="2" style={{ margin: '0.3rem 0' }}>
                   <Form>

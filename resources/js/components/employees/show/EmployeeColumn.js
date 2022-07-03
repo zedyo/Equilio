@@ -21,7 +21,7 @@ function Employee(props) {
             variant="outline-secondary"
             size="sm"
           >
-            <FaRegEdit />
+            <FaRegEdit /> Bearbeiten
           </Button>{' '}
           {/* <Button
             href={`/employee/edit/${props.employeeData.id}`}
@@ -35,7 +35,7 @@ function Employee(props) {
             variant="outline-danger"
             size="sm"
           >
-            <FaRegTrashAlt />
+            <FaRegTrashAlt /> Löschen
           </Button>{' '}
         </td>
       </tr>

@@ -9,6 +9,7 @@ import {
   Table,
   Stack,
   Button,
+  Breadcrumb,
 } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -38,16 +39,26 @@ function EmployeeOverview() {
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
+        <Breadcrumb>
+          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
+          <Breadcrumb.Item href="/employees">
+            Einstellungen: Team
+          </Breadcrumb.Item>
+          <Breadcrumb.Item active>
+            Teammitglied Details: {employeeData.first_name}{' '}
+            {employeeData.last_name}
+          </Breadcrumb.Item>
+        </Breadcrumb>
         <Card>
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
-              <div>Mitarbeiterdetails</div>
+              <div>Teammitglied Details</div>
               <div className="ms-auto">
                 <Button
                   href={`/employee/edit/${employeeData.id}`}
                   variant="outline-secondary"
                 >
-                  <FaUserEdit /> Mitarbeiterdaten bearbeiten
+                  <FaUserEdit /> Daten bearbeiten
                 </Button>
               </div>
             </Stack>

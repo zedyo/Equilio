@@ -1,6 +1,7 @@
 import React from 'react'
 import { Button } from 'react-bootstrap'
 import WishCreatorModal from './wishCreatorModal/WishCreatorModal'
+import { AiOutlinePlus } from 'react-icons/ai'
 
 function WishCreator(props) {
   const [modalShow, setModalShow] = React.useState(false)
@@ -8,11 +9,11 @@ function WishCreator(props) {
   return (
     <>
       <Button
-        variant="outline-info"
+        variant="outline-success"
         size="sm"
         onClick={() => setModalShow(true)}
       >
-        Wunsch
+        <AiOutlinePlus /> Wunsch
       </Button>
 
       <WishCreatorModal
