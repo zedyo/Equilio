@@ -164,49 +164,53 @@ function UpdateShift() {
                       </InputGroup>
                     </Col>
 
-                    {shiftData.shift_type.active_duty == 0 ? (
-                      <Col xs lg="2">
-                        Vorschau
-                        <input
-                          style={{
-                            marginTop: '0.2rem',
-                            marginLeft: '0.8rem',
-                            color: shiftData.color_hex,
-                          }}
-                          className={'passiveDuty'}
-                          value={shiftData.abrv}
-                        />
-                      </Col>
-                    ) : (
-                      <Col xs lg="2">
-                        Vorschau
-                        <input
-                          style={{
-                            marginTop: '0.2rem',
-                            marginLeft: '0.8rem',
-                            color: shiftData.color_hex,
-                          }}
-                          className={'inputDutyForm'}
-                          value={shiftData.abrv}
-                        />
-                        <input
-                          style={{
-                            marginLeft: '0.3rem',
-                            color: shiftData.color_hex,
-                          }}
-                          className={'preferenceInjury'}
-                          value={shiftData.abrv}
-                        />
-                        <input
-                          style={{
-                            marginLeft: '0.3rem',
-                            color: shiftData.color_hex,
-                          }}
-                          className={'wishInjury'}
-                          value={shiftData.abrv}
-                        />
-                      </Col>
-                    )}
+                    {shiftData.abrv &&
+                      shiftData.shift_type_id &&
+                      (shiftTypeData.find(
+                        (data) => data.id == shiftData.shift_type_id
+                      )?.active_duty == 0 ? (
+                        <Col xs lg="2">
+                          Vorschau
+                          <input
+                            style={{
+                              marginTop: '0.2rem',
+                              marginLeft: '0.8rem',
+                              color: shiftData.color_hex,
+                            }}
+                            className={'passiveDuty'}
+                            value={shiftData.abrv}
+                          />
+                        </Col>
+                      ) : (
+                        <Col xs lg="2">
+                          Vorschau
+                          <input
+                            style={{
+                              marginTop: '0.2rem',
+                              marginLeft: '0.8rem',
+                              color: shiftData.color_hex,
+                            }}
+                            className={'inputDutyForm'}
+                            value={shiftData.abrv}
+                          />
+                          <input
+                            style={{
+                              marginLeft: '0.3rem',
+                              color: shiftData.color_hex,
+                            }}
+                            className={'preferenceInjury'}
+                            value={shiftData.abrv}
+                          />
+                          <input
+                            style={{
+                              marginLeft: '0.3rem',
+                              color: shiftData.color_hex,
+                            }}
+                            className={'wishInjury'}
+                            value={shiftData.abrv}
+                          />
+                        </Col>
+                      ))}
                   </Row>
                 </Container>
               </Card.Body>

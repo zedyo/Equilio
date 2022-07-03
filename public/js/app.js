@@ -15264,6 +15264,8 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 function UpdateShift() {
+  var _shiftTypeData$find;
+
   var params = (0,react_router_dom__WEBPACK_IMPORTED_MODULE_7__.useParams)();
   var dispatch = (0,react_redux__WEBPACK_IMPORTED_MODULE_3__.useDispatch)();
 
@@ -15459,7 +15461,9 @@ function UpdateShift() {
                         }
                       })]
                     })
-                  }), shiftData.shift_type.active_duty == 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_15__["default"], {
+                  }), shiftData.abrv && shiftData.shift_type_id && (((_shiftTypeData$find = shiftTypeData.find(function (data) {
+                    return data.id == shiftData.shift_type_id;
+                  })) === null || _shiftTypeData$find === void 0 ? void 0 : _shiftTypeData$find.active_duty) == 0 ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_15__["default"], {
                     xs: true,
                     lg: "2",
                     children: ["Vorschau", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_6__.jsx)("input", {
@@ -15497,7 +15501,7 @@ function UpdateShift() {
                       className: 'wishInjury',
                       value: shiftData.abrv
                     })]
-                  })]
+                  }))]
                 })
               })
             })]
