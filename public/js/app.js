@@ -10668,6 +10668,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var moment__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(moment__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Container.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Row.js");
+/* harmony import */ var react_bootstrap__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! react-bootstrap */ "./node_modules/react-bootstrap/esm/Col.js");
 /* harmony import */ var react_redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-redux */ "./node_modules/react-redux/es/index.js");
 /* harmony import */ var _features_duties_dutySlice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../../features/duties/dutySlice */ "./resources/js/features/duties/dutySlice.js");
 /* harmony import */ var _util_daysToArray__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../util/daysToArray */ "./resources/js/util/daysToArray.js");
@@ -10679,6 +10681,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
 /* harmony import */ var lodash__WEBPACK_IMPORTED_MODULE_10___default = /*#__PURE__*/__webpack_require__.n(lodash__WEBPACK_IMPORTED_MODULE_10__);
 /* harmony import */ var _shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer */ "./resources/js/components/dutyOverview/shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer.js");
+/* harmony import */ var react_bootstrap_Spinner__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! react-bootstrap/Spinner */ "./node_modules/react-bootstrap/esm/Spinner.js");
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
 function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
@@ -10691,6 +10694,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 function _iterableToArrayLimit(arr, i) { var _i = arr == null ? null : typeof Symbol !== "undefined" && arr[Symbol.iterator] || arr["@@iterator"]; if (_i == null) return; var _arr = []; var _n = true; var _d = false; var _s, _e; try { for (_i = _i.call(arr); !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+
 
 
 
@@ -10723,7 +10727,8 @@ function DutyOverview() {
   var _useSelector = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (store) {
     return store.duties;
   }),
-      dutiesData = _useSelector.dutiesData;
+      dutiesData = _useSelector.dutiesData,
+      isLoading = _useSelector.isLoading;
 
   var _useSelector2 = (0,react_redux__WEBPACK_IMPORTED_MODULE_2__.useSelector)(function (store) {
     return store.employees;
@@ -10750,69 +10755,118 @@ function DutyOverview() {
       return holiday.date === moment__WEBPACK_IMPORTED_MODULE_0___default()("".concat(dateSelectorData.year, "-").concat(dateSelectorData.month, "-").concat(day), 'YYYY-M-D').format('YYYY-MM-DD');
     }) == undefined;
   });
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
-      fluid: true,
-      style: {
-        padding: '0 5rem'
-      },
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-        className: "dateRow",
+
+  if (isLoading == false) {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        fluid: true,
         style: {
-          display: 'grid',
-          gridTemplateColumns: "auto ".concat(monthlyDays.length * 2.2, "rem 6rem"),
-          alignItems: 'center'
+          padding: '0 5rem'
         },
-        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-          className: "dateSelector",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
-            dateSelectorData: dateSelectorData,
-            setDateSelector: setDateSelector
-          }, "datechecker-render")
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          className: "dateRow",
+          style: {
+            display: 'grid',
+            gridTemplateColumns: "auto ".concat(monthlyDays.length * 2.2, "rem 6rem"),
+            alignItems: 'center'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            className: "dateSelector",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
+              dateSelectorData: dateSelectorData,
+              setDateSelector: setDateSelector
+            }, "datechecker-render")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
+              monthlyDays: monthlyDays,
+              dateSelectorData: dateSelectorData
+            })
+          })]
         }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
-            monthlyDays: monthlyDays,
+          children: qualificationsData.map(function (qualification) {
+            return employeesData.filter(function (employee) {
+              return employee.qualification.id == qualification.id;
+            }).length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+              children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                className: "qualificationSection",
+                children: "".concat(qualification.description).concat(employeesData.filter(function (employee) {
+                  return employee.qualification.id == qualification.id;
+                }).length > 1 ? 'nen' : '')
+              }), employeesData.filter(function (employee) {
+                return employee.qualification.id == qualification.id;
+              }).map(function (employee) {
+                return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
+                  employeeData: employee,
+                  dateSelectorData: dateSelectorData,
+                  days: monthlyDays,
+                  workingDays: workingDays,
+                  employeeDuties: dutiesData.filter(function (d) {
+                    return d.employee_id === employee.id;
+                  }),
+                  employeeWishes: wishesData.filter(function (d) {
+                    return d.employee_id === employee.id;
+                  })
+                }, 'EmployeeRow:' + employee.id + dateSelectorData.year + dateSelectorData.month + qualification.id);
+              })]
+            }, 'qualifcationSection:' + qualification.id);
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          className: "separator"
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_11__["default"], {
+            days: monthlyDays,
             dateSelectorData: dateSelectorData
+          }, 'ShiftTypeStatisticsContainer: ' + dateSelectorData.year + dateSelectorData.month)
+        })]
+      })
+    });
+  } else {
+    return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
+        fluid: true,
+        style: {
+          padding: '0 5rem'
+        },
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
+          className: "dateRow",
+          style: {
+            display: 'grid',
+            gridTemplateColumns: "auto ".concat(monthlyDays.length * 2.2, "rem 6rem"),
+            alignItems: 'center'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            className: "dateSelector",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_dateSelector_DateSelector__WEBPACK_IMPORTED_MODULE_5__["default"], {
+              dateSelectorData: dateSelectorData,
+              setDateSelector: setDateSelector
+            }, "datechecker-render")
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_daysRow_DaysRow__WEBPACK_IMPORTED_MODULE_6__["default"], {
+              monthlyDays: monthlyDays,
+              dateSelectorData: dateSelectorData
+            })
+          })]
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_14__["default"], {
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_bootstrap__WEBPACK_IMPORTED_MODULE_15__["default"], {
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
+                style: {
+                  height: '70vh',
+                  display: 'grid',
+                  alignContent: 'center',
+                  justifyContent: 'center'
+                },
+                children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_bootstrap_Spinner__WEBPACK_IMPORTED_MODULE_16__["default"], {
+                  animation: "border",
+                  variant: "secondary"
+                })
+              })
+            })
           })
         })]
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-        children: qualificationsData.map(function (qualification) {
-          return employeesData.filter(function (employee) {
-            return employee.qualification.id == qualification.id;
-          }).length > 0 && /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)("div", {
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-              className: "qualificationSection",
-              children: "".concat(qualification.description).concat(employeesData.filter(function (employee) {
-                return employee.qualification.id == qualification.id;
-              }).length > 1 ? 'nen' : '')
-            }), employeesData.filter(function (employee) {
-              return employee.qualification.id == qualification.id;
-            }).map(function (employee) {
-              return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_employeeRow_EmployeeRow__WEBPACK_IMPORTED_MODULE_8__["default"], {
-                employeeData: employee,
-                dateSelectorData: dateSelectorData,
-                days: monthlyDays,
-                workingDays: workingDays,
-                employeeDuties: dutiesData.filter(function (d) {
-                  return d.employee_id === employee.id;
-                }),
-                employeeWishes: wishesData.filter(function (d) {
-                  return d.employee_id === employee.id;
-                })
-              }, 'EmployeeRow:' + employee.id + dateSelectorData.year + dateSelectorData.month + qualification.id);
-            })]
-          }, 'qualifcationSection:' + qualification.id);
-        })
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-        className: "separator"
-      }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)("div", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(_shiftTypeStatisticsContainer_ShiftTypeStatisticsContainer__WEBPACK_IMPORTED_MODULE_11__["default"], {
-          days: monthlyDays,
-          dateSelectorData: dateSelectorData
-        }, 'ShiftTypeStatisticsContainer: ' + dateSelectorData.year + dateSelectorData.month)
-      })]
-    })
-  });
+      })
+    });
+  }
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DutyOverview);
@@ -82772,6 +82826,49 @@ const Row = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.forwardRef(({
 });
 Row.displayName = 'Row';
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Row);
+
+/***/ }),
+
+/***/ "./node_modules/react-bootstrap/esm/Spinner.js":
+/*!*****************************************************!*\
+  !*** ./node_modules/react-bootstrap/esm/Spinner.js ***!
+  \*****************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
+/* harmony import */ var _ThemeProvider__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./ThemeProvider */ "./node_modules/react-bootstrap/esm/ThemeProvider.js");
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react/jsx-runtime */ "./node_modules/react/jsx-runtime.js");
+
+
+
+
+const Spinner = /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_1__.forwardRef(({
+  bsPrefix,
+  variant,
+  animation,
+  size,
+  // Need to define the default "as" during prop destructuring to be compatible with styled-components github.com/react-bootstrap/react-bootstrap/issues/3595
+  as: Component = 'div',
+  className,
+  ...props
+}, ref) => {
+  bsPrefix = (0,_ThemeProvider__WEBPACK_IMPORTED_MODULE_3__.useBootstrapPrefix)(bsPrefix, 'spinner');
+  const bsSpinnerPrefix = `${bsPrefix}-${animation}`;
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_2__.jsx)(Component, {
+    ref: ref,
+    ...props,
+    className: classnames__WEBPACK_IMPORTED_MODULE_0___default()(className, bsSpinnerPrefix, size && `${bsSpinnerPrefix}-${size}`, variant && `text-${variant}`)
+  });
+});
+Spinner.displayName = 'Spinner';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (Spinner);
 
 /***/ }),
 
