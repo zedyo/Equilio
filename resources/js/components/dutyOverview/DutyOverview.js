@@ -51,7 +51,7 @@ function DutyOverview() {
       ) == undefined
   )
 
-  if (isLoading == false) {
+  if (dutiesData.length > 0 || isLoading == false) {
     return (
       <>
         <Container fluid style={{ padding: '0 5rem' }}>

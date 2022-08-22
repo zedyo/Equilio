@@ -10756,7 +10756,7 @@ function DutyOverview() {
     }) == undefined;
   });
 
-  if (isLoading == false) {
+  if (dutiesData.length > 0 || isLoading == false) {
     return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsx)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.Fragment, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_12__.jsxs)(react_bootstrap__WEBPACK_IMPORTED_MODULE_13__["default"], {
         fluid: true,
@@ -12113,10 +12113,6 @@ function DutyCell(props) {
       }
     });
   }
-
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_5__.jsx)("p", {
-    children: "Loading..."
-  });
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (DutyCell);
@@ -22782,7 +22778,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".day {\n  font-size: 1.1rem;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.weekendDay {\n  font-size: 1.1rem;\n  color: #ababab;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.holiday {\n  font-size: 1.1rem;\n  color: #ff2d2d;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".day {\n  font-size: 1.1rem;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n  color: rgb(32, 32, 32);\n}\n\n.weekendDay {\n  font-size: 1.1rem;\n  color: #cccccc;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}\n\n.holiday {\n  font-size: 1.1rem;\n  color: #ff2d2d;\n  border-style: solid;\n  border-width: 1.5px;\n  border-top: none;\n  border-right: none;\n  border-left: none;\n  width: 1.7rem;\n  text-align: center;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -22830,7 +22826,7 @@ __webpack_require__.r(__webpack_exports__);
 
 var ___CSS_LOADER_EXPORT___ = _node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_0___default()(function(i){return i[1]});
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, ".weekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: rgb(61, 61, 61);\n}\n\n.weekendWeekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: #ababab;\n}\n\n.holidayWeekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: #ff2d2d;\n}", ""]);
+___CSS_LOADER_EXPORT___.push([module.id, ".weekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: rgb(32, 32, 32);\n}\n\n.weekendWeekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: #cccccc;\n}\n\n.holidayWeekday {\n  font-size: 0.8rem;\n  font-weight: 100;\n  color: #ff2d2d;\n}", ""]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 

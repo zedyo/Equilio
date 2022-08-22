@@ -91,8 +91,6 @@ function DutyCell(props) {
       />
     )
   }
-
-  return <p>Loading...</p>
 }
 
 export default DutyCell
