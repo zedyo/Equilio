@@ -1,6 +1,6 @@
 ## About this Project
 
-This web application was developed as part of a bachelor thesis at the SAE Institute Munich. It is a planning tool for shift scheduling in companies with 24/7 rotating shift systems.ssible, powerful, and provides tools required for large, robust applications.
+This web application was developed as part of a bachelor thesis at the SAE Institute Munich. It is a planning tool for shift scheduling in companies with 24/7 rotating shift systems.
 
 This Project is open source and can be used freely non-commericalized.
 
