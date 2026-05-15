@@ -397,4 +397,32 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2d: Soll-Stunden-Kalibrierung + Stundenkonto
+
+Grobe `Tage×ratio×5/7`-Soll-Heuristik ersetzt durch stundenbasierte
+Kalibrierung: `Soll = full_time_weekly_hours × ratio/100 × Tage/7`,
+`Ziel-Dienste = round(Soll / Ø-aktive-Schichtdauer)`. Nach Generierung
+Ist-Stunden je MA (Σ Schichtdauern), Saldo `diff = Ist−Soll`, Upsert in
+die bestehende `working_hours_diffs`-Tabelle (schließt die dokumentierte
+Anbindungslücke). Neu: Response-Key `hours`, Summary `hours_imbalance`.
+
+- `WorkingHoursDiff` `$fillable` ergänzt (updateOrCreate brauchte es).
+- Mock-JS-Generator kongruent (gleiche Formel, persistiert in
+  `db.working_hours_diffs`).
+- Feature-Test: Soll skaliert mit Quote (50 %≈halbes Soll), 1 Saldo-Zeile
+  je MA/Monat, Upsert ohne Duplikate.
+
+**Evaluation:** A (11 MA) Index 957 (Qual 300/10 Lücken, Saldo 37.6) —
+die straffere Stunden-Schranke legt die Fachkraft-Unterdeckung schärfer
+offen (10 statt 2), hart weiterhin regelkonform. B/C überbesetzt →
+`hours_imbalance` ≈1320 macht die zu große Personaldecke sichtbar.
+
+**Verifiziert:** PHPUnit **21/21** (846 Assertions), Frontend **8/8**,
+Build grün. Doku: `algorithm-notes.md` Abschnitt „Phase 2d".
+
+**Lessons Learned:** Eine genauere Soll-Schranke ist kein reiner
+Verbesserungs-Hebel — sie macht bestehende Kapazitätsdefizite *sichtbarer*
+(Qual-Lücken A: 2→10). Das ist gewollt (ehrliches Signal), zeigt aber die
+nötige Gewichts-Feinjustierung Qual↔Stunden↔Besetzung (offen).
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

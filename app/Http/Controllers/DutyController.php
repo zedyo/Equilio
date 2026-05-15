@@ -43,12 +43,25 @@ class DutyController extends Controller
             Duty::create($row);
         }
 
+        // Soll-/Ist-Stundenkonto je Mitarbeiter fortschreiben.
+        foreach ($result['hours'] as $h) {
+            \App\Models\WorkingHoursDiff::updateOrCreate(
+                [
+                    'employee_id' => $h['employee_id'],
+                    'month' => $month,
+                    'year' => $year,
+                ],
+                ['diff' => $h['diff']]
+            );
+        }
+
         $duties = Duty::with('shift.shift_type')
             ->where('year', $year)->where('month', $month)->get();
 
         return response()->json([
             'duties' => $duties,
             'summary' => $result['summary'],
+            'hours' => $result['hours'],
         ]);
     }
 

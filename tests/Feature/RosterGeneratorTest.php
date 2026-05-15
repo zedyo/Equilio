@@ -123,6 +123,52 @@ class RosterGeneratorTest extends TestCase
         }
     }
 
+    public function test_target_hours_calibration_and_working_hours_diff_persisted(): void
+    {
+        $year = (int) date('Y');
+        $month = (int) date('n');
+
+        $examined = \App\Models\Qualification::where('description', 'Exam. Pfleger:in')
+            ->firstOrFail();
+        $half = \App\Models\Employee::factory()->create([
+            'qualification_id' => $examined->id, 'employment_ratio' => 50,
+        ]);
+        $full = \App\Models\Employee::factory()->create([
+            'qualification_id' => $examined->id, 'employment_ratio' => 100,
+        ]);
+
+        $res = $this->postJson('/api/duties/generate', [
+            'year' => $year, 'month' => $month,
+        ])->assertOk()
+            ->assertJsonStructure([
+                'hours' => [['employee_id', 'soll', 'ist', 'diff']],
+                'summary' => ['hours_imbalance'],
+            ]);
+
+        $hours = collect($res->json('hours'))->keyBy('employee_id');
+        // Soll skaliert mit Beschäftigungsquote (50 % ≈ halbes Soll).
+        $this->assertEqualsWithDelta(
+            $hours[$full->id]['soll'] / 2,
+            $hours[$half->id]['soll'],
+            0.5
+        );
+
+        // Stundenkonto je Mitarbeiter persistiert (1 Zeile pro MA/Monat).
+        $empCount = \App\Models\Employee::count();
+        $this->assertSame(
+            $empCount,
+            \App\Models\WorkingHoursDiff::where('year', $year)->where('month', $month)->count()
+        );
+
+        // Erneute Generierung -> Upsert, keine Duplikate.
+        $this->postJson('/api/duties/generate', ['year' => $year, 'month' => $month])
+            ->assertOk();
+        $this->assertSame(
+            $empCount,
+            \App\Models\WorkingHoursDiff::where('year', $year)->where('month', $month)->count()
+        );
+    }
+
     public function test_local_search_keeps_plan_rule_compliant_and_balanced(): void
     {
         $year = (int) date('Y');

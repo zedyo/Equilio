@@ -142,3 +142,32 @@ knapper Examinierten-Decke (A: nur ~3 examiniert für 3 aktive Schichten
 × 31 Tage) minimiert die Heuristik und **meldet die Restlücke ehrlich**
 (2 Schicht-Tage) statt sie zu verstecken — wieder ein Kapazitätssignal,
 kein Algorithmusfehler.
+
+## Phase 2d — Soll-Stunden-Kalibrierung + Stundenkonto
+
+Statt der groben `Tage × ratio × 5/7`-Heuristik wird die Soll-Dienstanzahl
+aus **Soll-Stunden** abgeleitet: `Soll = full_time_weekly_hours × ratio/100
+× Tage/7`; `Ziel-Dienste = round(Soll / Ø-aktive-Schichtdauer)`. Nach der
+Generierung wird je MA das **Ist** (Σ Schichtdauern) berechnet, der
+Saldo `diff = Ist − Soll` gebildet und in die bestehende Tabelle
+`working_hours_diffs` upserted (schließt die dokumentierte Anbindungs-
+Lücke). Summary-Feld `hours_imbalance` (Σ |diff|), Response-Key `hours`.
+
+**Evaluation (gleiche Szenarien, jetzt inkl. Stundenkonto):**
+
+| Szenario | MA | Index (MA/Bes./Qual.) | ohne Fachkraft | Σ\|Stunden-Saldo\| |
+|----------|----|-----------------------|----------------|--------------------|
+| A | 11 | 957 (207/450/300) | 10 | 37.6 |
+| B | 22 | 186 (186/0/0) | 0 | 1319.6 |
+| C | 22 | 134 (134/0/0) | 0 | 1319.6 |
+
+Erkenntnisse / ehrliche Befunde:
+- Die exaktere Soll-Stunden-Schranke deckelt Dienste straffer; in A
+  (~3 examinierte Kräfte) treten dadurch die Fachkraft-Lücken **deutlicher
+  zutage** (10 statt vorher 2 Schicht-Tage) — kein Korrektheits-Regress
+  (hart regelkonform), sondern ein schärferes Kapazitätssignal.
+- B/C sind **überbesetzt** (22 MA, aber nur 310 opt-Dienste): jeder
+  arbeitet weit unter Soll → großes `hours_imbalance` (≈1320). Genau das
+  soll die Kennzahl sichtbar machen (Personaldecke vs. Bedarf).
+- Kalibrierungs-Wechselwirkung dokumentiert; Feinjustierung der Gewichte
+  (Qual. vs. Stunden vs. Besetzung) bleibt bewusster offener Punkt.
