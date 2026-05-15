@@ -11,7 +11,7 @@ function EmployeeRow(props) {
         className="employeeRow"
         style={{
           display: 'grid',
-          gridTemplateColumns: `auto repeat(${props.days.length}, 2.2rem) 6rem`,
+          gridTemplateColumns: `16rem repeat(${props.days.length}, 2.2rem) 6rem`,
           alignItems: 'center',
         }}
       >

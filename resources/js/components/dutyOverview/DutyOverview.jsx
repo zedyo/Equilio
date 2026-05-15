@@ -53,32 +53,21 @@ function DutyOverview() {
   if (dutiesData.length > 0 || isLoading == false) {
     return (
       <>
-        <Container fluid style={{ padding: '0 5rem' }}>
-          <div
-            className="dateRow"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `auto ${monthlyDays.length * 2.2}rem 6rem`,
-              alignItems: 'center',
-            }}
-          >
-            <div className="dateSelector">
-              <DateSelector
-                key="datechecker-render"
-                dateSelectorData={dateSelectorData}
-                setDateSelector={setDateSelector}
-              />
-            </div>
-
-            <div>
-              <DaysRow
-                monthlyDays={monthlyDays}
-                dateSelectorData={dateSelectorData}
-              />
-            </div>
+        <Container fluid className="dutyOverviewContainer">
+          <div className="dateSelectorBar">
+            <DateSelector
+              key="datechecker-render"
+              dateSelectorData={dateSelectorData}
+              setDateSelector={setDateSelector}
+            />
           </div>
-          <div>
-            {qualificationsData.map((qualification) => {
+          <div className="dutyBoard">
+            <DaysRow
+              monthlyDays={monthlyDays}
+              dateSelectorData={dateSelectorData}
+            />
+            <div>
+              {qualificationsData.map((qualification) => {
               return (
                 employeesData.filter(
                   (employee) => employee.qualification.id == qualification.id
@@ -125,17 +114,18 @@ function DutyOverview() {
               )
             })}
           </div>
-          <div className="separator" />
-          <div>
-            <ShiftTypeStatisticsContainer
-              key={
-                'ShiftTypeStatisticsContainer: ' +
-                dateSelectorData.year +
-                dateSelectorData.month
-              }
-              days={monthlyDays}
-              dateSelectorData={dateSelectorData}
-            />
+            <div className="separator" />
+            <div>
+              <ShiftTypeStatisticsContainer
+                key={
+                  'ShiftTypeStatisticsContainer: ' +
+                  dateSelectorData.year +
+                  dateSelectorData.month
+                }
+                days={monthlyDays}
+                dateSelectorData={dateSelectorData}
+              />
+            </div>
           </div>
         </Container>
       </>
@@ -143,29 +133,13 @@ function DutyOverview() {
   } else {
     return (
       <>
-        <Container fluid style={{ padding: '0 5rem' }}>
-          <div
-            className="dateRow"
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `auto ${monthlyDays.length * 2.2}rem 6rem`,
-              alignItems: 'center',
-            }}
-          >
-            <div className="dateSelector">
-              <DateSelector
-                key="datechecker-render"
-                dateSelectorData={dateSelectorData}
-                setDateSelector={setDateSelector}
-              />
-            </div>
-
-            <div>
-              <DaysRow
-                monthlyDays={monthlyDays}
-                dateSelectorData={dateSelectorData}
-              />
-            </div>
+        <Container fluid className="dutyOverviewContainer">
+          <div className="dateSelectorBar">
+            <DateSelector
+              key="datechecker-render"
+              dateSelectorData={dateSelectorData}
+              setDateSelector={setDateSelector}
+            />
           </div>
 
           <Container>
