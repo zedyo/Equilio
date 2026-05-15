@@ -104,25 +104,35 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     navigate('#/employee/show/1')
     await screen.findByText(/Dienst Präferenzen/i, {}, { timeout: 6000 })
 
-    // Segmentierte Steuerung vorhanden; ersten "Bevorzugt"-Button wählen.
+    // Segmentierte Steuerung vorhanden. Einige Schichten sind aus den
+    // Echtdaten vorbelegt -> einen noch NICHT bevorzugten Button wählen.
     const prefBtns = await screen.findAllByRole(
       'button',
       { name: 'Bevorzugt' },
       { timeout: 5000 }
     )
     expect(prefBtns.length).toBeGreaterThan(0)
-    expect(prefBtns[0]).toHaveAttribute('aria-pressed', 'false')
+    const idx = prefBtns.findIndex(
+      (b) => b.getAttribute('aria-pressed') === 'false'
+    )
+    expect(idx).toBeGreaterThanOrEqual(0)
 
-    await user.click(prefBtns[0])
+    await user.click(prefBtns[idx])
 
     // Slice + Mock haben die Stufe übernommen -> Button wird aktiv.
     await waitFor(
       () => {
         const after = screen.getAllByRole('button', { name: 'Bevorzugt' })
-        expect(after[0]).toHaveAttribute('aria-pressed', 'true')
+        expect(after[idx]).toHaveAttribute('aria-pressed', 'true')
       },
       { timeout: 5000 }
     )
+
+    // Mind. eine Schicht ist aus den Echtdaten vorab bevorzugt.
+    const pressed = screen
+      .getAllByRole('button', { name: 'Bevorzugt' })
+      .filter((b) => b.getAttribute('aria-pressed') === 'true')
+    expect(pressed.length).toBeGreaterThan(0)
   })
 
   it('Abwesenheiten-Seite listet geseedete Abwesenheiten', async () => {

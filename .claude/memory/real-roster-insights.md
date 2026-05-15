@@ -92,6 +92,28 @@ sie dienen hier nur als realistische Testkonstellation.
 Der reale Plan bestätigt die Modellannahmen; lediglich die konkreten
 Min/Opt-Zahlen sind stationsspezifisch (→ Nutzerkonfiguration).
 
+## Abgeleitete Präferenzen (aus realer Dienstverteilung)
+
+Aus der tatsächlichen Schichtverteilung je MA über alle 5 Monate
+abgeleitet und im Seeder/Mock **vorausgefüllt** (228 Einträge,
+26 `preferred`, 202 `blocked`, 31 MA):
+
+- **preferred**: der/die dominante(n) aktive(n) Dienstcode(s) — Anteil
+  ≥ 45 % der aktiven Dienste **und** ≥ 8×, max. 2 Codes. Beispiele:
+  Günther F1 (94 %), Celling F3 (100 %), Stolz/Habteab/Wanninger
+  F14 (100 %), Köse F10 (84 %), Tordo S33 (74 %).
+- **blocked**: jede aktive Dienst**art**, die der MA in der Quelle
+  **nie** geleistet hat → alle Codes dieser Art gesperrt. Spiegelt
+  reale Spezialisierung (z. B. „macht nie Nachtdienst", reine
+  Frühdienst-Kräfte wie Präsenz/Therapie/Azubi-1).
+- **valid** (kein Eintrag): alles übrige, neutral.
+
+Verifiziert: Generator bleibt mit diesen harten `blocked`-Regeln
+**machbar** — `generate()` auf vollem 36-MA-Echtbestand: forbidden=0,
+Besetzungs-/Qualifikations-Strain 0, ~0,4 s. Genug nicht-gesperrte,
+qualifizierte Kräfte je Dienstart/Tag (insb. Nacht: ~14 MA, die real
+Nachtdienste hatten, bleiben ungesperrt).
+
 ## Datensatz / Anonymisierung
 
 - 36 MA mit **fiktiven** deutschen Namen (deterministisch nach
