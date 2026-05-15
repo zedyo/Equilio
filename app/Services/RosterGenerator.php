@@ -115,6 +115,33 @@ class RosterGenerator
             $target[$e->id] = max(0, (int) round($sollHours[$e->id] / $avgShiftHours));
         }
 
+        // Objektiv-Kontext: Tages-Wunsch je MA, Schicht-Präferenzen je MA,
+        // Gewichte. Wird zusätzlich zur Sequenz-Belastung in die Akzeptanz
+        // der Metaheuristiken und in den Gesamt-Index einbezogen.
+        $wishMap = [];
+        foreach ($wishes as $key => $group) {
+            [$eid, $dy] = explode('-', $key);
+            $wishMap[(int) $eid][(int) $dy] = (int) $group->first()->shift_id;
+        }
+        $prefByEmp = [];
+        foreach ($preferences as $key => $group) {
+            [$eid, $sid] = explode('-', $key);
+            $prefByEmp[(int) $eid][(int) $sid] = true;
+        }
+        $obj = [
+            'soll' => $sollHours,
+            'wish' => $wishMap,
+            'pref' => $prefByEmp,
+            'w' => [
+                'hours' => (float) ((function_exists('config')
+                    ? config('rostering.monthly_hours_deviation') : null) ?? 1.5),
+                'wish' => (float) ((function_exists('config')
+                    ? config('rostering.wish_violation') : null) ?? 25.0),
+                'pref' => (float) ((function_exists('config')
+                    ? config('rostering.preference_miss') : null) ?? 0.5),
+            ],
+        ];
+
         for ($day = 1; $day <= $days; $day++) {
             $assignedToday = [];
 
@@ -209,12 +236,12 @@ class RosterGenerator
             }
         }
 
-        $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days);
-        $this->simulatedAnnealing($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days);
+        $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days, $obj);
+        $this->simulatedAnnealing($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days, $obj);
 
         return $this->buildResult(
             $employees, $assigned, $shiftTypes, $wishes, $preferences,
-            $activeTypes, $year, $month, $days, $sollHours
+            $activeTypes, $year, $month, $days, $sollHours, $obj
         );
     }
 
@@ -233,6 +260,44 @@ class RosterGenerator
     }
 
     /**
+     * Zusätzliche Mitarbeiter-Belastung neben der Sequenz-Belastung:
+     *  - Monats-Stunden: Strafe je Stunde Abweichung Ist↔Soll
+     *    (Mitarbeiter sollen auf ihre Monatsstunden kommen),
+     *  - Wünsche: hohe Strafe je nicht erfülltem Tages-Wunsch,
+     *  - Präferenzen: kleine Strafe je Dienst ohne passende Präferenz
+     *    (nur falls der MA überhaupt Präferenzen hinterlegt hat).
+     * Reine Funktion von $assigned[$empId] -> wie seqOf memoisierbar.
+     */
+    private function employeeExtraStrain(array $assigned, int $empId, array $obj, int $days): float
+    {
+        $ist = 0.0;
+        $wishViol = 0;
+        $prefMiss = 0;
+        $prefSet = $obj['pref'][$empId] ?? [];
+        $hasPref = ! empty($prefSet);
+        $wishDay = $obj['wish'][$empId] ?? [];
+
+        for ($d = 1; $d <= $days; $d++) {
+            $sh = $assigned[$empId][$d] ?? null;
+            if ($sh) {
+                $ist += (float) $sh->h_duration;
+                if ($hasPref && empty($prefSet[(int) $sh->id])) {
+                    $prefMiss++;
+                }
+            }
+            if (isset($wishDay[$d]) && ! ($sh && (int) $sh->id === $wishDay[$d])) {
+                $wishViol++;
+            }
+        }
+
+        $w = $obj['w'];
+
+        return $w['hours'] * abs($ist - (float) ($obj['soll'][$empId] ?? 0.0))
+            + $w['wish'] * $wishViol
+            + $w['pref'] * $prefMiss;
+    }
+
+    /**
      * Phase 2: arbeitslast- UND besetzungserhaltende 2-Tausch-Heuristik
      * (Hill-Climbing). Tauscht einen Dienst-Tag von A mit einem freien Tag
      * von B (B arbeitet an A's freiem Tag, A ist an B's Dienst-Tag frei):
@@ -242,7 +307,7 @@ class RosterGenerator
      * unzulässige Konstellation erzeugen UND die Fachkraft-Abdeckung je
      * Schicht/Tag nicht verschlechtern. Siehe algorithm-notes.md.
      */
-    private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days): void
+    private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days, array $obj): void
     {
         // Die erschöpfende 2-Tausch-Lokalsuche ist O(E^2 * days^2) in der
         // MA-Zahl (Restart bei jeder Verbesserung) und wird für große
@@ -265,8 +330,10 @@ class RosterGenerator
         // Neuberechnung pro Kandidat (entfernt das dominante O(days) aus
         // der innersten Schleife; Verhalten bleibt bit-identisch).
         $seqCache = [];
+        $extraCache = [];
         foreach ($employees as $emp) {
             $seqCache[$emp->id] = $this->seqOf($assigned, $emp->id, $shiftTypes, $days);
+            $extraCache[$emp->id] = $this->employeeExtraStrain($assigned, $emp->id, $obj, $days);
         }
         $qualCovered = function (string $typeName, int $day) use (&$assigned, $shiftTypes, $empById, $isQualified): bool {
             foreach ($assigned as $empId => $byDay) {
@@ -333,12 +400,16 @@ class RosterGenerator
                             $seqANew = $this->seqOf($assigned, $aId, $shiftTypes, $days);
                             $seqBNew = $this->seqOf($assigned, $bId, $shiftTypes, $days);
 
-                            // Inkrementelle Δ-Bewertung (nur betroffene Tage).
+                            // Inkrementelle Δ-Bewertung (nur betroffene Tage)
+                            // + Stunden-/Wunsch-/Präferenz-Delta (nur A & B).
+                            $exANew = $this->employeeExtraStrain($assigned, $aId, $obj, $days);
+                            $exBNew = $this->employeeExtraStrain($assigned, $bId, $obj, $days);
                             $delta = $this->strain->sequenceStrainDelta(
                                 $seqAOld, $seqANew, [$d, $e], $days
                             ) + $this->strain->sequenceStrainDelta(
                                 $seqBOld, $seqBNew, [$d, $e], $days
-                            );
+                            ) + ($exANew - $extraCache[$aId])
+                            + ($exBNew - $extraCache[$bId]);
 
                             $qualOk = (! $covAd || $qualCovered($typeA, $d))
                                 && (! $covBe || $qualCovered($typeB, $e));
@@ -348,6 +419,8 @@ class RosterGenerator
                                 $improved = true;
                                 $seqCache[$aId] = $seqANew;
                                 $seqCache[$bId] = $seqBNew;
+                                $extraCache[$aId] = $exANew;
+                                $extraCache[$bId] = $exBNew;
                                 break 3;
                             }
 
@@ -377,7 +450,7 @@ class RosterGenerator
      * liefert die beste je gesehene Lösung zurück (nie schlechter als die
      * Eingabe). Deterministisch über festen Seed → reproduzierbar/testbar.
      */
-    private function simulatedAnnealing(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days): void
+    private function simulatedAnnealing(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days, array $obj): void
     {
         $cfg = (function_exists('config') ? config('rostering.annealing') : null) ?? [];
         if (($cfg['enabled'] ?? true) === false) {
@@ -418,8 +491,10 @@ class RosterGenerator
         // Memoisierung wie in localSearch: seqOf nur nach akzeptiertem
         // Zug für die zwei betroffenen MA neu berechnen.
         $seqCache = [];
+        $extraCache = [];
         foreach ($list as $emp) {
             $seqCache[$emp->id] = $this->seqOf($assigned, $emp->id, $shiftTypes, $days);
+            $extraCache[$emp->id] = $this->employeeExtraStrain($assigned, $emp->id, $obj, $days);
         }
 
         $best = $snapshot();
@@ -467,11 +542,14 @@ class RosterGenerator
             $seqANew = $this->seqOf($assigned, $aId, $shiftTypes, $days);
             $seqBNew = $this->seqOf($assigned, $bId, $shiftTypes, $days);
 
+            $exANew = $this->employeeExtraStrain($assigned, $aId, $obj, $days);
+            $exBNew = $this->employeeExtraStrain($assigned, $bId, $obj, $days);
             $delta = $this->strain->sequenceStrainDelta(
                 $seqAOld, $seqANew, [$d, $e], $days
             ) + $this->strain->sequenceStrainDelta(
                 $seqBOld, $seqBNew, [$d, $e], $days
-            );
+            ) + ($exANew - $extraCache[$aId])
+            + ($exBNew - $extraCache[$bId]);
 
             $qualOk = (! $covAd || $qualCovered($typeA, $d))
                 && (! $covBe || $qualCovered($typeB, $e));
@@ -483,6 +561,8 @@ class RosterGenerator
             if ($accept) {
                 $seqCache[$aId] = $seqANew;
                 $seqCache[$bId] = $seqBNew;
+                $extraCache[$aId] = $exANew;
+                $extraCache[$bId] = $exBNew;
                 $cum += $delta;
                 if ($cum < $bestCum - 1e-9) {
                     $bestCum = $cum;
@@ -521,7 +601,8 @@ class RosterGenerator
 
     private function buildResult(
         $employees, array $assigned, $shiftTypes, $wishes, $preferences,
-        array $activeTypes, int $year, int $month, int $days, array $sollHours
+        array $activeTypes, int $year, int $month, int $days, array $sollHours,
+        array $obj
     ): array {
         $duties = [];
         $countByTypeByDay = [];
@@ -615,6 +696,27 @@ class RosterGenerator
             $imbalance += abs($diff);
         }
 
+        // Zusatz-Belastung (Stunden/Wunsch/Präferenz) in den Gesamt-Index.
+        $extraSum = 0.0;
+        $wishViolations = 0;
+        $preferenceMisses = 0;
+        foreach ($employees as $e) {
+            $extraSum += $this->employeeExtraStrain($assigned, $e->id, $obj, $days);
+            $prefSet = $obj['pref'][$e->id] ?? [];
+            $hasPref = ! empty($prefSet);
+            $wishDay = $obj['wish'][$e->id] ?? [];
+            for ($d = 1; $d <= $days; $d++) {
+                $sh = $assigned[$e->id][$d] ?? null;
+                if ($sh && $hasPref && empty($prefSet[(int) $sh->id])) {
+                    $preferenceMisses++;
+                }
+                if (isset($wishDay[$d]) && ! ($sh && (int) $sh->id === $wishDay[$d])) {
+                    $wishViolations++;
+                }
+            }
+        }
+        $total += $extraSum;
+
         return [
             'duties' => $duties,
             'hours' => $hours,
@@ -624,6 +726,9 @@ class RosterGenerator
                 'qualification_strain' => round($qualificationStrain, 2),
                 'missing_qualification' => $missingQualification,
                 'hours_imbalance' => round($imbalance, 2),
+                'hours_strain' => round($obj['w']['hours'] * $imbalance, 2),
+                'wish_violations' => $wishViolations,
+                'preference_misses' => $preferenceMisses,
                 'total_strain' => round($total, 2),
                 'forbidden' => $forbidden,
                 'assigned_duties' => count($duties),

@@ -46,6 +46,18 @@ return [
     // Standard-Soll-Wochenstunden bei 100 % Beschäftigung.
     'full_time_weekly_hours' => 39,
 
+    // Zusätzliche Bewertungsterme im Generator (fließen in die
+    // Akzeptanz der lokalen Suche / des SA und in den Gesamt-Index ein):
+    //  - monthly_hours_deviation: Strafe je Stunde Abweichung vom
+    //    Monats-Soll je Mitarbeiter (Auslastung -> Soll-Stunden treffen).
+    //  - wish_violation: Strafe je nicht erfülltem Tages-Wunsch
+    //    (hoch gewichtet -> Work/Life-Balance).
+    //  - preference_miss: kleine Strafe je Dienst, der nicht einer
+    //    hinterlegten Schicht-Präferenz entspricht (sanfte Lenkung).
+    'monthly_hours_deviation' => 1.5,
+    'wish_violation' => 25.0,
+    'preference_miss' => 0.5,
+
     // Ab dieser MA-Zahl wird die erschöpfende O(E^2*days^2)-Lokalsuche
     // übersprungen; allein das (gedeckelte) Simulated Annealing optimiert
     // dann. Hält große Bestände interaktiv (vgl. real-roster-insights.md).
