@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AbsenceController;
 use App\Http\Controllers\DutyController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\PreferenceController;
@@ -24,6 +25,7 @@ Route::get('/duties/{year}/{month}/{employee_id}', [DutyController::class, 'getD
 Route::get('/duties', [DutyController::class, 'overview'])->name('overview');
 
 Route::resources([
+    'absences' => AbsenceController::class,
     'qualifications' => QualificationController::class,
     'employees' => EmployeeController::class,
     'shifts' => ShiftController::class,

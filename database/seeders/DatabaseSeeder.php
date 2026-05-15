@@ -20,7 +20,8 @@ class DatabaseSeeder extends Seeder
             QualificationSeeder::class,
             EmployeeSeeder::class,
             ShiftSeeder::class,
-            ShiftTypeSeeder::class
+            ShiftTypeSeeder::class,
+            AbsenceSeeder::class,
         ]);
     }
 }
