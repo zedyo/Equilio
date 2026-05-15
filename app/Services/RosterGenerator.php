@@ -84,18 +84,35 @@ class RosterGenerator
         $preferences = Preference::all()
             ->groupBy(fn ($p) => $p->employee_id.'-'.$p->shift_id);
 
+        // Soll-Stunden-Kalibrierung: Vollzeit-Wochenstunden (Tarif) auf den
+        // Monat skaliert; Soll-Dienstanzahl = Soll-Stunden / Ø-Schichtdauer.
+        $fullTimeWeekly = (float) ((function_exists('config')
+            ? config('rostering.full_time_weekly_hours') : null) ?? 39);
+        $activeShiftHours = [];
+        foreach ($shiftByTypeName as $sh) {
+            $activeShiftHours[] = (float) $sh->h_duration;
+        }
+        $avgShiftHours = $activeShiftHours
+            ? array_sum($activeShiftHours) / count($activeShiftHours)
+            : 8.0;
+        if ($avgShiftHours <= 0) {
+            $avgShiftHours = 8.0;
+        }
+
         // Zustand
         $assigned = [];          // [empId][day] = Shift
         $dutyCount = [];         // [empId] => int
         $runLen = [];            // [empId] => aktuelle Dienste-in-Folge
         $prevType = [];          // [empId] => ShiftType-Name am Vortag (oder null)
         $target = [];            // [empId] => Soll-Dienstanzahl
+        $sollHours = [];         // [empId] => Soll-Stunden im Monat
         foreach ($employees as $e) {
             $dutyCount[$e->id] = 0;
             $runLen[$e->id] = 0;
             $prevType[$e->id] = null;
             $ratio = (float) ($e->employment_ratio ?: 100);
-            $target[$e->id] = (int) round($days * ($ratio / 100) * 5 / 7);
+            $sollHours[$e->id] = round($fullTimeWeekly * ($ratio / 100) * ($days / 7), 2);
+            $target[$e->id] = max(0, (int) round($sollHours[$e->id] / $avgShiftHours));
         }
 
         for ($day = 1; $day <= $days; $day++) {
@@ -196,7 +213,7 @@ class RosterGenerator
 
         return $this->buildResult(
             $employees, $assigned, $shiftTypes, $wishes, $preferences,
-            $activeTypes, $year, $month, $days
+            $activeTypes, $year, $month, $days, $sollHours
         );
     }
 
@@ -348,10 +365,11 @@ class RosterGenerator
 
     private function buildResult(
         $employees, array $assigned, $shiftTypes, $wishes, $preferences,
-        array $activeTypes, int $year, int $month, int $days
+        array $activeTypes, int $year, int $month, int $days, array $sollHours
     ): array {
         $duties = [];
         $countByTypeByDay = [];
+        $istHours = [];
         $qualByTypeByDay = [];
 
         $reqQual = $this->strain->requiredQualification();
@@ -384,6 +402,7 @@ class RosterGenerator
                 $countByTypeByDay[$typeName][$day] = ($countByTypeByDay[$typeName][$day] ?? 0) + 1;
                 $qualByTypeByDay[$typeName][$day] =
                     ($qualByTypeByDay[$typeName][$day] ?? false) || $empQualified[$e->id];
+                $istHours[$e->id] = ($istHours[$e->id] ?? 0.0) + (float) $shift->h_duration;
             }
         }
 
@@ -424,13 +443,31 @@ class RosterGenerator
         $qualificationStrain = $this->strain->qualificationStrain($missingQualification);
         $total = $employeeStrainSum + $occupationStrain + $qualificationStrain;
 
+        // Soll-/Ist-Stundenkonto je Mitarbeiter
+        $hours = [];
+        $imbalance = 0.0;
+        foreach ($employees as $e) {
+            $soll = round($sollHours[$e->id] ?? 0.0, 2);
+            $ist = round($istHours[$e->id] ?? 0.0, 2);
+            $diff = round($ist - $soll, 2);
+            $hours[] = [
+                'employee_id' => $e->id,
+                'soll' => $soll,
+                'ist' => $ist,
+                'diff' => $diff,
+            ];
+            $imbalance += abs($diff);
+        }
+
         return [
             'duties' => $duties,
+            'hours' => $hours,
             'summary' => [
                 'employee_strain' => round($employeeStrainSum, 2),
                 'occupation_strain' => round($occupationStrain, 2),
                 'qualification_strain' => round($qualificationStrain, 2),
                 'missing_qualification' => $missingQualification,
+                'hours_imbalance' => round($imbalance, 2),
                 'total_strain' => round($total, 2),
                 'forbidden' => $forbidden,
                 'assigned_duties' => count($duties),

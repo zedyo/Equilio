@@ -165,6 +165,7 @@ const ROSTER_CFG = {
   w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5, missingQual: 30 },
   typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
   requiredQualification: 'Exam. Pfleger:in',
+  fullTimeWeekly: 39,
 }
 
 function sequenceStrain(seq, days) {
@@ -237,11 +238,22 @@ function runGenerator(year, month) {
   const runLen = {}
   const prevType = {}
   const target = {}
+  const sollHours = {}
+  const activeShiftHours = ROSTER_CFG.typePriority
+    .filter((n) => shiftByType[n])
+    .map((n) => shiftByType[n].h_duration || 8)
+  const avgShiftHours = activeShiftHours.length
+    ? activeShiftHours.reduce((a, b) => a + b, 0) / activeShiftHours.length
+    : 8
   for (const e of employees) {
     dutyCount[e.id] = 0
     runLen[e.id] = 0
     prevType[e.id] = null
-    target[e.id] = Math.round((days * ((e.employment_ratio || 100) / 100) * 5) / 7)
+    sollHours[e.id] =
+      Math.round(
+        ROSTER_CFG.fullTimeWeekly * ((e.employment_ratio || 100) / 100) * (days / 7) * 100
+      ) / 100
+    target[e.id] = Math.max(0, Math.round(sollHours[e.id] / avgShiftHours))
   }
 
   for (let day = 1; day <= days; day++) {
@@ -386,6 +398,7 @@ function runGenerator(year, month) {
   const newDuties = []
   const countByType = {}
   const qualByType = {}
+  const istHours = {}
   let nid = 1
   for (const e of employees) {
     for (let day = 1; day <= days; day++) {
@@ -411,6 +424,7 @@ function runGenerator(year, month) {
       ;(countByType[tName] ||= {})[day] = (countByType[tName]?.[day] || 0) + 1
       ;(qualByType[tName] ||= {})[day] =
         (qualByType[tName]?.[day] || false) || isQualified(e)
+      istHours[e.id] = (istHours[e.id] || 0) + (shift.h_duration || 0)
     }
   }
 
@@ -445,20 +459,47 @@ function runGenerator(year, month) {
   }
   const qualStrain = ROSTER_CFG.w.missingQual * missingQual
 
+  // Soll-/Ist-Stundenkonto
+  const hours = []
+  let imbalance = 0
+  for (const e of employees) {
+    const soll = Math.round((sollHours[e.id] || 0) * 100) / 100
+    const ist = Math.round((istHours[e.id] || 0) * 100) / 100
+    const diff = Math.round((ist - soll) * 100) / 100
+    hours.push({ employee_id: e.id, soll, ist, diff })
+    imbalance += Math.abs(diff)
+  }
+
   // Monat ersetzen + persistieren
   db.duties = db.duties.filter((d) => !(d.year === year && d.month === month))
   const maxId = db.duties.reduce((m, d) => Math.max(m, d.id), 0)
   newDuties.forEach((d, i) => (d.id = maxId + 1 + i))
   db.duties.push(...newDuties)
+  for (const h of hours) {
+    let row = db.working_hours_diffs.find(
+      (w) => w.employee_id === h.employee_id && w.month === month && w.year === year
+    )
+    if (row) row.diff = h.diff
+    else
+      db.working_hours_diffs.push({
+        id: nextId(db.working_hours_diffs),
+        employee_id: h.employee_id,
+        month,
+        year,
+        diff: h.diff,
+      })
+  }
   persist()
 
   return {
     duties: newDuties.map(dutyWithRelations),
+    hours,
     summary: {
       employee_strain: Math.round(empStrain * 100) / 100,
       occupation_strain: Math.round(occStrain * 100) / 100,
       qualification_strain: Math.round(qualStrain * 100) / 100,
       missing_qualification: missingQual,
+      hours_imbalance: Math.round(imbalance * 100) / 100,
       total_strain:
         Math.round((empStrain + occStrain + qualStrain) * 100) / 100,
       forbidden,

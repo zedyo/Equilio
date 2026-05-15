@@ -9,6 +9,13 @@ class WorkingHoursDiff extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'employee_id',
+        'month',
+        'year',
+        'diff',
+    ];
+
     public function employee()
     {
         return $this->belongsTo(Employee::class, 'employee_id');
