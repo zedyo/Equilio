@@ -34,25 +34,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Build frontend (production)
-        run: npm run prod
+      - name: Build (Vite)
+        run: npm run build
 
-      - name: Assemble static site
+      - name: Add SPA fallback + .nojekyll
         run: |
-          mkdir -p _site/js _site/css
-          cp -r public/js/. _site/js/
-          cp -r public/css/. _site/css/
-          cp demo/index.html _site/index.html
-          cp public/favicon.ico _site/favicon.ico || true
-          # SPA-Fallback (HashRouter braucht das streng genommen nicht,
-          # schadet aber nicht und fängt direkte Unterpfade ab):
-          cp demo/index.html _site/404.html
-          touch _site/.nojekyll
+          cp dist/index.html dist/404.html
+          touch dist/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: _site
+          path: dist
 
   deploy:
     needs: build

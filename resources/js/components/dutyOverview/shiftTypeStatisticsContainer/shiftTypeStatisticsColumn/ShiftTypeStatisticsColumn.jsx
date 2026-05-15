@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react'
 import ShiftTypeStatisticCell from './shiftTypeStatisticCell/ShiftTypeStatisticCell'
 import '../../../../../sass/shift_type.scss'
-import style from './ShiftTypeStatisticsColumn.scss'
+import './ShiftTypeStatisticsColumn.scss'
 
 function ShiftTypeStatistics(props) {
   return (

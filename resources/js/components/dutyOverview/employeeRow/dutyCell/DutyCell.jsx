@@ -2,7 +2,7 @@ import moment from 'moment'
 import React, { useState, useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { deleteDuty, postDuty } from '../../../../features/duties/dutySlice'
-import style from './DutyCell.scss'
+import './DutyCell.scss'
 
 function DutyCell(props) {
   let employeeDuty = props.employeeDuty

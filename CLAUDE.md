@@ -15,26 +15,33 @@ Volle Hintergrundgeschichte und MoSCoW-Ziele: siehe `.claude/memory/project-back
 
 | Layer       | Technik                                                            |
 |-------------|--------------------------------------------------------------------|
-| Backend     | PHP 8, Laravel 8 (`composer.json`)                                 |
-| Frontend    | React 17 + Redux Toolkit + React-Bootstrap + React-Router-Dom 5    |
-| Build       | Laravel Mix 6 (`webpack.mix.js`), Sass                             |
+| Backend     | PHP 8, Laravel 8 (`composer.json`) — **EOL, Modernisierung steht aus** (Backend-Phase) |
+| Frontend    | React 19 + Redux Toolkit 2 + React-Bootstrap + React-Router-Dom 7 |
+| Build       | **Vite 7** (`vite.config.js`), Sass (dart-sass)                   |
+| HTTP-Client | axios 1.x                                                          |
 | Datenbank   | MySQL 8                                                            |
 | Dev-Stack   | Laravel Sail (Docker), Redis, Mailhog, Selenium (`docker-compose.yml`) |
 | Tests       | PHPUnit (nur Skeleton vorhanden — keine echten Tests)              |
 
-## Setup
+> **Modernisierungsstand (Mai 2026):** Der Frontend-Stack wurde vollständig
+> aktualisiert (laravel-mix→Vite, React 17→19, Router 5→7, RTK 1→2, axios
+> 0.21→1.x). `npm audit` meldet **0 Schwachstellen** (vorher 22, alle aus der
+> alten webpack-Build-Kette). Der **Backend-Stack (Laravel 8) ist weiterhin
+> EOL** und in einer separaten Phase zu modernisieren — Details siehe
+> `.claude/memory/implementation-status.md` und `progress-log.md`.
+
+## Setup (Frontend)
 
 ```bash
-cp .env.example .env                 # DB-Settings anpassen (DB_DATABASE=projectyeti)
-composer install
 npm install
-php artisan key:generate
-php artisan migrate:fresh --seed     # legt Stammdaten an (siehe Seeder)
-php artisan serve                    # http://localhost:8000
-npm run watch                        # Frontend-Build mit Hot-Reload
+npm run dev       # Vite Dev-Server (HMR)
+npm run build     # Produktions-Build nach dist/
+npm run preview   # gebautes dist/ lokal testen
 ```
 
-Alternativ via Sail (`docker-compose.yml` enthält PHP 8, MySQL 8, Redis, Mailhog, Selenium).
+Backend (Laravel) lokal: erfordert Modernisierung — Laravel 8 installiert auf
+PHP ≥ 8.2 nicht mehr. Die GitHub-Pages-Demo läuft komplett ohne Backend
+(In-Browser-Mock, siehe unten).
 
 ## Repository-Layout
 
@@ -139,22 +146,24 @@ läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
 - `resources/js/mock/mockApi.js` — axios-Adapter, der die gesamte `/api/*`-API
   im Browser nachbildet (Seeder-Daten, CRUD, Wunsch-/Präferenz-Verletzungen).
   Persistenz via `localStorage`; `?reset` an die URL hängen setzt die Daten zurück.
-- Aktivierung ausschließlich über `window.__YETI_DEMO__ = true` in `demo/index.html`.
-  Im normalen Laravel-Betrieb wird der Mock **nicht** geladen — das echte Backend
-  bleibt unangetastet.
+- Aktivierung ausschließlich über `window.__YETI_DEMO__ = true` im Root-`index.html`
+  (Vite-Entry). Im normalen Laravel-Betrieb wird der Mock **nicht** geladen.
 - Im Demo-Modus nutzt der Router `HashRouter` statt `BrowserRouter`
   (GitHub Pages hat kein SPA-Fallback für tiefe Pfade).
-- Deploy: `.github/workflows/deploy-pages.yml` baut `npm run prod`, montiert
-  `demo/index.html` + `public/js` + `public/css` zu `_site/` und published via
-  GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
+- Deploy: `.github/workflows/deploy-pages.yml` baut `npm run build` (Vite,
+  Base `/yourPlan/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
+  published via GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
+- Live: `https://zedyo.github.io/yourPlan/`
 
-**Einmalige Voraussetzung (manuell durch Repo-Owner):**
-GitHub → Settings → Pages → *Source = GitHub Actions* aktivieren. Danach läuft
-der Deploy bei jedem Push automatisch; die URL erscheint in der Action-Zusammenfassung.
+**Bereits eingerichtet (Repo-Owner):** Pages-Source = „GitHub Actions" und das
+`github-pages`-Environment erlaubt Deployments vom Doku-Branch.
 
-Build-Hinweis: `node-sass` wurde entfernt (baut auf modernem Node nicht; dart-sass
-`sass` ist bereits vorhanden). `webpack` ist via `overrides` auf `5.89.0` gepinnt,
-da neuere Versionen `webpackbar`/`ProgressPlugin` von laravel-mix 6 brechen.
+Build-Hinweise:
+- JSX-haltige Dateien tragen die Endung `.jsx` (Vite/plugin-react transformiert
+  nur diese; reine Logik wie Slices/Store/Mock bleibt `.js`).
+- `vite.config.js` setzt `publicDir: false`, damit Laravels `public/`
+  (Web-Root des Backends) nicht ins statische Deploy gelangt.
+- Alt-Build-Kette (laravel-mix/webpack/node-sass) wurde vollständig entfernt.
 
 ## Konventionen & Hinweise
 

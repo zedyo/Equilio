@@ -8,20 +8,28 @@ import {
   FormSelect,
   InputGroup,
   Stack,
-  Breadcrumb,
   Row,
   Col,
+  Breadcrumb,
 } from 'react-bootstrap'
-import { useDispatch } from 'react-redux'
-import { postShiftsData } from '../../../features/shifts/shiftSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
+import { updateShiftsData } from '../../../features/shifts/shiftSlice'
 import { FaCheck } from 'react-icons/fa'
-import style from '../../dutyOverview/employeeRow/dutyCell/DutyCell.scss'
+import '../../dutyOverview/employeeRow/dutyCell/DutyCell.scss'
 
-function CreateShift() {
+function UpdateShift() {
+  const params = useParams()
   const dispatch = useDispatch()
+  const { shiftsData } = useSelector((store) => store.shifts)
+  const shift = shiftsData.find((shift) => shift.id == params.id)
 
   const [shiftTypeData, setShiftType] = useState([])
-  const [shiftsData, setShift] = useState({ color_hex: '#000000' })
+  const [shiftData, setShift] = useState({})
+
+  useEffect(() => {
+    shift !== undefined && setShift(shift)
+  }, [shift])
 
   useEffect(() => {
     async function getShiftTypeData() {
@@ -37,6 +45,9 @@ function CreateShift() {
     getShiftTypeData()
   }, [])
 
+  if (Object.keys(shiftData).length === 0) return <h1></h1>
+  console.log(shiftData.shift_type.active_duty)
+
   return (
     <>
       <Container style={{ padding: '2rem 0' }}>
@@ -45,17 +56,17 @@ function CreateShift() {
           <Breadcrumb.Item href="/shifts">
             Einstellungen: Schichten
           </Breadcrumb.Item>
-          <Breadcrumb.Item active>Neue Schicht</Breadcrumb.Item>
+          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
         </Breadcrumb>
         <div className="row justify-content-center">
           <div className="col-md-12">
             <Card>
               <Card.Header>
                 <Stack direction="horizontal" gap={3}>
-                  <div>Neue Schicht</div>
+                  <div>Daten Bearbeitung</div>
                   <div className="ms-auto">
                     <Button
-                      onClick={() => dispatch(postShiftsData(shiftsData))}
+                      onClick={() => dispatch(updateShiftsData(shiftData))}
                       variant="outline-primary"
                       href={`/shifts`}
                     >
@@ -64,7 +75,6 @@ function CreateShift() {
                   </div>
                 </Stack>
               </Card.Header>
-
               <Card.Body>
                 <Container>
                   <Row>
@@ -77,10 +87,11 @@ function CreateShift() {
                           aria-label="Floating label select example"
                           onChange={(e) =>
                             setShift({
-                              ...shiftsData,
+                              ...shiftData,
                               shift_type_id: parseInt(e.target.value),
                             })
                           }
+                          defaultValue={shiftData.shift_type_id}
                         >
                           <option key="0">Bitte auswählen</option>
                           {shiftTypeData.map((shiftTypeObject) => (
@@ -104,9 +115,10 @@ function CreateShift() {
                           placeholder="X1"
                           aria-label="Abkürzung"
                           aria-describedby="shift_abrv"
+                          value={shiftData.abrv}
                           onChange={(e) =>
                             setShift({
-                              ...shiftsData,
+                              ...shiftData,
                               abrv: e.target.value,
                             })
                           }
@@ -120,12 +132,13 @@ function CreateShift() {
                           Dauer (Std.)
                         </InputGroup.Text>
                         <FormControl
-                          placeholder="24.0"
+                          placeholder="8.0"
                           aria-label="Abkürzung"
                           aria-describedby="h_duration"
+                          value={shiftData.h_duration}
                           onChange={(event) =>
                             setShift({
-                              ...shiftsData,
+                              ...shiftData,
                               h_duration: event.target.value,
                             })
                           }
@@ -139,10 +152,11 @@ function CreateShift() {
                         <FormControl
                           type="color"
                           id="exampleColorInput"
+                          defaultValue={shiftData.color_hex}
                           title="Choose your color"
                           onChange={(e) =>
                             setShift({
-                              ...shiftsData,
+                              ...shiftData,
                               color_hex: e.target.value,
                             })
                           }
@@ -150,10 +164,10 @@ function CreateShift() {
                       </InputGroup>
                     </Col>
 
-                    {shiftsData.abrv &&
-                      shiftsData.shift_type_id &&
+                    {shiftData.abrv &&
+                      shiftData.shift_type_id &&
                       (shiftTypeData.find(
-                        (data) => data.id == shiftsData.shift_type_id
+                        (data) => data.id == shiftData.shift_type_id
                       )?.active_duty == 0 ? (
                         <Col xs lg="2">
                           Vorschau
@@ -161,10 +175,10 @@ function CreateShift() {
                             style={{
                               marginTop: '0.2rem',
                               marginLeft: '0.8rem',
-                              color: shiftsData.color_hex,
+                              color: shiftData.color_hex,
                             }}
                             className={'passiveDuty'}
-                            value={shiftsData.abrv}
+                            value={shiftData.abrv}
                           />
                         </Col>
                       ) : (
@@ -174,26 +188,26 @@ function CreateShift() {
                             style={{
                               marginTop: '0.2rem',
                               marginLeft: '0.8rem',
-                              color: shiftsData.color_hex,
+                              color: shiftData.color_hex,
                             }}
                             className={'inputDutyForm'}
-                            value={shiftsData.abrv}
+                            value={shiftData.abrv}
                           />
                           <input
                             style={{
                               marginLeft: '0.3rem',
-                              color: shiftsData.color_hex,
+                              color: shiftData.color_hex,
                             }}
                             className={'preferenceInjury'}
-                            value={shiftsData.abrv}
+                            value={shiftData.abrv}
                           />
                           <input
                             style={{
                               marginLeft: '0.3rem',
-                              color: shiftsData.color_hex,
+                              color: shiftData.color_hex,
                             }}
                             className={'wishInjury'}
-                            value={shiftsData.abrv}
+                            value={shiftData.abrv}
                           />
                         </Col>
                       ))}
@@ -208,4 +222,4 @@ function CreateShift() {
   )
 }
 
-export default CreateShift
+export default UpdateShift
