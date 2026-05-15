@@ -23,6 +23,8 @@ import UpdateShiftType from '../components/shiftTypes/update/UpdateShiftType'
 import CreateShiftType from '../components/shiftTypes/create/CreateShiftType'
 import WishCreator from '../components/dutyOverview/employeeRow/employeeCell/wishCreator/WishCreator'
 import EmployeeDetails from '../components/employees/show/employeeOverview/EmployeeDetails'
+import AbsencesOverview from '../components/absences/AbsencesOverview'
+import CreateAbsence from '../components/absences/create/CreateAbsence'
 import { getEmployeeData } from '../features/employees/employeeSlice'
 import { getQualificationsData } from '../features/qualifications/qualificationSlice'
 import { getShiftsData } from '../features/shifts/shiftSlice'
@@ -30,6 +32,7 @@ import { getShiftTypesData } from '../features/shiftTypes/shiftTypeSlice'
 import { getDutiesData } from '../features/duties/dutySlice'
 import { getWishesData } from '../features/wishes/wishSlice'
 import { getPreferenceData } from '../features/preferences/preferenceSlice'
+import { getAbsenceData } from '../features/absences/absenceSlice'
 
 const AppRouter =
   typeof window !== 'undefined' && window.__EQUILIO_DEMO__
@@ -88,6 +91,7 @@ function Router() {
     dispatch(getDutiesData())
     dispatch(getWishesData())
     dispatch(getPreferenceData())
+    dispatch(getAbsenceData())
   }, [dispatch])
 
   return (
@@ -108,6 +112,8 @@ function Router() {
         <Route path="/employee/show/:id" element={<EmployeeDetails />} />
         <Route path="/employee/create" element={<CreateEmployee />} />
         <Route path="/employees" element={<EmployeesOverview />} />
+        <Route path="/absence/create" element={<CreateAbsence />} />
+        <Route path="/absences" element={<AbsencesOverview />} />
         <Route path="/duties" element={<DutyOverview />} />
         <Route path="/wish_creator" element={<WishCreator />} />
         <Route path="/" element={<DutyOverview />} />

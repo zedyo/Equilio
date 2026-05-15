@@ -304,4 +304,18 @@ Qualifikations-Mix pro Schicht noch offen, Ruhezeit über verbotene
 Qualifikations-Constraint („mind. 1 examiniert"), Abwesenheits-/
 Regelwerk-UI, Auth/Rollen, Evaluations-Messung der Nachjustierungsquote.
 
+## 2026-05-15 — Abwesenheits-UI (Phase-1-Abschluss, sichtbar bedienbar)
+
+- `AbsencesOverview` (Liste + Löschen) und `CreateAbsence` (Formular:
+  Mitarbeiter, Art, Von/Bis, Notiz) auf Basis des bestehenden
+  react-bootstrap-Musters; Typ-Labels DE (Urlaub/Krankheit/Fortbildung/
+  Sonstiges).
+- Router-Routen `/absences`, `/absence/create`; `getAbsenceData` im
+  Router-`useEffect`; Nav-Dropdown-Eintrag „Abwesenheiten".
+- Frontend-Test ergänzt (Abwesenheiten-Seite zeigt geseedete Daten).
+
+**Verifiziert:** `npm test` **8/8**, Build grün. Backend/Mock/Slice für
+Absences existierten bereits (frühere Phase-1-Commits); jetzt im Demo
+durchklickbar und vom Generator bereits berücksichtigt.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
