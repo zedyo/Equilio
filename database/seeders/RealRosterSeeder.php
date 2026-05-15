@@ -364,10 +364,21 @@ class RealRosterSeeder extends Seeder
             [29,"F14",9,5],[29,"F14",11,5],[29,"F14",12,5],[29,"F14",13,5],[29,"F14",14,5],[29,"F14",17,5],[29,"F14",18,5],[29,"F14",26,5],[29,"F14",27,5],[29,"F14",28,5],[29,"F14",29,5],[29,"F14",31,5],
             [31,"F14",12,5],[31,"F14",13,5],[31,"F14",15,5],[31,"F14",19,5],[31,"F14",20,5],[31,"F14",21,5],[31,"F14",30,5],
         ];
+        // Quelle umfasst 5 aufeinanderfolgende Monate (Jan–Mai). Auf ein
+        // rollierendes Fenster mappen, das im *aktuellen* Monat endet
+        // (Quellmonat 5 -> aktueller Monat), damit der Plan sofort beim
+        // App-Start sichtbar ist. Stammdaten bleiben unverändert.
+        $base = now()->startOfMonth();
+        $map = [];
+        for ($m = 1; $m <= 5; $m++) {
+            $t = $base->copy()->subMonths(5 - $m);
+            $map[$m] = ['year' => (int) $t->year, 'month' => (int) $t->month];
+        }
         $rows = [];
         foreach ($d as [$e, $a, $day, $m]) {
             $rows[] = ['employee_id' => $e, 'shift_id' => $sid[$a],
-                'day' => $day, 'month' => $m, 'year' => 2018,
+                'day' => $day, 'month' => $map[$m]['month'],
+                'year' => $map[$m]['year'],
                 'wish_injury' => 0, 'preference_injury' => 0];
         }
         foreach (array_chunk($rows, 500) as $c) {

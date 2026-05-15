@@ -11,75 +11,43 @@
  * URL setzt den Demo-Datenstand zurück.
  */
 
-const STORAGE_KEY = 'equilio_demo_db_v1'
+import {
+  RR_QUALIFICATIONS,
+  RR_SHIFT_TYPES,
+  RR_SHIFTS,
+  RR_EMPLOYEES,
+  RR_DUTIES_RAW,
+} from './realRosterData.js'
 
-const QUALIFICATIONS = [
-  { id: 1, description: 'Exam. Pfleger:in' },
-  { id: 2, description: 'Qual. Pflegehelfer:in' },
-  { id: 3, description: 'Pflegehelfer:in' },
-  { id: 4, description: 'Betreuungsassistent:in' },
-]
+// v2: anonymisierter Real-Datensatz (löst die alten Beispieldaten ab).
+const STORAGE_KEY = 'equilio_demo_db_v2'
 
-const SHIFT_TYPES = [
-  { id: 1, name: 'Frühschicht', active_duty: 1, min_occupation: 3, opt_occupation: 5 },
-  { id: 2, name: 'Spätschicht', active_duty: 1, min_occupation: 2, opt_occupation: 3 },
-  { id: 3, name: 'Nachtschicht', active_duty: 1, min_occupation: 1, opt_occupation: 2 },
-  { id: 4, name: 'Zwischenschicht', active_duty: 1, min_occupation: 0, opt_occupation: 0 },
-  { id: 5, name: 'Frei (bezahlt)', active_duty: 0, min_occupation: 0, opt_occupation: 0 },
-  { id: 6, name: 'Fort- & Ausbildung', active_duty: 0, min_occupation: 0, opt_occupation: 0 },
-]
+const QUALIFICATIONS = RR_QUALIFICATIONS
+const SHIFT_TYPES = RR_SHIFT_TYPES
+const SHIFTS = RR_SHIFTS
+const EMPLOYEES = RR_EMPLOYEES
 
-const SHIFTS = [
-  { id: 1, abrv: 'F1', shift_type_id: 1, h_duration: 8, color_hex: '#fe5741' },
-  { id: 2, abrv: 'F2', shift_type_id: 1, h_duration: 6, color_hex: '#fe7000' },
-  { id: 3, abrv: 'S1', shift_type_id: 2, h_duration: 8, color_hex: '#598ec7' },
-  { id: 4, abrv: 'S2', shift_type_id: 2, h_duration: 6, color_hex: '#318ab7' },
-  { id: 5, abrv: 'N1', shift_type_id: 3, h_duration: 8, color_hex: '#932092' },
-  { id: 6, abrv: 'N2', shift_type_id: 3, h_duration: 6, color_hex: '#702092' },
-  { id: 7, abrv: 'U1', shift_type_id: 5, h_duration: 8, color_hex: '#1ddce2' },
-  { id: 8, abrv: 'K1', shift_type_id: 5, h_duration: 8, color_hex: '#a00000' },
-]
-
-const EMPLOYEES = [
-  { id: 1, qualification_id: 1, first_name: 'Vince', last_name: 'Testy', daily_worktime: 8, employment_ratio: 100 },
-  { id: 2, qualification_id: 1, first_name: 'Anna', last_name: 'Brandt', daily_worktime: 8, employment_ratio: 100 },
-  { id: 3, qualification_id: 1, first_name: 'Markus', last_name: 'Hoffmann', daily_worktime: 8, employment_ratio: 100 },
-  { id: 4, qualification_id: 1, first_name: 'Sabine', last_name: 'Keller', daily_worktime: 8, employment_ratio: 75 },
-  { id: 5, qualification_id: 2, first_name: 'Tobias', last_name: 'Wagner', daily_worktime: 8, employment_ratio: 100 },
-  { id: 6, qualification_id: 2, first_name: 'Lena', last_name: 'Schuster', daily_worktime: 8, employment_ratio: 100 },
-  { id: 7, qualification_id: 2, first_name: 'Jonas', last_name: 'Frei', daily_worktime: 8, employment_ratio: 50 },
-  { id: 8, qualification_id: 3, first_name: 'Mira', last_name: 'Lorenz', daily_worktime: 8, employment_ratio: 100 },
-  { id: 9, qualification_id: 3, first_name: 'David', last_name: 'Köhler', daily_worktime: 8, employment_ratio: 100 },
-  { id: 10, qualification_id: 4, first_name: 'Petra', last_name: 'Sommer', daily_worktime: 8, employment_ratio: 75 },
-  { id: 11, qualification_id: 4, first_name: 'Erik', last_name: 'Baumann', daily_worktime: 8, employment_ratio: 100 },
-]
-
+// Quelle deckt 5 aufeinanderfolgende Monate (Jan–Mai) ab. Auf ein
+// rollierendes Fenster mappen, das im *aktuellen* Monat endet
+// (Quellmonat 5 -> aktueller Monat) – identisch zur Logik in
+// database/seeders/RealRosterSeeder.php.
 function buildSeedDuties() {
   const now = new Date()
-  const year = now.getFullYear()
-  const month = now.getMonth() + 1
-  const daysInMonth = new Date(year, month, 0).getDate()
-  // einfache rollierende Schicht-Rotation als Anschauungsbeispiel
-  const pattern = ['F1', 'F1', 'S1', 'S1', 'N1', 'U1', 'U1']
-  const duties = []
-  let id = 1
-  EMPLOYEES.forEach((emp, empIdx) => {
-    for (let day = 1; day <= daysInMonth; day++) {
-      const abrv = pattern[(day + empIdx) % pattern.length]
-      const shift = SHIFTS.find((s) => s.abrv === abrv)
-      duties.push({
-        id: id++,
-        employee_id: emp.id,
-        shift_id: shift.id,
-        day,
-        month,
-        year,
-        wish_injury: 0,
-        preference_injury: 1,
-      })
-    }
-  })
-  return duties
+  const map = {}
+  for (let m = 1; m <= 5; m++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - (5 - m), 1)
+    map[m] = { year: d.getFullYear(), month: d.getMonth() + 1 }
+  }
+  return RR_DUTIES_RAW.map(([employee_id, shift_id, day, srcMonth], i) => ({
+    id: i + 1,
+    employee_id,
+    shift_id,
+    day,
+    month: map[srcMonth].month,
+    year: map[srcMonth].year,
+    wish_injury: 0,
+    preference_injury: 0,
+  }))
 }
 
 function buildSeedAbsences() {
@@ -164,7 +132,7 @@ const ROSTER_CFG = {
   forbidden: [{ from: 'Nachtschicht', to: 'Frühschicht' }],
   w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5, missingQual: 30 },
   typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
-  requiredQualification: 'Exam. Pfleger:in',
+  requiredQualification: 'Examinierte Pflegefachkraft',
   fullTimeWeekly: 39,
   annealing: { iterations: 3000, startTemp: 10, cooling: 0.999, seed: 1337 },
 }
