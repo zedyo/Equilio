@@ -63,3 +63,30 @@ Ergebnisse reproduzierbar/testbar sind (Proposal: Szenarien wiederholbar).
   Schichtart-Übergänge angenähert, nicht zeitgenau gerechnet.
 - Mock-Demo enthält eine vereinfachte JS-Portierung des Generators
   (kein PHP im Browser); Heuristik bewusst kongruent gehalten.
+
+## Evaluation mit realistischen Szenarien (Mai 2026)
+
+Getestet gegen Seeder-Pflegedaten (Mai/2026, 31 Tage), 3 Szenarien:
+
+| Szenario | MA | Dienste | Belastungsindex (MA / Bes.) | Regelkonform | Unterbesetzung |
+|----------|----|---------|-----------------------------|--------------|----------------|
+| A Ausgangslage | 11 | 241 | 657 (207 / 450) | ja | Früh 5, Spät 8, Nacht 9 von 31 Tagen |
+| B aufgestockt | 22 | 310 | 1472 (1472 / 0) | ja | keine |
+| C B + 21-Tage-Krankheit | 22 | 310 | 1596 (1596 / 0) | ja | keine |
+
+**Harte Constraints in allen Szenarien eingehalten:** 0 Dienste während
+Abwesenheiten, längste Serie = 6 (Grenze), keine Nacht→Früh-Übergänge,
+faire Verteilung.
+
+**Erkenntnis A→B:** Unterbesetzung in A ist ein **Kapazitätsproblem**
+(11 MA decken Min-Bedarf nicht voll), kein Algorithmusfehler — mit 22 MA
+ist die Mindestbesetzung jeden Tag erfüllt (Besetzungs-Strain 0).
+
+**Aufgedeckte Schwäche (wichtig):** Der **Mitarbeiter-Strain steigt mit
+mehr Diensten stark** (B: 1472), weil das Greedy-Verfahren freie Tage
+fragmentiert → viele „isolierte freie Tage" (+8) statt „2 freie Tage am
+Stück" (−5). Hard-Regeln & Besetzung stimmen, aber das **Erholungsmuster
+wird nicht optimiert**. Konkretes nächstes Iterationsziel: zweite
+Optimierungsphase (lokale Suche/Tausch), die bei gleichbleibender
+Besetzung den Soft-Strain senkt (freie Tage bündeln). Reproduzierbar via
+`/tmp`-Analyseskripte bzw. einem späteren `php artisan roster:evaluate`.
