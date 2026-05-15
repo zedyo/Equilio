@@ -82,6 +82,19 @@ function buildSeedDuties() {
   return duties
 }
 
+function buildSeedAbsences() {
+  const now = new Date()
+  const y = now.getFullYear()
+  const m = now.getMonth() + 1
+  const d = (day) =>
+    `${y}-${String(m).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+  return [
+    { id: 1, employee_id: 1, type: 'vacation', start_date: d(5), end_date: d(12), note: 'Jahresurlaub' },
+    { id: 2, employee_id: 2, type: 'sick', start_date: d(18), end_date: d(20), note: null },
+    { id: 3, employee_id: 3, type: 'training', start_date: d(25), end_date: d(26), note: 'Fortbildung' },
+  ]
+}
+
 function freshDb() {
   return {
     qualifications: clone(QUALIFICATIONS),
@@ -92,6 +105,7 @@ function freshDb() {
     wishes: [],
     preferences: [],
     working_hours_diffs: [],
+    absences: buildSeedAbsences(),
   }
 }
 
@@ -473,6 +487,54 @@ function handle(method, path, body) {
           employee: db.employees.find((e) => e.id === item.employee_id) || null,
         },
       })
+    }
+  }
+
+  // ---- absences (Urlaub/Krankheit/Fortbildung) ----
+  if (r[0] === 'absences') {
+    const withEmployee = (a) => ({
+      ...a,
+      employee: db.employees.find((e) => e.id === a.employee_id) || null,
+    })
+    if (method === 'get' && !r[1]) {
+      return ok({ absences: db.absences.map(withEmployee) })
+    }
+    if (method === 'get' && r[1]) {
+      const a = db.absences.find((x) => x.id === Number(r[1]))
+      return ok({ absence: a ? withEmployee(a) : null })
+    }
+    if (method === 'post') {
+      const created = {
+        id: nextId(db.absences),
+        employee_id: Number(body.employee_id),
+        type: body.type,
+        start_date: body.start_date,
+        end_date: body.end_date,
+        note: body.note ?? null,
+      }
+      db.absences.push(created)
+      persist()
+      return ok({ absence: withEmployee(created) }, 201)
+    }
+    if ((method === 'put' || method === 'patch') && r[1]) {
+      const a = db.absences.find((x) => x.id === Number(r[1]))
+      if (a) {
+        Object.assign(a, {
+          employee_id: Number(body.employee_id ?? a.employee_id),
+          type: body.type ?? a.type,
+          start_date: body.start_date ?? a.start_date,
+          end_date: body.end_date ?? a.end_date,
+          note: body.note ?? a.note,
+        })
+        persist()
+      }
+      return ok({ absence: a ? withEmployee(a) : null })
+    }
+    if (method === 'delete' && r[1]) {
+      const idx = db.absences.findIndex((x) => x.id === Number(r[1]))
+      const deleted = idx >= 0 ? db.absences.splice(idx, 1)[0] : null
+      persist()
+      return ok({ deleted_absence: deleted })
     }
   }
 
