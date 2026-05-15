@@ -96,6 +96,15 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     expect(quals.length).toBeGreaterThan(0)
   })
 
+  it('Abwesenheiten-Seite listet geseedete Abwesenheiten', async () => {
+    render(<App />)
+    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    navigate('#/absences')
+    expect(
+      await screen.findByText(/Jahresurlaub/i, {}, { timeout: 5000 })
+    ).toBeInTheDocument()
+  })
+
   it('Automatische Plangenerierung liefert Belastungsindex (Phase 2)', async () => {
     const user = userEvent.setup()
     render(<App />)

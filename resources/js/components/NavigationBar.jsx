@@ -34,6 +34,7 @@ function Navigation() {
               </Dropdown.Item>
               <Dropdown.Item href="/shifts">Schichten</Dropdown.Item>
               <Dropdown.Item href="/shift_types">Schicht Arten</Dropdown.Item>
+              <Dropdown.Item href="/absences">Abwesenheiten</Dropdown.Item>
             </Dropdown.Menu>
           </Dropdown>
         </Container>
