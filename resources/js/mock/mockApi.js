@@ -280,6 +280,65 @@ function runGenerator(year, month) {
     }
   }
 
+  // Phase 2b: arbeitslast-/besetzungserhaltender 2-Tausch (Hill-Climbing),
+  // kongruent zu RosterGenerator::localSearch (siehe algorithm-notes.md).
+  const seqOf = (id) => {
+    const s = {}
+    for (let d = 1; d <= days; d++) {
+      const sh = assigned[id] && assigned[id][d]
+      s[d] = sh ? typeById[sh.shift_type_id].name : null
+    }
+    return s
+  }
+  for (let pass = 0; pass < 6; pass++) {
+    let improved = false
+    for (const a of employees) {
+      const aId = a.id
+      const workDays = []
+      const freeDays = []
+      for (let d = 1; d <= days; d++) {
+        if (assigned[aId] && assigned[aId][d]) workDays.push(d)
+        else if (!isAbsent(aId, d)) freeDays.push(d)
+      }
+      if (!workDays.length || !freeDays.length) continue
+      const aStrain = sequenceStrain(seqOf(aId), days)
+      let done = false
+      for (const d of workDays) {
+        for (const e of freeDays) {
+          for (const b of employees) {
+            const bId = b.id
+            if (bId === aId) continue
+            if (!(assigned[bId] && assigned[bId][e]) || (assigned[bId] && assigned[bId][d]))
+              continue
+            if (isAbsent(bId, d)) continue
+            const shiftA = assigned[aId][d]
+            const shiftB = assigned[bId][e]
+            let before = aStrain + sequenceStrain(seqOf(bId), days)
+            if (!isFinite(before)) before = Number.MAX_VALUE
+            delete assigned[aId][d]
+            assigned[aId][e] = shiftB
+            delete assigned[bId][e]
+            assigned[bId][d] = shiftA
+            const aNew = sequenceStrain(seqOf(aId), days)
+            const bNew = sequenceStrain(seqOf(bId), days)
+            if (isFinite(aNew) && isFinite(bNew) && aNew + bNew < before - 0.0001) {
+              improved = true
+              done = true
+              break
+            }
+            delete assigned[aId][e]
+            assigned[aId][d] = shiftA
+            delete assigned[bId][d]
+            assigned[bId][e] = shiftB
+          }
+          if (done) break
+        }
+        if (done) break
+      }
+    }
+    if (!improved) break
+  }
+
   const newDuties = []
   const countByType = {}
   let nid = 1

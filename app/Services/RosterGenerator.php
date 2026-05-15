@@ -161,10 +161,122 @@ class RosterGenerator
             }
         }
 
+        $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $days);
+
         return $this->buildResult(
             $employees, $assigned, $shiftTypes, $wishes, $preferences,
             $activeTypes, $year, $month, $days
         );
+    }
+
+    /**
+     * Tag-Sequenz eines Mitarbeiters: Tag -> ShiftType-Name oder null.
+     */
+    private function seqOf(array $assigned, int $empId, $shiftTypes, int $days): array
+    {
+        $seq = [];
+        for ($d = 1; $d <= $days; $d++) {
+            $shift = $assigned[$empId][$d] ?? null;
+            $seq[$d] = $shift ? ($shiftTypes[$shift->shift_type_id]->name ?? null) : null;
+        }
+
+        return $seq;
+    }
+
+    /**
+     * Phase 2: arbeitslast- UND besetzungserhaltende 2-Tausch-Heuristik
+     * (Hill-Climbing). Tauscht einen Dienst-Tag von A mit einem freien Tag
+     * von B (B arbeitet an A's freiem Tag, A ist an B's Dienst-Tag frei):
+     * jede Schicht-Instanz bleibt an ihrem Tag (Besetzung pro Tag/Art
+     * unverändert), jede Person behält ihre Dienstanzahl (Fairness).
+     * Akzeptiert nur Tausche, die den Soft-Strain senken und keine
+     * unzulässige Konstellation erzeugen. Siehe algorithm-notes.md.
+     */
+    private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, int $days): void
+    {
+        $maxPasses = 6;
+
+        for ($pass = 0; $pass < $maxPasses; $pass++) {
+            $improved = false;
+
+            foreach ($employees as $a) {
+                $aId = $a->id;
+                $workDays = [];
+                $freeDays = [];
+                for ($d = 1; $d <= $days; $d++) {
+                    if (isset($assigned[$aId][$d])) {
+                        $workDays[] = $d;
+                    } elseif (! $isAbsent($aId, $d)) {
+                        $freeDays[] = $d;
+                    }
+                }
+                if (! $workDays || ! $freeDays) {
+                    continue;
+                }
+
+                $aStrain = $this->strain->employeeSequenceStrain(
+                    $this->seqOf($assigned, $aId, $shiftTypes, $days)
+                );
+
+                foreach ($workDays as $d) {
+                    foreach ($freeDays as $e) {
+                        foreach ($employees as $b) {
+                            $bId = $b->id;
+                            if ($bId === $aId) {
+                                continue;
+                            }
+                            // B arbeitet an e, ist an d frei und dort nicht abwesend
+                            if (! isset($assigned[$bId][$e]) || isset($assigned[$bId][$d])) {
+                                continue;
+                            }
+                            if ($isAbsent($bId, $d)) {
+                                continue;
+                            }
+
+                            $shiftA = $assigned[$aId][$d]; // A: d -> frei, e -> shiftB
+                            $shiftB = $assigned[$bId][$e]; // B: e -> frei, d -> shiftA
+
+                            $bStrain = $this->strain->employeeSequenceStrain(
+                                $this->seqOf($assigned, $bId, $shiftTypes, $days)
+                            );
+                            $before = $aStrain + $bStrain;
+                            if (is_infinite($before)) {
+                                $before = PHP_FLOAT_MAX;
+                            }
+
+                            // Tausch anwenden
+                            unset($assigned[$aId][$d]);
+                            $assigned[$aId][$e] = $shiftB;
+                            unset($assigned[$bId][$e]);
+                            $assigned[$bId][$d] = $shiftA;
+
+                            $aNew = $this->strain->employeeSequenceStrain(
+                                $this->seqOf($assigned, $aId, $shiftTypes, $days)
+                            );
+                            $bNew = $this->strain->employeeSequenceStrain(
+                                $this->seqOf($assigned, $bId, $shiftTypes, $days)
+                            );
+
+                            if (! is_infinite($aNew) && ! is_infinite($bNew)
+                                && ($aNew + $bNew) < $before - 0.0001) {
+                                $improved = true;
+                                break 3;
+                            }
+
+                            // zurückrollen
+                            unset($assigned[$aId][$e]);
+                            $assigned[$aId][$d] = $shiftA;
+                            unset($assigned[$bId][$d]);
+                            $assigned[$bId][$e] = $shiftB;
+                        }
+                    }
+                }
+            }
+
+            if (! $improved) {
+                break;
+            }
+        }
     }
 
     private function isForbidden(?string $fromType, string $toType): bool
