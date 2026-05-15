@@ -32,7 +32,7 @@ import { getWishesData } from '../features/wishes/wishSlice'
 import { getPreferenceData } from '../features/preferences/preferenceSlice'
 
 const AppRouter =
-  typeof window !== 'undefined' && window.__YETI_DEMO__
+  typeof window !== 'undefined' && window.__EQUILIO_DEMO__
     ? HashRouter
     : BrowserRouter
 

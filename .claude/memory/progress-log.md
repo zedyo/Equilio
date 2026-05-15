@@ -216,4 +216,25 @@ visuelles Feintuning ggf. nach Nutzer-Klick.
 **Roadmap:** `ROADMAP.md` (Phasen 1–4) angelegt — Kern bleibt der noch
 fehlende Generator/Belastungsindex.
 
+## 2026-05-15 — Rebrand auf „Equilio" + Logo eingebaut
+
+**Was:** Projekt projektweit von „Yeti/yourPlan" auf **Equilio** umbenannt;
+Logo-Konzept „Grid-E" als Marke gewählt und eingebunden.
+
+- 5 Logo-Vorschläge als SVG unter `docs/branding/`; gewähltes Logo =
+  `equilio-logo.svg` (Grid-E). Icon-only Mark:
+  `resources/js/assets/equilio-mark.svg`.
+- **Eingebaut:** Favicon in `index.html` (inline SVG-Data-URI),
+  Navbar-Brand zeigt Mark + „Equilio" (`NavigationBar.jsx`).
+- **Umbenannt:** Demo-Flag `__YETI_DEMO__` → `__EQUILIO_DEMO__`
+  (index.html, app.jsx, router, mock, Test); Mock-StorageKey
+  `yeti_demo_db_v1` → `equilio_demo_db_v1` (forciert sauberen Reseed inkl.
+  Shift-Type-Fix); `<title>` „Project Yeti – Demo" → „Equilio – Demo".
+- **Doku:** CLAUDE.md/README/ROADMAP/architecture.md auf Equilio
+  umgestellt (mit Namenshistorie-Notiz). `project-background.md` bewusst
+  historisch belassen (Proposal-Stand „Yeti", inkl. „Warum Yeti?").
+- **Bewusst unverändert:** Repo-/Pages-Base-Pfad `/yourPlan/`
+  (`vite.config.js`, Workflow) — an den GitHub-Repo-Namen gebunden; ändert
+  sich erst, wenn das Repository selbst umbenannt wird.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
