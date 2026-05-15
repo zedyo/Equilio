@@ -1,7 +1,7 @@
 .daysRow {
+    // Spaltenraster wird inline gesetzt (16rem | N x 2.2rem | 6rem),
+    // damit Kopfzeile und Mitarbeiterzeilen exakt fluchten.
     display: grid;
-    grid-auto-flow: column;
-    grid-template-columns: repeat(32, 2.2rem);
     justify-items: center;
     align-items: center;
 }

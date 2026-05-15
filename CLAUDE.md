@@ -200,6 +200,8 @@ Build-Hinweise:
 
 ## Weiterführende Dokumente
 
+- `ROADMAP.md` — phasierter Entwicklungsplan (Kern: Generator/Belastungsindex)
+
 - `.claude/memory/project-background.md` — Zusammenfassung des Proposals + Ziele
 - `.claude/memory/implementation-status.md` — Detaillierter Soll/Ist-Abgleich
 - `.claude/memory/architecture.md` — Tieferer technischer Aufbau

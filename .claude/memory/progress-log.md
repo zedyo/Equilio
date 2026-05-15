@@ -188,4 +188,32 @@ werden korrekt ignoriert.
 **Test:** Regressionstest ergänzt (Nav-Dropdown → Team, clientseitig) —
 `npm test` **6/6 grün**, Build grün.
 
+## 2026-05-15 — Dienstplan-Layout zentriert & Spalten fluchten; Roadmap
+
+**Problem (Nutzer):** Hauptseite nicht mittig; Kalenderspalten nicht
+sauber untereinander.
+
+**Ursache:** Drei verschiedene Spaltengeometrien — Kopfzeile
+(`auto | …`), Mitarbeiterzeilen (`auto | …`), Statistik (`auto | …`) —
+plus `DaysRow` auf **32** Spalten hardcodiert statt echter Tageszahl.
+Unterschiedliche `auto`-Erstspalten ⇒ Tagesspalten starten an
+verschiedenen X-Positionen.
+
+**Fix:** Einheitliches Board-Raster überall: `16rem | N×2.2rem | 6rem`.
+- `DaysRow`: inline-Raster + Label-/Tail-Spacer, nicht mehr 32 hardcodiert.
+- `EmployeeRow`: Erstspalte `auto`→`16rem`.
+- `EmployeeCell`: feste 16rem, Flex, Ellipsis (lange Namen sprengen das
+  Raster nicht mehr).
+- `ShiftTypeStatisticsColumn`: `auto`→`16rem`; `.sumCells` 2.2rem-Spalten.
+- `DateSelector` aus dem Raster gelöst (eigene zentrierte Leiste).
+- Neues `.dutyBoard { width:max-content; margin:0 auto }` → gesamtes
+  Board als Einheit zentriert; alle Spalten fluchten exakt.
+
+**Verifiziert:** `npm test` 6/6 grün, Build grün. **Visuell nicht
+prüfbar** (kein Browser) — Geometrie ist nun mathematisch identisch,
+visuelles Feintuning ggf. nach Nutzer-Klick.
+
+**Roadmap:** `ROADMAP.md` (Phasen 1–4) angelegt — Kern bleibt der noch
+fehlende Generator/Belastungsindex.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

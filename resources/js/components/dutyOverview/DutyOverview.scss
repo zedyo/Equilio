@@ -1,13 +1,22 @@
-.dateRow {
-    // display: grid;
-    // grid-template-columns: auto repeat($days, 2.2rem) 8.2rem;
-    // grid-template-rows: 1fr;
-    align-items: center;
+.dutyOverviewContainer {
+    padding: 1rem 2rem 3rem;
+}
 
-    .dateSelector {
-        margin-top: 1rem;
-        margin-right: 1rem;
-    }
+// Datumsauswahl separat über dem Board, zentriert.
+.dateSelectorBar {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 1.5rem;
+}
+
+// Das gesamte Board (Kopfzeile, Mitarbeiterzeilen, Statistik) hat eine
+// feste, vom Monat abhängige Breite und wird als Ganzes mittig zentriert.
+// Dadurch fluchten alle Tagesspalten exakt untereinander.
+.dutyBoard {
+    width: max-content;
+    max-width: 100%;
+    margin: 0 auto;
+    overflow-x: auto;
 }
 
 .separator {

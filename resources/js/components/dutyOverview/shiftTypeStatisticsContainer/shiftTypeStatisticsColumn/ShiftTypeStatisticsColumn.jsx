@@ -10,7 +10,7 @@ function ShiftTypeStatistics(props) {
         style={{
           display: 'grid',
           gridAutoFlow: 'column',
-          gridTemplateColumns: `auto ${props.days.length * 2.2}rem 6rem`,
+          gridTemplateColumns: `16rem ${props.days.length * 2.2}rem 6rem`,
           alignItems: 'center',
           height: '1.6rem',
         }}
