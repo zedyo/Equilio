@@ -116,6 +116,91 @@ class StrainIndex
         return $strain;
     }
 
+    /**
+     * Inkrementelle, beweisbar exakte Δ-Bewertung eines 2-Tausch-artigen
+     * Eingriffs: liefert `strain(neu) − strain(alt)`, OHNE die ganze Sequenz
+     * neu zu bewerten.
+     *
+     * Idee: Außerhalb der geänderten Tage sind alt/neu identisch. Erweitert
+     * man die betroffenen Tage links/rechts bis zu einem Tag, der in BEIDEN
+     * Sequenzen frei ist (so dass keine Dienstserie und kein Übergang die
+     * Fenstergrenze kreuzt), heben sich alle Rand- und Außenterme im Δ
+     * exakt auf. Damit gilt
+     *   Δ = Σ_Fenster [ ESS(Ausschnitt_neu) − ESS(Ausschnitt_alt) ]
+     * und ESS ist die bereits getestete `employeeSequenceStrain`.
+     *
+     * Aufwand ≈ O(Serienlänge) statt O(Monatslänge) → ermöglicht schnelle
+     * Metaheuristiken. Korrektheit per Property-Test abgesichert.
+     *
+     * @param  array<int,?string>  $old   Tag (1-basiert) -> ShiftType|null
+     * @param  array<int,?string>  $new
+     * @param  array<int,int>      $changedDays
+     */
+    public function sequenceStrainDelta(array $old, array $new, array $changedDays, int $days): float
+    {
+        if (empty($changedDays)) {
+            return 0.0;
+        }
+        sort($changedDays);
+
+        $duty = fn (array $s, int $d): bool => $d >= 1 && $d <= $days && ! empty($s[$d]);
+
+        // Pro geändertem Tag ein bis zu freien Rändern erweitertes Fenster.
+        $windows = [];
+        foreach ($changedDays as $cd) {
+            $lo = $cd;
+            while ($lo > 1 && ($duty($old, $lo - 1) || $duty($new, $lo - 1))) {
+                $lo--;
+            }
+            $hi = $cd;
+            while ($hi < $days && ($duty($old, $hi + 1) || $duty($new, $hi + 1))) {
+                $hi++;
+            }
+            // ±2 Polsterung: garantiert, dass die zwei Slice-Randtage
+            // mind. 2 Tage von jedem geänderten Tag entfernt sind. Damit
+            // hängen ihre Run-/Übergangs-/Freitag-Pattern-Terme nur von
+            // unveränderten Tagen ab -> in alt/neu identisch -> kürzen sich
+            // im Δ exakt heraus (Sequenzanfang/-ende analog).
+            $windows[] = [max(1, $lo - 2), min($days, $hi + 2)];
+        }
+
+        // Überlappende/angrenzende Fenster verschmelzen.
+        usort($windows, fn ($a, $b) => $a[0] <=> $b[0]);
+        $merged = [];
+        foreach ($windows as $w) {
+            if ($merged && $w[0] <= end($merged)[1] + 1) {
+                $merged[count($merged) - 1][1] = max($merged[count($merged) - 1][1], $w[1]);
+            } else {
+                $merged[] = $w;
+            }
+        }
+
+        $slice = function (array $s, int $a, int $b): array {
+            $out = [];
+            $i = 1;
+            for ($d = $a; $d <= $b; $d++, $i++) {
+                $out[$i] = $s[$d] ?? null;
+            }
+
+            return $out;
+        };
+
+        $delta = 0.0;
+        foreach ($merged as [$a, $b]) {
+            $newStrain = $this->employeeSequenceStrain($slice($new, $a, $b));
+            if (is_infinite($newStrain)) {
+                return INF;
+            }
+            $oldStrain = $this->employeeSequenceStrain($slice($old, $a, $b));
+            if (is_infinite($oldStrain)) {
+                return -INF;
+            }
+            $delta += $newStrain - $oldStrain;
+        }
+
+        return $delta;
+    }
+
     private function scoreRun(int $run): float
     {
         if ($run <= 0) {
