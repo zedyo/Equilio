@@ -397,6 +397,33 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2i: Objektiv-Erweiterung + UX
+
+- **Monatsstunden** als Planungsziel: `employeeExtraStrain()` straft
+  |Ist−Soll| je MA (1,5/h) → MA werden auf ihre Monatsstunden geplant.
+- **Wünsche** stark gewichtet (25/Tag) → werden bevorzugt erfüllt
+  (Work/Life-Balance); **Präferenzen** sanft (0,5/Dienst) zusätzlich
+  zum bestehenden Greedy-Bonus. Alles memoisiert (`$extraCache`),
+  additiv im Δ von Lokalsuche + SA und im `total_strain`; neue
+  Summary-Felder `hours_strain`/`wish_violations`/`preference_misses`.
+- **Schichtfarben**: Früh = Orange `#f59e0b`, Spät = Blau `#3b82f6`
+  (RealRosterSeeder + Mock kongruent).
+- **Wunsch-Datepicker**: neuer Inline-Kalender `WishDatePicker`
+  (Wochenraster, Monatsnavigation, Heute/ausgewählt markiert) ersetzt
+  die 3 klobigen Tag/Monat/Jahr-Felder im Wunsch-Modal; alter
+  fehlerhafter Jahr-Input (controlled/uncontrolled) behoben.
+- **Präferenzen**: Feature war bereits voll funktionsfähig & erreichbar
+  (Team → „show" → „Dienst Präferenzen"); Planung bevorzugt sie nun
+  zusätzlich über den Objektiv-Term.
+
+**Verifiziert:** PHPUnit 26/26 (6499 Assertions), Frontend 9/9, Build
+grün. SA-Determinismus/Soll-Stunden-Tests unverändert grün.
+
+**Lessons Learned:** Der memoisierte „extra strain" passt exakt ins
+seqCache-Muster (reine Zustands-Funktion je MA) → Mehr-Ziel-
+Optimierung ohne Performance-Verlust und ohne die StrainIndex-Unit-
+Tests zu berühren.
+
 ## 2026-05-15 — Phase 2h: Generator-Skalierung + Real-World-Testdatensatz
 
 - Echte Pflege-Dienstplan-Excel (Jan–Mai 2018) analysiert (xlrd inkl.

@@ -36,8 +36,8 @@ class RealRosterSeeder extends Seeder
         }
 
         $types = [
-            1 => ['Frühschicht', true, 4, 6, '#cfe2f3'],
-            2 => ['Spätschicht', true, 4, 4, '#fce5cd'],
+            1 => ['Frühschicht', true, 4, 6, '#f59e0b'],
+            2 => ['Spätschicht', true, 4, 4, '#3b82f6'],
             3 => ['Nachtschicht', true, 1, 1, '#3d3d5c'],
             4 => ['Zwischendienst', true, 0, 1, '#d9ead3'],
             5 => ['Abwesenheit/Sonderdienst', false, 0, 0, '#d0d0d0'],

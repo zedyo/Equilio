@@ -240,3 +240,28 @@ Damit ist die im Proposal als Kern genannte automatische, bewertete
 Plangenerierung inkl. Metaheuristik vollständig als getesteter,
 reproduzierbarer Prototyp umgesetzt. Offen: Gewichts-Feinjustierung,
 Phase 3 (Auth/Rollen).
+
+## Phase 2i — Stunden-/Wunsch-/Präferenz-Term im Objektiv
+
+`RosterGenerator::employeeExtraStrain()` ergänzt die Sequenz-Belastung
+um drei Mitarbeiter-bezogene Terme (config `rostering.*`):
+- **monthly_hours_deviation** (1.5/h): Strafe je Stunde |Ist−Soll| →
+  Mitarbeiter werden auf ihre Monatsstunden geplant (Auslastung).
+- **wish_violation** (25/Tag): hohe Strafe je nicht erfülltem
+  Tages-Wunsch → Wünsche werden stark bevorzugt erfüllt (Work/Life).
+- **preference_miss** (0.5/Dienst): sanfte Strafe je Dienst ohne
+  passende hinterlegte Schicht-Präferenz (nur wenn MA Präferenzen hat).
+
+Reine Funktion von `$assigned[$empId]` → wie `seqOf` memoisiert
+(`$extraCache`, Neuberechnung nur für die 2 betroffenen MA pro
+akzeptiertem 2-Tausch). Fließt additiv in das Δ der lokalen Suche
+**und** des SA ein (INF bleibt INF) sowie in `total_strain`; neue
+Summary-Felder `hours_strain`, `wish_violations`, `preference_misses`.
+Bestehende StrainIndex-Unit-Tests unberührt (Term lebt im Generator,
+nicht in `employeeSequenceStrain`). PHPUnit 26/26 weiterhin grün.
+
+## Phase 2i — Schichtfarben
+
+Frühschicht = Orange `#f59e0b`, Spätschicht = Blau `#3b82f6`
+(RealRosterSeeder + Mock `realRosterData.js`, kongruent). Nacht/
+Zwischen/Sonder unverändert.
