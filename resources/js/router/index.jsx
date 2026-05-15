@@ -1,10 +1,11 @@
-import React, { useEffect } from 'react'
-import { Switch, BrowserRouter, HashRouter, Route } from 'react-router-dom'
-
-const AppRouter =
-  typeof window !== 'undefined' && window.__YETI_DEMO__
-    ? HashRouter
-    : BrowserRouter
+import { useEffect } from 'react'
+import {
+  Routes,
+  BrowserRouter,
+  HashRouter,
+  Route,
+} from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 import NavigationBar from '../components/NavigationBar'
 import QualificationOverview from '../components/qualifications/QualificationOverview'
 import UpdateQualification from '../components/qualifications/update/UpdateQualification'
@@ -21,7 +22,6 @@ import UpdateShiftType from '../components/shiftTypes/update/UpdateShiftType'
 import CreateShiftType from '../components/shiftTypes/create/CreateShiftType'
 import WishCreator from '../components/dutyOverview/employeeRow/employeeCell/wishCreator/WishCreator'
 import EmployeeDetails from '../components/employees/show/employeeOverview/EmployeeDetails'
-import { useDispatch } from 'react-redux'
 import { getEmployeeData } from '../features/employees/employeeSlice'
 import { getQualificationsData } from '../features/qualifications/qualificationSlice'
 import { getShiftsData } from '../features/shifts/shiftSlice'
@@ -29,6 +29,11 @@ import { getShiftTypesData } from '../features/shiftTypes/shiftTypeSlice'
 import { getDutiesData } from '../features/duties/dutySlice'
 import { getWishesData } from '../features/wishes/wishSlice'
 import { getPreferenceData } from '../features/preferences/preferenceSlice'
+
+const AppRouter =
+  typeof window !== 'undefined' && window.__YETI_DEMO__
+    ? HashRouter
+    : BrowserRouter
 
 function Router() {
   const dispatch = useDispatch()
@@ -41,37 +46,30 @@ function Router() {
     dispatch(getDutiesData())
     dispatch(getWishesData())
     dispatch(getPreferenceData())
-  }, [])
+  }, [dispatch])
 
   return (
-    <>
-      <AppRouter>
-        <NavigationBar />
-        {/* <div className="py-4"> */}
-        <Switch>
-          <Route
-            path="/qualification/edit/:id"
-            component={UpdateQualification}
-          />
-          <Route path="/qualification/create" component={CreateQualification} />
-          <Route path="/qualifications" component={QualificationOverview} />
-          <Route path="/shift/edit/:id" component={UpdateShift} />
-          <Route path="/shift/create" component={CreateShift} />
-          <Route path="/shifts" component={ShiftOverview} />
-          <Route path="/shift_type/edit/:id" component={UpdateShiftType} />
-          <Route path="/shift_type/create" component={CreateShiftType} />
-          <Route path="/shift_types" component={ShiftTypeOverview} />
-          <Route path="/employee/edit/:id" component={UpdateEmployee} />
-          <Route path="/employee/show/:id" component={EmployeeDetails} />
-          <Route path="/employee/create" component={CreateEmployee} />
-          <Route path="/employees" component={EmployeesOverview} />
-          <Route path="/duties" component={DutyOverview} />
-          <Route path="/wish_creator" component={WishCreator} />
-          <Route exact path="/" component={DutyOverview} />
-        </Switch>
-        {/* </div> */}
-      </AppRouter>
-    </>
+    <AppRouter>
+      <NavigationBar />
+      <Routes>
+        <Route path="/qualification/edit/:id" element={<UpdateQualification />} />
+        <Route path="/qualification/create" element={<CreateQualification />} />
+        <Route path="/qualifications" element={<QualificationOverview />} />
+        <Route path="/shift/edit/:id" element={<UpdateShift />} />
+        <Route path="/shift/create" element={<CreateShift />} />
+        <Route path="/shifts" element={<ShiftOverview />} />
+        <Route path="/shift_type/edit/:id" element={<UpdateShiftType />} />
+        <Route path="/shift_type/create" element={<CreateShiftType />} />
+        <Route path="/shift_types" element={<ShiftTypeOverview />} />
+        <Route path="/employee/edit/:id" element={<UpdateEmployee />} />
+        <Route path="/employee/show/:id" element={<EmployeeDetails />} />
+        <Route path="/employee/create" element={<CreateEmployee />} />
+        <Route path="/employees" element={<EmployeesOverview />} />
+        <Route path="/duties" element={<DutyOverview />} />
+        <Route path="/wish_creator" element={<WishCreator />} />
+        <Route path="/" element={<DutyOverview />} />
+      </Routes>
+    </AppRouter>
   )
 }
 

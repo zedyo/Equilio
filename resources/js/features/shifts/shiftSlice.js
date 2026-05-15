@@ -66,61 +66,59 @@ const shiftsSlice = createSlice({
       state.shiftsData = actions
     },
   },
-  extraReducers: {
-    [getShiftsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getShiftsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftsData = payload
-    },
-    [getShiftsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postShiftsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postShiftsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftsData.push(payload)
-    },
-    [postShiftsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updateShiftsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updateShiftsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const shift = state.shiftsData.filter((shift) => shift.id !== payload.id)
-      state.shiftsData = { ...shift, payload }
-    },
-    [updateShiftsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteShiftsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteShiftsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftsData = state.shiftsData.filter(
-        (shift) => shift.id !== payload.id
-      )
-    },
-    [deleteShiftsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getShiftsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getShiftsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftsData = payload
+      })
+      .addCase(getShiftsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postShiftsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postShiftsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftsData.push(payload)
+      })
+      .addCase(postShiftsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(updateShiftsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateShiftsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const shift = state.shiftsData.filter((shift) => shift.id !== payload.id)
+        state.shiftsData = { ...shift, payload }
+      })
+      .addCase(updateShiftsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteShiftsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteShiftsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftsData = state.shiftsData.filter(
+          (shift) => shift.id !== payload.id
+        )
+      })
+      .addCase(deleteShiftsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

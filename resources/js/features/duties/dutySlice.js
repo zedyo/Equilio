@@ -114,105 +114,63 @@ const dutySlice = createSlice({
       state.dutiesData = state.dutiesData.find((duty) => duty.id === payload.id)
     },
   },
-  extraReducers: {
-    // [getDutiesData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [getDutiesData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   state.dutiesData = payload
-    // },
-    // [getDutiesData.rejected]: (state, { payload }) => {
-    //   state.errorMessage = payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
-
-    [getDutiesDataByMonth.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getDutiesDataByMonth.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.dutiesData = payload
-    },
-    [getDutiesDataByMonth.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postDuty.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postDuty.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const duty = state.dutiesData.filter((duty) => duty.id !== payload.id)
-      state.dutiesData = [...duty, payload]
-    },
-    [postDuty.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteDuty.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteDuty.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      if (payload != null) {
+  extraReducers: (builder) => {
+    builder
+      .addCase(getDutiesDataByMonth.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getDutiesDataByMonth.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.dutiesData = payload
+      })
+      .addCase(getDutiesDataByMonth.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postDuty.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postDuty.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const duty = state.dutiesData.filter((duty) => duty.id !== payload.id)
+        state.dutiesData = [...duty, payload]
+      })
+      .addCase(postDuty.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteDuty.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteDuty.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        if (payload != null) {
+          state.dutiesData = state.dutiesData.filter(
+            (duty) => duty.id != payload.id
+          )
+        }
+      })
+      .addCase(deleteDuty.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteDutiesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteDutiesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
         state.dutiesData = state.dutiesData.filter(
-          (duty) => duty.id != payload.id
+          (duty) => duty.id !== payload.id
         )
-      }
-    },
-    [deleteDuty.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    // [postDutiesData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [postDutiesData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   state.dutiesData.push(payload)
-    // },
-    // [postDutiesData.rejected]: (state, { payload }) => {
-    //   state.errorMessage = payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
-
-    // [updateDutiesData.pending]: (state) => {
-    //   state.isLoading = true
-    // },
-    // [updateDutiesData.fulfilled]: (state, { payload }) => {
-    //   state.isLoading = false
-    //   const duty = state.dutiesData.filter((duty) => duty.id !== payload.id)
-    //   state.dutyData = { ...duty, payload }
-    // },
-    // [updateDutiesData.rejected]: (state, { payload }) => {
-    //   state.errorMessage = payload
-    //   state.isLoading = false
-    //   state.hasError = true
-    // },
-
-    [deleteDutiesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteDutiesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.dutiesData = state.dutiesData.filter(
-        (duty) => duty.id !== payload.id
-      )
-    },
-    [deleteDutiesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+      })
+      .addCase(deleteDutiesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

@@ -69,63 +69,61 @@ const shiftTypeSlice = createSlice({
       state.shiftTypesData = actions
     },
   },
-  extraReducers: {
-    [getShiftTypesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getShiftTypesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftTypesData = payload
-    },
-    [getShiftTypesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postShiftTypesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postShiftTypesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftTypesData.push(payload)
-    },
-    [postShiftTypesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updateShiftTypesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updateShiftTypesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const shiftType = state.shiftTypesData.filter(
-        (shiftType) => shiftType.id !== payload.id
-      )
-      state.shiftTypeData = { ...shiftType, payload }
-    },
-    [updateShiftTypesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteShiftTypesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteShiftTypesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.shiftTypesData = state.shiftTypesData.filter(
-        (shift_type) => shift_type.id !== payload.id
-      )
-    },
-    [deleteShiftTypesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getShiftTypesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getShiftTypesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftTypesData = payload
+      })
+      .addCase(getShiftTypesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postShiftTypesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postShiftTypesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftTypesData.push(payload)
+      })
+      .addCase(postShiftTypesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(updateShiftTypesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateShiftTypesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const shiftType = state.shiftTypesData.filter(
+          (shiftType) => shiftType.id !== payload.id
+        )
+        state.shiftTypeData = { ...shiftType, payload }
+      })
+      .addCase(updateShiftTypesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteShiftTypesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteShiftTypesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.shiftTypesData = state.shiftTypesData.filter(
+          (shift_type) => shift_type.id !== payload.id
+        )
+      })
+      .addCase(deleteShiftTypesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

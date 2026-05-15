@@ -81,63 +81,61 @@ const qualificationSlice = createSlice({
       )
     },
   },
-  extraReducers: {
-    [getQualificationsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getQualificationsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.qualificationsData = payload
-    },
-    [getQualificationsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postQualificationsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postQualificationsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.qualificationsData.push(payload)
-    },
-    [postQualificationsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updateQualificationsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updateQualificationsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const qualification = state.qualificationsData.filter(
-        (qualification) => qualification.id !== payload.id
-      )
-      state.qualificationData = { ...qualification, payload }
-    },
-    [updateQualificationsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteQualificationsData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteQualificationsData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.qualificationsData = state.qualificationsData.filter(
-        (qualification) => qualification.id !== payload.id
-      )
-    },
-    [deleteQualificationsData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getQualificationsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getQualificationsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.qualificationsData = payload
+      })
+      .addCase(getQualificationsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postQualificationsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postQualificationsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.qualificationsData.push(payload)
+      })
+      .addCase(postQualificationsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(updateQualificationsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateQualificationsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const qualification = state.qualificationsData.filter(
+          (qualification) => qualification.id !== payload.id
+        )
+        state.qualificationData = { ...qualification, payload }
+      })
+      .addCase(updateQualificationsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteQualificationsData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteQualificationsData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.qualificationsData = state.qualificationsData.filter(
+          (qualification) => qualification.id !== payload.id
+        )
+      })
+      .addCase(deleteQualificationsData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 
