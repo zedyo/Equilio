@@ -5,6 +5,7 @@ namespace Tests\Feature;
 use App\Models\Absence;
 use App\Models\Duty;
 use App\Models\Employee;
+use App\Services\RosterGenerator;
 use Database\Seeders\EmployeeSeeder;
 use Database\Seeders\QualificationSeeder;
 use Database\Seeders\ShiftSeeder;
@@ -214,5 +215,33 @@ class RosterGeneratorTest extends TestCase
             6, max($counts) - min($counts),
             'Dienstverteilung nach lokaler Suche zu unausgewogen'
         );
+    }
+
+    public function test_simulated_annealing_is_deterministic_and_never_worse(): void
+    {
+        $year = (int) date('Y');
+        $month = (int) date('n');
+
+        // Ohne SA (nur Greedy + lokale Suche) als sichere Obergrenze.
+        config(['rostering.annealing.enabled' => false]);
+        $base = app(RosterGenerator::class)->generate($year, $month)['summary'];
+
+        // Mit SA: nie schlechter (beste gesehene Lösung wird gesichert).
+        config(['rostering.annealing.enabled' => true]);
+        $a1 = app(RosterGenerator::class)->generate($year, $month)['summary'];
+        $a2 = app(RosterGenerator::class)->generate($year, $month)['summary'];
+
+        $this->assertFalse($a1['forbidden']);
+        $this->assertLessThanOrEqual(
+            $base['employee_strain'] + 1e-6,
+            $a1['employee_strain'],
+            'SA darf den Mitarbeiter-Strain nicht verschlechtern'
+        );
+        // Fester Seed -> reproduzierbar identisches Ergebnis.
+        $this->assertSame($a1['total_strain'], $a2['total_strain']);
+        $this->assertSame($a1['employee_strain'], $a2['employee_strain']);
+        // Besetzung & Qualifikation bleiben invariant ggü. ohne SA.
+        $this->assertSame($base['occupation_strain'], $a1['occupation_strain']);
+        $this->assertSame($base['missing_qualification'], $a1['missing_qualification']);
     }
 }

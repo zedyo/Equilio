@@ -210,6 +210,7 @@ class RosterGenerator
         }
 
         $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days);
+        $this->simulatedAnnealing($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days);
 
         return $this->buildResult(
             $employees, $assigned, $shiftTypes, $wishes, $preferences,
@@ -343,6 +344,132 @@ class RosterGenerator
             if (! $improved) {
                 break;
             }
+        }
+    }
+
+    /**
+     * Phase 2g: Simulated Annealing auf derselben sicheren 2-Tausch-
+     * Nachbarschaft wie die lokale Suche (Besetzung pro Tag/Art,
+     * Dienstanzahl je MA und Fachkraft-Abdeckung bleiben invariant).
+     * Bewertet jeden Zug inkrementell via StrainIndex::sequenceStrainDelta
+     * (O(Serienlänge)), akzeptiert temporär verschlechternde Züge mit
+     * Wahrscheinlichkeit exp(-Δ/T), um lokale Minima zu verlassen, und
+     * liefert die beste je gesehene Lösung zurück (nie schlechter als die
+     * Eingabe). Deterministisch über festen Seed → reproduzierbar/testbar.
+     */
+    private function simulatedAnnealing(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days): void
+    {
+        $cfg = (function_exists('config') ? config('rostering.annealing') : null) ?? [];
+        if (($cfg['enabled'] ?? true) === false) {
+            return;
+        }
+        $list = $employees->values();
+        $n = $list->count();
+        if ($n < 2) {
+            return;
+        }
+
+        $iterations = (int) ($cfg['iterations'] ?? min(3000, $n * $days * 6));
+        $temp = (float) ($cfg['start_temp'] ?? 10.0);
+        $cooling = (float) ($cfg['cooling'] ?? 0.999);
+        mt_srand((int) ($cfg['seed'] ?? 1337));
+
+        $empById = $employees->keyBy('id');
+        $qualCovered = function (string $typeName, int $day) use (&$assigned, $shiftTypes, $empById, $isQualified): bool {
+            foreach ($assigned as $empId => $byDay) {
+                $shift = $byDay[$day] ?? null;
+                if ($shift && ($shiftTypes[$shift->shift_type_id]->name ?? null) === $typeName
+                    && isset($empById[$empId]) && $isQualified($empById[$empId])) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
+        $snapshot = function () use (&$assigned): array {
+            $c = [];
+            foreach ($assigned as $id => $byDay) {
+                $c[$id] = $byDay;
+            }
+
+            return $c;
+        };
+
+        $best = $snapshot();
+        $cum = 0.0;        // kumulierte Δ relativ zur Eingabe
+        $bestCum = 0.0;    // 0 = Eingabe (lokale Suche) als sichere Untergrenze
+
+        for ($i = 0; $i < $iterations; $i++, $temp *= $cooling) {
+            $a = $list[mt_rand(0, $n - 1)];
+            $b = $list[mt_rand(0, $n - 1)];
+            $aId = $a->id;
+            $bId = $b->id;
+            if ($aId === $bId) {
+                continue;
+            }
+
+            $aDays = array_keys($assigned[$aId] ?? []);
+            $bDays = array_keys($assigned[$bId] ?? []);
+            if (! $aDays || ! $bDays) {
+                continue;
+            }
+            $d = $aDays[mt_rand(0, count($aDays) - 1)];
+            if (isset($assigned[$bId][$d]) || $isAbsent($bId, $d)) {
+                continue;
+            }
+            $e = $bDays[mt_rand(0, count($bDays) - 1)];
+            if (isset($assigned[$aId][$e]) || $isAbsent($aId, $e)) {
+                continue;
+            }
+
+            $shiftA = $assigned[$aId][$d];
+            $shiftB = $assigned[$bId][$e];
+            $typeA = $shiftTypes[$shiftA->shift_type_id]->name ?? '';
+            $typeB = $shiftTypes[$shiftB->shift_type_id]->name ?? '';
+            $covAd = $qualCovered($typeA, $d);
+            $covBe = $qualCovered($typeB, $e);
+
+            $seqAOld = $this->seqOf($assigned, $aId, $shiftTypes, $days);
+            $seqBOld = $this->seqOf($assigned, $bId, $shiftTypes, $days);
+
+            unset($assigned[$aId][$d]);
+            $assigned[$aId][$e] = $shiftB;
+            unset($assigned[$bId][$e]);
+            $assigned[$bId][$d] = $shiftA;
+
+            $delta = $this->strain->sequenceStrainDelta(
+                $seqAOld, $this->seqOf($assigned, $aId, $shiftTypes, $days), [$d, $e], $days
+            ) + $this->strain->sequenceStrainDelta(
+                $seqBOld, $this->seqOf($assigned, $bId, $shiftTypes, $days), [$d, $e], $days
+            );
+
+            $qualOk = (! $covAd || $qualCovered($typeA, $d))
+                && (! $covBe || $qualCovered($typeB, $e));
+
+            $accept = $qualOk && ! is_infinite($delta)
+                && ($delta <= 0
+                    || (mt_rand() / mt_getrandmax()) < exp(-$delta / max($temp, 1e-6)));
+
+            if ($accept) {
+                $cum += $delta;
+                if ($cum < $bestCum - 1e-9) {
+                    $bestCum = $cum;
+                    $best = $snapshot();
+                }
+            } else {
+                unset($assigned[$aId][$e]);
+                $assigned[$aId][$d] = $shiftA;
+                unset($assigned[$bId][$d]);
+                $assigned[$bId][$e] = $shiftB;
+            }
+        }
+
+        // Beste je gesehene Lösung wiederherstellen (≤ Eingabe-Strain).
+        foreach (array_keys($assigned) as $id) {
+            unset($assigned[$id]);
+        }
+        foreach ($best as $id => $byDay) {
+            $assigned[$id] = $byDay;
         }
     }
 
