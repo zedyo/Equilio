@@ -397,6 +397,29 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2j: 3-stufige Präferenzen + Bugfix
+
+- Präferenzen je MA/Schicht jetzt 3-stufig: **Bevorzugt / Erlaubt /
+  Gesperrt**. `blocked` ist harte Regel (Greedy überspringt,
+  `employeeExtraStrain`→INF, `forbidden`). DB-Spalte `preferences.level`
+  (Migration), Controller-Upsert, Slice-Upsert, Mock kongruent.
+- **Bugfix (Ursache des „nicht nutzbar"):** Mock gab interne
+  `db`-Array-Referenzen an Redux; Immer fror sie ein → späteres
+  Mutieren warf „object is not extensible", POST scheiterte still →
+  Schalter reagierten nicht. Mock-Antworten sind nun Kopien, keine
+  In-place-Mutation der db-Arrays.
+- UI: segmentierte 3-Wege-Steuerung statt Schalter (gruppiert nach
+  Schichtart, farbcodiert), robust gegen fehlende/abweichende
+  Datenform. Neuer Frontend-Test deckt die End-to-End-Nutzbarkeit ab.
+
+**Verifiziert:** PHPUnit 26/26 (6499 Assertions), Frontend **10/10**,
+Build grün.
+
+**Lessons Learned:** Geteilte Mock-Array-Referenzen + Immer-Freeze sind
+eine subtile, still scheiternde Fehlerquelle — Mock-APIs müssen Kopien
+liefern und intern immutabel arbeiten. Der gemeldete „Schalter nicht
+nutzbar"-Bug war genau das (nicht die UI selbst).
+
 ## 2026-05-15 — Phase 2i: Objektiv-Erweiterung + UX
 
 - **Monatsstunden** als Planungsziel: `employeeExtraStrain()` straft

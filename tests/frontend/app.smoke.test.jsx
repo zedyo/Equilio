@@ -10,7 +10,7 @@
  *  funktionalen Migrations-Risiken ohne Browser ab.)
  */
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, screen, act, within } from '@testing-library/react'
+import { render, screen, act, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 function navigate(hash) {
@@ -94,6 +94,35 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
       { timeout: 5000 }
     )
     expect(quals.length).toBeGreaterThan(0)
+  })
+
+  it('Präferenzen: 3-Stufen-Auswahl je Schicht ist nutzbar', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
+
+    navigate('#/employee/show/1')
+    await screen.findByText(/Dienst Präferenzen/i, {}, { timeout: 6000 })
+
+    // Segmentierte Steuerung vorhanden; ersten "Bevorzugt"-Button wählen.
+    const prefBtns = await screen.findAllByRole(
+      'button',
+      { name: 'Bevorzugt' },
+      { timeout: 5000 }
+    )
+    expect(prefBtns.length).toBeGreaterThan(0)
+    expect(prefBtns[0]).toHaveAttribute('aria-pressed', 'false')
+
+    await user.click(prefBtns[0])
+
+    // Slice + Mock haben die Stufe übernommen -> Button wird aktiv.
+    await waitFor(
+      () => {
+        const after = screen.getAllByRole('button', { name: 'Bevorzugt' })
+        expect(after[0]).toHaveAttribute('aria-pressed', 'true')
+      },
+      { timeout: 5000 }
+    )
   })
 
   it('Abwesenheiten-Seite listet geseedete Abwesenheiten', async () => {

@@ -265,3 +265,21 @@ nicht in `employeeSequenceStrain`). PHPUnit 26/26 weiterhin grün.
 Frühschicht = Orange `#f59e0b`, Spätschicht = Blau `#3b82f6`
 (RealRosterSeeder + Mock `realRosterData.js`, kongruent). Nacht/
 Zwischen/Sonder unverändert.
+
+## Phase 2j — 3-stufige Präferenzen (preferred/valid/blocked)
+
+Präferenzen sind jetzt dreistufig je MA/Schicht:
+- **preferred**: bevorzugt (Greedy-Bonus + kein `preference_miss`).
+- **valid** (kein Datensatz): neutral, erlaubt.
+- **blocked**: harte Restriktion – Greedy überspringt den Kandidaten,
+  `employeeExtraStrain` liefert `INF` (Lokalsuche/SA lehnen ab),
+  `buildResult` markiert `forbidden`. Wird nie vergeben.
+
+DB: `preferences.level` (Migration, Default 'preferred' für Altbestand).
+Controller `create` macht ein 3-Wege-Upsert (valid = Datensatz löschen).
+Slice/Reducer upsert nach (employee_id, shift_id). Mock-API kongruent
+(immutabilitätssicher – Antworten sind Kopien, da Redux/Immer die
+Antwort einfriert; in-place-Mutation der internen db-Arrays vermieden).
+UI: segmentierte 3-Wege-Steuerung je Schicht (Gesperrt/Erlaubt/
+Bevorzugt) statt Schalter, gruppiert nach Schichtart. Frontend-Test
+deckt die End-to-End-Nutzbarkeit ab (Klick → Mock → Slice → aktiv).

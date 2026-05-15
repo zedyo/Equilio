@@ -123,15 +123,25 @@ class RosterGenerator
             [$eid, $dy] = explode('-', $key);
             $wishMap[(int) $eid][(int) $dy] = (int) $group->first()->shift_id;
         }
+        // 3-stufige Präferenzen je MA/Schicht: 'preferred' (bevorzugt),
+        // kein Eintrag = 'valid' (erlaubt, neutral), 'blocked' (darf nie
+        // vergeben werden -> harte Restriktion).
         $prefByEmp = [];
+        $blockByEmp = [];
         foreach ($preferences as $key => $group) {
             [$eid, $sid] = explode('-', $key);
-            $prefByEmp[(int) $eid][(int) $sid] = true;
+            $level = $group->first()->level ?? 'preferred';
+            if ($level === 'blocked') {
+                $blockByEmp[(int) $eid][(int) $sid] = true;
+            } elseif ($level === 'preferred') {
+                $prefByEmp[(int) $eid][(int) $sid] = true;
+            }
         }
         $obj = [
             'soll' => $sollHours,
             'wish' => $wishMap,
             'pref' => $prefByEmp,
+            'block' => $blockByEmp,
             'w' => [
                 'hours' => (float) ((function_exists('config')
                     ? config('rostering.monthly_hours_deviation') : null) ?? 1.5),
@@ -169,16 +179,21 @@ class RosterGenerator
                     if ($this->isForbidden($prevType[$id], $typeName)) {
                         continue;
                     }
+                    $shId = $shiftByTypeName[$typeName]->id;
+                    // Gesperrte Schicht: niemals zuteilen (harte Regel).
+                    if (isset($blockByEmp[$id][$shId])) {
+                        continue;
+                    }
 
                     $bonus = 0;
                     $wishKey = $id.'-'.$day;
                     foreach ($wishes[$wishKey] ?? [] as $w) {
-                        if ($w->shift_id === $shiftByTypeName[$typeName]->id) {
+                        if ($w->shift_id === $shId) {
                             $bonus -= 3; // Wunsch trifft -> bevorzugen
                         }
                     }
-                    if (isset($preferences[$id.'-'.$shiftByTypeName[$typeName]->id])) {
-                        $bonus -= 1;
+                    if (isset($prefByEmp[$id][$shId])) {
+                        $bonus -= 1; // bevorzugte Schicht
                     }
 
                     $candidates[] = [
@@ -264,8 +279,10 @@ class RosterGenerator
      *  - Monats-Stunden: Strafe je Stunde Abweichung Ist↔Soll
      *    (Mitarbeiter sollen auf ihre Monatsstunden kommen),
      *  - Wünsche: hohe Strafe je nicht erfülltem Tages-Wunsch,
-     *  - Präferenzen: kleine Strafe je Dienst ohne passende Präferenz
-     *    (nur falls der MA überhaupt Präferenzen hinterlegt hat).
+     *  - Präferenzen: bevorzugt -> kleine Belohnung/keine Strafe;
+     *    gesperrt -> INF (darf nie vergeben werden, harte Regel);
+     *    valide (kein Eintrag) -> neutral. preference_miss zählt nur,
+     *    wenn der MA überhaupt bevorzugte Schichten hinterlegt hat.
      * Reine Funktion von $assigned[$empId] -> wie seqOf memoisierbar.
      */
     private function employeeExtraStrain(array $assigned, int $empId, array $obj, int $days): float
@@ -274,12 +291,16 @@ class RosterGenerator
         $wishViol = 0;
         $prefMiss = 0;
         $prefSet = $obj['pref'][$empId] ?? [];
+        $blockSet = $obj['block'][$empId] ?? [];
         $hasPref = ! empty($prefSet);
         $wishDay = $obj['wish'][$empId] ?? [];
 
         for ($d = 1; $d <= $days; $d++) {
             $sh = $assigned[$empId][$d] ?? null;
             if ($sh) {
+                if (isset($blockSet[(int) $sh->id])) {
+                    return INF; // gesperrte Schicht -> unzulässig
+                }
                 $ist += (float) $sh->h_duration;
                 if ($hasPref && empty($prefSet[(int) $sh->id])) {
                     $prefMiss++;
@@ -624,7 +645,7 @@ class RosterGenerator
                 foreach ($wishes[$e->id.'-'.$day] ?? [] as $w) {
                     $wishInjury = $w->shift_id === $shift->id ? 0 : 1;
                 }
-                $prefInjury = isset($preferences[$e->id.'-'.$shift->id]) ? 0 : 1;
+                $prefInjury = isset($obj['pref'][$e->id][$shift->id]) ? 0 : 1;
 
                 $duties[] = [
                     'employee_id' => $e->id,
@@ -701,7 +722,12 @@ class RosterGenerator
         $wishViolations = 0;
         $preferenceMisses = 0;
         foreach ($employees as $e) {
-            $extraSum += $this->employeeExtraStrain($assigned, $e->id, $obj, $days);
+            $ex = $this->employeeExtraStrain($assigned, $e->id, $obj, $days);
+            if (is_infinite($ex)) {
+                $forbidden = true; // gesperrte Schicht vergeben
+            } else {
+                $extraSum += $ex;
+            }
             $prefSet = $obj['pref'][$e->id] ?? [];
             $hasPref = ! empty($prefSet);
             $wishDay = $obj['wish'][$e->id] ?? [];
