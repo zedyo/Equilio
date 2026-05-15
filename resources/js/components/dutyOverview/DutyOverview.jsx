@@ -9,7 +9,6 @@ import DaysRow from './daysRow/DaysRow'
 import './DutyOverview.scss'
 import EmployeeRow from './employeeRow/EmployeeRow'
 import { holidays } from './daysRow/utils/holidays'
-import { random } from 'lodash'
 import ShiftTypeStatisticsContainer from './shiftTypeStatisticsContainer/ShiftTypeStatisticsContainer'
 import Spinner from 'react-bootstrap/Spinner'
 
