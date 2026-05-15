@@ -29,6 +29,12 @@ class ShiftTypeController extends Controller
 
     public function store(Request $request)
     {
+        $request->validate([
+            'shiftTypesData.name' => ['required', 'string', 'max:255'],
+            'shiftTypesData.active_duty' => ['required', 'boolean'],
+            'shiftTypesData.min_occupation' => ['required', 'integer', 'min:0'],
+            'shiftTypesData.opt_occupation' => ['required', 'integer', 'min:0'],
+        ]);
         $shift_type = new ShiftType();
         $shift_type->name = $request->shiftTypesData['name'];
         $shift_type->active_duty = $request->shiftTypesData['active_duty'];
@@ -46,6 +52,12 @@ class ShiftTypeController extends Controller
 
     public function update(Request $request, ShiftType $shift_type)
     {
+        $request->validate([
+            'shiftTypeData.name' => ['required', 'string', 'max:255'],
+            'shiftTypeData.active_duty' => ['required', 'boolean'],
+            'shiftTypeData.min_occupation' => ['required', 'integer', 'min:0'],
+            'shiftTypeData.opt_occupation' => ['required', 'integer', 'min:0'],
+        ]);
         $shift_type->name = $request->shiftTypeData['name'];
         $shift_type->active_duty = $request->shiftTypeData['active_duty'];
         $shift_type->min_occupation = $request->shiftTypeData['min_occupation'];

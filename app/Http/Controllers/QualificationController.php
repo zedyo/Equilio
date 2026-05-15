@@ -36,6 +36,9 @@ class QualificationController extends Controller
 
     public function store(Request $request): JsonResponse
     {
+        $request->validate([
+            'qualificationsData.description' => ['required', 'string', 'max:255'],
+        ]);
         $qualification = new Qualification();
         $qualification->description = $request->qualificationsData['description'];
         $qualification->save();
@@ -50,6 +53,9 @@ class QualificationController extends Controller
 
     public function update(Request $request, Qualification $qualification)
     {
+        $request->validate([
+            'qualificationData.description' => ['required', 'string', 'max:255'],
+        ]);
         $qualification->description = $request->qualificationData['description'];
 
         $qualification->save();

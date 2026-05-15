@@ -84,8 +84,15 @@ Stand: erste Bestandsaufnahme bei Initialisierung des Claude-Memorys (Mai 2026, 
 - **Backend modernisiert:** Laravel 8 (EOL) → Laravel 12 / PHP 8.2+
   — `composer audit` 0 Advisories; API gegen SQLite verifiziert (alle
   Endpunkte HTTP 200).
-- Offen bleibt fachlich der Kern (Generator/Belastungsindex) sowie Auth/Rollen,
-  Tests und REST-Cleanup — siehe unten.
+- **REST-Cleanup erledigt:** `DELETE /duty` und `DELETE /preference` (vorher
+  POST/PATCH); Eingabevalidierung in den Kern-CRUD-Controllern.
+- **Phase-1-Fundament begonnen:** Abwesenheits-Modell (`absences`) inkl.
+  validierter API + Tests; Regelwerk `config/rostering.php`. Damit ist die
+  Voraussetzung für den Generator (erschwertes Szenario) gelegt — die
+  Generierung selbst (Belastungsindex/RosterGenerator) bleibt offen.
+- **Tests:** PHPUnit-Feature-Tests (9) + Frontend-Suite (6); beide in CI.
+- Offen bleibt fachlich der Kern (Generator/Belastungsindex) sowie Auth/Rollen
+  und die Abwesenheits-/Regelwerk-UI — siehe unten.
 
 ## Implikationen für künftige Arbeit
 

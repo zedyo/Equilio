@@ -228,7 +228,7 @@ function handle(method, path, body) {
     return ok({ new_duty: dutyWithRelations(duty) })
   }
 
-  if (r[0] === 'duty' && method === 'post') {
+  if (r[0] === 'duty' && method === 'delete') {
     const d = body.dutyData
     const idx = db.duties.findIndex(
       (x) =>
@@ -445,7 +445,7 @@ function handle(method, path, body) {
       return ok({ preference: existing || { id: null } }, 201)
     }
   }
-  if (r[0] === 'preference' && method === 'patch') {
+  if (r[0] === 'preference' && method === 'delete') {
     const p = body.preferenceData
     const removed = db.preferences.filter(
       (x) => x.employee_id === p.employee_id && x.shift_id === p.shift_id

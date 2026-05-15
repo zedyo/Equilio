@@ -46,8 +46,8 @@ export const deleteDuty = createAsyncThunk(
   'duties/deleteDuty',
   async (dutyData, thunkAPI) => {
     try {
-      const { data } = await axios.post(`http://127.0.0.1:8000/api/duty/`, {
-        dutyData,
+      const { data } = await axios.delete(`http://127.0.0.1:8000/api/duty/`, {
+        data: { dutyData },
       })
       return data.deleted_duty
     } catch (error) {

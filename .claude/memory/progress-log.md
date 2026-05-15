@@ -237,4 +237,38 @@ Logo-Konzept „Grid-E" als Marke gewählt und eingebunden.
   (`vite.config.js`, Workflow) — an den GitHub-Repo-Namen gebunden; ändert
   sich erst, wenn das Repository selbst umbenannt wird.
 
+## 2026-05-15 — Optimierungen: Phase-1-Fundament + technische Härtung
+
+Zwei Tracks parallel umgesetzt.
+
+**Track A — Generator-Fundament (ROADMAP Phase 1):**
+- `absences`-Tabelle/-Model/-Controller (validierte CRUD, Employee-Relation,
+  `coversDate()`-Helper), API-Resource, Factory, Seeder.
+- `config/rostering.php`: Regelwerk (max. Dienste in Folge, Ruhezeit,
+  verbotene Übergänge, Belastungs-Gewichte) — Lesegrundlage für den
+  künftigen StrainIndex/Generator.
+- Mock-Parität + Redux-Slice `absenceSlice` + Store-Eintrag.
+
+**Track B — Technische Härtung:**
+- Vite `manualChunks`: App-Chunk 533→265 kB, Vendor cachebar getrennt.
+- REST-Verben korrigiert: `POST /duty`→`DELETE /duty`,
+  `PATCH /preference`→`DELETE /preference` (Backend-Routes, `dutySlice`
+  `axios.delete`, Mock-Handler in Lockstep).
+- Eingabevalidierung in Employee/Qualification/Shift/ShiftType (store+update)
+  via `$request->validate()` (Dot-Notation auf die *Data-Payloads).
+- Backend-Tests: `AbsenceApiTest` (4) + `ApiSmokeTest` (3) — GET-Endpunkte,
+  Validierung 422, DELETE-Verb. Neuer CI-Workflow `backend-tests.yml`
+  (PHP 8.3, sqlite, `php artisan test`).
+
+**Verifiziert:** `php artisan test` **9/9**, `npm test` **6/6**, Vite-Build
+grün, `composer audit`/`npm audit` weiterhin 0.
+
+**Lessons Learned:**
+- L12-Test-Gotcha: `$this->seed()` mit `User::factory` + `BCRYPT_ROUNDS=4`
+  → „Could not verify the hashed value's configuration". Lösung: in
+  API-Tests nur Domänen-Seeder aufrufen (keine User).
+- `findByText`-Mehrfachtreffer-Lehre überträgt sich nicht; hier war die
+  unique-Constraint auf `qualifications.description` die Falle, wenn ein
+  Test bereits geseedete Werte erneut anlegt.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
