@@ -20,6 +20,18 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+    rollupOptions: {
+      output: {
+        // Vendor-Code in eigene, cachebare Chunks aufteilen
+        // (verkleinert den App-Chunk, bessere Browser-Caches).
+        manualChunks: {
+          react: ['react', 'react-dom', 'react-router-dom'],
+          redux: ['@reduxjs/toolkit', 'react-redux'],
+          bootstrap: ['react-bootstrap'],
+          vendor: ['axios', 'moment'],
+        },
+      },
+    },
   },
   test: {
     environment: 'jsdom',
