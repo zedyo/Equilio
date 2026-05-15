@@ -188,6 +188,11 @@ Build-Hinweise:
 
 ## Arbeitsweise des Agents
 
+- **Autonomie (vom Nutzer erteilt, Mai 2026):** Bearbeitung, Commits und Push
+  auf den Arbeitsbranch dürfen in diesem Projekt ohne Rückfrage erfolgen.
+  Keine Bestätigungs-/Auswahlfragen für normale Entwicklungsarbeit. Ausnahmen
+  bleiben: wirklich destruktive/irreversible Aktionen (z. B. Force-Push auf
+  `master`, History-Rewrite) sowie inhaltlich mehrdeutige Produktentscheidungen.
 - Bei eigenständigen Änderungen: kleine, fokussierte Commits mit aussagekräftiger Botschaft.
 - Fortschritt mitschreiben in `.claude/memory/progress-log.md` (Datum, was gemacht, Lessons Learned).
 - Wenn Code von Proposal-Zielen abweicht, in `.claude/memory/implementation-status.md` aktualisieren.
