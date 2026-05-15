@@ -318,4 +318,28 @@ Regelwerk-UI, Auth/Rollen, Evaluations-Messung der Nachjustierungsquote.
 Absences existierten bereits (frühere Phase-1-Commits); jetzt im Demo
 durchklickbar und vom Generator bereits berücksichtigt.
 
+## 2026-05-15 — Generator-Evaluation mit realistischen Szenarien
+
+Echten Backend-Generator gegen Seeder-Pflegedaten (Mai/2026, 31 Tage) in
+3 Szenarien laufen lassen (A: 11 MA / B: 22 MA / C: 22 MA + 21-Tage-
+Krankheit). Ergebnis-Matrix + Schlussfolgerungen in
+`algorithm-notes.md` (Abschnitt „Evaluation").
+
+**Positiv:** alle harten Constraints in allen Szenarien eingehalten
+(0 Abwesenheits-Verletzungen, Serie ≤ 6, kein Nacht→Früh, faire
+Verteilung). Unterbesetzung bei 11 MA ist nachweislich ein
+Kapazitätsproblem (bei 22 MA Besetzungs-Strain 0).
+
+**Aufgedeckte Schwäche (Iterationsziel):** Mitarbeiter-Strain steigt mit
+mehr Diensten stark (B: 1472), weil das Greedy-Verfahren freie Tage
+fragmentiert (viele isolierte freie Tage statt 2er-Blöcke). Hard-Regeln
+& Besetzung korrekt, aber Erholungsmuster nicht optimiert → nächste
+Iteration: lokale Suche/Tausch-Phase, die bei gleicher Besetzung den
+Soft-Strain senkt.
+
+**Lessons Learned:** Tinker-stdin verarbeitet Mehrzeiler unzuverlässig —
+für Ad-hoc-Analysen besser ein Skript mit eigenem Laravel-Bootstrap
+(`require bootstrap/app.php` + Kernel-bootstrap). Lokale sqlite nach
+Szenario-Mutationen via `migrate:fresh --seed` zurückgesetzt.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
