@@ -276,10 +276,6 @@ class RosterGenerator
                     continue;
                 }
 
-                $aStrain = $this->strain->employeeSequenceStrain(
-                    $this->seqOf($assigned, $aId, $shiftTypes, $days)
-                );
-
                 foreach ($workDays as $d) {
                     foreach ($freeDays as $e) {
                         foreach ($employees as $b) {
@@ -298,18 +294,13 @@ class RosterGenerator
                             $shiftA = $assigned[$aId][$d]; // A: d -> frei, e -> shiftB
                             $shiftB = $assigned[$bId][$e]; // B: e -> frei, d -> shiftA
 
-                            $bStrain = $this->strain->employeeSequenceStrain(
-                                $this->seqOf($assigned, $bId, $shiftTypes, $days)
-                            );
-                            $before = $aStrain + $bStrain;
-                            if (is_infinite($before)) {
-                                $before = PHP_FLOAT_MAX;
-                            }
-
                             $typeA = $shiftTypes[$shiftA->shift_type_id]->name ?? '';
                             $typeB = $shiftTypes[$shiftB->shift_type_id]->name ?? '';
                             $covAd = $qualCovered($typeA, $d);
                             $covBe = $qualCovered($typeB, $e);
+
+                            $seqAOld = $this->seqOf($assigned, $aId, $shiftTypes, $days);
+                            $seqBOld = $this->seqOf($assigned, $bId, $shiftTypes, $days);
 
                             // Tausch anwenden
                             unset($assigned[$aId][$d]);
@@ -317,18 +308,24 @@ class RosterGenerator
                             unset($assigned[$bId][$e]);
                             $assigned[$bId][$d] = $shiftA;
 
-                            $aNew = $this->strain->employeeSequenceStrain(
-                                $this->seqOf($assigned, $aId, $shiftTypes, $days)
-                            );
-                            $bNew = $this->strain->employeeSequenceStrain(
-                                $this->seqOf($assigned, $bId, $shiftTypes, $days)
+                            // Inkrementelle Δ-Bewertung (nur betroffene Tage).
+                            $delta = $this->strain->sequenceStrainDelta(
+                                $seqAOld,
+                                $this->seqOf($assigned, $aId, $shiftTypes, $days),
+                                [$d, $e],
+                                $days
+                            ) + $this->strain->sequenceStrainDelta(
+                                $seqBOld,
+                                $this->seqOf($assigned, $bId, $shiftTypes, $days),
+                                [$d, $e],
+                                $days
                             );
 
                             $qualOk = (! $covAd || $qualCovered($typeA, $d))
                                 && (! $covBe || $qualCovered($typeB, $e));
 
-                            if ($qualOk && ! is_infinite($aNew) && ! is_infinite($bNew)
-                                && ($aNew + $bNew) < $before - 0.0001) {
+                            if ($qualOk && ! is_infinite($delta)
+                                && $delta < -0.0001) {
                                 $improved = true;
                                 break 3;
                             }

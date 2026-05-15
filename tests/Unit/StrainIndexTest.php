@@ -23,6 +23,57 @@ class StrainIndexTest extends TestCase
         ]);
     }
 
+    public function test_sequence_strain_delta_matches_full_recomputation(): void
+    {
+        $idx = $this->index();
+        $vals = [null, 'Frühschicht', 'Spätschicht', 'Nachtschicht'];
+        mt_srand(20260515);
+
+        for ($iter = 0; $iter < 400; $iter++) {
+            $days = mt_rand(10, 31);
+            $old = [];
+            for ($d = 1; $d <= $days; $d++) {
+                $old[$d] = $vals[mt_rand(0, 3)];
+            }
+
+            // 1–3 Tage verändern (deckt 2-Tausch + Mehrfachänderung ab).
+            $new = $old;
+            $changed = [];
+            $k = mt_rand(1, 3);
+            for ($j = 0; $j < $k; $j++) {
+                $cd = mt_rand(1, $days);
+                $new[$cd] = $vals[mt_rand(0, 3)];
+                $changed[$cd] = $cd;
+            }
+            $changed = array_values($changed);
+
+            $full = $idx->employeeSequenceStrain($new);
+            $base = $idx->employeeSequenceStrain($old);
+            $delta = $idx->sequenceStrainDelta($old, $new, $changed, $days);
+
+            if (is_infinite($base)) {
+                // Bereits unzulässige Ausgangslage: Δ unbestimmt, der
+                // Optimierer startet nie aus einem INF-Zustand -> überspringen.
+                continue;
+            }
+            if (is_infinite($full)) {
+                $this->assertTrue(
+                    is_infinite($delta) && $delta > 0,
+                    "Iter $iter: neue Sequenz INF, Delta muss +INF sein"
+                );
+
+                continue;
+            }
+
+            $this->assertEqualsWithDelta(
+                $full,
+                $base + $delta,
+                1e-6,
+                "Iter $iter: inkrementelles Delta weicht von Vollberechnung ab"
+            );
+        }
+    }
+
     public function test_more_than_max_consecutive_is_forbidden(): void
     {
         $seq = [];

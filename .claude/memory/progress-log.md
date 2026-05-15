@@ -397,6 +397,30 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2f: inkrementelle Δ-Bewertung (Metaheuristik-Fundament)
+
+- `StrainIndex::sequenceStrainDelta()`: fenster-basierte, beweisbar
+  exakte `strain(neu)−strain(alt)`-Bewertung (±2-Polsterung bis zu
+  beidseitig freien Tagen → Rand-/Außenterme kürzen sich; nutzt die
+  getestete `employeeSequenceStrain` auf dem Ausschnitt). O(Serienlänge)
+  statt O(Monat); INF korrekt propagiert.
+- Property-Test (400 Zufallsfälle × 1–3 Änderungen, inkl. INF) sichert
+  exakte Übereinstimmung mit der Vollberechnung ab.
+- `localSearch()` nutzt Δ als Akzeptanzkriterium (4 volle Strain-Calls
+  → 2 Δ-Auswertungen); `aStrain`-Vorabberechnung entfällt.
+- `generate()` ~0.7 s (11 MA) / ~1.1 s (22 MA), Verhalten unverändert.
+
+**Verifiziert:** PHPUnit **23/23** (922 Assertions), Frontend **8/8**,
+Build grün. Doku: `algorithm-notes.md` Abschnitt „Phase 2f".
+
+**Lessons Learned:** Der saubere Weg zur exakten inkrementellen
+Bewertung ist nicht, die Strain-Formel per Hand zu differenzieren,
+sondern die getestete Vollfunktion auf einem so gewählten Fenster
+aufzurufen, dass sich alle Rand-/Außenterme im Δ algebraisch
+herauskürzen — Korrektheit dann per Property-Test gegen die
+Vollberechnung beweisen. Genau dies entkoppelt jetzt die (früher
+gescheiterte) Metaheuristik von der O(Monat)-Kostenfalle.
+
 ## 2026-05-15 — Phase 2e: reproduzierbare Evaluation; SA verworfen
 
 - `php artisan roster:evaluate {year?} {month?}` (read-only, committed)

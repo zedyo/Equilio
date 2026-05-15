@@ -190,3 +190,26 @@ interaktiver API/Demo und Test-Suite. Festgehalten als bewusste
 Engineering-Entscheidung: tiefere Metaheuristik erst sinnvoll mit
 inkrementeller Delta-Bewertung (O(1) statt O(Tage) je Zug) — offener,
 klar umrissener nächster Schritt, kein Blocker für den Prototyp.
+
+## Phase 2f — Inkrementelle Δ-Bewertung (Fundament für Metaheuristik)
+
+`StrainIndex::sequenceStrainDelta($old, $new, $changedDays, $days)`
+liefert `strain(neu) − strain(alt)` ohne Vollberechnung: betroffene Tage
+werden links/rechts bis zu einem in BEIDEN Sequenzen freien Tag erweitert
+(+2 Polsterung), so dass keine Serie/kein Übergang/kein Freitag-Pattern
+die Fenstergrenze kreuzt. Außen- und Randterme sind alt/neu identisch und
+kürzen sich im Δ exakt heraus →
+`Δ = Σ_Fenster [ ESS(Ausschnitt_neu) − ESS(Ausschnitt_alt) ]`
+mit der bereits getesteten `employeeSequenceStrain`. Aufwand ≈
+O(Serienlänge) statt O(Monatslänge); INF korrekt propagiert.
+
+Korrektheit per Property-Test (`StrainIndexTest`): 400 Zufallssequenzen
+× 1–3 Änderungen, Δ stimmt exakt mit Vollberechnung überein (inkl.
+INF-Fälle). `RosterGenerator::localSearch()` nutzt jetzt die Δ-Bewertung
+als Akzeptanzkriterium statt vier voller Strain-Berechnungen.
+
+Wirkung: `generate()` ~0.7 s (11 MA) / ~1.1 s (22 MA), Verhalten
+unverändert (alle Constraints/Tests grün). Dies ist die fehlende
+Voraussetzung für eine schnelle Metaheuristik (SA/3-Tausch): pro Zug
+nur noch O(Fenster)-Bewertung zweier Mitarbeiter — der frühere
+SA-Versuch scheiterte genau an der O(Monat)-Vollbewertung je Zug.
