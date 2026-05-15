@@ -342,4 +342,31 @@ für Ad-hoc-Analysen besser ein Skript mit eigenem Laravel-Bootstrap
 (`require bootstrap/app.php` + Kernel-bootstrap). Lokale sqlite nach
 Szenario-Mutationen via `migrate:fresh --seed` zurückgesetzt.
 
+## 2026-05-15 — Phase 2b: lokale Suche (2-Tausch) gegen fragmentierte freie Tage
+
+`RosterGenerator::localSearch()` nach dem Greedy-Lauf: arbeitslast- und
+besetzungserhaltender 2-Tausch (Hill-Climbing, max. 6 Pässe,
+deterministisch). Tauscht Dienst-Tag von A ↔ freien Tag von B, sodass
+jede Schicht-Instanz an ihrem Tag bleibt (Besetzung/Tag/Art unverändert)
+und jede Person ihre Dienstanzahl behält (Fairness unverändert).
+Akzeptiert nur strain-senkende, regelkonforme Tausche.
+
+**Wirkung (gleiche Szenarien, vorher → nachher):**
+- B (22 MA): **1472 → 258** (MA-Strain ≈ −82 %), Besetzung 0, regelkonform
+- C (22 MA + 21-Tage-Krankheit): **1596 → 249**
+- A (11 MA): 657 → 657 (kaum freie Tage; Strain wird von Besetzung 450
+  dominiert, die der Tausch bewusst nicht antastet — erwartetes Verhalten)
+
+Mock-JS-Generator kongruent erweitert (Demo zeigt denselben Effekt).
+Neuer Feature-Test `test_local_search_keeps_plan_rule_compliant_and_balanced`
+(≤6 in Folge, kein Nacht→Früh, ausgewogene Verteilung).
+
+**Verifiziert:** PHPUnit **16/16** (730 Assertions), Frontend **8/8**,
+Build grün. Doku: `algorithm-notes.md` (Abschnitt „Phase 2b").
+
+**Lessons Learned:** Occupation- *und* workload-erhaltende 2-Tausche sind
+der „sichere" Nachbarschaftsoperator — sie können harte Constraints &
+Besetzung gar nicht erst verletzen, nur Soft-Strain verbessern. Nächste
+Ausbaustufe: Simulated Annealing / 3-Tausch für tiefere Minima.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

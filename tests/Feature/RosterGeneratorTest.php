@@ -80,4 +80,51 @@ class RosterGeneratorTest extends TestCase
 
         $this->assertSame(0, $duringAbsence);
     }
+
+    public function test_local_search_keeps_plan_rule_compliant_and_balanced(): void
+    {
+        $year = (int) date('Y');
+        $month = (int) date('n');
+
+        $this->postJson('/api/duties/generate', ['year' => $year, 'month' => $month])
+            ->assertOk()
+            ->assertJsonPath('summary.forbidden', false);
+
+        $duties = \App\Models\Duty::with('shift.shift_type')
+            ->where('year', $year)->where('month', $month)->get();
+
+        $byEmp = [];
+        foreach ($duties as $d) {
+            $byEmp[$d->employee_id][$d->day] = $d->shift->shift_type->name;
+        }
+
+        $counts = [];
+        foreach ($byEmp as $empId => $seq) {
+            $counts[$empId] = count($seq);
+            ksort($seq);
+            $run = 0;
+            $prevDay = null;
+            $prevType = null;
+            foreach ($seq as $day => $type) {
+                $run = ($prevDay !== null && $day === $prevDay + 1) ? $run + 1 : 1;
+                $this->assertLessThanOrEqual(
+                    6, $run, "Mitarbeiter $empId hat mehr als 6 Dienste in Folge"
+                );
+                if ($prevDay !== null && $day === $prevDay + 1) {
+                    $this->assertFalse(
+                        $prevType === 'Nachtschicht' && $type === 'Frühschicht',
+                        "Verbotener Übergang Nacht->Früh bei Mitarbeiter $empId"
+                    );
+                }
+                $prevDay = $day;
+                $prevType = $type;
+            }
+        }
+
+        // Workload-erhaltender Tausch -> ausgewogene Verteilung bleibt.
+        $this->assertLessThanOrEqual(
+            6, max($counts) - min($counts),
+            'Dienstverteilung nach lokaler Suche zu unausgewogen'
+        );
+    }
 }

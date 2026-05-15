@@ -82,11 +82,33 @@ faire Verteilung.
 (11 MA decken Min-Bedarf nicht voll), kein Algorithmusfehler — mit 22 MA
 ist die Mindestbesetzung jeden Tag erfüllt (Besetzungs-Strain 0).
 
-**Aufgedeckte Schwäche (wichtig):** Der **Mitarbeiter-Strain steigt mit
-mehr Diensten stark** (B: 1472), weil das Greedy-Verfahren freie Tage
-fragmentiert → viele „isolierte freie Tage" (+8) statt „2 freie Tage am
-Stück" (−5). Hard-Regeln & Besetzung stimmen, aber das **Erholungsmuster
-wird nicht optimiert**. Konkretes nächstes Iterationsziel: zweite
-Optimierungsphase (lokale Suche/Tausch), die bei gleichbleibender
-Besetzung den Soft-Strain senkt (freie Tage bündeln). Reproduzierbar via
-`/tmp`-Analyseskripte bzw. einem späteren `php artisan roster:evaluate`.
+**Aufgedeckte Schwäche (Greedy allein):** Der Mitarbeiter-Strain stieg mit
+mehr Diensten stark (B: 1472), weil Greedy freie Tage fragmentiert
+(„isolierte freie Tage" +8 statt „2 freie Tage am Stück" −5).
+
+## Phase 2b — lokale Suche (2-Tausch), implementiert
+
+`RosterGenerator::localSearch()` läuft nach dem Greedy-Lauf:
+arbeitslast- **und** besetzungserhaltender 2-Tausch (Hill-Climbing) —
+tauscht einen Dienst-Tag von A mit einem freien Tag von B (B arbeitet an
+A's freiem Tag, A ist an B's Dienst-Tag frei). Jede Schicht-Instanz
+bleibt an ihrem Tag → Besetzung pro Tag/Art unverändert; jede Person
+behält ihre Dienstanzahl → Fairness unverändert. Akzeptiert nur Tausche,
+die den Soft-Strain senken und keine `INF`-Konstellation erzeugen
+(max. 6 Pässe, deterministische Reihenfolge nach `employee_id`).
+
+**Wirkung (gleiche Szenarien, nach Phase 2b):**
+
+| Szenario | MA | Belastungsindex vorher → nachher | Besetzung | Regelkonform |
+|----------|----|----------------------------------|-----------|--------------|
+| A | 11 | 657 → 657 (Soft 207, dominiert von Besetzung 450) | unverändert | ja |
+| B | 22 | **1472 → 258** (MA-Strain ≈ −82 %) | 0 (unverändert) | ja |
+| C | 22 | **1596 → 249** | 0 (unverändert) | ja |
+
+A bleibt gleich: bei Unterbesetzung gibt es kaum freie Tage zum Bündeln,
+und der dominante Anteil ist der Besetzungs-Strain (Kapazität), den der
+Tausch bewusst nicht antastet. B/C zeigen den eigentlichen Effekt.
+
+Offen: Simulated Annealing / größere Nachbarschaften (3-Tausch) für noch
+tiefere Minima; Reproduzierbar via `/tmp`-Analyseskripte bzw. einem
+späteren `php artisan roster:evaluate`.
