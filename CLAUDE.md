@@ -131,6 +131,31 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 
 **Kernlücke**: Der zentrale Forschungsteil der Bachelor­arbeit — der Generator-Algorithmus mit Belastungsindex — ist im Code nicht zu finden. Vorhanden sind nur die Verletzungs-Flags `wish_injury` / `preference_injury` auf der `Duty`, die beim manuellen Eintrag gesetzt werden.
 
+## Online-Demo (GitHub Pages)
+
+GitHub Pages kann Laravel/MySQL **nicht** ausführen. Für eine klickbare Online-Demo
+läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
+
+- `resources/js/mock/mockApi.js` — axios-Adapter, der die gesamte `/api/*`-API
+  im Browser nachbildet (Seeder-Daten, CRUD, Wunsch-/Präferenz-Verletzungen).
+  Persistenz via `localStorage`; `?reset` an die URL hängen setzt die Daten zurück.
+- Aktivierung ausschließlich über `window.__YETI_DEMO__ = true` in `demo/index.html`.
+  Im normalen Laravel-Betrieb wird der Mock **nicht** geladen — das echte Backend
+  bleibt unangetastet.
+- Im Demo-Modus nutzt der Router `HashRouter` statt `BrowserRouter`
+  (GitHub Pages hat kein SPA-Fallback für tiefe Pfade).
+- Deploy: `.github/workflows/deploy-pages.yml` baut `npm run prod`, montiert
+  `demo/index.html` + `public/js` + `public/css` zu `_site/` und published via
+  GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
+
+**Einmalige Voraussetzung (manuell durch Repo-Owner):**
+GitHub → Settings → Pages → *Source = GitHub Actions* aktivieren. Danach läuft
+der Deploy bei jedem Push automatisch; die URL erscheint in der Action-Zusammenfassung.
+
+Build-Hinweis: `node-sass` wurde entfernt (baut auf modernem Node nicht; dart-sass
+`sass` ist bereits vorhanden). `webpack` ist via `overrides` auf `5.89.0` gepinnt,
+da neuere Versionen `webpackbar`/`ProgressPlugin` von laravel-mix 6 brechen.
+
 ## Konventionen & Hinweise
 
 - Branch für laufende Doku/Entwicklung: `claude/add-project-documentation-1Qnpn` (Push erlaubt; Master nicht).
