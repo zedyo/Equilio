@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="eqg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7C3AED"/>
+      <stop offset="1" stop-color="#2563EB"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="200" rx="24" fill="#0B1020"/>
+  <!-- Konzept 5: minimalistisches "E"-Waage-Monogramm im gerundeten Quadrat -->
+  <rect x="44" y="44" width="112" height="112" rx="28" fill="url(#eqg)"/>
+  <g transform="translate(100 100)" stroke="#FFFFFF" stroke-width="7" stroke-linecap="round" fill="none">
+    <line x1="0" y1="-30" x2="0" y2="30"/>
+    <line x1="-26" y1="-30" x2="26" y2="-30"/>
+    <line x1="-26" y1="0" x2="14" y2="0"/>
+    <line x1="-26" y1="30" x2="26" y2="30"/>
+  </g>
+  <circle cx="126" cy="70" r="5.5" fill="#C4B5FD"/>
+  <text x="190" y="116" font-size="68" font-weight="800" fill="#F8FAFC" letter-spacing="-2">Equilio</text>
+  <text x="192" y="147" font-size="19" font-weight="400" fill="#8B93B8" letter-spacing="5">FAIR&#160;BY&#160;DESIGN</text>
+</svg>
