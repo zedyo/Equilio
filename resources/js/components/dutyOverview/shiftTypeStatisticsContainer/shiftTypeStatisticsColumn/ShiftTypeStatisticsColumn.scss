@@ -1,6 +1,9 @@
 .sumCells {
+  // Eine 2.2rem-Spalte je Tag -> deckt sich exakt mit den Tagesspalten
+  // der Kopfzeile und der Mitarbeiterzeilen.
   display: grid;
   grid-auto-flow: column;
+  grid-auto-columns: 2.2rem;
   align-items: center;
 }
 

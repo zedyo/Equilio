@@ -7,10 +7,12 @@ import shiftTypeSlice from './features/shiftTypes/shiftTypeSlice'
 import wishSlice from './features/wishes/wishSlice'
 import preferenceSlice from './features/preferences/preferenceSlice'
 import workingHoursDiffSlice from './features/workingHoursDiffs/workingHoursDiffSlice'
+import absenceSlice from './features/absences/absenceSlice'
 
 export const store = configureStore({
   reducer: {
     employees: employeeSlice,
+    absences: absenceSlice,
     qualifications: qualificationSlice,
     duties: dutySlice,
     shifts: shiftsSlice,

@@ -7,6 +7,7 @@ use App\Models\Employee;
 use App\Models\Preference;
 use App\Models\Shift;
 use App\Models\Wish;
+use App\Services\RosterGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -17,6 +18,51 @@ class DutyController extends Controller
         $employees = Employee::with('qualification')->get();
 
         return response()->json(['employees' => $employees]);
+    }
+
+    /**
+     * Automatische Plangenerierung (Phase 2 / Projektkern).
+     * Erzeugt einen Monatsvorschlag, ersetzt die Duties des Monats und
+     * gibt Plan + Belastungsindex-Zusammenfassung zurück. Der Plan ist
+     * anschließend manuell nachjustierbar.
+     */
+    public function generate(Request $request, RosterGenerator $generator)
+    {
+        $validated = $request->validate([
+            'year' => ['required', 'integer', 'min:2000', 'max:2100'],
+            'month' => ['required', 'integer', 'min:1', 'max:12'],
+        ]);
+
+        $year = (int) $validated['year'];
+        $month = (int) $validated['month'];
+
+        $result = $generator->generate($year, $month);
+
+        Duty::where('year', $year)->where('month', $month)->delete();
+        foreach ($result['duties'] as $row) {
+            Duty::create($row);
+        }
+
+        // Soll-/Ist-Stundenkonto je Mitarbeiter fortschreiben.
+        foreach ($result['hours'] as $h) {
+            \App\Models\WorkingHoursDiff::updateOrCreate(
+                [
+                    'employee_id' => $h['employee_id'],
+                    'month' => $month,
+                    'year' => $year,
+                ],
+                ['diff' => $h['diff']]
+            );
+        }
+
+        $duties = Duty::with('shift.shift_type')
+            ->where('year', $year)->where('month', $month)->get();
+
+        return response()->json([
+            'duties' => $duties,
+            'summary' => $result['summary'],
+            'hours' => $result['hours'],
+        ]);
     }
 
     public function getDutiesData(Request $request, $year, $month, $employee_id)

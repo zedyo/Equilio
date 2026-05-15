@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="640" height="200" rx="24" fill="#04293A"/>
+  <!-- Konzept 3: zwei gegengewichtige Tropfen (Last & Erholung), rotationssymmetrisch -->
+  <g transform="translate(100 100)">
+    <circle r="58" fill="none" stroke="#1B5563" stroke-width="3"/>
+    <path d="M0,-46 C26,-46 40,-22 0,2 C-40,-22 -26,-46 0,-46 Z" fill="#2DD4BF"/>
+    <path d="M0,46 C-26,46 -40,22 0,-2 C40,22 26,46 0,46 Z" fill="#F59E0B"/>
+    <circle cx="0" cy="-26" r="5" fill="#04293A"/>
+    <circle cx="0" cy="26" r="5" fill="#04293A"/>
+  </g>
+  <text x="200" y="118" font-size="66" font-weight="600" fill="#ECFEFF" letter-spacing="0">Equilio</text>
+  <text x="202" y="148" font-size="19" font-weight="400" fill="#5EA9B5" letter-spacing="4">BALANCE&#160;&#183;&#160;CARE&#160;&#183;&#160;24/7</text>
+</svg>

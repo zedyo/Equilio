@@ -1,4 +1,4 @@
-# Architektur — yourPlan / Yeti
+# Architektur — Equilio (vormals Yeti / yourPlan)
 
 ## Gesamtbild
 

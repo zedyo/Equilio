@@ -37,22 +37,23 @@ const workingHoursDiffSlice = createSlice({
       )
     },
   },
-  extraReducers: {
-    [postWorkingHoursDiff.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postWorkingHoursDiff.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const workingHoursDiff = state.workingHoursDiffsData.filter(
-        (workingHoursDiff) => workingHoursDiff.id !== payload.id
-      )
-      state.workingHoursDiffsData = [...workingHoursDiff, payload]
-    },
-    [postWorkingHoursDiff.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(postWorkingHoursDiff.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postWorkingHoursDiff.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const workingHoursDiff = state.workingHoursDiffsData.filter(
+          (workingHoursDiff) => workingHoursDiff.id !== payload.id
+        )
+        state.workingHoursDiffsData = [...workingHoursDiff, payload]
+      })
+      .addCase(postWorkingHoursDiff.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 200" width="640" height="200" font-family="Inter, 'Segoe UI', Helvetica, Arial, sans-serif">
+  <rect width="640" height="200" rx="24" fill="#0F172A"/>
+  <!-- Konzept 1: Balkenwaage im Gleichgewicht (Belastung vs. Erholung) -->
+  <g transform="translate(60 100)" stroke="#5EEAD4" stroke-width="7" stroke-linecap="round" fill="none">
+    <line x1="-44" y1="-40" x2="44" y2="-40"/>
+    <line x1="0" y1="-40" x2="0" y2="34"/>
+    <line x1="-22" y1="40" x2="22" y2="40"/>
+  </g>
+  <circle cx="16" cy="55" r="13" fill="#5EEAD4"/>
+  <circle cx="104" cy="55" r="13" fill="#38BDF8"/>
+  <text x="170" y="118" font-size="68" font-weight="700" fill="#F8FAFC" letter-spacing="-1">Equil<tspan fill="#5EEAD4">i</tspan>o</text>
+  <text x="172" y="150" font-size="20" font-weight="400" fill="#94A3B8" letter-spacing="3">DIENSTPLANUNG IM GLEICHGEWICHT</text>
+</svg>

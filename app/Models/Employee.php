@@ -30,6 +30,11 @@ class Employee extends Model
         return $this->hasMany(Duty::class);
     }
 
+    public function absences(): HasMany
+    {
+        return $this->hasMany(Absence::class);
+    }
+
     public function getDiffForHumansAttribute()
     {
         $now = Date::now();

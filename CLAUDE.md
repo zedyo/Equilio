@@ -1,7 +1,12 @@
-# Projekt Yeti / yourPlan
+# Equilio
 
 > Dienstplanungs-Webanwendung für 24/7-Schichtbetriebe (insb. Pflegebranche).
 > Bachelorarbeit (SAE Institut München, BA Web Development, 2021–2022) von Nikolai Seel.
+>
+> **Namenshistorie:** ursprünglich „Yeti" (Bachelor-Proposal) bzw. „yourPlan"
+> (Repo). Produktname seit Mai 2026: **Equilio**. Der GitHub-Repo-Name und
+> damit der Pages-Base-Pfad `/yourPlan/` bleiben unverändert (an das Repo
+> gebunden), bis das Repository selbst umbenannt wird.
 
 Diese Datei ist das primäre Gedächtnis für Claude. Detaillierte Notizen liegen unter `.claude/memory/`.
 
@@ -15,26 +20,46 @@ Volle Hintergrundgeschichte und MoSCoW-Ziele: siehe `.claude/memory/project-back
 
 | Layer       | Technik                                                            |
 |-------------|--------------------------------------------------------------------|
-| Backend     | PHP 8, Laravel 8 (`composer.json`)                                 |
-| Frontend    | React 17 + Redux Toolkit + React-Bootstrap + React-Router-Dom 5    |
-| Build       | Laravel Mix 6 (`webpack.mix.js`), Sass                             |
-| Datenbank   | MySQL 8                                                            |
-| Dev-Stack   | Laravel Sail (Docker), Redis, Mailhog, Selenium (`docker-compose.yml`) |
-| Tests       | PHPUnit (nur Skeleton vorhanden — keine echten Tests)              |
+| Backend     | **PHP 8.2+ / Laravel 12** (`composer.json`)                        |
+| Frontend    | React 19 + Redux Toolkit 2 + React-Bootstrap + React-Router-Dom 7 |
+| Build       | **Vite 7** (`vite.config.js`), Sass (dart-sass)                   |
+| HTTP-Client | axios 1.x                                                          |
+| Datenbank   | MySQL 8 (lokal: SQLite genügt)                                     |
+| Tests       | PHPUnit 11 (nur Skeleton vorhanden — keine echten Tests)          |
 
-## Setup
+> **Modernisierungsstand (Mai 2026):** Frontend **und** Backend vollständig
+> modernisiert. Frontend: laravel-mix→Vite, React 17→19, Router 5→7, RTK 1→2,
+> axios 0.21→1.x — `npm audit`: **0 Schwachstellen** (vorher 22).
+> Backend: Laravel 8 (EOL) → **Laravel 12 / PHP 8.2+** via frischem Skelett +
+> Code-Port — `composer audit`: **0 Advisories**. Migrationen/Seeder/API
+> gegen SQLite verifiziert (alle Endpunkte HTTP 200). Details:
+> `.claude/memory/implementation-status.md` und `progress-log.md`.
+>
+> Hinweis: `docker-compose.yml` stammt noch aus dem alten Sail-Setup und ist
+> nicht aktualisiert (für Demo/Backend nicht nötig) — Legacy, optional.
+
+## Setup (Frontend)
 
 ```bash
-cp .env.example .env                 # DB-Settings anpassen (DB_DATABASE=projectyeti)
-composer install
 npm install
-php artisan key:generate
-php artisan migrate:fresh --seed     # legt Stammdaten an (siehe Seeder)
-php artisan serve                    # http://localhost:8000
-npm run watch                        # Frontend-Build mit Hot-Reload
+npm run dev       # Vite Dev-Server (HMR)
+npm run build     # Produktions-Build nach dist/
+npm run preview   # gebautes dist/ lokal testen
 ```
 
-Alternativ via Sail (`docker-compose.yml` enthält PHP 8, MySQL 8, Redis, Mailhog, Selenium).
+Backend (Laravel 12) lokal:
+
+```bash
+composer install
+cp .env.example .env && php artisan key:generate
+# einfachster Weg: DB_CONNECTION=sqlite in .env setzen, dann:
+touch database/database.sqlite
+php artisan migrate --seed     # Stammdaten (siehe Seeder)
+php artisan serve              # API unter http://localhost:8000/api
+```
+
+Die GitHub-Pages-Demo läuft weiterhin komplett ohne Backend
+(In-Browser-Mock, siehe unten) und ist von Backend-Änderungen unberührt.
 
 ## Repository-Layout
 
@@ -122,14 +147,46 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 |--------------------------------------------|-----------|---------------|
 | CRUD: Mitarbeiter / Schichten / Qualif.    | MUSS      | ✅ fertig     |
 | Monatsübersicht / Kalender                 | MUSS      | ✅ fertig     |
-| **Automatische Dienstplangenerierung**     | MUSS      | ❌ **fehlt**  |
-| Erweitertes Szenario (Urlaub/Krankheit)    | SOLL      | ⚠️ teilweise  |
+| **Automatische Dienstplangenerierung**     | MUSS      | ✅ Prototyp   |
+| Erweitertes Szenario (Urlaub/Krankheit)    | SOLL      | ⚠️ Abwesenheiten im Generator; UI offen |
 | UI/UX, Wunschsystem                        | KANN      | ✅ fertig     |
 | Separate Rollen-UI                         | KANN      | ❌ fehlt      |
-| **Belastungsindex**                        | (Kern)    | ❌ **fehlt**  |
-| Tests                                      | —         | ❌ fehlt      |
+| **Belastungsindex**                        | (Kern)    | ✅ Prototyp   |
+| Tests                                      | —         | ✅ PHPUnit 17 + Frontend 7 |
 
-**Kernlücke**: Der zentrale Forschungsteil der Bachelor­arbeit — der Generator-Algorithmus mit Belastungsindex — ist im Code nicht zu finden. Vorhanden sind nur die Verletzungs-Flags `wish_injury` / `preference_injury` auf der `Duty`, die beim manuellen Eintrag gesetzt werden.
+**Kern umgesetzt (Phase 2, Mai 2026):** `App\Services\StrainIndex` +
+`App\Services\RosterGenerator` + `POST /api/duties/generate` erzeugen einen
+bewerteten Monatsvorschlag (manuell nachjustierbar). Heuristik &
+Vereinfachungen: `.claude/memory/algorithm-notes.md`. Offen bleiben
+Feinkalibrierung (Soll-Stunden, Qualifikations-Mix), Abwesenheits-/
+Regelwerk-UI und Auth/Rollen.
+
+## Online-Demo (GitHub Pages)
+
+GitHub Pages kann Laravel/MySQL **nicht** ausführen. Für eine klickbare Online-Demo
+läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
+
+- `resources/js/mock/mockApi.js` — axios-Adapter, der die gesamte `/api/*`-API
+  im Browser nachbildet (Seeder-Daten, CRUD, Wunsch-/Präferenz-Verletzungen).
+  Persistenz via `localStorage`; `?reset` an die URL hängen setzt die Daten zurück.
+- Aktivierung ausschließlich über `window.__YETI_DEMO__ = true` im Root-`index.html`
+  (Vite-Entry). Im normalen Laravel-Betrieb wird der Mock **nicht** geladen.
+- Im Demo-Modus nutzt der Router `HashRouter` statt `BrowserRouter`
+  (GitHub Pages hat kein SPA-Fallback für tiefe Pfade).
+- Deploy: `.github/workflows/deploy-pages.yml` baut `npm run build` (Vite,
+  Base `/yourPlan/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
+  published via GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
+- Live: `https://zedyo.github.io/yourPlan/`
+
+**Bereits eingerichtet (Repo-Owner):** Pages-Source = „GitHub Actions" und das
+`github-pages`-Environment erlaubt Deployments vom Doku-Branch.
+
+Build-Hinweise:
+- JSX-haltige Dateien tragen die Endung `.jsx` (Vite/plugin-react transformiert
+  nur diese; reine Logik wie Slices/Store/Mock bleibt `.js`).
+- `vite.config.js` setzt `publicDir: false`, damit Laravels `public/`
+  (Web-Root des Backends) nicht ins statische Deploy gelangt.
+- Alt-Build-Kette (laravel-mix/webpack/node-sass) wurde vollständig entfernt.
 
 ## Konventionen & Hinweise
 
@@ -141,12 +198,19 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 
 ## Arbeitsweise des Agents
 
+- **Autonomie (vom Nutzer erteilt, Mai 2026):** Bearbeitung, Commits und Push
+  auf den Arbeitsbranch dürfen in diesem Projekt ohne Rückfrage erfolgen.
+  Keine Bestätigungs-/Auswahlfragen für normale Entwicklungsarbeit. Ausnahmen
+  bleiben: wirklich destruktive/irreversible Aktionen (z. B. Force-Push auf
+  `master`, History-Rewrite) sowie inhaltlich mehrdeutige Produktentscheidungen.
 - Bei eigenständigen Änderungen: kleine, fokussierte Commits mit aussagekräftiger Botschaft.
 - Fortschritt mitschreiben in `.claude/memory/progress-log.md` (Datum, was gemacht, Lessons Learned).
 - Wenn Code von Proposal-Zielen abweicht, in `.claude/memory/implementation-status.md` aktualisieren.
 - Bei Algorithmus-Arbeit: Designentscheidungen + Belastungsindex-Heuristik dokumentieren in `.claude/memory/algorithm-notes.md` (anlegen sobald begonnen).
 
 ## Weiterführende Dokumente
+
+- `ROADMAP.md` — phasierter Entwicklungsplan (Kern: Generator/Belastungsindex)
 
 - `.claude/memory/project-background.md` — Zusammenfassung des Proposals + Ziele
 - `.claude/memory/implementation-status.md` — Detaillierter Soll/Ist-Abgleich

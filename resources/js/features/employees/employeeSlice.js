@@ -77,63 +77,61 @@ const employeesSlice = createSlice({
       )
     },
   },
-  extraReducers: {
-    [getEmployeeData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getEmployeeData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.employeesData = payload
-    },
-    [getEmployeeData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postEmployeeData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postEmployeeData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.employeesData.push(payload)
-    },
-    [postEmployeeData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [updateEmployeeData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [updateEmployeeData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      const employee = state.employeesData.filter(
-        (employee) => employee.id !== payload.id
-      )
-      state.employeeData = { ...employee, payload }
-    },
-    [updateEmployeeData.rejected]: (state, error) => {
-      state.errorMessage = error.payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteEmployeeData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteEmployeeData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.employeesData = state.employeesData.filter(
-        (employee) => employee.id !== payload.id
-      )
-    },
-    [deleteEmployeeData.rejected]: (state, { payload }) => {
-      state.errorMessage = error.payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getEmployeeData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getEmployeeData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.employeesData = payload
+      })
+      .addCase(getEmployeeData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postEmployeeData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postEmployeeData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.employeesData.push(payload)
+      })
+      .addCase(postEmployeeData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(updateEmployeeData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(updateEmployeeData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        const employee = state.employeesData.filter(
+          (employee) => employee.id !== payload.id
+        )
+        state.employeeData = { ...employee, payload }
+      })
+      .addCase(updateEmployeeData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteEmployeeData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteEmployeeData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.employeesData = state.employeesData.filter(
+          (employee) => employee.id !== payload.id
+        )
+      })
+      .addCase(deleteEmployeeData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

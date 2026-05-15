@@ -49,47 +49,46 @@ const wishSlice = createSlice({
       state.wishesData = actions
     },
   },
-  extraReducers: {
-    [getWishesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getWishesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.wishesData = payload
-    },
-    [getWishesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postWishesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postWishesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.wishesData.push(payload)
-    },
-    [postWishesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [deleteWishesData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [deleteWishesData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.wishesData = state.wishesData.filter(
-        (wish) => wish.id !== payload.id
-      )
-    },
-    [deleteWishesData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getWishesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getWishesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.wishesData = payload
+      })
+      .addCase(getWishesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postWishesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postWishesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.wishesData.push(payload)
+      })
+      .addCase(postWishesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(deleteWishesData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(deleteWishesData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.wishesData = state.wishesData.filter(
+          (wish) => wish.id !== payload.id
+        )
+      })
+      .addCase(deleteWishesData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 
