@@ -103,4 +103,42 @@ in spätere, separate Phase verschoben (Nutzer-Entscheidung). Demo nicht betroff
 - `publicDir` default (`public/`) ist bei Laravel-Repos eine Falle — Vite würde
   sonst `index.php` & alte Mix-Bundles ins Pages-Deploy kopieren.
 
+## 2026-05-15 — Backend-Modernisierung Laravel 8 (EOL) → Laravel 12
+
+**Was:** Vollständige Backend-Migration auf supporteten Stack.
+
+- **Methode:** Frisches `laravel/laravel:^12` Skelett gescaffoldet und den
+  App-Code portiert (statt 4 In-Place-Upgrade-Guides). Das Backend war ein
+  unverändertes Standard-L8-Skelett → Port ist der risikoärmste Weg.
+- **Portiert (unverändert):** 8 Domain-Models, 8 Controller, 8 Domain-Migrationen,
+  Seeder, Factories, `routes/api.php`, `config/cors.php`.
+- **Ersetzt durch L12-Skelett:** `bootstrap/app.php` (jetzt mit
+  `withRouting(api: …, apiPrefix: 'api')`), minimaler Basis-`Controller`,
+  L12-`User`-Model, L12-Config-Set, L12 Default-Migrationen
+  (0001_01_01 users/cache/jobs), `public/index.php`, `artisan`, `phpunit.xml`.
+- **Entfernt (in L11/12 obsolet):** `app/Http/Kernel.php`,
+  `app/Console/Kernel.php`, alle `app/Http/Middleware/*`, `app/Exceptions`,
+  Auth/Broadcast/Event/Route-ServiceProvider, `routes/channels.php`,
+  `server.php`, alte Default-Migrationen, `resources/views/app.blade.php`
+  (SPA wird via Vite/Pages bedient, nicht mehr per Blade).
+- **composer.json:** `php ^8.2`, `laravel/framework ^12`; entfernt:
+  `fideloper/proxy`, `fruitcake/laravel-cors` (beide jetzt Framework-intern),
+  `laravel/ui` (ungenutzt). dev: phpunit 11, collision 8, pail, pint.
+
+**Verifiziert (im Repo, PHP 8.4):**
+- `composer install` grün, **`composer audit`: 0 Advisories**.
+- `php artisan migrate --seed` (SQLite) grün — alle 11 Migrationen + Seeder.
+- `php artisan serve` + curl: `/api/employees`, `/qualifications`, `/shifts`,
+  `/shift_types`, `/duties/2026/5`, `/wishes`, `/preferences`, `/up`
+  → alle **HTTP 200** mit korrektem JSON.
+
+**Bewusst nicht angefasst:** `docker-compose.yml` (altes Sail-Setup) — Legacy,
+für Demo/Backend nicht nötig; in CLAUDE.md als optional markiert.
+
+**Lessons Learned:**
+- Bei unverändertem Standard-Skelett ist „fresh scaffold + code port"
+  deutlich verlässlicher als die Kette der Upgrade-Guides.
+- L11/12 hat kein `app/Http/Kernel.php`/Middleware-Verzeichnis mehr — Routing
+  & Middleware laufen über `bootstrap/app.php`.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

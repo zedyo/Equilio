@@ -77,6 +77,16 @@ Stand: erste Bestandsaufnahme bei Initialisierung des Claude-Memorys (Mai 2026, 
 - `Duty::delete` läuft über `POST /api/duty` statt `DELETE` (REST-Verletzung).
 - `Preference::delete` läuft über `PATCH /api/preference` (REST-Verletzung).
 
+## Infrastruktur-/Sicherheitsstand (Mai 2026)
+
+- **Frontend-Stack modernisiert:** Vite 7, React 19, Router 7, RTK 2, axios 1.x
+  — `npm audit` 0 Schwachstellen (vorher 22).
+- **Backend modernisiert:** Laravel 8 (EOL) → Laravel 12 / PHP 8.2+
+  — `composer audit` 0 Advisories; API gegen SQLite verifiziert (alle
+  Endpunkte HTTP 200).
+- Offen bleibt fachlich der Kern (Generator/Belastungsindex) sowie Auth/Rollen,
+  Tests und REST-Cleanup — siehe unten.
+
 ## Implikationen für künftige Arbeit
 
 Wenn dieses Projekt weitergeführt werden soll, sind die offensichtlichsten nächsten Schritte:

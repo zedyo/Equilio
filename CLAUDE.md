@@ -15,20 +15,23 @@ Volle Hintergrundgeschichte und MoSCoW-Ziele: siehe `.claude/memory/project-back
 
 | Layer       | Technik                                                            |
 |-------------|--------------------------------------------------------------------|
-| Backend     | PHP 8, Laravel 8 (`composer.json`) — **EOL, Modernisierung steht aus** (Backend-Phase) |
+| Backend     | **PHP 8.2+ / Laravel 12** (`composer.json`)                        |
 | Frontend    | React 19 + Redux Toolkit 2 + React-Bootstrap + React-Router-Dom 7 |
 | Build       | **Vite 7** (`vite.config.js`), Sass (dart-sass)                   |
 | HTTP-Client | axios 1.x                                                          |
-| Datenbank   | MySQL 8                                                            |
-| Dev-Stack   | Laravel Sail (Docker), Redis, Mailhog, Selenium (`docker-compose.yml`) |
-| Tests       | PHPUnit (nur Skeleton vorhanden — keine echten Tests)              |
+| Datenbank   | MySQL 8 (lokal: SQLite genügt)                                     |
+| Tests       | PHPUnit 11 (nur Skeleton vorhanden — keine echten Tests)          |
 
-> **Modernisierungsstand (Mai 2026):** Der Frontend-Stack wurde vollständig
-> aktualisiert (laravel-mix→Vite, React 17→19, Router 5→7, RTK 1→2, axios
-> 0.21→1.x). `npm audit` meldet **0 Schwachstellen** (vorher 22, alle aus der
-> alten webpack-Build-Kette). Der **Backend-Stack (Laravel 8) ist weiterhin
-> EOL** und in einer separaten Phase zu modernisieren — Details siehe
+> **Modernisierungsstand (Mai 2026):** Frontend **und** Backend vollständig
+> modernisiert. Frontend: laravel-mix→Vite, React 17→19, Router 5→7, RTK 1→2,
+> axios 0.21→1.x — `npm audit`: **0 Schwachstellen** (vorher 22).
+> Backend: Laravel 8 (EOL) → **Laravel 12 / PHP 8.2+** via frischem Skelett +
+> Code-Port — `composer audit`: **0 Advisories**. Migrationen/Seeder/API
+> gegen SQLite verifiziert (alle Endpunkte HTTP 200). Details:
 > `.claude/memory/implementation-status.md` und `progress-log.md`.
+>
+> Hinweis: `docker-compose.yml` stammt noch aus dem alten Sail-Setup und ist
+> nicht aktualisiert (für Demo/Backend nicht nötig) — Legacy, optional.
 
 ## Setup (Frontend)
 
@@ -39,9 +42,19 @@ npm run build     # Produktions-Build nach dist/
 npm run preview   # gebautes dist/ lokal testen
 ```
 
-Backend (Laravel) lokal: erfordert Modernisierung — Laravel 8 installiert auf
-PHP ≥ 8.2 nicht mehr. Die GitHub-Pages-Demo läuft komplett ohne Backend
-(In-Browser-Mock, siehe unten).
+Backend (Laravel 12) lokal:
+
+```bash
+composer install
+cp .env.example .env && php artisan key:generate
+# einfachster Weg: DB_CONNECTION=sqlite in .env setzen, dann:
+touch database/database.sqlite
+php artisan migrate --seed     # Stammdaten (siehe Seeder)
+php artisan serve              # API unter http://localhost:8000/api
+```
+
+Die GitHub-Pages-Demo läuft weiterhin komplett ohne Backend
+(In-Browser-Mock, siehe unten) und ist von Backend-Änderungen unberührt.
 
 ## Repository-Layout
 
