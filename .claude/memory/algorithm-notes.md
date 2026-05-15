@@ -213,3 +213,30 @@ unverändert (alle Constraints/Tests grün). Dies ist die fehlende
 Voraussetzung für eine schnelle Metaheuristik (SA/3-Tausch): pro Zug
 nur noch O(Fenster)-Bewertung zweier Mitarbeiter — der frühere
 SA-Versuch scheiterte genau an der O(Monat)-Vollbewertung je Zug.
+
+## Phase 2g — Simulated Annealing (auf Δ-Bewertung, jetzt performant)
+
+Nach Greedy + Hill-Climbing-Lokalsuche läuft `RosterGenerator::
+simulatedAnnealing()`: dieselbe sichere 2-Tausch-Nachbarschaft
+(Besetzung/Tag/Art, Dienstanzahl je MA, Fachkraft-Abdeckung invariant),
+Zugbewertung über `StrainIndex::sequenceStrainDelta` (O(Serienlänge)),
+Metropolis-Akzeptanz `exp(-Δ/T)` mit geometrischer Abkühlung. Fester
+Seed (`config rostering.annealing.seed`) → deterministisch. Die je
+gesehene beste Lösung wird gesichert → Ergebnis **nie schlechter** als
+die Eingabe (lokale Suche).
+
+**Wirkung (Seeder-Daten, Mai/2026):** 22 MA aufgestockt: Gesamt-Index
+**258 → −707** (freie Tage zu 2er-Erholungsblöcken gebündelt; Besetzung
+0 und Qualifikation 0 unverändert, regelkonform). 11 MA: unverändert
+(kapazitätsgebunden, kaum freie Tage). `generate()` ~0,8 s (11 MA) /
+~1,6 s (22 MA) — interaktiv. Der frühere SA-Fehlschlag (Minuten/Monat)
+ist durch die inkrementelle Δ-Bewertung (Phase 2f) behoben.
+
+Tests: `test_simulated_annealing_is_deterministic_and_never_worse`
+(Determinismus, SA ≤ ohne-SA, Besetzung/Qual invariant). Mock-JS-
+Generator kongruent (mulberry32-PRNG statt mt_rand).
+
+Damit ist die im Proposal als Kern genannte automatische, bewertete
+Plangenerierung inkl. Metaheuristik vollständig als getesteter,
+reproduzierbarer Prototyp umgesetzt. Offen: Gewichts-Feinjustierung,
+Phase 3 (Auth/Rollen).
