@@ -1,6 +1,26 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
-const initialState = { dutiesData: [], isLoading: true }
+const initialState = {
+  dutiesData: [],
+  isLoading: true,
+  generatorSummary: null,
+  isGenerating: false,
+}
+
+export const generateRoster = createAsyncThunk(
+  'duties/generateRoster',
+  async ({ year, month }, thunkAPI) => {
+    try {
+      const { data } = await axios.post(
+        'http://127.0.0.1:8000/api/duties/generate',
+        { year: Number(year), month: Number(month) }
+      )
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Fehler bei der Plangenerierung')
+    }
+  }
+)
 
 export const getDutiesData = createAsyncThunk(
   'duties/getDutiesData',
@@ -169,6 +189,19 @@ const dutySlice = createSlice({
       .addCase(deleteDutiesData.rejected, (state, { payload }) => {
         state.errorMessage = payload
         state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(generateRoster.pending, (state) => {
+        state.isGenerating = true
+      })
+      .addCase(generateRoster.fulfilled, (state, { payload }) => {
+        state.isGenerating = false
+        state.dutiesData = payload.duties
+        state.generatorSummary = payload.summary
+      })
+      .addCase(generateRoster.rejected, (state, { payload }) => {
+        state.isGenerating = false
+        state.errorMessage = payload
         state.hasError = true
       })
   },

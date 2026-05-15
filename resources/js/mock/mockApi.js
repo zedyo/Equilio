@@ -157,6 +157,197 @@ function dutyWithRelations(duty) {
   return { ...duty, shift: shift ? withShiftType(shift) : null }
 }
 
+// --- Generator-Portierung (kongruent zu App\Services\* ; siehe
+//     .claude/memory/algorithm-notes.md). Vereinfacht, da kein PHP im Browser.
+const ROSTER_CFG = {
+  maxConsecutive: 6,
+  forbidden: [{ from: 'Nachtschicht', to: 'Frühschicht' }],
+  w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5 },
+  typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
+}
+
+function sequenceStrain(seq, days) {
+  let strain = 0
+  let run = 0
+  for (let d = 1; d <= days; d++) {
+    const cur = seq[d]
+    if (d > 1 && cur && seq[d - 1]) {
+      for (const t of ROSTER_CFG.forbidden) {
+        if (seq[d - 1] === t.from && cur === t.to) return Infinity
+      }
+    }
+    if (cur) {
+      run++
+    } else {
+      if (run > ROSTER_CFG.maxConsecutive) return Infinity
+      if (run === 3) strain += ROSTER_CFG.w.third
+      run = 0
+    }
+  }
+  if (run > ROSTER_CFG.maxConsecutive) return Infinity
+  if (run === 3) strain += ROSTER_CFG.w.third
+  for (let d = 1; d <= days; d++) {
+    if (seq[d]) continue
+    const prevDuty = d > 1 && seq[d - 1]
+    const nextDuty = d < days && seq[d + 1]
+    const nextFree = d < days && !seq[d + 1]
+    if (prevDuty && nextDuty) strain += ROSTER_CFG.w.isolated
+    else if (nextFree && !(d > 1 && !seq[d - 1])) strain += ROSTER_CFG.w.twoFree
+  }
+  return strain
+}
+
+function runGenerator(year, month) {
+  const days = new Date(year, month, 0).getDate()
+  const employees = [...db.employees].sort((a, b) => a.id - b.id)
+  const typeById = Object.fromEntries(db.shift_types.map((t) => [t.id, t]))
+  const shiftByType = {}
+  for (const s of [...db.shifts].sort((a, b) => a.id - b.id)) {
+    const t = typeById[s.shift_type_id]
+    if (t && t.active_duty && !shiftByType[t.name]) shiftByType[t.name] = s
+  }
+  const activeTypes = ROSTER_CFG.typePriority
+    .filter((n) => shiftByType[n])
+    .map((n) => db.shift_types.find((t) => t.name === n))
+
+  const pad = (n) => String(n).padStart(2, '0')
+  const isAbsent = (empId, day) => {
+    const date = `${year}-${pad(month)}-${pad(day)}`
+    return db.absences.some(
+      (a) => a.employee_id === empId && date >= a.start_date && date <= a.end_date
+    )
+  }
+  const wishAt = (empId, day) =>
+    db.wishes.filter(
+      (w) => w.employee_id === empId && w.day === day && w.month === month && w.year === year
+    )
+  const hasPref = (empId, shiftId) =>
+    db.preferences.some((p) => p.employee_id === empId && p.shift_id === shiftId)
+
+  const assigned = {}
+  const dutyCount = {}
+  const runLen = {}
+  const prevType = {}
+  const target = {}
+  for (const e of employees) {
+    dutyCount[e.id] = 0
+    runLen[e.id] = 0
+    prevType[e.id] = null
+    target[e.id] = Math.round((days * ((e.employment_ratio || 100) / 100) * 5) / 7)
+  }
+
+  for (let day = 1; day <= days; day++) {
+    const today = {}
+    for (const type of activeTypes) {
+      const slots = Math.max(type.opt_occupation || 0, type.min_occupation || 0)
+      if (slots <= 0) continue
+      const shift = shiftByType[type.name]
+      const cands = []
+      for (const e of employees) {
+        if (today[e.id]) continue
+        if (isAbsent(e.id, day)) continue
+        if (dutyCount[e.id] >= target[e.id]) continue
+        if (runLen[e.id] >= ROSTER_CFG.maxConsecutive) continue
+        if (
+          prevType[e.id] &&
+          ROSTER_CFG.forbidden.some(
+            (t) => t.from === prevType[e.id] && t.to === type.name
+          )
+        )
+          continue
+        let bonus = 0
+        if (wishAt(e.id, day).some((w) => w.shift_id === shift.id)) bonus -= 3
+        if (hasPref(e.id, shift.id)) bonus -= 1
+        cands.push({ e, key: [bonus, dutyCount[e.id], e.id] })
+      }
+      cands.sort((a, b) =>
+        a.key[0] - b.key[0] || a.key[1] - b.key[1] || a.key[2] - b.key[2]
+      )
+      for (const c of cands.slice(0, slots)) {
+        ;(assigned[c.e.id] ||= {})[day] = shift
+        today[c.e.id] = true
+        dutyCount[c.e.id]++
+      }
+    }
+    for (const e of employees) {
+      if (assigned[e.id] && assigned[e.id][day]) {
+        runLen[e.id]++
+        prevType[e.id] = typeById[assigned[e.id][day].shift_type_id].name
+      } else {
+        runLen[e.id] = 0
+        prevType[e.id] = null
+      }
+    }
+  }
+
+  const newDuties = []
+  const countByType = {}
+  let nid = 1
+  for (const e of employees) {
+    for (let day = 1; day <= days; day++) {
+      const shift = assigned[e.id] && assigned[e.id][day]
+      if (!shift) continue
+      const tName = typeById[shift.shift_type_id].name
+      const wishes = wishAt(e.id, day)
+      const wishInjury = wishes.length
+        ? wishes.some((w) => w.shift_id === shift.id)
+          ? 0
+          : 1
+        : 0
+      newDuties.push({
+        id: nid++,
+        employee_id: e.id,
+        shift_id: shift.id,
+        day,
+        month,
+        year,
+        wish_injury: wishInjury,
+        preference_injury: hasPref(e.id, shift.id) ? 0 : 1,
+      })
+      ;(countByType[tName] ||= {})[day] = (countByType[tName]?.[day] || 0) + 1
+    }
+  }
+
+  let empStrain = 0
+  let forbidden = false
+  for (const e of employees) {
+    const seq = {}
+    for (let d = 1; d <= days; d++) {
+      const s = assigned[e.id] && assigned[e.id][d]
+      seq[d] = s ? typeById[s.shift_type_id].name : null
+    }
+    const v = sequenceStrain(seq, days)
+    if (!isFinite(v)) forbidden = true
+    else empStrain += v
+  }
+  let occStrain = 0
+  for (const type of activeTypes) {
+    const min = type.min_occupation || 0
+    if (min <= 0) continue
+    for (const cnt of Object.values(countByType[type.name] || {})) {
+      if (cnt < min) occStrain += ROSTER_CFG.w.understaffed * (min - cnt)
+    }
+  }
+
+  // Monat ersetzen + persistieren
+  db.duties = db.duties.filter((d) => !(d.year === year && d.month === month))
+  const maxId = db.duties.reduce((m, d) => Math.max(m, d.id), 0)
+  newDuties.forEach((d, i) => (d.id = maxId + 1 + i))
+  db.duties.push(...newDuties)
+  persist()
+
+  return {
+    duties: newDuties.map(dutyWithRelations),
+    summary: {
+      employee_strain: Math.round(empStrain * 100) / 100,
+      occupation_strain: Math.round(occStrain * 100) / 100,
+      total_strain: Math.round((empStrain + occStrain) * 100) / 100,
+      forbidden,
+      assigned_duties: newDuties.length,
+    },
+  }
+}
+
 function ok(data, status = 200) {
   return Promise.resolve({
     data,
@@ -240,6 +431,11 @@ function handle(method, path, body) {
     const deleted = idx >= 0 ? db.duties.splice(idx, 1)[0] : null
     persist()
     return ok({ deleted_duty: deleted })
+  }
+
+  if (r[0] === 'duties' && r[1] === 'generate' && method === 'post') {
+    const result = runGenerator(Number(body.year), Number(body.month))
+    return ok(result)
   }
 
   if (r[0] === 'duties') {

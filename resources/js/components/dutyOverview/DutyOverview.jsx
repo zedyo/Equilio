@@ -1,8 +1,11 @@
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
-import { Col, Container, Row } from 'react-bootstrap'
+import { Alert, Badge, Button, Col, Container, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { getDutiesDataByMonth } from '../../features/duties/dutySlice'
+import {
+  generateRoster,
+  getDutiesDataByMonth,
+} from '../../features/duties/dutySlice'
 import { daysToArray } from '../../util/daysToArray'
 import DateSelector from './dateSelector/DateSelector'
 import DaysRow from './daysRow/DaysRow'
@@ -19,7 +22,8 @@ function DutyOverview() {
     month: `${moment().format('M')}`,
     year: `${moment().format('YYYY')}`,
   })
-  const { dutiesData, isLoading } = useSelector((store) => store.duties)
+  const { dutiesData, isLoading, isGenerating, generatorSummary } =
+    useSelector((store) => store.duties)
   const { employeesData } = useSelector((store) => store.employees)
   const { wishesData } = useSelector((store) => store.wishes)
   const { qualificationsData } = useSelector((store) => store.qualifications)
@@ -61,6 +65,50 @@ function DutyOverview() {
               setDateSelector={setDateSelector}
             />
           </div>
+          <div className="generatorBar">
+            <Button
+              variant="primary"
+              disabled={isGenerating}
+              onClick={() =>
+                dispatch(
+                  generateRoster({
+                    year: dateSelectorData.year,
+                    month: dateSelectorData.month,
+                  })
+                )
+              }
+            >
+              {isGenerating ? (
+                <>
+                  <Spinner animation="border" size="sm" /> Generiere…
+                </>
+              ) : (
+                'Plan automatisch generieren'
+              )}
+            </Button>
+            {generatorSummary && (
+              <span className="generatorSummary">
+                <Badge bg="secondary">
+                  Belastungsindex: {generatorSummary.total_strain}
+                </Badge>{' '}
+                <Badge bg="secondary">
+                  Dienste: {generatorSummary.assigned_duties}
+                </Badge>{' '}
+                {generatorSummary.forbidden ? (
+                  <Badge bg="danger">unzulässige Konstellation</Badge>
+                ) : (
+                  <Badge bg="success">regelkonform</Badge>
+                )}
+              </span>
+            )}
+          </div>
+          {generatorSummary && generatorSummary.forbidden && (
+            <Alert variant="warning" className="generatorAlert">
+              Der Vorschlag enthält noch unzulässige Konstellationen
+              (z. B. zu viele Dienste in Folge oder Unterbesetzung) und muss
+              manuell nachjustiert werden.
+            </Alert>
+          )}
           <div className="dutyBoard">
             <DaysRow
               monthlyDays={monthlyDays}

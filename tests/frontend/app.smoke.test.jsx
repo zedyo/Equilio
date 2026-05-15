@@ -95,4 +95,18 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     )
     expect(quals.length).toBeGreaterThan(0)
   })
+
+  it('Automatische Plangenerierung liefert Belastungsindex (Phase 2)', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+
+    await user.click(
+      await screen.findByText(/Plan automatisch generieren/i)
+    )
+
+    expect(
+      await screen.findByText(/Belastungsindex:/i, {}, { timeout: 8000 })
+    ).toBeInTheDocument()
+  })
 })

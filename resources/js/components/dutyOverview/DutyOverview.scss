@@ -9,6 +9,20 @@
     margin: 1rem 0 1.5rem;
 }
 
+.generatorBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 0 0 1rem;
+    flex-wrap: wrap;
+}
+
+.generatorAlert {
+    max-width: 48rem;
+    margin: 0 auto 1.5rem;
+}
+
 // Das gesamte Board (Kopfzeile, Mitarbeiterzeilen, Statistik) hat eine
 // feste, vom Monat abhängige Breite und wird als Ganzes mittig zentriert.
 // Dadurch fluchten alle Tagesspalten exakt untereinander.
