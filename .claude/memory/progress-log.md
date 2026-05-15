@@ -141,4 +141,31 @@ für Demo/Backend nicht nötig; in CLAUDE.md als optional markiert.
 - L11/12 hat kein `app/Http/Kernel.php`/Middleware-Verzeichnis mehr — Routing
   & Middleware laufen über `bootstrap/app.php`.
 
+## 2026-05-15 — Funktionale Verifikation: jsdom-Integrationssuite
+
+**Was:** Echter Headless-Browser (Playwright/Chromium) ist in der Umgebung
+nicht möglich — Netzwerk-Allowlist blockt den Browser-CDN (`403 Host not in
+allowlist`), kein System-Chromium. Ersatz: **Vitest + Testing-Library + jsdom**
+Integrationssuite, die die echte App gegen das Demo-Mock mountet.
+
+- `tests/frontend/app.smoke.test.jsx` + `tests/frontend/setup.js`,
+  `vite.config.js` um `test`-Block erweitert (jsdom, testTimeout 20s),
+  npm-Script `test` = `vitest run`. devDeps: vitest, @testing-library/*, jsdom.
+- Deckt end-to-end ab: React 19 Render, React-Router 7 (HashRouter-Navigation),
+  Redux Toolkit 2 Slices, axios 1.x + Mock-Adapter, alle Haupt-Screens mit
+  Seeder-Daten (Dienstplan, Team, Qualifikationen, Schicht-Arten, Schichten).
+- **Realer Bug gefunden & gefixt:** `/api/shifts` im Mock lieferte kein
+  verschachteltes `shift_type` → `ShiftCard` (`shiftsData.shift_type.name`)
+  crashte; betraf auch die Live-Demo. Mock liefert Shifts jetzt mit
+  `withShiftType` (entspricht `ShiftController@index` = `Shift::with('shift_type')`).
+- CI: `npm test`-Schritt in `deploy-pages.yml` vor dem Build → Deploy nur bei
+  grünen Tests.
+
+**Ergebnis:** `npm test` 5/5 grün, `npm audit` 0, Vite-Build grün.
+
+**Lessons Learned:**
+- jsdom-Suite ersetzt keinen Pixel-/CSS-Test, fängt aber genau die
+  Stack-Migrations-Regressionen — und hat sofort einen echten Mock-Bug entlarvt.
+- `findByText` wirft bei Mehrfachtreffer → bei geteilten Werten `findAllByText`.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

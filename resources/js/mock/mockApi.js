@@ -291,7 +291,13 @@ function handle(method, path, body) {
   if (RES[r[0]]) {
     const cfg = RES[r[0]]
     const col = db[cfg.col]
-    if (method === 'get') return ok({ [cfg.col]: col })
+    if (method === 'get') {
+      // Echtes Backend liefert Shifts mit eager-loaded shift_type
+      // (ShiftController@index: Shift::with('shift_type')).
+      const payloadCol =
+        cfg.col === 'shifts' ? col.map(withShiftType) : col
+      return ok({ [cfg.col]: payloadCol })
+    }
     if (method === 'post') {
       const data = body[cfg.payload] || {}
       const created = { ...data, id: nextId(col) }

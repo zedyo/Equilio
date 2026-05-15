@@ -1,4 +1,4 @@
-import { defineConfig } from 'vite'
+import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 // Statische GitHub-Pages-Demo wird unter /yourPlan/ ausgeliefert.
@@ -20,5 +20,13 @@ export default defineConfig({
   build: {
     outDir: 'dist',
     emptyOutDir: true,
+  },
+  test: {
+    environment: 'jsdom',
+    globals: true,
+    css: false,
+    testTimeout: 20000,
+    setupFiles: ['./tests/frontend/setup.js'],
+    include: ['tests/frontend/**/*.test.{js,jsx}'],
   },
 })
