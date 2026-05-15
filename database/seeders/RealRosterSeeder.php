@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Duty;
 use App\Models\Employee;
+use App\Models\Preference;
 use App\Models\Qualification;
 use App\Models\Shift;
 use App\Models\ShiftType;
@@ -383,6 +384,38 @@ class RealRosterSeeder extends Seeder
         }
         foreach (array_chunk($rows, 500) as $c) {
             Duty::insert($c);
+        }
+        // Vorausgefuellte Praeferenzen, abgeleitet aus der realen
+        // Dienstverteilung der Quelle: der je MA dominante Dienst
+        // (mind. 45 Prozent seiner aktiven Dienste) -> 'preferred';
+        // jede aktive Dienstart, die der MA nie geleistet hat ->
+        // 'blocked'. [employee_id, shift_id (sortiert nach Kuerzel), level]
+        $prefs = [
+            [1,3,"preferred"],[1,19,"blocked"],[4,3,"preferred"],[4,19,"blocked"],[4,12,"blocked"],[4,13,"blocked"],[4,15,"blocked"],[4,14,"blocked"],[5,12,"blocked"],[5,13,"blocked"],[5,15,"blocked"],[5,14,"blocked"],[6,4,"preferred"],[6,23,"blocked"],
+            [6,24,"blocked"],[6,27,"blocked"],[6,25,"blocked"],[6,26,"blocked"],[6,19,"blocked"],[6,12,"blocked"],[6,13,"blocked"],[6,15,"blocked"],[6,14,"blocked"],[7,3,"preferred"],[7,19,"blocked"],[8,3,"preferred"],[9,25,"preferred"],[9,3,"blocked"],
+            [9,6,"blocked"],[9,7,"blocked"],[9,8,"blocked"],[9,9,"blocked"],[9,10,"blocked"],[9,4,"blocked"],[9,5,"blocked"],[10,10,"preferred"],[10,19,"blocked"],[10,12,"blocked"],[10,13,"blocked"],[10,15,"blocked"],[10,14,"blocked"],[11,26,"preferred"],
+            [11,19,"blocked"],[11,12,"blocked"],[11,13,"blocked"],[11,15,"blocked"],[11,14,"blocked"],[12,3,"preferred"],[14,23,"preferred"],[14,19,"blocked"],[14,12,"blocked"],[14,13,"blocked"],[14,15,"blocked"],[14,14,"blocked"],[15,12,"blocked"],[15,13,"blocked"],
+            [15,15,"blocked"],[15,14,"blocked"],[16,10,"preferred"],[16,19,"blocked"],[16,12,"blocked"],[16,13,"blocked"],[16,15,"blocked"],[16,14,"blocked"],[17,3,"preferred"],[20,26,"preferred"],[20,12,"blocked"],[20,13,"blocked"],[20,15,"blocked"],[20,14,"blocked"],
+            [21,10,"preferred"],[21,19,"blocked"],[21,12,"blocked"],[21,13,"blocked"],[21,15,"blocked"],[21,14,"blocked"],[22,3,"preferred"],[22,19,"blocked"],[22,12,"blocked"],[22,13,"blocked"],[22,15,"blocked"],[22,14,"blocked"],[23,23,"preferred"],[23,12,"blocked"],
+            [23,13,"blocked"],[23,15,"blocked"],[23,14,"blocked"],[24,3,"preferred"],[24,23,"blocked"],[24,24,"blocked"],[24,27,"blocked"],[24,25,"blocked"],[24,26,"blocked"],[24,19,"blocked"],[24,12,"blocked"],[24,13,"blocked"],[24,15,"blocked"],[24,14,"blocked"],
+            [25,3,"preferred"],[25,23,"blocked"],[25,24,"blocked"],[25,27,"blocked"],[25,25,"blocked"],[25,26,"blocked"],[25,19,"blocked"],[25,12,"blocked"],[25,13,"blocked"],[25,15,"blocked"],[25,14,"blocked"],[26,3,"preferred"],[26,23,"blocked"],[26,24,"blocked"],
+            [26,27,"blocked"],[26,25,"blocked"],[26,26,"blocked"],[26,19,"blocked"],[26,12,"blocked"],[26,13,"blocked"],[26,15,"blocked"],[26,14,"blocked"],[27,24,"preferred"],[27,19,"blocked"],[27,12,"blocked"],[27,13,"blocked"],[27,15,"blocked"],[27,14,"blocked"],
+            [28,7,"preferred"],[28,23,"blocked"],[28,24,"blocked"],[28,27,"blocked"],[28,25,"blocked"],[28,26,"blocked"],[28,19,"blocked"],[28,12,"blocked"],[28,13,"blocked"],[28,15,"blocked"],[28,14,"blocked"],[29,5,"preferred"],[29,23,"blocked"],[29,24,"blocked"],
+            [29,27,"blocked"],[29,25,"blocked"],[29,26,"blocked"],[29,19,"blocked"],[29,12,"blocked"],[29,13,"blocked"],[29,15,"blocked"],[29,14,"blocked"],[30,8,"preferred"],[30,23,"blocked"],[30,24,"blocked"],[30,27,"blocked"],[30,25,"blocked"],[30,26,"blocked"],
+            [30,19,"blocked"],[30,12,"blocked"],[30,13,"blocked"],[30,15,"blocked"],[30,14,"blocked"],[31,5,"preferred"],[31,23,"blocked"],[31,24,"blocked"],[31,27,"blocked"],[31,25,"blocked"],[31,26,"blocked"],[31,19,"blocked"],[31,12,"blocked"],[31,13,"blocked"],
+            [31,15,"blocked"],[31,14,"blocked"],[32,5,"preferred"],[32,23,"blocked"],[32,24,"blocked"],[32,27,"blocked"],[32,25,"blocked"],[32,26,"blocked"],[32,19,"blocked"],[32,12,"blocked"],[32,13,"blocked"],[32,15,"blocked"],[32,14,"blocked"],[33,3,"blocked"],
+            [33,6,"blocked"],[33,7,"blocked"],[33,8,"blocked"],[33,9,"blocked"],[33,10,"blocked"],[33,4,"blocked"],[33,5,"blocked"],[33,23,"blocked"],[33,24,"blocked"],[33,27,"blocked"],[33,25,"blocked"],[33,26,"blocked"],[33,19,"blocked"],[33,12,"blocked"],
+            [33,13,"blocked"],[33,15,"blocked"],[33,14,"blocked"],[34,3,"blocked"],[34,6,"blocked"],[34,7,"blocked"],[34,8,"blocked"],[34,9,"blocked"],[34,10,"blocked"],[34,4,"blocked"],[34,5,"blocked"],[34,23,"blocked"],[34,24,"blocked"],[34,27,"blocked"],
+            [34,25,"blocked"],[34,26,"blocked"],[34,19,"blocked"],[35,23,"blocked"],[35,24,"blocked"],[35,27,"blocked"],[35,25,"blocked"],[35,26,"blocked"],[35,19,"blocked"],[35,12,"blocked"],[35,13,"blocked"],[35,15,"blocked"],[35,14,"blocked"],[36,26,"preferred"],
+            [36,12,"blocked"],[36,13,"blocked"],[36,15,"blocked"],[36,14,"blocked"],
+        ];
+        $prows = [];
+        foreach ($prefs as [$pe, $ps, $pl]) {
+            $prows[] = ['employee_id' => $pe, 'shift_id' => $ps,
+                'level' => $pl];
+        }
+        foreach (array_chunk($prows, 500) as $c) {
+            Preference::insert($c);
         }
     }
 }

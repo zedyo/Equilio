@@ -17,10 +17,20 @@ import {
   RR_SHIFTS,
   RR_EMPLOYEES,
   RR_DUTIES_RAW,
+  RR_PREFERENCES,
 } from './realRosterData.js'
 
+function buildSeedPreferences() {
+  return RR_PREFERENCES.map(([employee_id, shift_id, level], i) => ({
+    id: i + 1,
+    employee_id,
+    shift_id,
+    level,
+  }))
+}
+
 // v2: anonymisierter Real-Datensatz (löst die alten Beispieldaten ab).
-const STORAGE_KEY = 'equilio_demo_db_v2'
+const STORAGE_KEY = 'equilio_demo_db_v3'
 
 const QUALIFICATIONS = RR_QUALIFICATIONS
 const SHIFT_TYPES = RR_SHIFT_TYPES
@@ -71,7 +81,7 @@ function freshDb() {
     employees: clone(EMPLOYEES),
     duties: buildSeedDuties(),
     wishes: [],
-    preferences: [],
+    preferences: buildSeedPreferences(),
     working_hours_diffs: [],
     absences: buildSeedAbsences(),
   }
