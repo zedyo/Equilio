@@ -1,4 +1,3 @@
-import { data } from 'jquery'
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { postWorkingHoursDiff } from '../../../../features/workingHoursDiffs/workingHoursDiffSlice'
