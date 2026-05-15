@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::patch('/duty', [DutyController::class, 'update']);
-Route::post('/duty', [DutyController::class, 'delete']);
+Route::delete('/duty', [DutyController::class, 'delete']);
 
 Route::get('/duties/{year}/{month}/', [DutyController::class, 'getAllDutiesData'])->name('getAllDutiesData');
 Route::get('/duties/{year}/{month}/{employee_id}', [DutyController::class, 'getDutiesData'])->name('getDutiesData');
@@ -39,5 +39,5 @@ Route::resources([
 Route::post('/wish', [WishController::class, 'create']);
 Route::get('/wishesByEmployee/{employee_id}', [WishController::class, 'getEmployeeWishData']);
 Route::post('/preference', [PreferenceController::class, 'create']);
-Route::patch('/preference', [PreferenceController::class, 'delete']);
+Route::delete('/preference', [PreferenceController::class, 'delete']);
 // Route::get('/preferencesByEmployee/{employee_id}', [WishController::class, 'getEmployeePreferenceData']);
