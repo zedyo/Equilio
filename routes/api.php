@@ -17,6 +17,8 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
+Route::post('/duties/generate', [DutyController::class, 'generate']);
+
 Route::patch('/duty', [DutyController::class, 'update']);
 Route::delete('/duty', [DutyController::class, 'delete']);
 
