@@ -147,14 +147,19 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 |--------------------------------------------|-----------|---------------|
 | CRUD: Mitarbeiter / Schichten / Qualif.    | MUSS      | ✅ fertig     |
 | Monatsübersicht / Kalender                 | MUSS      | ✅ fertig     |
-| **Automatische Dienstplangenerierung**     | MUSS      | ❌ **fehlt**  |
-| Erweitertes Szenario (Urlaub/Krankheit)    | SOLL      | ⚠️ teilweise  |
+| **Automatische Dienstplangenerierung**     | MUSS      | ✅ Prototyp   |
+| Erweitertes Szenario (Urlaub/Krankheit)    | SOLL      | ⚠️ Abwesenheiten im Generator; UI offen |
 | UI/UX, Wunschsystem                        | KANN      | ✅ fertig     |
 | Separate Rollen-UI                         | KANN      | ❌ fehlt      |
-| **Belastungsindex**                        | (Kern)    | ❌ **fehlt**  |
-| Tests                                      | —         | ❌ fehlt      |
+| **Belastungsindex**                        | (Kern)    | ✅ Prototyp   |
+| Tests                                      | —         | ✅ PHPUnit 17 + Frontend 7 |
 
-**Kernlücke**: Der zentrale Forschungsteil der Bachelor­arbeit — der Generator-Algorithmus mit Belastungsindex — ist im Code nicht zu finden. Vorhanden sind nur die Verletzungs-Flags `wish_injury` / `preference_injury` auf der `Duty`, die beim manuellen Eintrag gesetzt werden.
+**Kern umgesetzt (Phase 2, Mai 2026):** `App\Services\StrainIndex` +
+`App\Services\RosterGenerator` + `POST /api/duties/generate` erzeugen einen
+bewerteten Monatsvorschlag (manuell nachjustierbar). Heuristik &
+Vereinfachungen: `.claude/memory/algorithm-notes.md`. Offen bleiben
+Feinkalibrierung (Soll-Stunden, Qualifikations-Mix), Abwesenheits-/
+Regelwerk-UI und Auth/Rollen.
 
 ## Online-Demo (GitHub Pages)
 

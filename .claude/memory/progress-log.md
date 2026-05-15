@@ -271,4 +271,37 @@ grün, `composer audit`/`npm audit` weiterhin 0.
   unique-Constraint auf `qualifications.description` die Falle, wenn ein
   Test bereits geseedete Werte erneut anlegt.
 
+## 2026-05-15 — Phase 2: Generator + Belastungsindex (Projektkern)
+
+Der zentrale, bisher fehlende Forschungsteil ist nun als Prototyp da.
+
+**Backend:**
+- `App\Services\StrainIndex` — numerische Belastungsbewertung
+  (>max Dienste/verbotener Übergang = INF, isolierter freier Tag +,
+  2 freie Tage −, Unterbesetzung × Defizit), config-getrieben.
+- `App\Services\RosterGenerator` — greedy + Fairness: respektiert
+  Abwesenheiten, max. Dienste in Folge, verbotene Übergänge,
+  Soll-Dienstanzahl je `employment_ratio`, Wünsche/Präferenzen als Bonus.
+- `POST /api/duties/generate` (validiert) → ersetzt Monats-Duties,
+  liefert Plan + Strain-Summary. Plan bleibt manuell nachjustierbar.
+
+**Frontend/Demo:**
+- `generateRoster`-Thunk + State (`isGenerating`, `generatorSummary`).
+- Mock-JS-Portierung des Generators + Strain (kongruent gehalten), inkl.
+  Persistenz/Monatsersetzung.
+- DutyOverview: Button „Plan automatisch generieren" + Badges
+  (Belastungsindex, Dienste, regelkonform/unzulässig) + Warn-Alert.
+
+**Verifiziert:** PHPUnit **17/17** (StrainIndex-Unit 5, Generator-Feature 3),
+Frontend **7/7** (inkl. Generator-Flow), Build grün, Audits 0.
+
+**Heuristik & bewusste Vereinfachungen:** dokumentiert in
+`.claude/memory/algorithm-notes.md` (Soll-Stunden nur genähert,
+Qualifikations-Mix pro Schicht noch offen, Ruhezeit über verbotene
+Übergänge approximiert).
+
+**Offen (Phase 2 Rest / Phase 3):** Feinkalibrierung der Soll-Stunden,
+Qualifikations-Constraint („mind. 1 examiniert"), Abwesenheits-/
+Regelwerk-UI, Auth/Rollen, Evaluations-Messung der Nachjustierungsquote.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
