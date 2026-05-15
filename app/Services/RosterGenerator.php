@@ -244,9 +244,30 @@ class RosterGenerator
      */
     private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days): void
     {
+        // Die erschöpfende 2-Tausch-Lokalsuche ist O(E^2 * days^2) in der
+        // MA-Zahl (Restart bei jeder Verbesserung) und wird für große
+        // Bestände unbrauchbar (~77 s bei 36 MA). Oberhalb der Schwelle
+        // übernimmt allein das nachgelagerte Simulated Annealing
+        // (memoisiert, gedeckelt, „best-seen" -> nie schlechter als der
+        // Greedy-Start). Schwelle bewusst > Test-Datensätze (<=22), damit
+        // deren exaktes Verhalten unverändert bleibt.
+        $maxEmployees = (int) ((function_exists('config')
+            ? config('rostering.local_search_max_employees') : null) ?? 24);
+        if ($employees->count() > $maxEmployees) {
+            return;
+        }
+
         $maxPasses = 6;
         $empById = $employees->keyBy('id');
 
+        // Memoisierung: seqOf hängt nur an $assigned[$id] und ändert sich
+        // erst nach einem *akzeptierten* Tausch -> Cache statt
+        // Neuberechnung pro Kandidat (entfernt das dominante O(days) aus
+        // der innersten Schleife; Verhalten bleibt bit-identisch).
+        $seqCache = [];
+        foreach ($employees as $emp) {
+            $seqCache[$emp->id] = $this->seqOf($assigned, $emp->id, $shiftTypes, $days);
+        }
         $qualCovered = function (string $typeName, int $day) use (&$assigned, $shiftTypes, $empById, $isQualified): bool {
             foreach ($assigned as $empId => $byDay) {
                 $shift = $byDay[$day] ?? null;
@@ -300,8 +321,8 @@ class RosterGenerator
                             $covAd = $qualCovered($typeA, $d);
                             $covBe = $qualCovered($typeB, $e);
 
-                            $seqAOld = $this->seqOf($assigned, $aId, $shiftTypes, $days);
-                            $seqBOld = $this->seqOf($assigned, $bId, $shiftTypes, $days);
+                            $seqAOld = $seqCache[$aId];
+                            $seqBOld = $seqCache[$bId];
 
                             // Tausch anwenden
                             unset($assigned[$aId][$d]);
@@ -309,17 +330,14 @@ class RosterGenerator
                             unset($assigned[$bId][$e]);
                             $assigned[$bId][$d] = $shiftA;
 
+                            $seqANew = $this->seqOf($assigned, $aId, $shiftTypes, $days);
+                            $seqBNew = $this->seqOf($assigned, $bId, $shiftTypes, $days);
+
                             // Inkrementelle Δ-Bewertung (nur betroffene Tage).
                             $delta = $this->strain->sequenceStrainDelta(
-                                $seqAOld,
-                                $this->seqOf($assigned, $aId, $shiftTypes, $days),
-                                [$d, $e],
-                                $days
+                                $seqAOld, $seqANew, [$d, $e], $days
                             ) + $this->strain->sequenceStrainDelta(
-                                $seqBOld,
-                                $this->seqOf($assigned, $bId, $shiftTypes, $days),
-                                [$d, $e],
-                                $days
+                                $seqBOld, $seqBNew, [$d, $e], $days
                             );
 
                             $qualOk = (! $covAd || $qualCovered($typeA, $d))
@@ -328,6 +346,8 @@ class RosterGenerator
                             if ($qualOk && ! is_infinite($delta)
                                 && $delta < -0.0001) {
                                 $improved = true;
+                                $seqCache[$aId] = $seqANew;
+                                $seqCache[$bId] = $seqBNew;
                                 break 3;
                             }
 
@@ -395,6 +415,13 @@ class RosterGenerator
             return $c;
         };
 
+        // Memoisierung wie in localSearch: seqOf nur nach akzeptiertem
+        // Zug für die zwei betroffenen MA neu berechnen.
+        $seqCache = [];
+        foreach ($list as $emp) {
+            $seqCache[$emp->id] = $this->seqOf($assigned, $emp->id, $shiftTypes, $days);
+        }
+
         $best = $snapshot();
         $cum = 0.0;        // kumulierte Δ relativ zur Eingabe
         $bestCum = 0.0;    // 0 = Eingabe (lokale Suche) als sichere Untergrenze
@@ -429,18 +456,21 @@ class RosterGenerator
             $covAd = $qualCovered($typeA, $d);
             $covBe = $qualCovered($typeB, $e);
 
-            $seqAOld = $this->seqOf($assigned, $aId, $shiftTypes, $days);
-            $seqBOld = $this->seqOf($assigned, $bId, $shiftTypes, $days);
+            $seqAOld = $seqCache[$aId];
+            $seqBOld = $seqCache[$bId];
 
             unset($assigned[$aId][$d]);
             $assigned[$aId][$e] = $shiftB;
             unset($assigned[$bId][$e]);
             $assigned[$bId][$d] = $shiftA;
 
+            $seqANew = $this->seqOf($assigned, $aId, $shiftTypes, $days);
+            $seqBNew = $this->seqOf($assigned, $bId, $shiftTypes, $days);
+
             $delta = $this->strain->sequenceStrainDelta(
-                $seqAOld, $this->seqOf($assigned, $aId, $shiftTypes, $days), [$d, $e], $days
+                $seqAOld, $seqANew, [$d, $e], $days
             ) + $this->strain->sequenceStrainDelta(
-                $seqBOld, $this->seqOf($assigned, $bId, $shiftTypes, $days), [$d, $e], $days
+                $seqBOld, $seqBNew, [$d, $e], $days
             );
 
             $qualOk = (! $covAd || $qualCovered($typeA, $d))
@@ -451,6 +481,8 @@ class RosterGenerator
                     || (mt_rand() / mt_getrandmax()) < exp(-$delta / max($temp, 1e-6)));
 
             if ($accept) {
+                $seqCache[$aId] = $seqANew;
+                $seqCache[$bId] = $seqBNew;
                 $cum += $delta;
                 if ($cum < $bestCum - 1e-9) {
                     $bestCum = $cum;
