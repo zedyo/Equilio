@@ -168,4 +168,24 @@ Integrationssuite, die die echte App gegen das Demo-Mock mountet.
   Stack-Migrations-Regressionen — und hat sofort einen echten Mock-Bug entlarvt.
 - `findByText` wirft bei Mehrfachtreffer → bei geteilten Werten `findAllByText`.
 
+## 2026-05-15 — Fix: 404 bei Navigation in der Pages-Demo
+
+**Problem (Nutzer-Report):** In der GitHub-Pages-Demo nur Startseite sichtbar;
+andere Seiten → 404.
+
+**Ursache:** ~47 fest verdrahtete interne `href="/pfad"`-Anker in
+react-bootstrap-Komponenten (Navbar.Brand/Dropdown.Item/Breadcrumb.Item/
+Button). Im alten Laravel-Setup fing der Server-Fallback das ab; in der
+statischen Pages-Demo (HashRouter, Base `/yourPlan/`) lädt der Browser
+echte URLs wie `zedyo.github.io/employees` → 404.
+
+**Fix:** Zentraler `InternalLinkInterceptor` in `router/index.jsx` — fängt
+Klicks auf interne Links global ab und navigiert über `useNavigate()`
+(router-agnostisch: HashRouter-Demo wie BrowserRouter). Eine Änderung statt
+47; deckt auch künftige Links ab. Externe/Hash/Download/Modifier-Klicks
+werden korrekt ignoriert.
+
+**Test:** Regressionstest ergänzt (Nav-Dropdown → Team, clientseitig) —
+`npm test` **6/6 grün**, Build grün.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
