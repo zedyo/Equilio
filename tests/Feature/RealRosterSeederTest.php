@@ -56,13 +56,10 @@ class RealRosterSeederTest extends TestCase
     public function test_generator_runs_against_real_stammdaten(): void
     {
         config(['rostering.required_qualification' => 'Examinierte Pflegefachkraft']);
-        // Die O(E^2)-Lokalsuche skaliert mit der MA-Zahl; für einen
-        // schnellen Verhaltens-Test auf einen realistischen Teilbestand
-        // (~16 MA, alle Pflege-Qualifikationen vertreten) reduzieren und
-        // SA-Iterationen begrenzen. Skalierungsgrenze: real-roster-insights.md.
-        Employee::where('id', '>', 16)->delete();
-        config(['rostering.annealing.iterations' => 300]);
 
+        // Voller realer Bestand (36 MA): oberhalb der Lokalsuche-Schwelle
+        // optimiert allein das memoisierte SA -> interaktiv (~0,6 s statt
+        // vormals ~77 s). Siehe real-roster-insights.md.
         $result = app(RosterGenerator::class)->generate(2026, 6);
 
         $this->assertArrayHasKey('summary', $result);

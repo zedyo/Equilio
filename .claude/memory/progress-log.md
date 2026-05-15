@@ -397,6 +397,28 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2h: Generator-Skalierung + Real-World-Testdatensatz
+
+- Echte Pflege-Dienstplan-Excel (Jan–Mai 2018) analysiert (xlrd inkl.
+  Zellfarben → 7 Qualifikationen, Codes/Stunden/Regeln). Anonymisierter
+  `RealRosterSeeder` (36 MA, 2779 Duties, fiktive Namen, kein Klarname
+  im Repo), `RealRosterSeederTest`, `real-roster-insights.md`,
+  README-Anleitung (einbinden/überschreiben). Separater Zusatz-Seeder,
+  nicht in `DatabaseSeeder`.
+- **Generator-Performance:** 36 MA brauchten ~77 s. Behoben durch
+  (a) `seqOf`-Memoisierung in Lokalsuche + SA (nur die 2 betroffenen MA
+  nach akzeptiertem Zug neu; Verhalten bit-identisch — alle Bestands-
+  Tests inkl. SA-Determinismus unverändert grün) und
+  (b) `rostering.local_search_max_employees` (24): oberhalb übernimmt
+  allein das memoisierte, gedeckelte SA. **36 MA: 77 s → 0,56 s**,
+  regelkonform, Gesamt-Index −1571.
+- **Lessons Learned:** Die O(days)-Neuberechnung reiner Zustands-
+  Funktionen in der innersten Schleife war ein klassischer
+  Memoisierungs-Fall (Pure-Function-Cache = exakt gleiches Verhalten,
+  nur schneller). Die erschöpfende Hill-Climbing-Enumeration skaliert
+  strukturell nicht — die bounded Metaheuristik (SA) ist der richtige
+  Pfad für große Bestände.
+
 ## 2026-05-15 — Phase 2g: Simulated Annealing (auf Δ-Bewertung)
 
 - `RosterGenerator::simulatedAnnealing()` nach Greedy + Lokalsuche:
