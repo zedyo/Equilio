@@ -397,6 +397,30 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2g: Simulated Annealing (auf Δ-Bewertung)
+
+- `RosterGenerator::simulatedAnnealing()` nach Greedy + Lokalsuche:
+  selbe sichere 2-Tausch-Nachbarschaft, Δ-Bewertung via
+  `sequenceStrainDelta` (O(Serienlänge)), Metropolis `exp(-Δ/T)` +
+  geometrische Abkühlung, fester Seed, beste Lösung gesichert
+  (nie schlechter als Eingabe). Config `rostering.annealing`.
+- Wirkung: 22 MA Gesamt-Index **258 → −707** (Erholungsblöcke
+  gebündelt; Besetzung/Qual invariant, regelkonform). `generate()`
+  ~0,8 s/11 MA, ~1,6 s/22 MA — interaktiv. Früherer SA-Fehlschlag
+  (Minuten) durch Phase-2f-Δ behoben.
+- Test `test_simulated_annealing_is_deterministic_and_never_worse`
+  (Determinismus, SA ≤ ohne-SA, Besetzung/Qual invariant).
+- Mock-JS-Generator kongruent: SA mit mulberry32-PRNG.
+
+**Verifiziert:** PHPUnit **24/24** (929 Assertions), Frontend **8/8**,
+Build grün. Doku: `algorithm-notes.md` Abschnitt „Phase 2g".
+
+**Lessons Learned:** Dieselbe Metaheuristik, die in Phase 2e an der
+O(Monat)-Vollbewertung scheiterte, ist mit der inkrementellen
+Δ-Bewertung (2f) trivial schnell — die richtige Reihenfolge war
+„erst das Bewertungs-Fundament, dann der Algorithmus". Best-seen-
+Sicherung macht SA risikofrei (kann nie verschlechtern).
+
 ## 2026-05-15 — Phase 2f: inkrementelle Δ-Bewertung (Metaheuristik-Fundament)
 
 - `StrainIndex::sequenceStrainDelta()`: fenster-basierte, beweisbar
