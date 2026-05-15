@@ -166,6 +166,20 @@ const ROSTER_CFG = {
   typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
   requiredQualification: 'Exam. Pfleger:in',
   fullTimeWeekly: 39,
+  annealing: { iterations: 3000, startTemp: 10, cooling: 0.999, seed: 1337 },
+}
+
+// Deterministischer PRNG (mulberry32) — Pendant zu mt_srand/mt_rand,
+// damit die Demo-SA wie das Backend reproduzierbar ist.
+function mulberry32(seed) {
+  let t = seed >>> 0
+  return function () {
+    t = (t + 0x6d2b79f5) >>> 0
+    let x = t
+    x = Math.imul(x ^ (x >>> 15), x | 1)
+    x ^= x + Math.imul(x ^ (x >>> 7), x | 61)
+    return ((x ^ (x >>> 14)) >>> 0) / 4294967296
+  }
 }
 
 function sequenceStrain(seq, days) {
@@ -393,6 +407,80 @@ function runGenerator(year, month) {
       }
     }
     if (!improved) break
+  }
+
+  // Phase 2g: Simulated Annealing (kongruent zu
+  // RosterGenerator::simulatedAnnealing) — selbe sichere 2-Tausch-
+  // Nachbarschaft + Qual-Guard, deterministischer PRNG, beste Lösung
+  // gesichert (nie schlechter als die lokale Suche).
+  {
+    const sa = ROSTER_CFG.annealing
+    const rnd = mulberry32(sa.seed)
+    const list = employees
+    const N = list.length
+    if (N >= 2) {
+      const snapshot = () => {
+        const c = {}
+        for (const id of Object.keys(assigned)) c[id] = { ...assigned[id] }
+        return c
+      }
+      let best = snapshot()
+      let cum = 0
+      let bestCum = 0
+      let temp = sa.startTemp
+      for (let i = 0; i < sa.iterations; i++, temp *= sa.cooling) {
+        const a = list[Math.floor(rnd() * N)]
+        const b = list[Math.floor(rnd() * N)]
+        if (a.id === b.id) continue
+        const aDays = Object.keys(assigned[a.id] || {}).map(Number)
+        const bDays = Object.keys(assigned[b.id] || {}).map(Number)
+        if (!aDays.length || !bDays.length) continue
+        const d = aDays[Math.floor(rnd() * aDays.length)]
+        if ((assigned[b.id] && assigned[b.id][d]) || isAbsent(b.id, d)) continue
+        const e = bDays[Math.floor(rnd() * bDays.length)]
+        if ((assigned[a.id] && assigned[a.id][e]) || isAbsent(a.id, e)) continue
+
+        const shiftA = assigned[a.id][d]
+        const shiftB = assigned[b.id][e]
+        const typeA = typeById[shiftA.shift_type_id].name
+        const typeB = typeById[shiftB.shift_type_id].name
+        const covAd = qualCovered(typeA, d)
+        const covBe = qualCovered(typeB, e)
+
+        const aOld = sequenceStrain(seqOf(a.id), days)
+        const bOld = sequenceStrain(seqOf(b.id), days)
+        delete assigned[a.id][d]
+        assigned[a.id][e] = shiftB
+        delete assigned[b.id][e]
+        assigned[b.id][d] = shiftA
+        const aNew = sequenceStrain(seqOf(a.id), days)
+        const bNew = sequenceStrain(seqOf(b.id), days)
+        const delta = aNew + bNew - aOld - bOld
+
+        const qualOk =
+          (!covAd || qualCovered(typeA, d)) &&
+          (!covBe || qualCovered(typeB, e))
+        const accept =
+          qualOk &&
+          isFinite(delta) &&
+          (delta <= 0 || rnd() < Math.exp(-delta / Math.max(temp, 1e-6)))
+
+        if (accept) {
+          cum += delta
+          if (cum < bestCum - 1e-9) {
+            bestCum = cum
+            best = snapshot()
+          }
+        } else {
+          delete assigned[a.id][e]
+          assigned[a.id][d] = shiftA
+          delete assigned[b.id][d]
+          assigned[b.id][e] = shiftB
+        }
+      }
+      for (const id of Object.keys(assigned)) delete assigned[id]
+      for (const id of Object.keys(best)) assigned[id] = best[id]
+    }
   }
 
   const newDuties = []

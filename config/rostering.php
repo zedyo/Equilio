@@ -45,4 +45,14 @@ return [
 
     // Standard-Soll-Wochenstunden bei 100 % Beschäftigung.
     'full_time_weekly_hours' => 39,
+
+    // Phase 2g: Simulated Annealing nach der Hill-Climbing-Lokalsuche.
+    // Inkrementelle Δ-Bewertung -> performant. Fester Seed = reproduzierbar.
+    'annealing' => [
+        'enabled' => true,
+        'iterations' => 3000,
+        'start_temp' => 10.0,
+        'cooling' => 0.999,
+        'seed' => 1337,
+    ],
 ];
