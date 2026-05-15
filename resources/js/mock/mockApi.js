@@ -205,8 +205,16 @@ function runGenerator(year, month) {
     db.wishes.filter(
       (w) => w.employee_id === empId && w.day === day && w.month === month && w.year === year
     )
+  const prefLevel = (empId, shiftId) => {
+    const p = db.preferences.find(
+      (x) => x.employee_id === empId && x.shift_id === shiftId
+    )
+    return p ? p.level || 'preferred' : 'valid'
+  }
   const hasPref = (empId, shiftId) =>
-    db.preferences.some((p) => p.employee_id === empId && p.shift_id === shiftId)
+    prefLevel(empId, shiftId) === 'preferred'
+  const isBlocked = (empId, shiftId) =>
+    prefLevel(empId, shiftId) === 'blocked'
 
   const reqQual = ROSTER_CFG.requiredQualification
   const qualDescById = Object.fromEntries(
@@ -257,6 +265,8 @@ function runGenerator(year, month) {
           )
         )
           continue
+        // Gesperrte Schicht: niemals zuteilen (harte Regel).
+        if (isBlocked(e.id, shift.id)) continue
         let bonus = 0
         if (wishAt(e.id, day).some((w) => w.shift_id === shift.id)) bonus -= 3
         if (hasPref(e.id, shift.id)) bonus -= 1
@@ -339,6 +349,7 @@ function runGenerator(year, month) {
             if (isAbsent(bId, d)) continue
             const shiftA = assigned[aId][d]
             const shiftB = assigned[bId][e]
+            if (isBlocked(aId, shiftB.id) || isBlocked(bId, shiftA.id)) continue
             let before = aStrain + sequenceStrain(seqOf(bId), days)
             if (!isFinite(before)) before = Number.MAX_VALUE
             const typeA = typeById[shiftA.shift_type_id].name
@@ -410,6 +421,7 @@ function runGenerator(year, month) {
 
         const shiftA = assigned[a.id][d]
         const shiftB = assigned[b.id][e]
+        if (isBlocked(a.id, shiftB.id) || isBlocked(b.id, shiftA.id)) continue
         const typeA = typeById[shiftA.shift_type_id].name
         const typeB = typeById[shiftB.shift_type_id].name
         const covAd = qualCovered(typeA, d)
@@ -829,33 +841,54 @@ function handle(method, path, body) {
 
   // ---- preferences ----
   if (r[0] === 'preferences' && method === 'get') {
-    return ok({ preferences: db.preferences })
+    // Kopie zurückgeben: Redux/Immer friert die Antwort ein – nie die
+    // interne db-Array-Referenz teilen (sonst schlägt späteres Mutieren
+    // mit "object is not extensible" fehl).
+    return ok({ preferences: db.preferences.map((x) => ({ ...x })) })
   }
   if (r[0] === 'preference' && method === 'post') {
     const p = body.preferenceData
-    let existing = db.preferences.find(
+    const level = ['preferred', 'valid', 'blocked'].includes(p.level)
+      ? p.level
+      : 'preferred'
+    const existing = db.preferences.find(
       (x) => x.employee_id === p.employee_id && x.shift_id === p.shift_id
     )
-    if (p.active == 1) {
-      if (!existing) {
-        existing = { id: nextId(db.preferences), employee_id: p.employee_id, shift_id: p.shift_id }
-        db.preferences.push(existing)
-        db.duties
-          .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
-          .forEach((d) => (d.preference_injury = 0))
-      }
-      persist()
-      return ok({ preference: existing }, 201)
-    } else {
+    if (level === 'valid') {
       if (existing) {
         db.preferences = db.preferences.filter((x) => x.id !== existing.id)
-        db.duties
-          .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
-          .forEach((d) => (d.preference_injury = 1))
       }
+      db.duties
+        .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
+        .forEach((d) => (d.preference_injury = 1))
       persist()
-      return ok({ preference: existing || { id: null } }, 201)
+      return ok(
+        {
+          preference: {
+            employee_id: p.employee_id,
+            shift_id: p.shift_id,
+            level: 'valid',
+          },
+        },
+        201
+      )
     }
+    const row = {
+      id: existing ? existing.id : nextId(db.preferences),
+      employee_id: p.employee_id,
+      shift_id: p.shift_id,
+      level,
+    }
+    // Immer-sicher: neues Array statt In-place-Mutation.
+    db.preferences = [
+      ...db.preferences.filter((x) => x.id !== row.id),
+      row,
+    ]
+    db.duties
+      .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
+      .forEach((d) => (d.preference_injury = level === 'preferred' ? 0 : 1))
+    persist()
+    return ok({ preference: { ...row } }, 201)
   }
   if (r[0] === 'preference' && method === 'delete') {
     const p = body.preferenceData

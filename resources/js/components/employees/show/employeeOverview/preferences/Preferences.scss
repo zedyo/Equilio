@@ -1,0 +1,94 @@
+.preferences {
+  &__legend {
+    font-size: 0.85rem;
+    color: #64748b;
+    margin-bottom: 0.75rem;
+  }
+
+  &__chip {
+    padding: 1px 7px;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.78rem;
+
+    &.is-blocked {
+      background: #fde2e1;
+      color: #b91c1c;
+    }
+    &.is-valid {
+      background: #eef1f4;
+      color: #475569;
+    }
+    &.is-preferred {
+      background: #dcfce7;
+      color: #15803d;
+    }
+  }
+
+  &__card {
+    margin: 0.6rem 0;
+    border-radius: 12px;
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 6px 0;
+
+    & + & {
+      border-top: 1px solid #f1f5f9;
+    }
+  }
+
+  &__shift {
+    font-weight: 700;
+    font-size: 0.95rem;
+    min-width: 46px;
+  }
+
+  &__seg {
+    display: inline-flex;
+    border: 1px solid #e2e8f0;
+    border-radius: 9px;
+    overflow: hidden;
+    background: #f8fafc;
+  }
+
+  &__opt {
+    border: none;
+    background: transparent;
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+
+    & + & {
+      border-left: 1px solid #e2e8f0;
+    }
+
+    &:hover {
+      background: #eef2f7;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: -2px;
+    }
+
+    &.is-active.is-blocked {
+      background: #dc2626;
+      color: #fff;
+    }
+    &.is-active.is-valid {
+      background: #64748b;
+      color: #fff;
+    }
+    &.is-active.is-preferred {
+      background: #16a34a;
+      color: #fff;
+    }
+  }
+}
