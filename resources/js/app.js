@@ -13,6 +13,10 @@ import { Provider } from 'react-redux'
 
 require('./bootstrap')
 
+if (typeof window !== 'undefined' && window.__YETI_DEMO__) {
+  require('./mock/mockApi').installMockApi()
+}
+
 /**
  * Next, we will create a fresh React component instance and attach it to
  * the page. Then, you may begin adding components to this application
