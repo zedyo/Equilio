@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react'
-import { Switch, BrowserRouter, Route } from 'react-router-dom'
+import { Switch, BrowserRouter, HashRouter, Route } from 'react-router-dom'
+
+const AppRouter =
+  typeof window !== 'undefined' && window.__YETI_DEMO__
+    ? HashRouter
+    : BrowserRouter
 import NavigationBar from '../components/NavigationBar'
 import QualificationOverview from '../components/qualifications/QualificationOverview'
 import UpdateQualification from '../components/qualifications/update/UpdateQualification'
@@ -40,7 +45,7 @@ function Router() {
 
   return (
     <>
-      <BrowserRouter>
+      <AppRouter>
         <NavigationBar />
         {/* <div className="py-4"> */}
         <Switch>
@@ -65,7 +70,7 @@ function Router() {
           <Route exact path="/" component={DutyOverview} />
         </Switch>
         {/* </div> */}
-      </BrowserRouter>
+      </AppRouter>
     </>
   )
 }
