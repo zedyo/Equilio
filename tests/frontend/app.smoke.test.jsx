@@ -10,7 +10,7 @@
  *  funktionalen Migrations-Risiken ohne Browser ab.)
  */
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, within } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 function navigate(hash) {
@@ -117,5 +117,47 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     expect(
       await screen.findByText(/Belastungsindex:/i, {}, { timeout: 8000 })
     ).toBeInTheDocument()
+  })
+
+  it('Datepicker: Popover öffnet, Monatswahl & "Heute" funktionieren', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+
+    const year = new Date().getFullYear()
+    // Trigger trägt das Jahr im Label (Nav-Buttons nicht).
+    const trigger = await screen.findByRole('button', {
+      name: new RegExp(`${year}`),
+    })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+
+    await user.click(trigger)
+    const dialog = await screen.findByRole('dialog', {
+      name: /Monat wählen/i,
+    })
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+
+    // Anderen Monat wählen -> Panel schließt, Label aktualisiert.
+    await user.click(within(dialog).getByText('Juni'))
+    expect(
+      screen.queryByRole('dialog', { name: /Monat wählen/i })
+    ).not.toBeInTheDocument()
+    expect(
+      await screen.findByRole('button', {
+        name: new RegExp(`Juni ${year}`),
+      })
+    ).toBeInTheDocument()
+
+    // "Heute" springt zum aktuellen Monat zurück.
+    await user.click(
+      await screen.findByRole('button', { name: new RegExp(`${year}`) })
+    )
+    const dialog2 = await screen.findByRole('dialog', {
+      name: /Monat wählen/i,
+    })
+    await user.click(within(dialog2).getByRole('button', { name: 'Heute' }))
+    expect(
+      screen.queryByRole('dialog', { name: /Monat wählen/i })
+    ).not.toBeInTheDocument()
   })
 })
