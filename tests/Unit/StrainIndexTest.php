@@ -52,6 +52,17 @@ class StrainIndexTest extends TestCase
         $this->assertSame(8.0, $this->index()->employeeSequenceStrain($seq));
     }
 
+    public function test_missing_required_qualification_adds_strain(): void
+    {
+        $idx = new StrainIndex([
+            'required_qualification' => 'Exam. Pfleger:in',
+            'strain_weights' => ['missing_required_qualification' => 30.0],
+        ]);
+        $this->assertSame('Exam. Pfleger:in', $idx->requiredQualification());
+        $this->assertSame(90.0, $idx->qualificationStrain(3));
+        $this->assertSame(0.0, $idx->qualificationStrain(0));
+    }
+
     public function test_understaffed_occupation_adds_strain(): void
     {
         // Frühschicht braucht min 3, an Tag 1 nur 1 besetzt -> 50 * (3-1)

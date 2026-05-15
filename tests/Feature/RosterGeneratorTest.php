@@ -81,6 +81,48 @@ class RosterGeneratorTest extends TestCase
         $this->assertSame(0, $duringAbsence);
     }
 
+    public function test_every_active_shift_has_an_examined_nurse_when_available(): void
+    {
+        $year = (int) date('Y');
+        $month = (int) date('n');
+
+        // Genug examinierte Fachkräfte -> Regel muss vollständig erfüllbar sein.
+        $examined = \App\Models\Qualification::where('description', 'Exam. Pfleger:in')
+            ->firstOrFail();
+        \App\Models\Employee::factory(14)->create([
+            'qualification_id' => $examined->id,
+        ]);
+
+        $response = $this->postJson('/api/duties/generate', [
+            'year' => $year, 'month' => $month,
+        ])->assertOk();
+
+        $response->assertJsonStructure([
+            'summary' => ['qualification_strain', 'missing_qualification'],
+        ]);
+        $this->assertSame(0, $response->json('summary.missing_qualification'));
+
+        // Strukturell gegenprüfen: jede aktive Schicht/Tag mit Diensten
+        // enthält mind. eine examinierte Kraft.
+        $duties = \App\Models\Duty::with('shift.shift_type', 'employee.qualification')
+            ->where('year', $year)->where('month', $month)->get();
+
+        $qualPresent = [];
+        $any = [];
+        foreach ($duties as $d) {
+            $key = $d->shift->shift_type->name.'-'.$d->day;
+            $any[$key] = true;
+            if ($d->employee->qualification?->description === 'Exam. Pfleger:in') {
+                $qualPresent[$key] = true;
+            }
+        }
+        foreach (array_keys($any) as $key) {
+            $this->assertArrayHasKey(
+                $key, $qualPresent, "Schicht/Tag $key ohne examinierte Fachkraft"
+            );
+        }
+    }
+
     public function test_local_search_keeps_plan_rule_compliant_and_balanced(): void
     {
         $year = (int) date('Y');

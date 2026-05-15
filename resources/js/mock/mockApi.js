@@ -162,8 +162,9 @@ function dutyWithRelations(duty) {
 const ROSTER_CFG = {
   maxConsecutive: 6,
   forbidden: [{ from: 'Nachtschicht', to: 'Frühschicht' }],
-  w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5 },
+  w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5, missingQual: 30 },
   typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
+  requiredQualification: 'Exam. Pfleger:in',
 }
 
 function sequenceStrain(seq, days) {
@@ -224,6 +225,13 @@ function runGenerator(year, month) {
   const hasPref = (empId, shiftId) =>
     db.preferences.some((p) => p.employee_id === empId && p.shift_id === shiftId)
 
+  const reqQual = ROSTER_CFG.requiredQualification
+  const qualDescById = Object.fromEntries(
+    db.qualifications.map((q) => [q.id, q.description])
+  )
+  const isQualified = (emp) =>
+    reqQual === null || qualDescById[emp.qualification_id] === reqQual
+
   const assigned = {}
   const dutyCount = {}
   const runLen = {}
@@ -263,7 +271,17 @@ function runGenerator(year, month) {
       cands.sort((a, b) =>
         a.key[0] - b.key[0] || a.key[1] - b.key[1] || a.key[2] - b.key[2]
       )
-      for (const c of cands.slice(0, slots)) {
+      let fill = cands.slice(0, slots)
+      if (reqQual !== null && fill.length) {
+        if (!fill.some((c) => isQualified(c.e))) {
+          const q = cands.find((c) => isQualified(c.e))
+          if (q) {
+            fill.pop()
+            fill.unshift(q)
+          }
+        }
+      }
+      for (const c of fill) {
         ;(assigned[c.e.id] ||= {})[day] = shift
         today[c.e.id] = true
         dutyCount[c.e.id]++
@@ -290,6 +308,20 @@ function runGenerator(year, month) {
     }
     return s
   }
+  const empById = Object.fromEntries(employees.map((e) => [e.id, e]))
+  const qualCovered = (typeName, day) => {
+    for (const id of Object.keys(assigned)) {
+      const sh = assigned[id] && assigned[id][day]
+      if (
+        sh &&
+        typeById[sh.shift_type_id].name === typeName &&
+        empById[id] &&
+        isQualified(empById[id])
+      )
+        return true
+    }
+    return false
+  }
   for (let pass = 0; pass < 6; pass++) {
     let improved = false
     for (const a of employees) {
@@ -315,13 +347,25 @@ function runGenerator(year, month) {
             const shiftB = assigned[bId][e]
             let before = aStrain + sequenceStrain(seqOf(bId), days)
             if (!isFinite(before)) before = Number.MAX_VALUE
+            const typeA = typeById[shiftA.shift_type_id].name
+            const typeB = typeById[shiftB.shift_type_id].name
+            const covAd = qualCovered(typeA, d)
+            const covBe = qualCovered(typeB, e)
             delete assigned[aId][d]
             assigned[aId][e] = shiftB
             delete assigned[bId][e]
             assigned[bId][d] = shiftA
             const aNew = sequenceStrain(seqOf(aId), days)
             const bNew = sequenceStrain(seqOf(bId), days)
-            if (isFinite(aNew) && isFinite(bNew) && aNew + bNew < before - 0.0001) {
+            const qualOk =
+              (!covAd || qualCovered(typeA, d)) &&
+              (!covBe || qualCovered(typeB, e))
+            if (
+              qualOk &&
+              isFinite(aNew) &&
+              isFinite(bNew) &&
+              aNew + bNew < before - 0.0001
+            ) {
               improved = true
               done = true
               break
@@ -341,6 +385,7 @@ function runGenerator(year, month) {
 
   const newDuties = []
   const countByType = {}
+  const qualByType = {}
   let nid = 1
   for (const e of employees) {
     for (let day = 1; day <= days; day++) {
@@ -364,6 +409,8 @@ function runGenerator(year, month) {
         preference_injury: hasPref(e.id, shift.id) ? 0 : 1,
       })
       ;(countByType[tName] ||= {})[day] = (countByType[tName]?.[day] || 0) + 1
+      ;(qualByType[tName] ||= {})[day] =
+        (qualByType[tName]?.[day] || false) || isQualified(e)
     }
   }
 
@@ -388,6 +435,16 @@ function runGenerator(year, month) {
     }
   }
 
+  let missingQual = 0
+  if (reqQual !== null) {
+    for (const tName of Object.keys(countByType)) {
+      for (const day of Object.keys(countByType[tName])) {
+        if (countByType[tName][day] > 0 && !qualByType[tName]?.[day]) missingQual++
+      }
+    }
+  }
+  const qualStrain = ROSTER_CFG.w.missingQual * missingQual
+
   // Monat ersetzen + persistieren
   db.duties = db.duties.filter((d) => !(d.year === year && d.month === month))
   const maxId = db.duties.reduce((m, d) => Math.max(m, d.id), 0)
@@ -400,7 +457,10 @@ function runGenerator(year, month) {
     summary: {
       employee_strain: Math.round(empStrain * 100) / 100,
       occupation_strain: Math.round(occStrain * 100) / 100,
-      total_strain: Math.round((empStrain + occStrain) * 100) / 100,
+      qualification_strain: Math.round(qualStrain * 100) / 100,
+      missing_qualification: missingQual,
+      total_strain:
+        Math.round((empStrain + occStrain + qualStrain) * 100) / 100,
       forbidden,
       assigned_duties: newDuties.length,
     },

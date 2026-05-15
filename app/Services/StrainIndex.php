@@ -20,12 +20,15 @@ class StrainIndex
     /** @var array<string,float> */
     private array $w;
 
+    private ?string $requiredQualification;
+
     public function __construct(?array $config = null)
     {
         $config ??= (function_exists('config') ? config('rostering') : null) ?? [];
 
         $this->maxConsecutive = $config['max_consecutive_duties'] ?? 6;
         $this->forbiddenTransitions = $config['forbidden_transitions'] ?? [];
+        $this->requiredQualification = $config['required_qualification'] ?? null;
         $this->w = array_merge([
             'consecutive_over_max' => INF,
             'forbidden_transition' => INF,
@@ -33,7 +36,22 @@ class StrainIndex
             'isolated_free_day' => 8.0,
             'third_consecutive_duty' => -2.0,
             'two_free_days_in_row' => -5.0,
+            'missing_required_qualification' => 30.0,
         ], $config['strain_weights'] ?? []);
+    }
+
+    public function requiredQualification(): ?string
+    {
+        return $this->requiredQualification;
+    }
+
+    /**
+     * Belastung durch Schicht/Tag-Kombinationen, die keine Kraft mit der
+     * geforderten Qualifikation enthalten.
+     */
+    public function qualificationStrain(int $missingShiftDays): float
+    {
+        return $this->w['missing_required_qualification'] * max(0, $missingShiftDays);
     }
 
     /**

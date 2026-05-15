@@ -33,9 +33,18 @@ class RosterGenerator
     {
         $days = Carbon::create($year, $month, 1)->daysInMonth;
 
-        $employees = Employee::orderBy('id')->get();
+        $employees = Employee::with('qualification')->orderBy('id')->get();
         $shiftTypes = ShiftType::all()->keyBy('id');
         $shifts = Shift::orderBy('id')->get();
+
+        $reqQual = $this->strain->requiredQualification();
+        $isQualified = function ($employee) use ($reqQual): bool {
+            if ($reqQual === null) {
+                return true;
+            }
+
+            return optional($employee->qualification)->description === $reqQual;
+        };
 
         // Repräsentativer Shift je aktiver Schichtart (kleinste id).
         $shiftByTypeName = [];
@@ -139,6 +148,28 @@ class RosterGenerator
                 });
 
                 $fill = array_slice($candidates, 0, $slots);
+
+                // Mind. eine examinierte Fachkraft je Schicht/Tag erzwingen,
+                // sofern ein qualifizierter Kandidat verfügbar ist.
+                if ($reqQual !== null && $fill) {
+                    $hasQual = false;
+                    foreach ($fill as $c) {
+                        if ($isQualified($c['e'])) {
+                            $hasQual = true;
+                            break;
+                        }
+                    }
+                    if (! $hasQual) {
+                        foreach ($candidates as $c) {
+                            if ($isQualified($c['e'])) {
+                                array_pop($fill); // unwichtigsten Slot ersetzen
+                                array_unshift($fill, $c);
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 foreach ($fill as $c) {
                     $e = $c['e'];
                     $shift = $shiftByTypeName[$typeName];
@@ -161,7 +192,7 @@ class RosterGenerator
             }
         }
 
-        $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $days);
+        $this->localSearch($assigned, $employees, $shiftTypes, $isAbsent, $isQualified, $days);
 
         return $this->buildResult(
             $employees, $assigned, $shiftTypes, $wishes, $preferences,
@@ -189,12 +220,26 @@ class RosterGenerator
      * von B (B arbeitet an A's freiem Tag, A ist an B's Dienst-Tag frei):
      * jede Schicht-Instanz bleibt an ihrem Tag (Besetzung pro Tag/Art
      * unverändert), jede Person behält ihre Dienstanzahl (Fairness).
-     * Akzeptiert nur Tausche, die den Soft-Strain senken und keine
-     * unzulässige Konstellation erzeugen. Siehe algorithm-notes.md.
+     * Akzeptiert nur Tausche, die den Soft-Strain senken, keine
+     * unzulässige Konstellation erzeugen UND die Fachkraft-Abdeckung je
+     * Schicht/Tag nicht verschlechtern. Siehe algorithm-notes.md.
      */
-    private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, int $days): void
+    private function localSearch(array &$assigned, $employees, $shiftTypes, callable $isAbsent, callable $isQualified, int $days): void
     {
         $maxPasses = 6;
+        $empById = $employees->keyBy('id');
+
+        $qualCovered = function (string $typeName, int $day) use (&$assigned, $shiftTypes, $empById, $isQualified): bool {
+            foreach ($assigned as $empId => $byDay) {
+                $shift = $byDay[$day] ?? null;
+                if ($shift && ($shiftTypes[$shift->shift_type_id]->name ?? null) === $typeName
+                    && isset($empById[$empId]) && $isQualified($empById[$empId])) {
+                    return true;
+                }
+            }
+
+            return false;
+        };
 
         for ($pass = 0; $pass < $maxPasses; $pass++) {
             $improved = false;
@@ -244,6 +289,11 @@ class RosterGenerator
                                 $before = PHP_FLOAT_MAX;
                             }
 
+                            $typeA = $shiftTypes[$shiftA->shift_type_id]->name ?? '';
+                            $typeB = $shiftTypes[$shiftB->shift_type_id]->name ?? '';
+                            $covAd = $qualCovered($typeA, $d);
+                            $covBe = $qualCovered($typeB, $e);
+
                             // Tausch anwenden
                             unset($assigned[$aId][$d]);
                             $assigned[$aId][$e] = $shiftB;
@@ -257,7 +307,10 @@ class RosterGenerator
                                 $this->seqOf($assigned, $bId, $shiftTypes, $days)
                             );
 
-                            if (! is_infinite($aNew) && ! is_infinite($bNew)
+                            $qualOk = (! $covAd || $qualCovered($typeA, $d))
+                                && (! $covBe || $qualCovered($typeB, $e));
+
+                            if ($qualOk && ! is_infinite($aNew) && ! is_infinite($bNew)
                                 && ($aNew + $bNew) < $before - 0.0001) {
                                 $improved = true;
                                 break 3;
@@ -299,6 +352,14 @@ class RosterGenerator
     ): array {
         $duties = [];
         $countByTypeByDay = [];
+        $qualByTypeByDay = [];
+
+        $reqQual = $this->strain->requiredQualification();
+        $empQualified = [];
+        foreach ($employees as $e) {
+            $empQualified[$e->id] = $reqQual === null
+                || optional($e->qualification)->description === $reqQual;
+        }
 
         foreach ($employees as $e) {
             foreach (($assigned[$e->id] ?? []) as $day => $shift) {
@@ -321,6 +382,19 @@ class RosterGenerator
                 ];
 
                 $countByTypeByDay[$typeName][$day] = ($countByTypeByDay[$typeName][$day] ?? 0) + 1;
+                $qualByTypeByDay[$typeName][$day] =
+                    ($qualByTypeByDay[$typeName][$day] ?? false) || $empQualified[$e->id];
+            }
+        }
+
+        $missingQualification = 0;
+        if ($reqQual !== null) {
+            foreach ($countByTypeByDay as $typeName => $byDay) {
+                foreach ($byDay as $day => $cnt) {
+                    if ($cnt > 0 && empty($qualByTypeByDay[$typeName][$day])) {
+                        $missingQualification++;
+                    }
+                }
             }
         }
 
@@ -347,13 +421,17 @@ class RosterGenerator
             $minByType[$name] = (int) $type->min_occupation;
         }
         $occupationStrain = $this->strain->occupationStrain($countByTypeByDay, $minByType);
+        $qualificationStrain = $this->strain->qualificationStrain($missingQualification);
+        $total = $employeeStrainSum + $occupationStrain + $qualificationStrain;
 
         return [
             'duties' => $duties,
             'summary' => [
                 'employee_strain' => round($employeeStrainSum, 2),
                 'occupation_strain' => round($occupationStrain, 2),
-                'total_strain' => round($employeeStrainSum + $occupationStrain, 2),
+                'qualification_strain' => round($qualificationStrain, 2),
+                'missing_qualification' => $missingQualification,
+                'total_strain' => round($total, 2),
                 'forbidden' => $forbidden,
                 'assigned_duties' => count($duties),
             ],
