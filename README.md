@@ -29,6 +29,39 @@ php artisan migrate --seed     # generates basic demo data
 php artisan serve              # API at http://localhost:8000/api
 ```
 
+## Test dataset: real-world roster seeder
+
+`RealRosterSeeder` contains an **anonymized** dataset derived from a real
+care-facility duty roster (50 residents, 4 wards A–D, Jan–May 2018):
+36 staff with realistic qualifications, contracted hours and ~2,779
+historical duty entries. It is intentionally **not** registered in
+`DatabaseSeeder`, so the default demo data and the existing test suite
+stay untouched. Background notes: `.claude/memory/real-roster-insights.md`.
+
+Run it **in addition** to the default data (own ID ranges, no conflict):
+
+```bash
+php artisan db:seed --class=RealRosterSeeder
+```
+
+Use it **instead** of the default demo data (fresh DB, only this set):
+
+```bash
+php artisan migrate:fresh
+php artisan db:seed --class=RealRosterSeeder
+```
+
+Make it the default for local testing (override): add it to
+`database/seeders/DatabaseSeeder.php` inside `run()`:
+
+```php
+$this->call(RealRosterSeeder::class);
+```
+
+then `php artisan migrate:fresh --seed`. The accompanying test
+(`tests/Feature/RealRosterSeederTest.php`) verifies dataset integrity
+and that the generator produces a rule-compliant plan on this data.
+
 ## Frontend setup
 
 ```bash
