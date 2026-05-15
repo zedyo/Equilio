@@ -35,7 +35,13 @@ return [
         'isolated_free_day' => 8,   // 2 Dienste, frei, 2 Dienste -> weniger gut
         'third_consecutive_duty' => -2, // 2 Dienste, dann 3. -> ok/gut
         'two_free_days_in_row' => -5,   // gut für Erholung
+        // Aktive Schicht ohne examinierte Fachkraft besetzt (pro Schicht/Tag).
+        'missing_required_qualification' => 30,
     ],
+
+    // Mind. eine Kraft mit dieser Qualifikation muss je aktiver Schicht
+    // und Tag eingeplant sein (Pflege-Realismus). null = Regel aus.
+    'required_qualification' => 'Exam. Pfleger:in',
 
     // Standard-Soll-Wochenstunden bei 100 % Beschäftigung.
     'full_time_weekly_hours' => 39,

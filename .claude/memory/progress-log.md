@@ -369,4 +369,32 @@ der „sichere" Nachbarschaftsoperator — sie können harte Constraints &
 Besetzung gar nicht erst verletzen, nur Soft-Strain verbessern. Nächste
 Ausbaustufe: Simulated Annealing / 3-Tausch für tiefere Minima.
 
+## 2026-05-15 — Phase 2c: Qualifikations-Mix (examinierte Fachkraft/Schicht)
+
+Pflege-Realismus-Regel: ≥1 Kraft mit `required_qualification`
+(`Exam. Pfleger:in`, konfigurierbar) je aktiver Schicht/Tag.
+
+- Greedy erzwingt Fachkraft im Slot (unwichtigsten Slot ersetzen).
+- Lokale Suche (2b) wurde **qualifikationsbewusst**: Tausch nur, wenn er
+  keine zuvor abgedeckte Schicht/Tag ihre Fachkraft verlieren lässt.
+- `StrainIndex::qualificationStrain()` + Gewicht
+  `missing_required_qualification` (30); Summary-Felder
+  `qualification_strain`/`missing_qualification`; UI-Badge „ohne Fachkraft".
+- Mock-JS-Generator + lokale Suche kongruent erweitert.
+- Tests: StrainIndex-Unit (Qual-Gewicht) + Feature
+  `every_active_shift_has_an_examined_nurse_when_available`.
+
+**Evaluation:** B/C (genug Fachkräfte) → 0 Lücken; A (nur ~3 examiniert)
+→ Heuristik minimiert, meldet Restlücke ehrlich (2 Schicht-Tage,
+Qual-Strain 60) = Kapazitätssignal.
+
+**Verifiziert:** PHPUnit **20/20** (833 Assertions), Frontend **8/8**,
+Build grün. Doku: `algorithm-notes.md` Abschnitt „Phase 2c".
+
+**Lessons Learned:** Ein neuer Constraint muss in **allen** Phasen
+durchgezogen werden — der erste Versuch scheiterte, weil die Phase-2b-
+Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
+Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
+Konstruktion.
+
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->

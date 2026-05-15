@@ -94,6 +94,14 @@ function DutyOverview() {
                 <Badge bg="secondary">
                   Dienste: {generatorSummary.assigned_duties}
                 </Badge>{' '}
+                {generatorSummary.missing_qualification > 0 && (
+                  <>
+                    <Badge bg="warning" text="dark">
+                      ohne Fachkraft:{' '}
+                      {generatorSummary.missing_qualification}
+                    </Badge>{' '}
+                  </>
+                )}
                 {generatorSummary.forbidden ? (
                   <Badge bg="danger">unzulässige Konstellation</Badge>
                 ) : (

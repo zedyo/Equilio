@@ -112,3 +112,33 @@ Tausch bewusst nicht antastet. B/C zeigen den eigentlichen Effekt.
 Offen: Simulated Annealing / größere Nachbarschaften (3-Tausch) für noch
 tiefere Minima; Reproduzierbar via `/tmp`-Analyseskripte bzw. einem
 späteren `php artisan roster:evaluate`.
+
+## Phase 2c — Qualifikations-Mix (examinierte Fachkraft je Schicht)
+
+Pflege-Realismus: je aktiver Schicht und Tag muss mind. eine Kraft mit
+`config('rostering.required_qualification')` (`Exam. Pfleger:in`)
+eingeplant sein. Umsetzung:
+
+- **Greedy:** enthält die Slot-Auswahl keine Fachkraft, wird der
+  unwichtigste Slot durch den bestplatzierten qualifizierten Kandidaten
+  ersetzt (sofern verfügbar).
+- **Lokale Suche (2c-Erweiterung):** ein Tausch wird zusätzlich nur
+  akzeptiert, wenn er keine zuvor abgedeckte Schicht/Tag-Zelle ihre
+  Fachkraft-Abdeckung verlieren lässt (`covAd`/`covBe`-Guard).
+- **Strain/Reporting:** Restlücken gehen mit `missing_required_qualification`
+  (30/Schicht-Tag) in den Index ein; Summary-Felder
+  `qualification_strain`, `missing_qualification`; UI-Badge „ohne Fachkraft".
+
+**Evaluation (gleiche Szenarien, jetzt inkl. Qualifikation):**
+
+| Szenario | MA | Index (MA / Bes. / Qual.) | ohne Fachkraft | regelkonform |
+|----------|----|---------------------------|----------------|--------------|
+| A | 11 | 717 (207 / 450 / 60) | 2 Schicht-Tage | ja |
+| B | 22 | 258 (258 / 0 / 0) | 0 | ja |
+| C | 22 | 264 (264 / 0 / 0) | 0 | ja |
+
+Erkenntnis: bei genügend Fachkräften (B/C) **lückenlose** Abdeckung; bei
+knapper Examinierten-Decke (A: nur ~3 examiniert für 3 aktive Schichten
+× 31 Tage) minimiert die Heuristik und **meldet die Restlücke ehrlich**
+(2 Schicht-Tage) statt sie zu verstecken — wieder ein Kapazitätssignal,
+kein Algorithmusfehler.
