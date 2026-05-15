@@ -171,3 +171,22 @@ Erkenntnisse / ehrliche Befunde:
   soll die Kennzahl sichtbar machen (Personaldecke vs. Bedarf).
 - Kalibrierungs-Wechselwirkung dokumentiert; Feinjustierung der Gewichte
   (Qual. vs. Stunden vs. Besetzung) bleibt bewusster offener Punkt.
+
+## Phase 2e — Reproduzierbare Evaluation + SA-Versuch (verworfen)
+
+**`php artisan roster:evaluate {year?} {month?}`** (committed, read-only)
+ersetzt die früheren `/tmp`-Skripte: generiert einen Vorschlag und prüft
+harte Constraints (Abwesenheiten, max. Serie, Nacht→Früh,
+Mindestbesetzung, Fachkraft-Abdeckung) + Kennzahlen + Stundenkonto;
+Exit-Code 0 nur bei eingehaltenen harten Constraints (CI-tauglich).
+Feature-Test: `EvaluateRosterCommandTest`.
+
+**Simulated Annealing — evaluiert und bewusst verworfen:** Ein SA-Pass
+auf derselben sicheren 2-Tausch-Nachbarschaft wurde prototypisch
+implementiert, aber wieder entfernt: die volle Neubewertung pro Zug plus
+der nötige zweite Lokalsuche-Polish ließ die `generate()`-Laufzeit
+unverhältnismäßig (Mehrere Minuten je Monat) ansteigen — inkompatibel mit
+interaktiver API/Demo und Test-Suite. Festgehalten als bewusste
+Engineering-Entscheidung: tiefere Metaheuristik erst sinnvoll mit
+inkrementeller Delta-Bewertung (O(1) statt O(Tage) je Zug) — offener,
+klar umrissener nächster Schritt, kein Blocker für den Prototyp.

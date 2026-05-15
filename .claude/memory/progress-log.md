@@ -397,6 +397,28 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2e: reproduzierbare Evaluation; SA verworfen
+
+- `php artisan roster:evaluate {year?} {month?}` (read-only, committed)
+  ersetzt die `/tmp`-Skripte: generiert + prüft harte Constraints +
+  Kennzahlen + Stundenkonto; Exit 0 nur bei eingehaltenen Constraints
+  (CI-tauglich). Feature-Test `EvaluateRosterCommandTest`.
+- Simulated Annealing prototypisch implementiert, **bewusst wieder
+  verworfen**: volle Neubewertung je Zug + nötiger 2. Lokalsuche-Polish
+  ließ `generate()` auf Minuten/Monat steigen → inkompatibel mit
+  interaktiver API/Demo/Tests. Sauber zurückgesetzt (nur uncommittete
+  Änderungen via `git checkout`). Klar umrissener nächster Schritt:
+  inkrementelle Delta-Bewertung (O(1)/Zug), dann erst Metaheuristik.
+
+**Verifiziert:** PHPUnit **22/22** (851 Assertions), Frontend **8/8**,
+Build grün.
+
+**Lessons Learned:** Vor einer Metaheuristik muss die Zug-Bewertung
+inkrementell sein — globale Re-Evaluation pro Iteration skaliert nicht
+für interaktive Nutzung. Lieber eine schnelle, deterministische,
+getestete Lokalsuche als eine langsame „bessere" Optimierung. Negatives
+Ergebnis dokumentiert statt versteckt.
+
 ## 2026-05-15 — Phase 2d: Soll-Stunden-Kalibrierung + Stundenkonto
 
 Grobe `Tage×ratio×5/7`-Soll-Heuristik ersetzt durch stundenbasierte
