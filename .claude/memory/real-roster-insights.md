@@ -96,11 +96,18 @@ Min/Opt-Zahlen sind stationsspezifisch (→ Nutzerkonfiguration).
 
 - 36 MA mit **fiktiven** deutschen Namen (deterministisch nach
   Einlese-Reihenfolge); Real↔Fake-Mapping wird **nicht** persistiert.
-- Alle 5 Monate (Jan–Mai), Jahr **2018** im Original belassen
-  (historischer Referenz-Datensatz; 2779 Duty-Zeilen inkl. U/PA/BS …
-  für vollständige Plan-Rekonstruktion).
+- 5 aufeinanderfolgende Quellmonate (Jan–Mai), 2779 Duty-Zeilen inkl.
+  U/PA/BS … für vollständige Plan-Rekonstruktion. Beim Seeden auf ein
+  **rollierendes Fenster** gemappt, das im *aktuellen* Monat endet
+  (Quellmonat 5 → aktueller Monat) → der Plan ist sofort beim App-Start
+  sichtbar (kein manuelles Zurücknavigieren ins Jahr 2018 nötig).
 - Separater Seeder, **nicht** in `DatabaseSeeder` registriert → die
   bestehende Test-Suite/Generator bleiben unberührt.
+- **Mock/Demo-Kongruenz:** identische anonymisierte Daten zusätzlich als
+  `resources/js/mock/realRosterData.js`; `mockApi.js` nutzt sie (gleiche
+  rollierende Umdatierung) → die klickbare Online-/Pages-Demo zeigt
+  denselben Real-Datensatz. `STORAGE_KEY` auf `v2` erhöht (löst die
+  alten Demo-Beispieldaten im localStorage ab).
 
 ## Offene Punkte / mögliche Erweiterungen
 

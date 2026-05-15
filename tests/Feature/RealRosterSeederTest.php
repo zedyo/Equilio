@@ -26,11 +26,21 @@ class RealRosterSeederTest extends TestCase
         $this->assertSame(7, Qualification::count());
         $this->assertSame(36, Employee::count());
         $this->assertSame(2779, Duty::count());
-        $this->assertEqualsCanonicalizing(
-            [1, 2, 3, 4, 5],
-            Duty::distinct()->pluck('month')->all()
-        );
-        $this->assertSame(0, Duty::where('year', '!=', 2018)->count());
+
+        // Quelle = 5 Monate, auf ein im aktuellen Monat endendes Fenster
+        // gemappt (Quellmonat 5 -> aktueller Monat).
+        $base = now()->startOfMonth();
+        $expected = [];
+        for ($m = 1; $m <= 5; $m++) {
+            $t = $base->copy()->subMonths(5 - $m);
+            $expected[] = $t->year.'-'.$t->month;
+        }
+        $actual = Duty::get(['year', 'month'])
+            ->map(fn ($d) => $d->year.'-'.$d->month)
+            ->unique()->values()->all();
+        $this->assertEqualsCanonicalizing($expected, $actual);
+        // Der aktuelle Monat ist im Fenster (sofort sichtbar bei App-Start).
+        $this->assertContains($base->year.'-'.$base->month, $actual);
 
         // Examinierte vorhanden (Qual-Mix realistisch).
         $this->assertGreaterThanOrEqual(

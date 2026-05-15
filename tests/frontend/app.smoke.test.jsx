@@ -34,17 +34,17 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Dienstplan-Startseite lädt Seeder-Daten (React19/RTK2/axios1/Router7)', async () => {
     render(<App />)
     // Mitarbeiter aus dem Seeder erscheint -> kompletter Daten-Pfad ok.
-    expect(await screen.findByText(/Testy/i, {}, { timeout: 8000 })).toBeInTheDocument()
+    expect(await screen.findByText(/Albers/i, {}, { timeout: 8000 })).toBeInTheDocument()
   })
 
   it('Team-Seite zeigt Mitarbeiter-Tabelle mit Qualifikation', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/employees')
     expect(await screen.findByText('Team', {}, { timeout: 5000 })).toBeInTheDocument()
     // Mehrere Mitarbeiter teilen sich Qualifikationen -> findAllByText.
     const quals = await screen.findAllByText(
-      /Exam\. Pfleger:in/i,
+      /Examinierte Pflegefachkraft/i,
       {},
       { timeout: 5000 }
     )
@@ -53,16 +53,16 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
 
   it('Qualifikationen-Seite listet Seeder-Qualifikationen', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/qualifications')
     expect(
-      await screen.findByText(/Betreuungsassistent:in/i, {}, { timeout: 5000 })
+      await screen.findByText(/Beschäftigungstherapeut:in/i, {}, { timeout: 5000 })
     ).toBeInTheDocument()
   })
 
   it('Schicht-Arten-Seite listet Seeder-ShiftTypes', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/shift_types')
     expect(
       await screen.findByText(/Frühschicht/i, {}, { timeout: 5000 })
@@ -71,7 +71,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
 
   it('Schichten-Seite listet Seeder-Schichten (Kürzel F1)', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/shifts')
     expect(await screen.findByText('F1', {}, { timeout: 5000 })).toBeInTheDocument()
   })
@@ -82,14 +82,14 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Navigation via Nav-Dropdown bleibt clientseitig (kein 404)', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     await user.click(await screen.findByText(/Einstellungen/i))
     await user.click(await screen.findByText('Team'))
 
     // Team-Seite gerendert -> Interceptor hat per Router navigiert.
     const quals = await screen.findAllByText(
-      /Exam\. Pfleger:in/i,
+      /Examinierte Pflegefachkraft/i,
       {},
       { timeout: 5000 }
     )
@@ -98,7 +98,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
 
   it('Abwesenheiten-Seite listet geseedete Abwesenheiten', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/absences')
     expect(
       await screen.findByText(/Jahresurlaub/i, {}, { timeout: 5000 })
@@ -108,7 +108,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Automatische Plangenerierung liefert Belastungsindex (Phase 2)', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     await user.click(
       await screen.findByText(/Plan automatisch generieren/i)
@@ -122,7 +122,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Datepicker: Popover öffnet, Monatswahl & "Heute" funktionieren', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     const year = new Date().getFullYear()
     // Trigger trägt das Jahr im Label (Nav-Buttons nicht).
