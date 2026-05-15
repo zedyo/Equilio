@@ -11,6 +11,7 @@
  */
 import { describe, it, expect, beforeAll } from 'vitest'
 import { render, screen, act } from '@testing-library/react'
+import userEvent from '@testing-library/user-event'
 
 function navigate(hash) {
   act(() => {
@@ -73,5 +74,25 @@ describe('yourPlan Demo – Smoke (modernisierter Stack)', () => {
     await screen.findByText(/Testy/i, {}, { timeout: 8000 })
     navigate('#/shifts')
     expect(await screen.findByText('F1', {}, { timeout: 5000 })).toBeInTheDocument()
+  })
+
+  // Reproduziert den vom Nutzer gemeldeten 404: Navigation über das
+  // Einstellungen-Dropdown (fest verdrahtete href-Links) muss client-seitig
+  // über den Router laufen, nicht den Browser neu laden.
+  it('Navigation via Nav-Dropdown bleibt clientseitig (kein 404)', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+
+    await user.click(await screen.findByText(/Einstellungen/i))
+    await user.click(await screen.findByText('Team'))
+
+    // Team-Seite gerendert -> Interceptor hat per Router navigiert.
+    const quals = await screen.findAllByText(
+      /Exam\. Pfleger:in/i,
+      {},
+      { timeout: 5000 }
+    )
+    expect(quals.length).toBeGreaterThan(0)
   })
 })
