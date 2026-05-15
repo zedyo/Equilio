@@ -111,11 +111,14 @@ Min/Opt-Zahlen sind stationsspezifisch (→ Nutzerkonfiguration).
 - Stundenkonto-Anbindung (`working_hours_diffs`) aus IST/SOLL.
 - FO/„o!"/„A" sind im Original nicht eindeutig dokumentiert → aktuell
   konservativ als Sonderdienst (0 h) modelliert.
-- **Generator-Skalierung:** mit dem realen Bestand (36 MA) braucht
-  `RosterGenerator::generate()` ~77 s (vs. ~1,6 s bei 22 MA) — die
-  Hill-Climbing-Lokalsuche ist O(E²·…) in der MA-Zahl. Für einen
-  großen Echtbestand (>~25 MA) ist sie zu langsam; der Real-Daten-
-  Verhaltens-Test läuft daher auf ~16 MA + reduzierten SA-Iterationen.
-  Offener Optimierungspunkt: Lokalsuche-Nachbarschaft eingrenzen
-  (nur „benachbarte" MA-Paare statt aller E²) bzw. ganz durch das
-  bereits vorhandene SA auf Δ-Bewertung ersetzen.
+- **Generator-Skalierung (gelöst):** mit dem realen Bestand (36 MA)
+  brauchte `RosterGenerator::generate()` zuvor ~77 s (Hill-Climbing-
+  Lokalsuche O(E²·days²), Restart bei jeder Verbesserung). Behoben durch
+  (a) Memoisierung von `seqOf` in Lokalsuche **und** SA (Neuberechnung
+  nur für die zwei betroffenen MA nach akzeptiertem Zug; Verhalten
+  bit-identisch) und (b) `rostering.local_search_max_employees` (Default
+  24): oberhalb der Schwelle wird die erschöpfende Lokalsuche
+  übersprungen, allein das memoisierte, gedeckelte SA optimiert
+  („best-seen" ⇒ nie schlechter als Greedy). **Ergebnis: 36 MA in
+  ~0,6 s, regelkonform**, Gesamt-Index −1571. Bestehende Tests (≤22 MA)
+  laufen unverändert auf dem Lokalsuche-Pfad.

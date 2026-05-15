@@ -46,6 +46,11 @@ return [
     // Standard-Soll-Wochenstunden bei 100 % Beschäftigung.
     'full_time_weekly_hours' => 39,
 
+    // Ab dieser MA-Zahl wird die erschöpfende O(E^2*days^2)-Lokalsuche
+    // übersprungen; allein das (gedeckelte) Simulated Annealing optimiert
+    // dann. Hält große Bestände interaktiv (vgl. real-roster-insights.md).
+    'local_search_max_employees' => 24,
+
     // Phase 2g: Simulated Annealing nach der Hill-Climbing-Lokalsuche.
     // Inkrementelle Δ-Bewertung -> performant. Fester Seed = reproduzierbar.
     'annealing' => [
