@@ -15,8 +15,19 @@ class ShiftController extends Controller
         return ['shifts' => $shifts];
     }
 
+    private function validateShift(Request $request): void
+    {
+        $request->validate([
+            'shiftsData.abrv' => ['required', 'string', 'max:16'],
+            'shiftsData.color_hex' => ['required', 'string', 'max:9'],
+            'shiftsData.h_duration' => ['required', 'numeric', 'min:0'],
+            'shiftsData.shift_type_id' => ['required', 'integer', 'exists:shift_types,id'],
+        ]);
+    }
+
     public function store(Request $request): JsonResponse
     {
+        $this->validateShift($request);
         $shift = new Shift();
         $shift->abrv = $request->shiftsData['abrv'];
         $shift->color_hex = $request->shiftsData['color_hex'];
@@ -34,6 +45,7 @@ class ShiftController extends Controller
 
     public function update(Request $request, Shift $shift)
     {
+        $this->validateShift($request);
         $shift->abrv = $request->shiftsData['abrv'];
         $shift->color_hex = $request->shiftsData['color_hex'];
         $shift->h_duration = $request->shiftsData['h_duration'];

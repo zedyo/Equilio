@@ -39,36 +39,36 @@ const preferenceSlice = createSlice({
       state.preferenceData = actions
     },
   },
-  extraReducers: {
-    [getPreferenceData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [getPreferenceData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      state.preferenceData = payload
-    },
-    [getPreferenceData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
-
-    [postPreferenceData.pending]: (state) => {
-      state.isLoading = true
-    },
-    [postPreferenceData.fulfilled]: (state, { payload }) => {
-      state.isLoading = false
-      payload.active === 1
-        ? state.preferenceData.push(payload.preference)
-        : (state.preferenceData = state.preferenceData.filter(
-            (preference) => preference.id !== payload.preference.id
-          ))
-    },
-    [postPreferenceData.rejected]: (state, { payload }) => {
-      state.errorMessage = payload
-      state.isLoading = false
-      state.hasError = true
-    },
+  extraReducers: (builder) => {
+    builder
+      .addCase(getPreferenceData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(getPreferenceData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.preferenceData = payload
+      })
+      .addCase(getPreferenceData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
+      .addCase(postPreferenceData.pending, (state) => {
+        state.isLoading = true
+      })
+      .addCase(postPreferenceData.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        payload.active === 1
+          ? state.preferenceData.push(payload.preference)
+          : (state.preferenceData = state.preferenceData.filter(
+              (preference) => preference.id !== payload.preference.id
+            ))
+      })
+      .addCase(postPreferenceData.rejected, (state, { payload }) => {
+        state.errorMessage = payload
+        state.isLoading = false
+        state.hasError = true
+      })
   },
 })
 

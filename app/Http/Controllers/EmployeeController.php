@@ -15,8 +15,20 @@ class EmployeeController extends Controller
         return response()->json(['employees' => $employees]);
     }
 
+    private function validateEmployee(Request $request): void
+    {
+        $request->validate([
+            'employeeData.first_name' => ['required', 'string', 'max:255'],
+            'employeeData.last_name' => ['required', 'string', 'max:255'],
+            'employeeData.daily_worktime' => ['required', 'numeric', 'min:0'],
+            'employeeData.employment_ratio' => ['required', 'numeric', 'min:0', 'max:100'],
+            'employeeData.qualification_id' => ['required', 'integer', 'exists:qualifications,id'],
+        ]);
+    }
+
     public function store(Request $request): JsonResponse
     {
+        $this->validateEmployee($request);
         $employee = new Employee();
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
@@ -35,6 +47,7 @@ class EmployeeController extends Controller
 
     public function update(Request $request, Employee $employee)
     {
+        $this->validateEmployee($request);
         $employee->first_name = $request->employeeData['first_name'];
         $employee->last_name = $request->employeeData['last_name'];
         $employee->daily_worktime = $request->employeeData['daily_worktime'];

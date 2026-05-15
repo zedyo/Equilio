@@ -1,4 +1,6 @@
 /node_modules
+/_site
+/dist
 /public/hot
 /public/storage
 /storage/*.key
@@ -6,9 +8,11 @@
 .env
 .env.backup
 .phpunit.result.cache
+/.phpunit.cache
 docker-compose.override.yml
 Homestead.json
 Homestead.yaml
 npm-debug.log
 yarn-error.log
 .DS_Store
+/database/database.sqlite

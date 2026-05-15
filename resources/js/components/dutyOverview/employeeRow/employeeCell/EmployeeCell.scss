@@ -1,34 +1,29 @@
 .employeeContainer {
-
+  // Exakt die Breite der Label-Spalte (16rem) des Board-Rasters,
+  // damit alle Tagesspalten sauber untereinander fluchten.
+  width: 16rem;
+  box-sizing: border-box;
   height: 2.1rem;
-  // border: 0.01rem solid rgb(128, 128, 128);
-  // border-radius: 0.2rem;
-
-  display: grid;
-  grid-auto-flow: column;
-  // grid-template-rows: min-content auto;
-  grid-template-columns: auto 6rem;
+  display: flex;
   align-items: center;
-  margin: 0.1rem 1rem 0.1rem 0;
-  padding: 0.1rem;
+  padding: 0.1rem 1rem 0.1rem 0;
+  overflow: hidden;
 
   .employeeName {
-    width: auto;
-      align-content: center;
-      font-weight: 500;
-      font-size: 1rem;
-      line-height: 1;
-      // margin:  0.4rem 0 0 0;
-      text-decoration: none;
-      color: black;
+    align-content: center;
+    font-weight: 500;
+    font-size: 1rem;
+    line-height: 1;
+    text-decoration: none;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   .employeeQualification {
-      font-size: 0.6rem;
-      font-weight: 100;
-      line-height: 1;
-      // margin: 0 0 0.4rem 0;
+    font-size: 0.6rem;
+    font-weight: 100;
+    line-height: 1;
   }
-
-
 }

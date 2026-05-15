@@ -1,4 +1,9 @@
-# Projekthintergrund — „Yeti"
+# Projekthintergrund — „Yeti" (heute: Equilio)
+
+> Historisches Dokument: Der Projektname im Bachelor-Proposal war **„Yeti"**
+> (Repo-Name „yourPlan"). Produktname seit Mai 2026: **Equilio**. Die
+> „Yeti"-Bezüge unten bleiben bewusst erhalten, da sie den Proposal-Stand
+> dokumentieren (inkl. „Warum Yeti?").
 
 Quelle: Major Project Proposal CMN6100, Abgabedatum 19.09.2021, Nikolai Seel (SAE Institut München, BA Web Development).
 
