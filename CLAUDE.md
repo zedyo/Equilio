@@ -1,7 +1,12 @@
-# Projekt Yeti / yourPlan
+# Equilio
 
 > Dienstplanungs-Webanwendung für 24/7-Schichtbetriebe (insb. Pflegebranche).
 > Bachelorarbeit (SAE Institut München, BA Web Development, 2021–2022) von Nikolai Seel.
+>
+> **Namenshistorie:** ursprünglich „Yeti" (Bachelor-Proposal) bzw. „yourPlan"
+> (Repo). Produktname seit Mai 2026: **Equilio**. Der GitHub-Repo-Name und
+> damit der Pages-Base-Pfad `/yourPlan/` bleiben unverändert (an das Repo
+> gebunden), bis das Repository selbst umbenannt wird.
 
 Diese Datei ist das primäre Gedächtnis für Claude. Detaillierte Notizen liegen unter `.claude/memory/`.
 

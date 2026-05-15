@@ -1,7 +1,7 @@
 /**
  * In-Browser-Mock des Laravel-Backends.
  *
- * Wird nur aktiv, wenn `window.__YETI_DEMO__ === true` gesetzt ist
+ * Wird nur aktiv, wenn `window.__EQUILIO_DEMO__ === true` gesetzt ist
  * (siehe statische index.html des GitHub-Pages-Builds). Im normalen
  * Laravel-Betrieb wird dieses Modul nicht geladen, der echte API-Server
  * bleibt unangetastet.
@@ -11,7 +11,7 @@
  * URL setzt den Demo-Datenstand zurück.
  */
 
-const STORAGE_KEY = 'yeti_demo_db_v1'
+const STORAGE_KEY = 'equilio_demo_db_v1'
 
 const QUALIFICATIONS = [
   { id: 1, description: 'Exam. Pfleger:in' },

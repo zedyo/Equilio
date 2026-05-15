@@ -1,4 +1,4 @@
-# Entwicklungs-Roadmap — Projekt Yeti / yourPlan
+# Entwicklungs-Roadmap — Equilio
 
 > Stand: Mai 2026. Diese Roadmap baut auf dem modernisierten Stand auf
 > (Laravel 12 / PHP 8.2+, React 19 + Vite, 0 Sicherheitslücken) und ordnet

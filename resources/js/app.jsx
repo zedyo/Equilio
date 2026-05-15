@@ -6,7 +6,7 @@ import { store } from './store'
 import Router from './router'
 import { installMockApi } from './mock/mockApi'
 
-if (typeof window !== 'undefined' && window.__YETI_DEMO__) {
+if (typeof window !== 'undefined' && window.__EQUILIO_DEMO__) {
   installMockApi()
 }
 

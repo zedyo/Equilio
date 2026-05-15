@@ -1,6 +1,6 @@
-## About this Project
+## Equilio
 
-This web application was developed as part of a bachelor thesis at the SAE Institute Munich. It is a planning tool for shift scheduling in companies with 24/7 rotating shift systems.
+**Equilio** is a planning tool for shift scheduling in companies with 24/7 rotating shift systems, originally developed as part of a bachelor thesis at the SAE Institute Munich (working titles: *Yeti* / *yourPlan*).
 
 This Project is open source and can be used freely non-commercialized.
 

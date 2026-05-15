@@ -24,13 +24,13 @@ function navigate(hash) {
 let App
 
 beforeAll(async () => {
-  window.__YETI_DEMO__ = true
+  window.__EQUILIO_DEMO__ = true
   window.location.hash = '#/'
   // Erst nach gesetztem Flag importieren -> installMockApi() greift.
   App = (await import('../../resources/js/app.jsx')).default
 })
 
-describe('yourPlan Demo – Smoke (modernisierter Stack)', () => {
+describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Dienstplan-Startseite lädt Seeder-Daten (React19/RTK2/axios1/Router7)', async () => {
     render(<App />)
     // Mitarbeiter aus dem Seeder erscheint -> kompletter Daten-Pfad ok.
