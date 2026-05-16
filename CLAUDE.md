@@ -120,7 +120,10 @@ resource-Routes: qualifications, employees, shifts, shift_types,
                  wishes, preferences, working_hours_diffs
 ```
 
-Achtung: Verbs sind teils nicht REST-konform (siehe `routes/api.php`).
+Hinweis: Die Schreib-Endpoints `/duty`, `/wish`, `/preference` sind
+bewusst aktionsorientiert (Composite-Key statt `/{id}`), aber
+verb-korrekt (PATCH/POST/DELETE) und seit Phase 1.3 per FormRequest
+validiert (Fehleingabe → 422). CRUD-`update` liefert 200, `store` 201.
 
 ## Frontend-Routen (React-Router)
 

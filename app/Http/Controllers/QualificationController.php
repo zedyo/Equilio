@@ -60,7 +60,7 @@ class QualificationController extends Controller
 
         $qualification->save();
 
-        return response()->json(['qualification' => $qualification], 201);
+        return response()->json(['qualification' => $qualification], 200);
     }
 
     public function destroy(Qualification $qualification)
