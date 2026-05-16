@@ -1,48 +1,54 @@
 import React from 'react'
 import EmployeeColumn from './show/EmployeeColumn'
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Container,
-  Stack,
-  Table,
-} from 'react-bootstrap'
+import { Button, Card, Container, Table } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FiUsers } from 'react-icons/fi'
+import PageHeader from '../shared/PageHeader'
+import EmptyState from '../shared/EmptyState'
 
 function Employees() {
   const { employeesData } = useSelector((store) => store.employees)
 
   return (
-    <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item active>Einstellungen: Team</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
-          <Card.Header>
-            <Stack direction="horizontal" gap={3}>
-              <div>Team</div>
-              <div className="ms-auto">
-                <Button href={`/employee/create`} variant="outline-success">
-                  <AiOutlinePlus /> Neues Teammitglied
+    <Container className="pb-5">
+      <PageHeader
+        title="Team"
+        description="Mitarbeiter:innen, Qualifikation und Beschäftigungsumfang verwalten."
+        actions={
+          <Button href="/employee/create" variant="primary">
+            <AiOutlinePlus className="me-1" /> Neues Teammitglied
+          </Button>
+        }
+        chips={[
+          { label: `${employeesData.length} Mitglieder`, tone: 'brand' },
+        ]}
+      />
+
+      <Card>
+        <Card.Body className="p-0">
+          {employeesData.length === 0 ? (
+            <EmptyState
+              icon={<FiUsers />}
+              title="Noch keine Teammitglieder"
+              description="Lege das erste Teammitglied an, um mit der Planung zu beginnen."
+              action={
+                <Button href="/employee/create" variant="primary">
+                  <AiOutlinePlus className="me-1" /> Neues Teammitglied
                 </Button>
-              </div>
-            </Stack>
-          </Card.Header>
-          <Card.Body>
-            <Table responsive>
+              }
+            />
+          ) : (
+            <Table responsive hover className="mb-0 align-middle">
               <thead>
                 <tr>
                   <th>ID</th>
                   <th>Vorname</th>
                   <th>Nachname</th>
                   <th>Qualifikation</th>
-                  <th>Einstellungsverhältnis</th>
+                  <th>Anstellung</th>
                   <th>tgl. Arbeitszeit</th>
-                  <th></th>
+                  <th className="text-end">Aktionen</th>
                 </tr>
               </thead>
               <tbody>
@@ -51,10 +57,10 @@ function Employees() {
                 ))}
               </tbody>
             </Table>
-          </Card.Body>
-        </Card>
-      </Container>
-    </>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   )
 }
 

@@ -124,7 +124,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     navigate('#/employee/show/1')
-    await screen.findByText(/Dienst Präferenzen/i, {}, { timeout: 6000 })
+    await screen.findByText('Schicht-Präferenzen', {}, { timeout: 6000 })
 
     // Segmentierte Steuerung vorhanden. Einige Schichten sind aus den
     // Echtdaten vorbelegt -> einen noch NICHT bevorzugten Button wählen.
