@@ -70,7 +70,8 @@ class ShiftSeeder extends Seeder
             'abrv' => 'U1',
             'shift_type_id' => 5,
             'h_duration' => 8.00,
-            'color_hex' => '#1ddce2'
+            'color_hex' => '#1ddce2',
+            'manual_only' => true,
         ]);
         $dummyFreeShift->save();
 
@@ -78,7 +79,8 @@ class ShiftSeeder extends Seeder
             'abrv' => 'K1',
             'shift_type_id' => 5,
             'h_duration' => 8.00,
-            'color_hex' => '#a00000'
+            'color_hex' => '#a00000',
+            'manual_only' => true,
         ]);
         $dummyFreeShift->save();
     }

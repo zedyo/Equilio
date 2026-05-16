@@ -11,6 +11,7 @@ import {
   Breadcrumb,
   Row,
   Col,
+  Form,
 } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { postShiftsData } from '../../../features/shifts/shiftSlice'
@@ -148,6 +149,22 @@ function CreateShift() {
                           }
                         />
                       </InputGroup>
+                    </Col>
+
+                    <Col xs lg="4">
+                      <Form.Check
+                        type="switch"
+                        id="manual_only"
+                        className="mb-3"
+                        label="Nur manuell vergeben (nicht automatisch generieren/überschreiben)"
+                        checked={!!shiftsData.manual_only}
+                        onChange={(e) =>
+                          setShift({
+                            ...shiftsData,
+                            manual_only: e.target.checked,
+                          })
+                        }
+                      />
                     </Col>
 
                     {shiftsData.abrv &&

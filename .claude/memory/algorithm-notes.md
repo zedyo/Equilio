@@ -283,3 +283,32 @@ Antwort einfriert; in-place-Mutation der internen db-Arrays vermieden).
 UI: segmentierte 3-Wege-Steuerung je Schicht (Gesperrt/Erlaubt/
 Bevorzugt) statt Schalter, gruppiert nach Schichtart. Frontend-Test
 deckt die End-to-End-Nutzbarkeit ab (Klick → Mock → Slice → aktiv).
+
+## Phase 2k — manual_only, belastungsabhängige Gewichtung, Unterstunden
+
+**manual_only (Schicht-Flag):** `shifts.manual_only` (Migration, Model-
+Cast, ShiftController, Create/UpdateShift-Switch). Sonderdienst/
+Abwesenheit (FO, U, BS, PA …) ist im Seeder manual_only=true.
+DutyController.generate lädt bestehende manual_only-Duties des Monats
+und gibt sie als `$locked` an den Generator: vorbelegt, MA an dem Tag
+belegt, Greedy/Lokalsuche/SA verändern sie nie, buildResult gibt sie
+unverändert mit aus. Mock kongruent (lockedByDay, Persist behält sie).
+
+**Belastungsabhängige Gewichtung:** nach dem Greedy-Lauf wird je MA
+`employeeSequenceStrain` berechnet; Gewicht `m = 1 + k·min(strain/
+scale, cap)` (config `strain_adaptive`, k=1, scale=30, cap=2 → m≤3).
+`m` skaliert in Lokalsuche/SA das Sequenz-Δ je MA **und** (in
+`employeeExtraStrain`) Stunden/Wunsch/Präferenz. Höher belastete MA
+bekommen also bevorzugt Wunsch/Ruhe/Schichtwechsel-Verbesserungen.
+Statisch (deterministisch). `total_strain` nutzt die gewichtete Summe;
+`employee_strain` (Summary) bleibt der rohe Index; `hours[]` führt je
+MA `strain` + `weight`.
+
+**Unterstunden hoch priorisiert:** `monthly_undertime_deviation` (4,0/h)
+für Ist<Soll, `monthly_hours_deviation` (1,5/h) sonst. Bewusst unter
+den Ruhepausen (Sequenz-Strain, zusätzlich m-skaliert) → Reihenfolge
+Ruhe > Unterstunden > Überstunden/Präferenz.
+
+Verifiziert: PHPUnit 26/26 (7185 Assertions, inkl. SA-Determinismus,
+Soll-Stunden, Real-Daten-Feasibility mit locked+blocked+Gewichtung),
+Frontend 10/10, Build grün.

@@ -33,6 +33,7 @@ class ShiftController extends Controller
         $shift->color_hex = $request->shiftsData['color_hex'];
         $shift->h_duration = $request->shiftsData['h_duration'];
         $shift->shift_type_id = $request->shiftsData['shift_type_id'];
+        $shift->manual_only = (bool) ($request->shiftsData['manual_only'] ?? false);
         $shift->save();
 
         return response()->json([null], 201);
@@ -50,6 +51,7 @@ class ShiftController extends Controller
         $shift->color_hex = $request->shiftsData['color_hex'];
         $shift->h_duration = $request->shiftsData['h_duration'];
         $shift->shift_type_id = $request->shiftsData['shift_type_id'];
+        $shift->manual_only = (bool) ($request->shiftsData['manual_only'] ?? false);
 
         $shift->save();
 

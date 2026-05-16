@@ -11,6 +11,7 @@ import {
   Row,
   Col,
   Breadcrumb,
+  Form,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
@@ -162,6 +163,22 @@ function UpdateShift() {
                           }
                         />
                       </InputGroup>
+                    </Col>
+
+                    <Col xs lg="4">
+                      <Form.Check
+                        type="switch"
+                        id="manual_only"
+                        className="mb-3"
+                        label="Nur manuell vergeben (nicht automatisch generieren/überschreiben)"
+                        checked={!!shiftData.manual_only}
+                        onChange={(e) =>
+                          setShift({
+                            ...shiftData,
+                            manual_only: e.target.checked,
+                          })
+                        }
+                      />
                     </Col>
 
                     {shiftData.abrv &&

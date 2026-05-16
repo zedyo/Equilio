@@ -30,7 +30,7 @@ function buildSeedPreferences() {
 }
 
 // v2: anonymisierter Real-Datensatz (löst die alten Beispieldaten ab).
-const STORAGE_KEY = 'equilio_demo_db_v3'
+const STORAGE_KEY = 'equilio_demo_db_v4'
 
 const QUALIFICATIONS = RR_QUALIFICATIONS
 const SHIFT_TYPES = RR_SHIFT_TYPES
@@ -204,6 +204,19 @@ function runGenerator(year, month) {
     .filter((n) => shiftByType[n])
     .map((n) => db.shift_types.find((t) => t.name === n))
 
+  // Fixe Dienste (manual_only, z. B. FO/Urlaub) erhalten: nicht
+  // überschreiben, MA an dem Tag als belegt behandeln.
+  const manualShiftIds = new Set(
+    db.shifts.filter((s) => s.manual_only).map((s) => s.id)
+  )
+  const lockedDuties = db.duties.filter(
+    (d) => d.year === year && d.month === month && manualShiftIds.has(d.shift_id)
+  )
+  const lockedByDay = {}
+  for (const d of lockedDuties) {
+    ;(lockedByDay[d.day] = lockedByDay[d.day] || {})[d.employee_id] = true
+  }
+
   const pad = (n) => String(n).padStart(2, '0')
   const isAbsent = (empId, day) => {
     const date = `${year}-${pad(month)}-${pad(day)}`
@@ -257,7 +270,7 @@ function runGenerator(year, month) {
   }
 
   for (let day = 1; day <= days; day++) {
-    const today = {}
+    const today = { ...(lockedByDay[day] || {}) }
     for (const type of activeTypes) {
       const slots = Math.max(type.opt_occupation || 0, type.min_occupation || 0)
       if (slots <= 0) continue
@@ -548,8 +561,12 @@ function runGenerator(year, month) {
     imbalance += Math.abs(diff)
   }
 
-  // Monat ersetzen + persistieren
-  db.duties = db.duties.filter((d) => !(d.year === year && d.month === month))
+  // Monat ersetzen + persistieren – fixe (manual_only) Dienste bleiben.
+  db.duties = db.duties.filter(
+    (d) =>
+      !(d.year === year && d.month === month) ||
+      manualShiftIds.has(d.shift_id)
+  )
   const maxId = db.duties.reduce((m, d) => Math.max(m, d.id), 0)
   newDuties.forEach((d, i) => (d.id = maxId + 1 + i))
   db.duties.push(...newDuties)

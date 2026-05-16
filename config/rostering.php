@@ -54,9 +54,25 @@ return [
     //    (hoch gewichtet -> Work/Life-Balance).
     //  - preference_miss: kleine Strafe je Dienst, der nicht einer
     //    hinterlegten Schicht-Präferenz entspricht (sanfte Lenkung).
+    //  - monthly_undertime_deviation: Strafe je Stunde *Unterstunden*
+    //    (Ist < Soll). Hoch priorisiert (Abbau von Unterstunden), aber
+    //    bewusst unter den Ruhepausen (die im Sequenz-Strain stecken
+    //    und zusätzlich belastungsabhängig hochskaliert werden).
     'monthly_hours_deviation' => 1.5,
+    'monthly_undertime_deviation' => 4.0,
     'wish_violation' => 25.0,
     'preference_miss' => 0.5,
+
+    // Belastungsabhängige Gewichtung: je höher der Belastungsindex eines
+    // MA nach dem Greedy-Lauf, desto stärker zählen seine Wünsche/
+    // Präferenzen/Ruhepausen/Schichtwechsel bei der Optimierung
+    // (Gewicht m = 1 + k * min(strain/scale, cap)). enabled=false -> aus.
+    'strain_adaptive' => [
+        'enabled' => true,
+        'k' => 1.0,
+        'scale' => 30.0,
+        'cap' => 2.0,
+    ],
 
     // Ab dieser MA-Zahl wird die erschöpfende O(E^2*days^2)-Lokalsuche
     // übersprungen; allein das (gedeckelte) Simulated Annealing optimiert
