@@ -61,6 +61,11 @@ Ohne diese Bausteine kann kein sinnvoller Generator entstehen.
     Policies; separierte UI je Rolle (Proposal-Kann-Ziel).
 11. **Tests ausbauen**: PHPUnit-Feature-Tests für Generator-Heuristiken &
     API; Frontend-Tests je Feature erweitern; in CI verankern.
+    → ✅ erledigt (2026-05-16). PHPUnit **51** (inkl. Stammdaten-CRUD-
+    Lebenszyklus + SoftDelete und Duty-Verletzungslogik neu),
+    Frontend **12**, beide in CI. Tiefere Frontend-Component-Tests
+    **bewusst auf nach Phase 5** verschoben (UI-Redesign überarbeitet
+    die Komponenten ohnehin → sonst Wegwerf-Tests).
 12. **Echtes Backend für die Live-Demo** (optional): Laravel + Vite-
     Integration, damit die Demo nicht nur gegen das In-Browser-Mock läuft.
 13. **UX-Feinschliff**: Kalender-Performance bei vielen Mitarbeitern,

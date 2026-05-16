@@ -155,7 +155,7 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 | UI/UX, Wunschsystem                        | KANN      | ✅ fertig     |
 | Separate Rollen-UI                         | KANN      | ✅ Sanctum + Rollen |
 | **Belastungsindex**                        | (Kern)    | ✅ Prototyp   |
-| Tests                                      | —         | ✅ PHPUnit 32 + Frontend 12 |
+| Tests                                      | —         | ✅ PHPUnit 51 + Frontend 12 |
 
 **Kern umgesetzt (Phase 2, Mai 2026):** `App\Services\StrainIndex` +
 `App\Services\RosterGenerator` + `POST /api/duties/generate` erzeugen einen
