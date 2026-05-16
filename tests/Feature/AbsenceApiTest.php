@@ -12,6 +12,12 @@ class AbsenceApiTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+        $this->actingAsLeitung();
+    }
+
     private function makeEmployee(): Employee
     {
         $qualification = Qualification::create(['description' => 'Exam. Pfleger:in']);

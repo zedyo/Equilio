@@ -4,9 +4,11 @@ import {
   BrowserRouter,
   HashRouter,
   Route,
+  Navigate,
   useNavigate,
 } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { Spinner } from 'react-bootstrap'
+import { useDispatch, useSelector } from 'react-redux'
 import NavigationBar from '../components/NavigationBar'
 import QualificationOverview from '../components/qualifications/QualificationOverview'
 import UpdateQualification from '../components/qualifications/update/UpdateQualification'
@@ -25,6 +27,8 @@ import WishCreator from '../components/dutyOverview/employeeRow/employeeCell/wis
 import EmployeeDetails from '../components/employees/show/employeeOverview/EmployeeDetails'
 import AbsencesOverview from '../components/absences/AbsencesOverview'
 import CreateAbsence from '../components/absences/create/CreateAbsence'
+import LoginPage from '../components/auth/LoginPage'
+import MyPlan from '../components/myPlan/MyPlan'
 import { getEmployeeData } from '../features/employees/employeeSlice'
 import { getQualificationsData } from '../features/qualifications/qualificationSlice'
 import { getShiftsData } from '../features/shifts/shiftSlice'
@@ -33,6 +37,7 @@ import { getDutiesData } from '../features/duties/dutySlice'
 import { getWishesData } from '../features/wishes/wishSlice'
 import { getPreferenceData } from '../features/preferences/preferenceSlice'
 import { getAbsenceData } from '../features/absences/absenceSlice'
+import { fetchMe, selectAuth } from '../features/auth/authSlice'
 
 const AppRouter =
   typeof window !== 'undefined' && window.__EQUILIO_DEMO__
@@ -67,8 +72,6 @@ function InternalLinkInterceptor() {
       if (anchor.target && anchor.target !== '_self') return
       if (anchor.hasAttribute('download')) return
       const href = anchor.getAttribute('href')
-      // Nur interne absolute Pfade abfangen (kein http(s)://, kein //,
-      // kein #, kein mailto:).
       if (!href || !href.startsWith('/') || href.startsWith('//')) return
       event.preventDefault()
       navigate(href)
@@ -80,7 +83,7 @@ function InternalLinkInterceptor() {
   return null
 }
 
-function Router() {
+function LeitungRoutes() {
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -95,29 +98,86 @@ function Router() {
   }, [dispatch])
 
   return (
+    <Routes>
+      <Route path="/qualification/edit/:id" element={<UpdateQualification />} />
+      <Route path="/qualification/create" element={<CreateQualification />} />
+      <Route path="/qualifications" element={<QualificationOverview />} />
+      <Route path="/shift/edit/:id" element={<UpdateShift />} />
+      <Route path="/shift/create" element={<CreateShift />} />
+      <Route path="/shifts" element={<ShiftOverview />} />
+      <Route path="/shift_type/edit/:id" element={<UpdateShiftType />} />
+      <Route path="/shift_type/create" element={<CreateShiftType />} />
+      <Route path="/shift_types" element={<ShiftTypeOverview />} />
+      <Route path="/employee/edit/:id" element={<UpdateEmployee />} />
+      <Route path="/employee/show/:id" element={<EmployeeDetails />} />
+      <Route path="/employee/create" element={<CreateEmployee />} />
+      <Route path="/employees" element={<EmployeesOverview />} />
+      <Route path="/absence/create" element={<CreateAbsence />} />
+      <Route path="/absences" element={<AbsencesOverview />} />
+      <Route path="/duties" element={<DutyOverview />} />
+      <Route path="/wish_creator" element={<WishCreator />} />
+      <Route path="/" element={<DutyOverview />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
+
+function PflegekraftRoutes() {
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    // Pflegekraft darf nur Render-Stammdaten laden (Rest -> 403).
+    dispatch(getShiftsData())
+    dispatch(getShiftTypesData())
+  }, [dispatch])
+
+  return (
+    <Routes>
+      <Route path="/mein-plan" element={<MyPlan />} />
+      <Route path="/" element={<MyPlan />} />
+      <Route path="*" element={<Navigate to="/" replace />} />
+    </Routes>
+  )
+}
+
+function Router() {
+  const dispatch = useDispatch()
+  const { status, user } = useSelector(selectAuth)
+
+  useEffect(() => {
+    dispatch(fetchMe())
+  }, [dispatch])
+
+  if (status === 'loading') {
+    return (
+      <div
+        style={{
+          minHeight: '100vh',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}
+      >
+        <Spinner animation="border" />
+      </div>
+    )
+  }
+
+  if (status === 'guest') {
+    return (
+      <AppRouter>
+        <LoginPage />
+      </AppRouter>
+    )
+  }
+
+  const isLeitung = user?.role === 'leitung'
+
+  return (
     <AppRouter>
       <InternalLinkInterceptor />
       <NavigationBar />
-      <Routes>
-        <Route path="/qualification/edit/:id" element={<UpdateQualification />} />
-        <Route path="/qualification/create" element={<CreateQualification />} />
-        <Route path="/qualifications" element={<QualificationOverview />} />
-        <Route path="/shift/edit/:id" element={<UpdateShift />} />
-        <Route path="/shift/create" element={<CreateShift />} />
-        <Route path="/shifts" element={<ShiftOverview />} />
-        <Route path="/shift_type/edit/:id" element={<UpdateShiftType />} />
-        <Route path="/shift_type/create" element={<CreateShiftType />} />
-        <Route path="/shift_types" element={<ShiftTypeOverview />} />
-        <Route path="/employee/edit/:id" element={<UpdateEmployee />} />
-        <Route path="/employee/show/:id" element={<EmployeeDetails />} />
-        <Route path="/employee/create" element={<CreateEmployee />} />
-        <Route path="/employees" element={<EmployeesOverview />} />
-        <Route path="/absence/create" element={<CreateAbsence />} />
-        <Route path="/absences" element={<AbsencesOverview />} />
-        <Route path="/duties" element={<DutyOverview />} />
-        <Route path="/wish_creator" element={<WishCreator />} />
-        <Route path="/" element={<DutyOverview />} />
-      </Routes>
+      {isLeitung ? <LeitungRoutes /> : <PflegekraftRoutes />}
     </AppRouter>
   )
 }

@@ -24,6 +24,7 @@ class RosterGeneratorTest extends TestCase
             EmployeeSeeder::class,
             ShiftSeeder::class,
         ]);
+        $this->actingAsLeitung();
     }
 
     public function test_generate_creates_plan_and_summary(): void

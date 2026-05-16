@@ -41,6 +41,20 @@ export const deleteWishesData = createAsyncThunk(
   }
 )
 
+export const getWishesByEmployee = createAsyncThunk(
+  'wishes/getWishesByEmployee',
+  async (employeeId, thunkAPI) => {
+    try {
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/wishesByEmployee/${employeeId}`
+      )
+      return data
+    } catch (error) {
+      return thunkAPI.rejectWithValue('Fehler beim Abholen der eigenen Wünsche')
+    }
+  }
+)
+
 const wishSlice = createSlice({
   name: 'wishes',
   initialState,
@@ -62,6 +76,10 @@ const wishSlice = createSlice({
         state.errorMessage = payload
         state.isLoading = false
         state.hasError = true
+      })
+      .addCase(getWishesByEmployee.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.wishesData = payload
       })
       .addCase(postWishesData.pending, (state) => {
         state.isLoading = true

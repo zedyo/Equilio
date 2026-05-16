@@ -31,6 +31,7 @@ function buildSeedPreferences() {
 
 // v2: anonymisierter Real-Datensatz (löst die alten Beispieldaten ab).
 const STORAGE_KEY = 'equilio_demo_db_v4'
+const SESSION_KEY = 'equilio_demo_session'
 
 const QUALIFICATIONS = RR_QUALIFICATIONS
 const SHIFT_TYPES = RR_SHIFT_TYPES
@@ -95,6 +96,7 @@ function loadDb() {
   const params = new URLSearchParams(window.location.search)
   if (params.has('reset')) {
     window.localStorage.removeItem(STORAGE_KEY)
+    window.localStorage.removeItem(SESSION_KEY)
   }
   const raw = window.localStorage.getItem(STORAGE_KEY)
   if (raw) {
@@ -620,6 +622,60 @@ function fail(data, status) {
   return Promise.reject(error)
 }
 
+// ---- Auth (Sanctum-SPA-Mock) ----
+function demoAccounts() {
+  const emps = [...db.employees].sort((a, b) => a.id - b.id)
+  const accts = [
+    {
+      email: 'leitung@equilio.test',
+      name: 'Leitung Demo',
+      role: 'leitung',
+      employee_id: null,
+    },
+  ]
+  emps.slice(0, 3).forEach((e, i) => {
+    accts.push({
+      email: i === 0 ? 'pflege@equilio.test' : `pflege${i + 1}@equilio.test`,
+      name: `${e.first_name} ${e.last_name}`,
+      role: 'pflegekraft',
+      employee_id: e.id,
+    })
+  })
+  return accts
+}
+
+function getSession() {
+  try {
+    return JSON.parse(window.localStorage.getItem(SESSION_KEY) || 'null')
+  } catch (e) {
+    return null
+  }
+}
+
+function setSession(u) {
+  try {
+    if (u) window.localStorage.setItem(SESSION_KEY, JSON.stringify(u))
+    else window.localStorage.removeItem(SESSION_KEY)
+  } catch (e) {
+    /* localStorage evtl. nicht verfügbar */
+  }
+}
+
+function profileOf(acct) {
+  const emp =
+    acct.employee_id != null
+      ? db.employees.find((e) => e.id === acct.employee_id)
+      : null
+  return {
+    id: acct.email,
+    name: acct.name,
+    email: acct.email,
+    role: acct.role,
+    employee_id: acct.employee_id,
+    employee: emp ? withQualification(emp) : null,
+  }
+}
+
 function recalcDutyInjuries(duty) {
   const wish = db.wishes.find(
     (w) =>
@@ -641,6 +697,67 @@ function handle(method, path, body) {
   const seg = path.replace(/^\/+|\/+$/g, '').split('/') // z.B. ['api','duties','2026','5']
   // seg[0] === 'api'
   const r = seg.slice(1)
+
+  // ---- Auth (Sanctum SPA) ----
+  if (seg[0] === 'sanctum' && seg[1] === 'csrf-cookie') {
+    return ok(null, 204)
+  }
+  if (r[0] === 'login' && method === 'post') {
+    const acct = demoAccounts().find(
+      (a) => a.email === String(body.email || '').toLowerCase()
+    )
+    if (!acct || body.password !== 'password') {
+      return fail(
+        {
+          message: 'E-Mail oder Passwort ist falsch.',
+          errors: { email: ['E-Mail oder Passwort ist falsch.'] },
+        },
+        422
+      )
+    }
+    setSession(acct)
+    return ok(profileOf(acct))
+  }
+  if (r[0] === 'logout' && method === 'post') {
+    setSession(null)
+    return ok({ message: 'Abgemeldet.' })
+  }
+  if (r[0] === 'user' && method === 'get') {
+    const s = getSession()
+    return s ? ok(profileOf(s)) : fail({ message: 'Unauthenticated.' }, 401)
+  }
+
+  // Alle übrigen /api-Routen erfordern eine Anmeldung + Rollenrechte.
+  const session = getSession()
+  if (!session) return fail({ message: 'Unauthenticated.' }, 401)
+
+  if (session.role !== 'leitung') {
+    const ownId = Number(session.employee_id)
+    const readAll =
+      method === 'get' &&
+      r.length === 1 &&
+      (r[0] === 'shifts' || r[0] === 'shift_types')
+    let ownTarget = null
+    if (r[0] === 'duties' && r[3] && method === 'get') {
+      ownTarget = Number(r[3])
+    } else if (
+      r[0] === 'wishesByEmployee' ||
+      r[0] === 'preferencesByEmployee'
+    ) {
+      ownTarget = Number(r[1])
+    } else if (r[0] === 'wish' && method === 'post') {
+      ownTarget = Number(body.wishData?.employee_id)
+    } else if (r[0] === 'preference') {
+      ownTarget = Number(body.preferenceData?.employee_id)
+    }
+
+    if (!readAll && ownTarget === null) {
+      return fail({ message: 'Für diese Aktion fehlt die Berechtigung.' }, 403)
+    }
+    if (ownTarget !== null && ownTarget !== ownId) {
+      return fail({ message: 'Zugriff nur auf eigene Daten erlaubt.' }, 403)
+    }
+  }
 
   // ---- duties ----
   if (r[0] === 'duty' && method === 'patch') {
@@ -872,6 +989,14 @@ function handle(method, path, body) {
     // interne db-Array-Referenz teilen (sonst schlägt späteres Mutieren
     // mit "object is not extensible" fehl).
     return ok({ preferences: db.preferences.map((x) => ({ ...x })) })
+  }
+  if (r[0] === 'preferencesByEmployee' && method === 'get') {
+    const empId = Number(r[1])
+    return ok({
+      preferences: db.preferences
+        .filter((p) => p.employee_id === empId)
+        .map((x) => ({ ...x })),
+    })
   }
   if (r[0] === 'preference' && method === 'post') {
     const p = body.preferenceData
