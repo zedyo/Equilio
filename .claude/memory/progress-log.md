@@ -4,6 +4,36 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 3.11: Testabdeckung ausbauen
+
+- Neuer `CrudLifecycleTest` (6): voller store→show→update→destroy für
+  Qualification/Employee/Shift/ShiftType inkl. Status-Codes,
+  Employee-Ownership-/Rollen-Schutz und der Erkenntnis, dass **alle**
+  Stammdaten-Modelle SoftDeletes nutzen (Lösch-Assertions →
+  `assertSoftDeleted`).
+- Neuer `DutyInjuryTest` (6): sichert die bislang ungetestete Kern-
+  Domänenlogik in `DutyController::update` ab — Setzen von
+  `wish_injury`/`preference_injury` beim Anlegen *und* beim Ändern
+  einer Duty (steuert die rot/gelb-Markierung im Kalender), plus
+  „keine Änderung legt kein Duplikat an".
+- Doku-Sync (CLAUDE.md/implementation-status/ROADMAP): Teststand jetzt
+  PHPUnit **51** + Frontend **12**.
+- **Bewusst verschoben:** tiefere Frontend-Component-Tests → erst nach
+  Phase 5 (UI-Redesign überarbeitet die Komponenten ohnehin, sonst
+  Wegwerf-Tests). Gleiche Wegwerf-Vermeidungs-Logik wie bei den
+  Phase-1.3-JSON-Resources; vom Nutzer so priorisiert.
+
+**Verifiziert:** PHPUnit **51/51** (7259 Assertions), Frontend
+**12/12**, keine Produktiv-Code-Änderung.
+
+**Lessons Learned:** Vor dem Schreiben von Lösch-Tests die SoftDeletes-
+Nutzung der Modelle prüfen — `assertDatabaseMissing` schlägt sonst fehl,
+obwohl der Endpoint korrekt arbeitet. Die wertvollste ungetestete
+Stelle war nicht CRUD, sondern die Verletzungs-Flag-Logik (zwei Pfade:
+Neu-Anlage vs. Änderung mit je eigener wish/preference-Behandlung).
+
+---
+
 ## 2026-05-16 — Phase 1.3: Datenmodell härten (FormRequests + Status-Codes)
 
 - **FormRequest-Validierung** für die bisher ungeprüften Action-
