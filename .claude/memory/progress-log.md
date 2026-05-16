@@ -4,6 +4,34 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 5 (Abschnitt 2): UX-/Userflow-Konzept
+
+Nutzer-Feedback zu Abschnitt 1: Farbwahl gut & lesbar, Kontrast gut;
+gewünscht (a) harmonischere Farbabstufungen, (b) Redesign über Farben
+hinaus — Struktur/Formulare/Navigation, gesamtes Nutzungsverhalten;
+explizit ein Userflow-Konzept.
+
+- Code-Analyse der realen Flows (Wunsch, Mitarbeiter-Bearbeitung,
+  Dienst-Eingabe, IA, MyPlan) → Reibungspunkte verifiziert
+  (Hover-only-Wunsch-Button, „Bearbeiten" führt zu Read-only,
+  Freitext-Dienstzelle, flaches „Einstellungen"-Dropdown, …).
+- Konzept-Deliverable `.claude/memory/ux-concept.md`: Ziel-IA
+  (Topbar Dienstplan/Team/Stammdaten▾ statt „Einstellungen"),
+  redesignte Kern-Userflows (Generieren/Justieren mit Schicht-Picker,
+  vorbelegter sichtbarer Wunsch-Flow, getrenntes Profil vs.
+  Bearbeiten, einheitliches Stammdaten-Muster), Interaktions-
+  Prinzipien, **harmonisierte Indigo-Tonleiter 50–900**,
+  Umsetzungsreihenfolge.
+- Noch **keine** Implementierung — wartet auf Nutzer-Freigabe/
+  Priorisierung des Konzepts.
+
+**Lessons Learned:** „Bearbeiten"-Button der Team-Tabelle führt
+tatsächlich auf die Read-only-Detailseite (`/employee/show`), nicht
+auf das Edit-Formular — klassischer Label/Ziel-Bruch, im Konzept
+adressiert.
+
+---
+
 ## 2026-05-16 — Phase 5 (Abschnitt 1): Designsystem + Shell + Kern-Screen
 
 Start des vom Nutzer beauftragten UI/UX-Komplett-Redesigns. Container
