@@ -82,15 +82,26 @@ Ohne diese Bausteine kann kein sinnvoller Generator entstehen.
 > **Merker (Nutzerauftrag, 2026-05-16):** Sobald alle obigen
 > Roadmap-Punkte abgearbeitet sind, folgt verbindlich dieser Punkt.
 
-15. **Vollständiges UI/UX-Redesign.** Zuerst die aktuelle UI in
-    Chrome erkunden und Optimierungspotenziale dokumentieren, dann
-    komplett neu gestalten:
-    - Moderneres, angenehmes Look-and-Feel; Farbschema und
-      Grundlayout dürfen frei geändert werden.
-    - Im Pflegealltag übersichtlich und leicht bedienbar.
-    - Responsiv / gut nutzbar auf Mobilgeräten.
-    - Konsistente Komponenten, klare Informationshierarchie,
-      zugängliche Interaktionen.
+15. **Vollständiges UI/UX-Redesign.** → 🟦 **in Umsetzung**
+    (2026-05-16). Analyse + UX-/Userflow-Konzept:
+    `.claude/memory/ui-redesign-notes.md` / `ux-concept.md`.
+    Umgesetzt (Schritte 1–7, je Commit + vitest 12/12):
+    - Logo-orientiertes Indigo-Designsystem (harmonische Tonleiter
+      50–900), Inter, A11y-Fokus, Politur-Layer.
+    - Neue Informationsarchitektur (Dienstplan/Team/Stammdaten/Konto)
+      statt irreführendem „Einstellungen"-Dropdown.
+    - Redesignte Flows: sichtbarer/vorbelegter Wunsch-Flow,
+      Profil-vs.-Bearbeiten, Lösch-Bestätigungen, Dienst-Picker
+      (zentrale Combobox) statt Freitext.
+    - Einheitliches Listen-/Formular-Muster (PageHeader/EmptyState/
+      ConfirmDialog), Zurück-Links statt Breadcrumb.
+    - Responsiv: fixierte erste Spalte des Boards; responsive Navbar.
+    - Container headless → **keine** Eigen-Screenshots; visuelle
+      Endabnahme beim Nutzer ausstehend.
+    - **Offen (bewusst nach Abnahme):** Create/Edit zu *einer*
+      Formular-Komponente mergen (kollidiert mit der in Phase 1.3
+      verschobenen Payload-Schlüssel-Normalisierung → gemeinsam
+      angehen).
 
 ---
 
