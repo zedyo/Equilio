@@ -30,6 +30,10 @@ class EvaluateRosterCommandTest extends TestCase
             ->expectsOutputToContain('Harte Constraints')
             ->expectsOutputToContain('Mindestbesetzung')
             ->expectsOutputToContain('Verteilung & Stundenkonto')
+            ->expectsOutputToContain('Generator-Qualität (Phase 2.9)')
+            ->expectsOutputToContain('Besetzungs-Abdeckung:')
+            ->expectsOutputToContain('Fachkraft-Abdeckung:')
+            ->expectsOutputToContain('Nachbesserungsquote:')
             ->assertExitCode(0);
     }
 }
