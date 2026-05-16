@@ -167,8 +167,13 @@ function MyPlan() {
             <Card.Body>
               <Stack direction="horizontal" className="mb-3">
                 <Card.Title className="mb-0">Dienstwünsche</Card.Title>
-                <div className="ms-auto" onClick={() => setTimeout(reloadWishes, 400)}>
-                  <WishCreator employeeId={employeeId} />
+                <div className="ms-auto">
+                  <WishCreator
+                    employeeId={employeeId}
+                    employeeName={user?.employee?.first_name || user?.name}
+                    defaultDate={{ month, year }}
+                    onSaved={reloadWishes}
+                  />
                 </div>
               </Stack>
               <Table size="sm">
