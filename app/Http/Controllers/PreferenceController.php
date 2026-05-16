@@ -29,70 +29,50 @@ class PreferenceController extends Controller
      */
     public function create(Request $request, Preference $preference)
     {
-        $preference_check = Preference::where('employee_id', $request->preferenceData['employee_id']);
-        $preference_check->where('shift_id', $request->preferenceData['shift_id']);
-        $preference = $preference_check->get();
+        $data = $request->preferenceData;
+        $employeeId = $data['employee_id'];
+        $shiftId = $data['shift_id'];
+        // 3 Stufen: 'preferred' (bevorzugt), 'valid' (erlaubt/neutral),
+        // 'blocked' (darf nie vergeben werden). 'valid' = kein Datensatz.
+        $level = $data['level'] ?? 'preferred';
+        if (! in_array($level, ['preferred', 'valid', 'blocked'], true)) {
+            $level = 'valid';
+        }
 
-        if ($request->preferenceData['active'] == 1) {
-            if ($preference->isEmpty()) {
+        $existing = Preference::where('employee_id', $employeeId)
+            ->where('shift_id', $shiftId)
+            ->first();
 
-                $new_preference = new Preference();
-                $new_preference->employee_id = $request->preferenceData['employee_id'];
-                $new_preference->shift_id = $request->preferenceData['shift_id'];
-                $new_preference->save();
-
-                DB::table('duties')->where('employee_id', '=', $request->preferenceData['employee_id'])->where('shift_id', '=', $request->preferenceData['shift_id'])->update(['preference_injury' => 0]);
-
-                return response()->json(['preference' => $new_preference], 201);
+        if ($level === 'valid') {
+            if ($existing) {
+                $existing->delete();
             }
-        } else {
-            DB::table('duties')->where('employee_id', '=', $request->preferenceData['employee_id'])->where('shift_id', '=', $request->preferenceData['shift_id'])->update(['preference_injury' => 1]);
+            DB::table('duties')
+                ->where('employee_id', $employeeId)
+                ->where('shift_id', $shiftId)
+                ->update(['preference_injury' => 1]);
 
-            // $preference = $preference[0];
-            $preference[0]->delete();
+            return response()->json([
+                'preference' => [
+                    'employee_id' => (int) $employeeId,
+                    'shift_id' => (int) $shiftId,
+                    'level' => 'valid',
+                ],
+            ], 201);
+        }
 
-            Log::debug($preference);
+        $row = $existing ?: new Preference();
+        $row->employee_id = $employeeId;
+        $row->shift_id = $shiftId;
+        $row->level = $level;
+        $row->save();
 
-            return response()->json(['preference' => $preference[0]], 201);
-        };
-        // $wish_check = Wish::where('employee_id', $request->wishData['employee_id']);
-        // $wish_check->where('day', $request->wishData['day']);
-        // $wish_check->where('month', $request->wishData['month']);
-        // $wish_check->where('year', $request->wishData['year']);
-        // $wish = $wish_check->get();
+        DB::table('duties')
+            ->where('employee_id', $employeeId)
+            ->where('shift_id', $shiftId)
+            ->update(['preference_injury' => $level === 'preferred' ? 0 : 1]);
 
-        // if ($wish->isEmpty()) {
-        //     $new_wish = new Wish();
-        //     $new_wish->employee_id = $request->wishData['employee_id'];
-        //     $new_wish->shift_id = $request->wishData['shift_id'];
-        //     $new_wish->day = $request->wishData['day'];
-        //     $new_wish->month = $request->wishData['month'];
-        //     $new_wish->year = $request->wishData['year'];
-
-        //     $new_wish->save();
-
-        //     $duty_check = Duty::where('employee_id', $request->wishData['employee_id']);
-        //     $duty_check->where('day', $request->wishData['day']);
-        //     $duty_check->where('month', $request->wishData['month']);
-        //     $duty_check->where('year', $request->wishData['year']);
-        //     $duty = $duty_check->get();
-
-        //     if ($duty->isEmpty() == false && ($duty[0]->shift_id != $request->wishData['shift_id'])) {
-        //         $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
-        //         $update_duty_wish->wish_injury = 1;
-        //         $update_duty_wish->save();
-        //     } else {
-        //         $update_duty_wish = Duty::where('id', $duty[0]->id)->first();
-        //         $update_duty_wish->wish_injury = 0;
-        //         $update_duty_wish->save();
-        //     }
-
-        //     $wish = Wish::with('shift')->where('id', $new_wish->id)->first();
-
-        //     return response()->json(['new_wish' => $wish], 201);
-        // } else {
-        //     return response()->json(['new_wish' => $wish], 201);
-        // }
+        return response()->json(['preference' => $row], 201);
     }
 
     /**

@@ -15,7 +15,12 @@ class Shift extends Model
         'abrv',
         'shift_type_id',
         'h_duration',
-        'color_hex'
+        'color_hex',
+        'manual_only',
+    ];
+
+    protected $casts = [
+        'manual_only' => 'boolean',
     ];
 
     public function shift_type(){

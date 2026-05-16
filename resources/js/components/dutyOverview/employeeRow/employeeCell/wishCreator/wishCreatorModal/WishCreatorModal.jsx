@@ -3,15 +3,16 @@ import { Button, Col, FloatingLabel, Form, Modal, Row } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { postWishesData } from '../../../../../../features/wishes/wishSlice'
 import moment from 'moment'
+import WishDatePicker from '../../../../dateSelector/WishDatePicker'
 
 function WishCreatorModal(props) {
   const dispatch = useDispatch()
+  const now = moment()
   const [wishData, setWish] = useState({
     employee_id: props.employeeId,
-    year:
-      moment().format('M') == 12 || moment().format('M') == 11
-        ? ''
-        : moment().format('YYYY'),
+    day: Number(now.format('D')),
+    month: Number(now.format('M')),
+    year: Number(now.format('YYYY')),
   })
   const { employeesData } = useSelector((store) => store.employees)
   const { shiftsData } = useSelector((store) => store.shifts)
@@ -92,71 +93,18 @@ function WishCreatorModal(props) {
               </Col>
             </Row>
             <Row>
-              <Col md className="g-3">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Tag"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="wish_day"
-                    placeholder="01"
-                    onChange={(e) =>
-                      setWish({ ...wishData, day: parseInt(e.target.value) })
-                    }
-                    autoComplete="off"
-                  />
-                </FloatingLabel>
-              </Col>
-              <Col md className="g-3">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Monat"
-                  className="mb-3"
-                >
-                  <Form.Select
-                    aria-label="Floating label select example"
-                    onChange={(e) =>
-                      e.target.value !== null &&
-                      setWish({ ...wishData, month: parseInt(e.target.value) })
-                    }
-                  >
-                    <option value={null}>-- Bitte auswählen --</option>
-                    <option value={1}>Januar</option>
-                    <option value={2}>Februar</option>
-                    <option value={3}>März</option>
-                    <option value={4}>April</option>
-                    <option value={5}>Mai</option>
-                    <option value={6}>Juni</option>
-                    <option value={7}>Juli</option>
-                    <option value={8}>August</option>
-                    <option value={9}>September</option>
-                    <option value={10}>Oktober</option>
-                    <option value={11}>November</option>
-                    <option value={12}>Dezember</option>
-                  </Form.Select>
-                </FloatingLabel>
-              </Col>
-              <Col md className="g-3">
-                <FloatingLabel
-                  controlId="floatingInput"
-                  label="Jahr"
-                  className="mb-3"
-                >
-                  <Form.Control
-                    type="wish_year"
-                    placeholder="1986"
-                    onChange={(e) =>
-                      setWish({ ...wishData, year: parseInt(e.target.value) })
-                    }
-                    value={
-                      moment().format('M') == 12 || moment().format('M') == 11
-                        ? ''
-                        : moment().format('YYYY')
-                    }
-                    autoComplete="off"
-                  />
-                </FloatingLabel>
+              <Col className="g-3">
+                <Form.Label className="text-muted small mb-1">
+                  Wunschtag
+                </Form.Label>
+                <WishDatePicker
+                  value={{
+                    day: wishData.day,
+                    month: wishData.month,
+                    year: wishData.year,
+                  }}
+                  onChange={(date) => setWish({ ...wishData, ...date })}
+                />
               </Col>
             </Row>
           </Form.Group>

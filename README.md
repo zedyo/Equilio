@@ -32,11 +32,15 @@ php artisan serve              # API at http://localhost:8000/api
 ## Test dataset: real-world roster seeder
 
 `RealRosterSeeder` contains an **anonymized** dataset derived from a real
-care-facility duty roster (50 residents, 4 wards A–D, Jan–May 2018):
-36 staff with realistic qualifications, contracted hours and ~2,779
-historical duty entries. It is intentionally **not** registered in
-`DatabaseSeeder`, so the default demo data and the existing test suite
-stay untouched. Background notes: `.claude/memory/real-roster-insights.md`.
+care-facility duty roster (50 residents, 4 wards A–D, 5 source months):
+36 staff with realistic qualifications, contracted hours and ~2,779 duty
+entries. The duties are mapped onto a **rolling 5-month window that ends
+in the current month**, so the plan is visible immediately when the app
+starts (no need to navigate back in time). It is intentionally **not**
+registered in `DatabaseSeeder`, so the default demo data and the existing
+test suite stay untouched. The same anonymized data also powers the
+in-browser demo (`resources/js/mock/realRosterData.js`). Background
+notes: `.claude/memory/real-roster-insights.md`.
 
 Run it **in addition** to the default data (own ID ranges, no conflict):
 

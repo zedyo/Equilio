@@ -11,75 +11,53 @@
  * URL setzt den Demo-Datenstand zurück.
  */
 
-const STORAGE_KEY = 'equilio_demo_db_v1'
+import {
+  RR_QUALIFICATIONS,
+  RR_SHIFT_TYPES,
+  RR_SHIFTS,
+  RR_EMPLOYEES,
+  RR_DUTIES_RAW,
+  RR_PREFERENCES,
+} from './realRosterData.js'
 
-const QUALIFICATIONS = [
-  { id: 1, description: 'Exam. Pfleger:in' },
-  { id: 2, description: 'Qual. Pflegehelfer:in' },
-  { id: 3, description: 'Pflegehelfer:in' },
-  { id: 4, description: 'Betreuungsassistent:in' },
-]
+function buildSeedPreferences() {
+  return RR_PREFERENCES.map(([employee_id, shift_id, level], i) => ({
+    id: i + 1,
+    employee_id,
+    shift_id,
+    level,
+  }))
+}
 
-const SHIFT_TYPES = [
-  { id: 1, name: 'Frühschicht', active_duty: 1, min_occupation: 3, opt_occupation: 5 },
-  { id: 2, name: 'Spätschicht', active_duty: 1, min_occupation: 2, opt_occupation: 3 },
-  { id: 3, name: 'Nachtschicht', active_duty: 1, min_occupation: 1, opt_occupation: 2 },
-  { id: 4, name: 'Zwischenschicht', active_duty: 1, min_occupation: 0, opt_occupation: 0 },
-  { id: 5, name: 'Frei (bezahlt)', active_duty: 0, min_occupation: 0, opt_occupation: 0 },
-  { id: 6, name: 'Fort- & Ausbildung', active_duty: 0, min_occupation: 0, opt_occupation: 0 },
-]
+// v2: anonymisierter Real-Datensatz (löst die alten Beispieldaten ab).
+const STORAGE_KEY = 'equilio_demo_db_v4'
 
-const SHIFTS = [
-  { id: 1, abrv: 'F1', shift_type_id: 1, h_duration: 8, color_hex: '#fe5741' },
-  { id: 2, abrv: 'F2', shift_type_id: 1, h_duration: 6, color_hex: '#fe7000' },
-  { id: 3, abrv: 'S1', shift_type_id: 2, h_duration: 8, color_hex: '#598ec7' },
-  { id: 4, abrv: 'S2', shift_type_id: 2, h_duration: 6, color_hex: '#318ab7' },
-  { id: 5, abrv: 'N1', shift_type_id: 3, h_duration: 8, color_hex: '#932092' },
-  { id: 6, abrv: 'N2', shift_type_id: 3, h_duration: 6, color_hex: '#702092' },
-  { id: 7, abrv: 'U1', shift_type_id: 5, h_duration: 8, color_hex: '#1ddce2' },
-  { id: 8, abrv: 'K1', shift_type_id: 5, h_duration: 8, color_hex: '#a00000' },
-]
+const QUALIFICATIONS = RR_QUALIFICATIONS
+const SHIFT_TYPES = RR_SHIFT_TYPES
+const SHIFTS = RR_SHIFTS
+const EMPLOYEES = RR_EMPLOYEES
 
-const EMPLOYEES = [
-  { id: 1, qualification_id: 1, first_name: 'Vince', last_name: 'Testy', daily_worktime: 8, employment_ratio: 100 },
-  { id: 2, qualification_id: 1, first_name: 'Anna', last_name: 'Brandt', daily_worktime: 8, employment_ratio: 100 },
-  { id: 3, qualification_id: 1, first_name: 'Markus', last_name: 'Hoffmann', daily_worktime: 8, employment_ratio: 100 },
-  { id: 4, qualification_id: 1, first_name: 'Sabine', last_name: 'Keller', daily_worktime: 8, employment_ratio: 75 },
-  { id: 5, qualification_id: 2, first_name: 'Tobias', last_name: 'Wagner', daily_worktime: 8, employment_ratio: 100 },
-  { id: 6, qualification_id: 2, first_name: 'Lena', last_name: 'Schuster', daily_worktime: 8, employment_ratio: 100 },
-  { id: 7, qualification_id: 2, first_name: 'Jonas', last_name: 'Frei', daily_worktime: 8, employment_ratio: 50 },
-  { id: 8, qualification_id: 3, first_name: 'Mira', last_name: 'Lorenz', daily_worktime: 8, employment_ratio: 100 },
-  { id: 9, qualification_id: 3, first_name: 'David', last_name: 'Köhler', daily_worktime: 8, employment_ratio: 100 },
-  { id: 10, qualification_id: 4, first_name: 'Petra', last_name: 'Sommer', daily_worktime: 8, employment_ratio: 75 },
-  { id: 11, qualification_id: 4, first_name: 'Erik', last_name: 'Baumann', daily_worktime: 8, employment_ratio: 100 },
-]
-
+// Quelle deckt 5 aufeinanderfolgende Monate (Jan–Mai) ab. Auf ein
+// rollierendes Fenster mappen, das im *aktuellen* Monat endet
+// (Quellmonat 5 -> aktueller Monat) – identisch zur Logik in
+// database/seeders/RealRosterSeeder.php.
 function buildSeedDuties() {
   const now = new Date()
-  const year = now.getFullYear()
-  const month = now.getMonth() + 1
-  const daysInMonth = new Date(year, month, 0).getDate()
-  // einfache rollierende Schicht-Rotation als Anschauungsbeispiel
-  const pattern = ['F1', 'F1', 'S1', 'S1', 'N1', 'U1', 'U1']
-  const duties = []
-  let id = 1
-  EMPLOYEES.forEach((emp, empIdx) => {
-    for (let day = 1; day <= daysInMonth; day++) {
-      const abrv = pattern[(day + empIdx) % pattern.length]
-      const shift = SHIFTS.find((s) => s.abrv === abrv)
-      duties.push({
-        id: id++,
-        employee_id: emp.id,
-        shift_id: shift.id,
-        day,
-        month,
-        year,
-        wish_injury: 0,
-        preference_injury: 1,
-      })
-    }
-  })
-  return duties
+  const map = {}
+  for (let m = 1; m <= 5; m++) {
+    const d = new Date(now.getFullYear(), now.getMonth() - (5 - m), 1)
+    map[m] = { year: d.getFullYear(), month: d.getMonth() + 1 }
+  }
+  return RR_DUTIES_RAW.map(([employee_id, shift_id, day, srcMonth], i) => ({
+    id: i + 1,
+    employee_id,
+    shift_id,
+    day,
+    month: map[srcMonth].month,
+    year: map[srcMonth].year,
+    wish_injury: 0,
+    preference_injury: 0,
+  }))
 }
 
 function buildSeedAbsences() {
@@ -103,7 +81,7 @@ function freshDb() {
     employees: clone(EMPLOYEES),
     duties: buildSeedDuties(),
     wishes: [],
-    preferences: [],
+    preferences: buildSeedPreferences(),
     working_hours_diffs: [],
     absences: buildSeedAbsences(),
   }
@@ -164,7 +142,7 @@ const ROSTER_CFG = {
   forbidden: [{ from: 'Nachtschicht', to: 'Frühschicht' }],
   w: { understaffed: 50, isolated: 8, third: -2, twoFree: -5, missingQual: 30 },
   typePriority: ['Frühschicht', 'Spätschicht', 'Nachtschicht'],
-  requiredQualification: 'Exam. Pfleger:in',
+  requiredQualification: 'Examinierte Pflegefachkraft',
   fullTimeWeekly: 39,
   annealing: { iterations: 3000, startTemp: 10, cooling: 0.999, seed: 1337 },
 }
@@ -226,6 +204,19 @@ function runGenerator(year, month) {
     .filter((n) => shiftByType[n])
     .map((n) => db.shift_types.find((t) => t.name === n))
 
+  // Fixe Dienste (manual_only, z. B. FO/Urlaub) erhalten: nicht
+  // überschreiben, MA an dem Tag als belegt behandeln.
+  const manualShiftIds = new Set(
+    db.shifts.filter((s) => s.manual_only).map((s) => s.id)
+  )
+  const lockedDuties = db.duties.filter(
+    (d) => d.year === year && d.month === month && manualShiftIds.has(d.shift_id)
+  )
+  const lockedByDay = {}
+  for (const d of lockedDuties) {
+    ;(lockedByDay[d.day] = lockedByDay[d.day] || {})[d.employee_id] = true
+  }
+
   const pad = (n) => String(n).padStart(2, '0')
   const isAbsent = (empId, day) => {
     const date = `${year}-${pad(month)}-${pad(day)}`
@@ -237,8 +228,16 @@ function runGenerator(year, month) {
     db.wishes.filter(
       (w) => w.employee_id === empId && w.day === day && w.month === month && w.year === year
     )
+  const prefLevel = (empId, shiftId) => {
+    const p = db.preferences.find(
+      (x) => x.employee_id === empId && x.shift_id === shiftId
+    )
+    return p ? p.level || 'preferred' : 'valid'
+  }
   const hasPref = (empId, shiftId) =>
-    db.preferences.some((p) => p.employee_id === empId && p.shift_id === shiftId)
+    prefLevel(empId, shiftId) === 'preferred'
+  const isBlocked = (empId, shiftId) =>
+    prefLevel(empId, shiftId) === 'blocked'
 
   const reqQual = ROSTER_CFG.requiredQualification
   const qualDescById = Object.fromEntries(
@@ -271,7 +270,7 @@ function runGenerator(year, month) {
   }
 
   for (let day = 1; day <= days; day++) {
-    const today = {}
+    const today = { ...(lockedByDay[day] || {}) }
     for (const type of activeTypes) {
       const slots = Math.max(type.opt_occupation || 0, type.min_occupation || 0)
       if (slots <= 0) continue
@@ -289,6 +288,8 @@ function runGenerator(year, month) {
           )
         )
           continue
+        // Gesperrte Schicht: niemals zuteilen (harte Regel).
+        if (isBlocked(e.id, shift.id)) continue
         let bonus = 0
         if (wishAt(e.id, day).some((w) => w.shift_id === shift.id)) bonus -= 3
         if (hasPref(e.id, shift.id)) bonus -= 1
@@ -371,6 +372,7 @@ function runGenerator(year, month) {
             if (isAbsent(bId, d)) continue
             const shiftA = assigned[aId][d]
             const shiftB = assigned[bId][e]
+            if (isBlocked(aId, shiftB.id) || isBlocked(bId, shiftA.id)) continue
             let before = aStrain + sequenceStrain(seqOf(bId), days)
             if (!isFinite(before)) before = Number.MAX_VALUE
             const typeA = typeById[shiftA.shift_type_id].name
@@ -442,6 +444,7 @@ function runGenerator(year, month) {
 
         const shiftA = assigned[a.id][d]
         const shiftB = assigned[b.id][e]
+        if (isBlocked(a.id, shiftB.id) || isBlocked(b.id, shiftA.id)) continue
         const typeA = typeById[shiftA.shift_type_id].name
         const typeB = typeById[shiftB.shift_type_id].name
         const covAd = qualCovered(typeA, d)
@@ -558,8 +561,12 @@ function runGenerator(year, month) {
     imbalance += Math.abs(diff)
   }
 
-  // Monat ersetzen + persistieren
-  db.duties = db.duties.filter((d) => !(d.year === year && d.month === month))
+  // Monat ersetzen + persistieren – fixe (manual_only) Dienste bleiben.
+  db.duties = db.duties.filter(
+    (d) =>
+      !(d.year === year && d.month === month) ||
+      manualShiftIds.has(d.shift_id)
+  )
   const maxId = db.duties.reduce((m, d) => Math.max(m, d.id), 0)
   newDuties.forEach((d, i) => (d.id = maxId + 1 + i))
   db.duties.push(...newDuties)
@@ -861,33 +868,54 @@ function handle(method, path, body) {
 
   // ---- preferences ----
   if (r[0] === 'preferences' && method === 'get') {
-    return ok({ preferences: db.preferences })
+    // Kopie zurückgeben: Redux/Immer friert die Antwort ein – nie die
+    // interne db-Array-Referenz teilen (sonst schlägt späteres Mutieren
+    // mit "object is not extensible" fehl).
+    return ok({ preferences: db.preferences.map((x) => ({ ...x })) })
   }
   if (r[0] === 'preference' && method === 'post') {
     const p = body.preferenceData
-    let existing = db.preferences.find(
+    const level = ['preferred', 'valid', 'blocked'].includes(p.level)
+      ? p.level
+      : 'preferred'
+    const existing = db.preferences.find(
       (x) => x.employee_id === p.employee_id && x.shift_id === p.shift_id
     )
-    if (p.active == 1) {
-      if (!existing) {
-        existing = { id: nextId(db.preferences), employee_id: p.employee_id, shift_id: p.shift_id }
-        db.preferences.push(existing)
-        db.duties
-          .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
-          .forEach((d) => (d.preference_injury = 0))
-      }
-      persist()
-      return ok({ preference: existing }, 201)
-    } else {
+    if (level === 'valid') {
       if (existing) {
         db.preferences = db.preferences.filter((x) => x.id !== existing.id)
-        db.duties
-          .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
-          .forEach((d) => (d.preference_injury = 1))
       }
+      db.duties
+        .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
+        .forEach((d) => (d.preference_injury = 1))
       persist()
-      return ok({ preference: existing || { id: null } }, 201)
+      return ok(
+        {
+          preference: {
+            employee_id: p.employee_id,
+            shift_id: p.shift_id,
+            level: 'valid',
+          },
+        },
+        201
+      )
     }
+    const row = {
+      id: existing ? existing.id : nextId(db.preferences),
+      employee_id: p.employee_id,
+      shift_id: p.shift_id,
+      level,
+    }
+    // Immer-sicher: neues Array statt In-place-Mutation.
+    db.preferences = [
+      ...db.preferences.filter((x) => x.id !== row.id),
+      row,
+    ]
+    db.duties
+      .filter((d) => d.employee_id === p.employee_id && d.shift_id === p.shift_id)
+      .forEach((d) => (d.preference_injury = level === 'preferred' ? 0 : 1))
+    persist()
+    return ok({ preference: { ...row } }, 201)
   }
   if (r[0] === 'preference' && method === 'delete') {
     const p = body.preferenceData

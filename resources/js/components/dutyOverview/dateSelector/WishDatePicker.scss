@@ -1,0 +1,106 @@
+.wish-datepicker {
+  width: 100%;
+  max-width: 340px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+  user-select: none;
+
+  &__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &__title {
+    font-weight: 700;
+    font-size: 1.02rem;
+    color: #1a202c;
+    text-transform: capitalize;
+  }
+
+  &__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #f5f6f8;
+    color: #4a5568;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+
+    &:hover {
+      background: #e7eaef;
+      color: #1a202c;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+  }
+
+  &__weekdays {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    margin-bottom: 4px;
+
+    span {
+      text-align: center;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #94a3b8;
+      padding: 2px 0;
+    }
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  &__empty {
+    height: 38px;
+  }
+
+  &__day {
+    height: 38px;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: #f5f6f8;
+    color: #2d3748;
+    font-size: 0.86rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease,
+      border-color 0.12s ease;
+
+    &:hover {
+      background: #e7eaef;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+
+    &.is-today {
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+
+    &.is-selected {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+      font-weight: 600;
+    }
+  }
+}
