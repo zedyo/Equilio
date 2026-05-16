@@ -191,7 +191,11 @@ Nutzung statt Einzel-Hex im Code.
 3. Wunsch-Flow (sichtbarer Einstieg, vorbelegtes Modal, Refetch).
 4. Mitarbeiter-Flow (Profil vs. Bearbeiten, Definitionsliste,
    Lösch-Bestätigung).
-5. Dienst-Picker statt Freitext-Zelle.
+5. Dienst-Picker statt Freitext-Zelle. *(Umsetzung: aus Performance-/
+   Robustheitsgründen über dem perf-sensiblen Board als **eine**
+   zentrale native Combobox/`<datalist>` realisiert — Tippfilter +
+   Auswahl + kein Auswendiglernen, tastaturbedienbar — statt
+   hunderter schwerer Einzel-Popover.)*
 6. Stammdaten auf einheitliches Listen-/Formular-Muster.
 7. Responsiver Durchgang (Tabellen→Karten, fixierte MA-Spalte).
 

@@ -66,6 +66,9 @@ function DutyCell(props) {
             : 'inputDutyForm'
         }
         value={inputDutyValue}
+        list="eq-shift-options"
+        title="Schichtkürzel wählen oder tippen – leer = frei"
+        autoComplete="off"
         placeholder={wish !== undefined ? wish.shift.abrv : ''}
         onChange={(e) => setInputDuty(e.target.value)}
         onBlur={() =>
