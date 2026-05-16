@@ -26,6 +26,7 @@ class ApiSmokeTest extends TestCase
             ShiftSeeder::class,
             AbsenceSeeder::class,
         ]);
+        $this->actingAsLeitung();
     }
 
     public function test_core_get_endpoints_return_ok(): void

@@ -14,6 +14,22 @@ export const getPreferenceData = createAsyncThunk(
   }
 )
 
+export const getPreferencesByEmployee = createAsyncThunk(
+  'preferences/getPreferencesByEmployee',
+  async (employeeId, thunkAPI) => {
+    try {
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/preferencesByEmployee/${employeeId}`
+      )
+      return data.preferences
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        'Fehler beim Abholen der eigenen Präferenzen'
+      )
+    }
+  }
+)
+
 // preferenceData = { employee_id, shift_id, level: 'preferred'|'valid'|'blocked' }
 export const postPreferenceData = createAsyncThunk(
   'preferences/postPreferenceData',
@@ -51,6 +67,10 @@ const preferenceSlice = createSlice({
         state.errorMessage = payload
         state.isLoading = false
         state.hasError = true
+      })
+      .addCase(getPreferencesByEmployee.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.preferenceData = payload
       })
       .addCase(postPreferenceData.pending, (state) => {
         state.isLoading = true

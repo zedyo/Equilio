@@ -150,16 +150,27 @@ Vollständige Matrix unter `.claude/memory/implementation-status.md`.
 | **Automatische Dienstplangenerierung**     | MUSS      | ✅ Prototyp   |
 | Erweitertes Szenario (Urlaub/Krankheit)    | SOLL      | ⚠️ Abwesenheiten im Generator; UI offen |
 | UI/UX, Wunschsystem                        | KANN      | ✅ fertig     |
-| Separate Rollen-UI                         | KANN      | ❌ fehlt      |
+| Separate Rollen-UI                         | KANN      | ✅ Sanctum + Rollen |
 | **Belastungsindex**                        | (Kern)    | ✅ Prototyp   |
-| Tests                                      | —         | ✅ PHPUnit 17 + Frontend 7 |
+| Tests                                      | —         | ✅ PHPUnit 32 + Frontend 12 |
 
 **Kern umgesetzt (Phase 2, Mai 2026):** `App\Services\StrainIndex` +
 `App\Services\RosterGenerator` + `POST /api/duties/generate` erzeugen einen
 bewerteten Monatsvorschlag (manuell nachjustierbar). Heuristik &
 Vereinfachungen: `.claude/memory/algorithm-notes.md`. Offen bleiben
-Feinkalibrierung (Soll-Stunden, Qualifikations-Mix), Abwesenheits-/
-Regelwerk-UI und Auth/Rollen.
+Feinkalibrierung (Soll-Stunden, Qualifikations-Mix) und Abwesenheits-/
+Regelwerk-UI.
+
+**Auth & Rollen (Phase 3.10, Mai 2026):** Laravel Sanctum (SPA-Cookie).
+`users.role` (`leitung`/`pflegekraft`) + `users.employee_id`. API:
+`/api/login` öffentlich, alles unter `auth:sanctum`; Planung/CRUD/
+Gesamtansichten unter `role:leitung`; Pflegekraft nur Eigendaten
+(Ownership via `Controller::authorizeEmployee`). Frontend: AuthGate +
+rollenbasiertes Routing (Leitung = Voll-UI, Pflegekraft = `MyPlan`).
+Demo-Mock bildet Login/Rollen nach. Demo-Accounts:
+`leitung@equilio.test` / `pflege@equilio.test` (Passwort `password`).
+SPA sendet Credentials (`axios.withCredentials`); echtes Backend
+benötigt gleiche Origin wie API (Default `127.0.0.1:8000`).
 
 ## Online-Demo (GitHub Pages)
 

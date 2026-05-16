@@ -78,6 +78,8 @@ class DutyController extends Controller
 
     public function getDutiesData(Request $request, $year, $month, $employee_id)
     {
+        $this->authorizeEmployee($employee_id);
+
         $duties_db = Duty::with('shift');
         $duties_db->where('month', $month);
         $duties_db->where('year', $year);
