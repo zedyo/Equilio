@@ -7,8 +7,14 @@
   display: flex;
   align-items: center;
   gap: .5rem;
-  padding: 0.1rem .75rem 0.1rem 0;
+  padding: 0.1rem .75rem 0.1rem .75rem;
   overflow: hidden;
+  // Beim horizontalen Scrollen des breiten Boards fixiert.
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #ffffff;
+  border-right: 1px solid var(--eq-border, #e2e8f0);
 
   .employeeName {
     flex: 1 1 auto;
