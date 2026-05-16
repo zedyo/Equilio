@@ -55,7 +55,7 @@ class ShiftController extends Controller
 
         $shift->save();
 
-        return response()->json(['shift' => $shift], 201);
+        return response()->json(['shift' => $shift], 200);
     }
 
     public function destroy(Shift $shift)

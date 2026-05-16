@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreatePreferenceRequest;
+use App\Http\Requests\DeletePreferenceRequest;
 use App\Models\Duty;
 use App\Models\Preference;
 use Illuminate\Http\Request;
@@ -39,7 +41,7 @@ class PreferenceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, Preference $preference)
+    public function create(CreatePreferenceRequest $request, Preference $preference)
     {
         $data = $request->preferenceData;
         $employeeId = $data['employee_id'];
@@ -139,7 +141,7 @@ class PreferenceController extends Controller
      * @param  \App\Models\Preference  $preference
      * @return \Illuminate\Http\Response
      */
-    public function delete(Request $request, Preference $preference)
+    public function delete(DeletePreferenceRequest $request, Preference $preference)
     {
         Log::debug($request);
 
