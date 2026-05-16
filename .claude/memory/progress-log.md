@@ -4,6 +4,46 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 5 (Abschnitt 1): Designsystem + Shell + Kern-Screen
+
+Start des vom Nutzer beauftragten UI/UX-Komplett-Redesigns. Container
+headless → keine Chrome-Live-Exploration; Analyse code-/stilbasiert,
+funktionale Verifikation via vitest. Analyse + Designentscheidungen in
+`.claude/memory/ui-redesign-notes.md`.
+
+- **Farbschema am Logo ausgerichtet** (ausdrücklicher Nutzerwunsch):
+  `equilio-mark.svg` ist Indigo-monochrom → Primary `#4F46E5`,
+  Hover/Active `#3730A3`, Tint `#EEF0FF`, Fokus `#818CF8`.
+- `resources/sass/_variables.scss`: Legacy-Laravel-2017-Palette ersetzt
+  durch vollständiges, kohärentes Bootstrap-5-Theme-Override (Slate-
+  Neutrale, Markenfarben, Radius, Schatten, Typo, Komponenten-Tokens).
+  Wirkt zentral auf alle ~45 React-Bootstrap-Komponenten → geringes
+  Regressionsrisiko ohne visuelle Verifikation.
+- `app.scss`: Inter (1 Request statt mehrfach Nunito) + globaler
+  Politur-Layer: sichtbarer `:focus-visible`-Ring (A11y), sticky/
+  erhöhte Navbar, ruhige Karten/Buttons/Tabellen, am Markenton
+  ausgerichtetes Dropdown, moderne Scrollbars.
+- `NavigationBar`: voll responsiv (Toggle/Collapse, `expand=lg`),
+  Inline-`margin:0 5rem` (mobil kaputt) entfernt.
+- `LoginPage`: Logo-Tint-Radialverlauf, größere schattige Card,
+  inline-`Container` → sauberes `div`; ungenutzten Import entfernt.
+- `DutyOverview.scss`: Aktionsleiste + Board als abgesetzte erhöhte
+  Flächen, ruhige Qualifikations-Sektionsüberschrift (statt
+  ausgefranstem Gradient-Strich), responsives Padding.
+- Stray Nunito-`@import` aus `shift_type.scss` entfernt (Schrift global).
+
+**Verifiziert:** `npm run build` grün (Sass kompiliert; nur
+vorbestehende `@import`-Deprecation), Frontend **12/12**. PHPUnit
+unberührt (keine Backend-Änderung).
+
+**Lessons Learned:** Bootstrap-Funktionen (`tint-color`/`shade-color`)
+stehen im Variablen-Override **nicht** zur Verfügung (Funktionen werden
+erst mit dem Bootstrap-Import geladen) → stattdessen feste Logo-Token
+nutzen. Theming über Bootstrap-Sass-Variablen ist der risikoärmste
+Hebel für ein App-weites Redesign ohne visuelle Verifikation.
+
+---
+
 ## 2026-05-16 — Phase 3.11: Testabdeckung ausbauen
 
 - Neuer `CrudLifecycleTest` (6): voller store→show→update→destroy für
