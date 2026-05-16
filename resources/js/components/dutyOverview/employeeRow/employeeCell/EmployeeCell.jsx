@@ -1,53 +1,38 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './EmployeeCell.scss'
-import { Popover, OverlayTrigger, Button } from 'react-bootstrap'
-import { AiOutlinePlus } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
 import WishCreator from './wishCreator/WishCreator'
-import { Link } from 'react-router-dom'
+import { getWishesData } from '../../../../features/wishes/wishSlice'
 
-function EmployeeCell(props) {
-  const [isShown, setIsShown] = useState(false)
-
-  const popover = (
-    <Popover id="popover-basic">
-      <Popover.Header as="h3">
-        {props.employeeData.first_name} {props.employeeData.last_name}
-      </Popover.Header>
-      <Popover.Body>
-        <div>Neuer Wunsch</div>
-        <div>Mitarbeiterdetails</div>
-      </Popover.Body>
-    </Popover>
-  )
+function EmployeeCell({ employeeData, dateSelectorData }) {
+  const dispatch = useDispatch()
+  const fullName = `${employeeData.first_name} ${employeeData.last_name}`
 
   return (
-    <>
-      <div
-        className="employeeContainer"
-        onMouseEnter={() => setIsShown(true)}
-        onMouseLeave={() => setIsShown(false)}
+    <div className="employeeContainer">
+      <a
+        href={`/employee/show/${employeeData.id}`}
+        className="employeeName"
+        title={`Profil von ${fullName}`}
       >
-        <div>
-          {/* <OverlayTrigger trigger="click" placement="right" overlay={popover}> */}
-          <a
-            href={`/employee/show/${props.employeeData.id}`}
-            className="employeeName"
-          >
-            {props.employeeData.first_name} {props.employeeData.last_name}
-          </a>
-
-          {/* </OverlayTrigger> */}
-        </div>
-        {isShown && (
-          <WishCreator isShown={isShown} employeeId={props.employeeData.id} />
-
-          // <Button variant="outline-info" size="sm" className="wishButton">
-          //   <AiOutlinePlus />
-          //   Wunsch
-          // </Button>
-        )}
+        {fullName}
+      </a>
+      <div className="employeeCell__action">
+        <WishCreator
+          employeeId={employeeData.id}
+          employeeName={fullName}
+          defaultDate={
+            dateSelectorData && {
+              month: Number(dateSelectorData.month),
+              year: Number(dateSelectorData.year),
+            }
+          }
+          onSaved={() => dispatch(getWishesData())}
+          iconOnly
+          variant="outline-primary"
+        />
       </div>
-    </>
+    </div>
   )
 }
 
