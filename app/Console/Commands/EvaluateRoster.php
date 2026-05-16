@@ -4,7 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\Absence;
 use App\Models\Employee;
+use App\Models\Preference;
+use App\Models\Shift;
 use App\Models\ShiftType;
+use App\Models\Wish;
 use App\Services\RosterGenerator;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
@@ -123,6 +126,113 @@ class EvaluateRoster extends Command
             && $maxRun <= (int) config('rostering.max_consecutive_duties')
             && $nightToEarly === 0
             && ! $s['forbidden'];
+
+        // === Generator-Qualität (Phase 2.9) ===
+        // Besetzungs-Defizit: Σ fehlende Kräfte je aktiver Art/Tag.
+        $occDeficit = 0;
+        $minSlotSum = 0;
+        foreach (ShiftType::where('active_duty', true)->get() as $t) {
+            $min = (int) $t->min_occupation;
+            if ($min <= 0) {
+                continue;
+            }
+            for ($d = 1; $d <= $days; $d++) {
+                $cnt = 0;
+                foreach ($plan as $seq) {
+                    if (($seq[$d] ?? null) === $t->name) {
+                        $cnt++;
+                    }
+                }
+                $occDeficit += max(0, $min - $cnt);
+                $minSlotSum += $min;
+            }
+        }
+        $occCoverage = $minSlotSum > 0
+            ? round(100 * (1 - $occDeficit / $minSlotSum), 1) : 100.0;
+
+        // Aktive Schicht-Tage gesamt (für Fachkraft-Abdeckung).
+        $activeShiftDays = 0;
+        $activeNames = ShiftType::where('active_duty', true)->pluck('name')->all();
+        for ($d = 1; $d <= $days; $d++) {
+            foreach ($activeNames as $n) {
+                foreach ($plan as $seq) {
+                    if (($seq[$d] ?? null) === $n) {
+                        $activeShiftDays++;
+                        break;
+                    }
+                }
+            }
+        }
+        $qualGaps = (int) $s['missing_qualification'];
+        $qualCoverage = $activeShiftDays > 0
+            ? round(100 * (1 - $qualGaps / $activeShiftDays), 1) : 100.0;
+
+        // Wünsche / Präferenzen / gesperrte Schichten.
+        $wishTotal = Wish::where('year', $year)->where('month', $month)->count();
+        $wishViol = (int) ($s['wish_violations'] ?? 0);
+        $wishFulfil = $wishTotal > 0
+            ? round(100 * ($wishTotal - $wishViol) / $wishTotal, 1) : null;
+        $prefMiss = (int) ($s['preference_misses'] ?? 0);
+
+        $blockedSet = [];
+        foreach (Preference::where('level', 'blocked')->get() as $p) {
+            $blockedSet[$p->employee_id.'-'.$p->shift_id] = true;
+        }
+        $blockedViol = 0;
+        foreach ($res['duties'] as $d) {
+            if (isset($blockedSet[$d['employee_id'].'-'.$d['shift_id']])) {
+                $blockedViol++;
+            }
+        }
+
+        // Stundenkonto: Anteil MA innerhalb Toleranz (≈ eine Schicht).
+        $tol = (float) config('rostering.full_time_weekly_hours', 39) / 5.0;
+        $within = 0;
+        $sumAbs = 0.0;
+        $maxAbs = 0.0;
+        $nEmp = max(1, $employees->count());
+        foreach ($res['hours'] as $h) {
+            $a = abs((float) $h['diff']);
+            $sumAbs += $a;
+            $maxAbs = max($maxAbs, $a);
+            if ($a <= $tol) {
+                $within++;
+            }
+        }
+        $withinPct = round(100 * $within / $nEmp, 1);
+
+        // Nachbesserungsquote: Anteil Dienste, die eine Leitungskraft
+        // manuell korrigieren müsste = (harte Verletzungen + Besetzungs-
+        // Defizit + Fachkraft-Lücken + Wunsch-Verletzungen + vergebene
+        // gesperrte Schichten) / generierte Dienste. Proposal-Ziele:
+        // erschwertes Szenario ≤ 30 %, Kann-Ziel ≤ 10 %.
+        $hardUnits = $absViol + $nightToEarly
+            + max(0, $maxRun - (int) config('rostering.max_consecutive_duties'));
+        $reworkUnits = $hardUnits + $occDeficit + $qualGaps
+            + $wishViol + $blockedViol;
+        $totalDuties = max(1, (int) $s['assigned_duties']);
+        $rework = round(100 * $reworkUnits / $totalDuties, 1);
+
+        $this->line('');
+        $this->line('-- Generator-Qualität (Phase 2.9) --');
+        $this->line(sprintf('Besetzungs-Abdeckung:   %.1f %% (Defizit %d Kraft-Tage)',
+            $occCoverage, $occDeficit));
+        $this->line(sprintf('Fachkraft-Abdeckung:    %.1f %% (%d Schicht-Tage ohne Fachkraft)',
+            $qualCoverage, $qualGaps));
+        $this->line('Wunsch-Erfüllung:       '.($wishFulfil === null
+            ? 'n/a (keine Wünsche)'
+            : sprintf('%.1f %% (%d/%d verletzt)', $wishFulfil, $wishViol, $wishTotal)));
+        $this->line("Präferenz-Abweichungen: $prefMiss");
+        $this->line("Gesperrte Schicht vergeben: $blockedViol");
+        $this->line(sprintf('Stundenkonto: %.1f %% MA in ±%.1f h  (Ø |Δ| %.1f / max %.1f)',
+            $withinPct, $tol, $sumAbs / $nEmp, $maxAbs));
+
+        $verdict = $rework <= 10 ? 'Kann-Ziel erreicht (≤ 10 %)'
+            : ($rework <= 30 ? 'Soll-Ziel erreicht (≤ 30 %)'
+            : 'Ziel verfehlt (> 30 %)');
+        $this->line('');
+        $this->line(sprintf('Nachbesserungsquote: %.1f %%  (%d/%d Dienste) -> %s',
+            $rework, $reworkUnits, $totalDuties, $verdict));
 
         $this->line('');
         $this->{$hard ? 'info' : 'error'}(

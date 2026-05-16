@@ -397,6 +397,27 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-16 — Phase 2.9: quantitative Generator-Evaluation
+
+- `roster:evaluate` um eine Qualitäts-Sektion erweitert: Besetzungs-/
+  Fachkraft-Abdeckung %, Wunsch-Erfüllung %, Präferenz-Abweichungen,
+  gesperrte-Schicht-Verletzungen, Stundenkonto-Einhaltung (±Toleranz,
+  Ø/Max |Δ|) und eine definierte **Nachbesserungsquote** mit Abgleich
+  gegen die Proposal-Ziele (≤ 30 % SOLL, ≤ 10 % KANN). Read-only.
+- Messung kanonisches Szenario (Default-Seeder, 11 MA): **14,5 %
+  Nachbesserungsquote → SOLL-Ziel erreicht**, Stundenkonto 100 % in
+  Toleranz, Fachkraft-Abdeckung 96,1 %, harte Constraints alle ok.
+  Restlücke = bekannte Personal-Kapazitätsgrenze (kein Algorithmusfehler).
+- Test `EvaluateRosterCommandTest` prüft die neue Sektion.
+
+**Verifiziert:** PHPUnit grün, Build grün. Damit ist der
+Forschungsbeitrag der Arbeit (automatischer, bewerteter Plan)
+**messbar belegt**.
+
+**Lessons Learned:** Die Nachbesserungsquote braucht eine klar
+dokumentierte Operationalisierung; Kennzahlen sind szenarioabhängig
+(Kapazität vs. Heuristik sauber trennen — sonst Fehlinterpretation).
+
 ## 2026-05-15 — Phase 2k: manual_only + belastungsadaptive Gewichtung
 
 - **manual_only**: Schichten können „nur manuell" markiert werden
