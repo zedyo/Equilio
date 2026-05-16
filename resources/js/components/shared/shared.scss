@@ -111,3 +111,27 @@
     font-size: .92rem;
   }
 }
+
+// Definitionsliste (Profil-Stammdaten) statt disabled-Formularfelder.
+.eq-data-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+  gap: 1rem 1.5rem;
+}
+
+.eq-data-item {
+  &__label {
+    font-size: .75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    color: #94a3b8;
+    margin-bottom: .2rem;
+  }
+
+  &__value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+  }
+}

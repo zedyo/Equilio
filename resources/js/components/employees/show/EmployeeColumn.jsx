@@ -1,44 +1,67 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { deleteEmployeeData } from '../../../features/employees/employeeSlice'
-import { FaRegTrashAlt, FaRegEdit } from 'react-icons/fa'
+import { FaRegTrashAlt, FaRegEdit, FaRegUser } from 'react-icons/fa'
+import ConfirmDialog from '../../shared/ConfirmDialog'
 
 function Employee(props) {
   const dispatch = useDispatch()
+  const [confirm, setConfirm] = useState(false)
+  const e = props.employeeData
+  const fullName = `${e.first_name} ${e.last_name}`
+
   return (
     <Fragment>
       <tr>
-        <td>{props.employeeData.id}</td>
-        <td>{props.employeeData.first_name}</td>
-        <td>{props.employeeData.last_name}</td>
-        <td>{props.employeeData.qualification.description}</td>
-        <td>{props.employeeData.employment_ratio} %</td>
-        <td>{props.employeeData.daily_worktime}</td>
-        <td>
-          <Button
-            href={`/employee/show/${props.employeeData.id}`}
-            variant="outline-secondary"
-            size="sm"
-          >
-            <FaRegEdit /> Bearbeiten
-          </Button>{' '}
-          {/* <Button
-            href={`/employee/edit/${props.employeeData.id}`}
-            variant="outline-secondary"
-            size="sm"
-          >
-            Bearbeiten
-          </Button>{' '} */}
-          <Button
-            onClick={() => dispatch(deleteEmployeeData(props.employeeData.id))}
-            variant="outline-danger"
-            size="sm"
-          >
-            <FaRegTrashAlt /> Löschen
-          </Button>{' '}
+        <td>{e.id}</td>
+        <td>{e.first_name}</td>
+        <td>{e.last_name}</td>
+        <td>{e.qualification.description}</td>
+        <td>{e.employment_ratio} %</td>
+        <td>{e.daily_worktime}</td>
+        <td className="text-end">
+          <div className="d-inline-flex gap-2">
+            <Button
+              href={`/employee/show/${e.id}`}
+              variant="outline-secondary"
+              size="sm"
+            >
+              <FaRegUser /> Profil
+            </Button>
+            <Button
+              href={`/employee/edit/${e.id}`}
+              variant="outline-primary"
+              size="sm"
+            >
+              <FaRegEdit /> Bearbeiten
+            </Button>
+            <Button
+              onClick={() => setConfirm(true)}
+              variant="outline-danger"
+              size="sm"
+              aria-label={`${fullName} löschen`}
+            >
+              <FaRegTrashAlt />
+            </Button>
+          </div>
         </td>
       </tr>
+
+      <ConfirmDialog
+        show={confirm}
+        title="Teammitglied löschen?"
+        body={
+          <>
+            <strong>{fullName}</strong> wird aus dem Team entfernt.
+          </>
+        }
+        onConfirm={() => {
+          dispatch(deleteEmployeeData(e.id))
+          setConfirm(false)
+        }}
+        onCancel={() => setConfirm(false)}
+      />
     </Fragment>
   )
 }
