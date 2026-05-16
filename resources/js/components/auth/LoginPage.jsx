@@ -1,12 +1,5 @@
 import React, { useState } from 'react'
-import {
-  Alert,
-  Button,
-  Card,
-  Container,
-  Form,
-  Spinner,
-} from 'react-bootstrap'
+import { Alert, Button, Card, Form, Spinner } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, selectAuth } from '../../features/auth/authSlice'
 import equilioMark from '../../assets/equilio-mark.svg'
@@ -31,19 +24,25 @@ function LoginPage() {
   }
 
   return (
-    <Container
+    <div
       style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        padding: '1.5rem',
+        background:
+          'radial-gradient(1200px 600px at 50% -10%, #eef0ff 0%, #f6f8fa 55%, #f6f8fa 100%)',
       }}
     >
-      <Card style={{ width: '24rem' }} className="shadow-sm">
-        <Card.Body>
-          <div className="text-center mb-3">
-            <img src={equilioMark} alt="Equilio" width="40" height="40" />
-            <h4 className="mt-2 mb-0">Equilio</h4>
+      <Card
+        style={{ width: '100%', maxWidth: '24rem' }}
+        className="border-0 shadow-lg"
+      >
+        <Card.Body className="p-4">
+          <div className="text-center mb-4">
+            <img src={equilioMark} alt="Equilio" width="48" height="48" />
+            <h4 className="mt-3 mb-1 fw-bold">Equilio</h4>
             <small className="text-muted">Dienstplanung – Anmeldung</small>
           </div>
 
@@ -100,7 +99,7 @@ function LoginPage() {
           </div>
         </Card.Body>
       </Card>
-    </Container>
+    </div>
   )
 }
 

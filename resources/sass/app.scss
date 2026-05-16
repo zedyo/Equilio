@@ -1,12 +1,165 @@
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Nunito:200|Nunito:300|Nunito:400|Nunito:500|Nunito:600|Nunito:700|Nunito:800|Nunito:900|Nunito|Nunito:bold");
+// Schrift: Inter (variabel) – ein Request, dichte Plan-Tabellen
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
-// Variables
+// Designsystem-Tokens (Bootstrap-Override)
 @import "variables";
 
 // Bootstrap
 @import "bootstrap/scss/bootstrap";
 
+// =============================================================
+// Globaler Politur-Layer (Equilio Phase-5-Redesign)
+// =============================================================
+
+:root {
+  --eq-brand: #{$brand-600};
+  --eq-brand-dark: #{$brand-900};
+  --eq-brand-tint: #{$brand-050};
+  --eq-surface: #{$white};
+  --eq-app-bg: #{$gray-100};
+  --eq-border: #{$gray-300};
+}
+
 body {
-    background-color: whitesmoke;
+  background-color: var(--eq-app-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-osx-font-smoothing: grayscale;
+  letter-spacing: -0.011em;
+}
+
+// Zugängliche, sichtbare Fokus-Markierung (A11y)
+a, button, .btn, .form-control, .form-select, .dropdown-item,
+[tabindex]:not([tabindex="-1"]) {
+  &:focus-visible {
+    outline: 2px solid var(--eq-brand);
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+}
+
+// Navbar: dezent erhöht + sticky
+.navbar {
+  box-shadow: 0 1px 0 var(--eq-border), 0 2px 12px rgba(15, 23, 42, .04);
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  padding-top: .75rem;
+  padding-bottom: .75rem;
+
+  .navbar-brand span {
+    letter-spacing: -0.02em;
+  }
+}
+
+// Karten: ruhiger Schatten, weicher Rahmen
+.card {
+  box-shadow: $box-shadow-sm;
+  border-color: $gray-200;
+
+  .card-header {
+    font-weight: 700;
+    border-bottom-color: $gray-200;
+  }
+}
+
+// Buttons: etwas mehr Höhe, ruhige Übergänge
+.btn {
+  --bs-btn-padding-y: .5rem;
+  --bs-btn-padding-x: 1rem;
+  transition: background-color .15s ease, border-color .15s ease,
+    box-shadow .15s ease, transform .05s ease;
+
+  &:active {
+    transform: translateY(1px);
+  }
+}
+
+.btn-primary {
+  --bs-btn-hover-bg: #{$brand-900};
+  --bs-btn-hover-border-color: #{$brand-900};
+  --bs-btn-active-bg: #{$brand-900};
+}
+
+// Tabellen: klarer Kopf, ruhige Zeilen
+.table {
+  --bs-table-bg: transparent;
+
+  thead th {
+    text-transform: uppercase;
+    font-size: .72rem;
+    letter-spacing: .04em;
+    color: $gray-600;
+    font-weight: 700;
+    border-bottom: 1px solid $gray-300;
+    background: $gray-100;
+  }
+
+  tbody td {
+    vertical-align: middle;
+  }
+}
+
+// Formulare: klare Labels, ruhige Felder
+.form-label {
+  font-weight: 600;
+  color: $gray-700;
+  margin-bottom: .35rem;
+}
+
+.form-control,
+.form-select {
+  border-radius: $border-radius;
+}
+
+// Dropdown/Badges: am Markenton ausgerichtet
+.dropdown-item {
+  border-radius: $border-radius-sm;
+  padding: .5rem .75rem;
+
+  &:active,
+  &.active {
+    background-color: var(--eq-brand);
+  }
+
+  &:hover:not(:active):not(.active) {
+    background-color: var(--eq-brand-tint);
+    color: var(--eq-brand-dark);
+  }
+}
+
+.dropdown-menu {
+  padding: .4rem;
+}
+
+.badge {
+  letter-spacing: .01em;
+}
+
+// Breadcrumb: dezenter
+.breadcrumb {
+  font-size: .9rem;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+// Dezente, moderne Scrollbars (v. a. für das breite Dienst-Board)
+* {
+  scrollbar-width: thin;
+  scrollbar-color: $gray-400 transparent;
+}
+
+*::-webkit-scrollbar {
+  height: 10px;
+  width: 10px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background: $gray-400;
+  border-radius: 999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background: $gray-500;
 }
