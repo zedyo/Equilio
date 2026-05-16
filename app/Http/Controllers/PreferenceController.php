@@ -23,6 +23,18 @@ class PreferenceController extends Controller
     }
 
     /**
+     * Präferenzen einer Person (Pflegekraft: nur die eigenen).
+     */
+    public function getEmployeePreferenceData(Request $request, $employee_id)
+    {
+        $this->authorizeEmployee($employee_id);
+
+        return response()->json([
+            'preferences' => Preference::where('employee_id', $employee_id)->get(),
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
@@ -32,6 +44,7 @@ class PreferenceController extends Controller
         $data = $request->preferenceData;
         $employeeId = $data['employee_id'];
         $shiftId = $data['shift_id'];
+        $this->authorizeEmployee($employeeId);
         // 3 Stufen: 'preferred' (bevorzugt), 'valid' (erlaubt/neutral),
         // 'blocked' (darf nie vergeben werden). 'valid' = kein Datensatz.
         $level = $data['level'] ?? 'preferred';
@@ -129,6 +142,8 @@ class PreferenceController extends Controller
     public function delete(Request $request, Preference $preference)
     {
         Log::debug($request);
+
+        $this->authorizeEmployee($request->preferenceData['employee_id']);
 
         $preference_check = Preference::where('employee_id', $request->preferenceData['employee_id']);
         $preference_check->where('shift_id', $request->preferenceData['shift_id']);

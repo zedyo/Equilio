@@ -4,6 +4,46 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 3.10: Auth & Rollen (Sanctum SPA + UI-Trennung)
+
+- **Backend**: Laravel Sanctum (SPA-Cookie). `users.role` +
+  `users.employee_id` (Migration), `User` mit `HasApiTokens`,
+  `employee()`, `isLeitung()`, Rollenkonstanten. `AuthController`
+  (login/logout/me). `bootstrap/app.php`: `statefulApi()` +
+  `role`-Alias. Middleware `EnsureRole`. `routes/api.php` neu
+  geschnitten: `/login` öffentlich, alles unter `auth:sanctum`,
+  Planung/CRUD/Gesamtansichten unter `role:leitung`; Pflegekraft-
+  Eigendaten (eigene Duties/Wünsche/Präferenzen, Render-Stammdaten)
+  in der gemeinsamen Auth-Gruppe. Ownership via
+  `Controller::authorizeEmployee()` in Duty/Wish/Preference.
+  Neuer Lese-Endpoint `GET /api/preferencesByEmployee/{id}`.
+  `UserSeeder` (leitung@equilio.test / pflege@equilio.test, je
+  `password`) + in `DatabaseSeeder` (User-Factory entfernt).
+- **Bugfix**: `WishController::create` griff bei Wunsch ohne
+  zugehörigen Duty auf `$duty[0]` einer leeren Collection zu (500).
+  Logik korrigiert (nur bei vorhandenem Duty `wish_injury` setzen).
+- **Frontend**: `axios.withCredentials/withXSRFToken`. `authSlice`
+  (fetchMe/login/logout). `LoginPage` (Demo-Schnellzugänge).
+  Router: AuthGate (loading/guest/authenticated) + rollenbasiert
+  (`LeitungRoutes` voll / `PflegekraftRoutes` nur `MyPlan`).
+  `MyPlan` (eigener Monatsplan read-only + eigene Wünsche +
+  `Preferences` wiederverwendet). `NavigationBar` rollen-aware
+  (Einstellungen nur Leitung, Nutzer + Abmelden). Slices:
+  `getOwnDutiesByMonth`, `getWishesByEmployee`,
+  `getPreferencesByEmployee`.
+- **Demo-Mock**: `/sanctum/csrf-cookie`, `/api/login|logout|user`,
+  Session in localStorage, Rollen-/Ownership-Enforcement,
+  `preferencesByEmployee`. Reset löscht auch die Session.
+
+**Verifiziert:** PHPUnit 32/32 + neue `AuthTest` (6),
+Frontend 12/12 (inkl. Login-Flow + Pflegekraft-Rolle), Vite-Build grün.
+
+**Lessons Learned:** Sanctum-SPA-Stateful greift im Test nur mit
+`Referer`-Header (echte SPA sendet ihn automatisch). Bestehende
+API-Tests brauchten `Sanctum::actingAs` (Helper in `TestCase`).
+Pflegekraft darf die globalen Slice-Prefetches nicht auslösen
+(sonst 403) — Datenladen ist jetzt rollengetrennt.
+
 ## 2026-05-15 — Initial-Setup der Projektdokumentation
 
 **Was:** Erstmaliges Onboarding auf dem Branch `claude/add-project-documentation-1Qnpn`.

@@ -52,10 +52,17 @@ Stand: erste Bestandsaufnahme bei Initialisierung des Claude-Memorys (Mai 2026, 
 - React-Bootstrap-basiertes Layout, Farbcodes pro Schicht, Statistik-Panel, Loading-Spinner.
 - Subjektiv „prototype-grade", aber funktional.
 
-### ❌ Separate UIs für Rollen (Pflegekraft vs. Leitung)
+### ✅ Separate UIs für Rollen (Pflegekraft vs. Leitung) — umgesetzt (Phase 3.10)
 
-- Es existiert das Standard-Laravel-`User`-Model, aber **keine Auth-Routen, keine Rollen, keine Policy/Gate-Konfiguration**.
-- Die SPA ist vollständig öffentlich erreichbar.
+- Laravel Sanctum (SPA-Cookie). `users.role` + `users.employee_id`,
+  `AuthController` (login/logout/me), `EnsureRole`-Middleware,
+  `auth:sanctum` + `role:leitung` in `routes/api.php`, Ownership-Check
+  (`authorizeEmployee`) für Pflegekraft-Eigendaten.
+- Frontend: AuthGate + rollenbasiertes Routing. Leitung = Voll-UI;
+  Pflegekraft = `MyPlan` (eigener Plan read-only + eigene Wünsche/
+  Präferenzen), keine CRUD/Generierung/Fremddaten.
+- Demo-Mock bildet Login/Rollen/Ownership nach (Accounts
+  leitung@equilio.test / pflege@equilio.test, Passwort `password`).
 
 ### ⚠️ Nachjustierung ≤ 10 % — entfällt (kein Generator)
 
