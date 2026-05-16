@@ -82,8 +82,11 @@ class RealRosterSeeder extends Seeder
         ];
         $sid = [];
         foreach ($shifts as [$abrv, $tk, $h]) {
+            // Sonderdienst/Abwesenheit (Typ 5, z. B. FO, U, BS, PA) wird
+            // nur manuell vergeben und nie automatisch überschrieben.
             $sid[$abrv] = Shift::create(['abrv' => $abrv, 'shift_type_id' => $tid[$tk],
-                'h_duration' => $h, 'color_hex' => $types[$tk][4]])->id;
+                'h_duration' => $h, 'color_hex' => $types[$tk][4],
+                'manual_only' => $tk === 5])->id;
         }
 
         $emps = [

@@ -397,6 +397,32 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2k: manual_only + belastungsadaptive Gewichtung
+
+- **manual_only**: Schichten können „nur manuell" markiert werden
+  (`shifts.manual_only`, Migration/Model/Controller/Create+UpdateShift-
+  Switch). Sonderdienst/Abwesenheit (FO/U/BS/PA …) ist vorbelegt true.
+  Generieren überschreibt sie nie: DutyController gibt bestehende
+  manual_only-Duties als `$locked` an den Generator (vorbelegt, MA
+  belegt, Lokalsuche/SA fassen sie nicht an, werden unverändert
+  mitausgegeben). Mock kongruent.
+- **Belastungsadaptive Gewichtung**: je MA `employeeSequenceStrain`
+  nach Greedy → Gewicht m=1+k·min(strain/scale,cap) skaliert dessen
+  Sequenz-Δ + Wunsch/Präferenz/Stunden in Lokalsuche/SA. Höher
+  belastete MA werden bevorzugt entlastet. `hours[]` führt strain+weight.
+- **Unterstunden hoch priorisiert** (4,0/h, Ist<Soll) — unter Ruhepausen
+  (Sequenz-Strain, zusätzlich m-skaliert). Reihenfolge Ruhe >
+  Unterstunden > Überstunden/Präferenz. Config `strain_adaptive`,
+  `monthly_undertime_deviation`.
+
+**Verifiziert:** PHPUnit 26/26 (7185 Assertions), Frontend 10/10, Build
+grün. SA-Determinismus/Soll-Stunden/Real-Feasibility unverändert grün.
+
+**Lessons Learned:** Der per-MA-Multiplikator passt sauber ins
+`$obj`-Kontextmuster und bleibt deterministisch, weil er einmalig nach
+dem (deterministischen) Greedy fixiert wird — variable Gewichte
+während SA würden Konvergenz/Reproduzierbarkeit brechen.
+
 ## 2026-05-15 — Phase 2j: 3-stufige Präferenzen + Bugfix
 
 - Präferenzen je MA/Schicht jetzt 3-stufig: **Bevorzugt / Erlaubt /

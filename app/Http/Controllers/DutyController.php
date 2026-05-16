@@ -36,7 +36,18 @@ class DutyController extends Controller
         $year = (int) $validated['year'];
         $month = (int) $validated['month'];
 
-        $result = $generator->generate($year, $month);
+        // Fixe Dienste (manual_only, z. B. FO/Urlaub) erhalten: der
+        // Generator plant darum herum und gibt sie unverändert mit aus.
+        $locked = Duty::where('year', $year)->where('month', $month)
+            ->whereHas('shift', fn ($q) => $q->where('manual_only', true))
+            ->get(['employee_id', 'shift_id', 'day'])
+            ->map(fn ($d) => [
+                'employee_id' => $d->employee_id,
+                'shift_id' => $d->shift_id,
+                'day' => $d->day,
+            ])->all();
+
+        $result = $generator->generate($year, $month, $locked);
 
         Duty::where('year', $year)->where('month', $month)->delete();
         foreach ($result['duties'] as $row) {
