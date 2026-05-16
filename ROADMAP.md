@@ -29,6 +29,9 @@ Ohne diese Bausteine kann kein sinnvoller Generator entstehen.
    Nacht→Früh, Soll-Wochenstunden je Beschäftigungsverhältnis).
 3. **Datenmodell härten**: REST-Verben geraderücken (POST = Delete →
    DELETE), Validierung (FormRequests), konsistente JSON-Ressourcen.
+   → ✅ Verben + FormRequest-Validierung + Status-Codes erledigt
+   (2026-05-16). JSON-Resource-Normalisierung **bewusst verschoben**
+   auf Phase 5 (UI-Redesign überarbeitet die Consumer ohnehin).
 4. **Testdaten/Szenarien**: ein reproduzierbares „optimales" Testszenario
    als Seeder (kleine, realistische Pflege-Gruppe, ein Monat).
 
@@ -68,6 +71,21 @@ Ohne diese Bausteine kann kein sinnvoller Generator entstehen.
 14. Mehr-Stationen-/Mandantenfähigkeit, Reporting (Arbeitszeitsalden,
     Belastungs-Heatmaps), Tarif-/Gesetzes-Profile je Branche,
     Kalender-Sync (iCal), Benachrichtigungen.
+
+## Phase 5 — UI/UX-Komplett-Redesign (vom Nutzer beauftragt, geplant)
+
+> **Merker (Nutzerauftrag, 2026-05-16):** Sobald alle obigen
+> Roadmap-Punkte abgearbeitet sind, folgt verbindlich dieser Punkt.
+
+15. **Vollständiges UI/UX-Redesign.** Zuerst die aktuelle UI in
+    Chrome erkunden und Optimierungspotenziale dokumentieren, dann
+    komplett neu gestalten:
+    - Moderneres, angenehmes Look-and-Feel; Farbschema und
+      Grundlayout dürfen frei geändert werden.
+    - Im Pflegealltag übersichtlich und leicht bedienbar.
+    - Responsiv / gut nutzbar auf Mobilgeräten.
+    - Konsistente Komponenten, klare Informationshierarchie,
+      zugängliche Interaktionen.
 
 ---
 

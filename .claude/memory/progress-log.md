@@ -4,6 +4,39 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 1.3: Datenmodell härten (FormRequests + Status-Codes)
+
+- **FormRequest-Validierung** für die bisher ungeprüften Action-
+  Endpoints: `UpdateDutyRequest`, `DeleteDutyRequest`,
+  `CreateWishRequest`, `CreatePreferenceRequest`,
+  `DeletePreferenceRequest`. Verdrahtet in Duty/Wish/Preference-
+  Controller (Methodensignaturen statt `Request`). Fehleingaben →
+  jetzt **422 statt 500** (z. B. fehlendes `dutyData`, unbekannte
+  `employee_id`/`shift_id`, ungültiges Präferenz-`level`).
+- **Status-Code-Konsistenz**: `update()` in Employee/Shift/
+  Qualification/ShiftType-Controller liefert nun **200** (vorher
+  fälschlich 201; AbsenceController war bereits 200). `store()`
+  bleibt 201.
+- **REST-Verben**: nach dem Auth-Refactor bereits semantisch korrekt
+  (PATCH `/duty` Upsert, DELETE `/duty`, DELETE `/preference`). Die
+  bewusst aktions­orientierten Endpunkte (Composite-Key statt
+  `/{id}`) bleiben — eine vollständige Resource-Umstellung würde
+  Mock + Frontend kurz vor dem geplanten UI-Redesign (ROADMAP
+  Phase 5) doppelt anfassen.
+- **Bewusst verschoben:** „konsistente JSON-Ressourcen" (Laravel
+  API-Resources, einheitliche Payload-Hüllen). Die Response-Consumer
+  (Slices/Mock) werden im UI-Redesign ohnehin überarbeitet → erst
+  dann normalisieren, sonst doppelte Arbeit. In ROADMAP vermerkt.
+- Neuer Test `RequestValidationTest` (7) sichert die Härtung ab.
+
+**Verifiziert:** PHPUnit grün (inkl. neuer Tests). Keine JS-Änderung
+(Frontend/Build unberührt).
+
+**Lessons Learned:** Die größte echte Härtungslücke waren nicht die
+CRUD-Controller (hatten bereits `$request->validate`), sondern die
+`*Data`-Action-Endpoints ohne jede Prüfung — dort entstanden die
+500er bei Fehleingaben.
+
 ## 2026-05-16 — Phase 3.10: Auth & Rollen (Sanctum SPA + UI-Trennung)
 
 - **Backend**: Laravel Sanctum (SPA-Cookie). `users.role` +

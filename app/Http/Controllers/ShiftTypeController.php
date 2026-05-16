@@ -66,7 +66,7 @@ class ShiftTypeController extends Controller
 
         $shift_type->save();
 
-        return response()->json(['shift_type' => $shift_type], 201);
+        return response()->json(['shift_type' => $shift_type], 200);
     }
 
     /**

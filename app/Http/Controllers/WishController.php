@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateWishRequest;
 use App\Models\Duty;
 use App\Models\Wish;
 use Illuminate\Http\JsonResponse;
@@ -43,7 +44,7 @@ class WishController extends Controller
      * @param  \App\Models\Wish  $wish
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request, Wish $wish): JsonResponse
+    public function create(CreateWishRequest $request, Wish $wish): JsonResponse
     {
         $this->authorizeEmployee($request->wishData['employee_id']);
 
