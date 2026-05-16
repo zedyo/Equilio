@@ -97,7 +97,10 @@ Stand: erste Bestandsaufnahme bei Initialisierung des Claude-Memorys (Mai 2026, 
   validierter API + Tests; Regelwerk `config/rostering.php`. Damit ist die
   Voraussetzung für den Generator (erschwertes Szenario) gelegt — die
   Generierung selbst (Belastungsindex/RosterGenerator) bleibt offen.
-- **Tests:** PHPUnit-Feature-Tests (9) + Frontend-Suite (6); beide in CI.
+- **Tests (Stand 2026-05-16, Phase 3.11):** PHPUnit **51** (Auth/Rollen,
+  Generator/Belastungsindex, Evaluation, Abwesenheiten, Request-
+  Validierung, Stammdaten-CRUD-Lebenszyklus inkl. SoftDelete,
+  Duty-Verletzungslogik) + Frontend-Suite **12**; beide in CI.
 - Offen bleibt fachlich der Kern (Generator/Belastungsindex) sowie Auth/Rollen
   und die Abwesenheits-/Regelwerk-UI — siehe unten.
 
