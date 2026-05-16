@@ -18,13 +18,22 @@ $gray-800: #1e293b;
 $gray-900: #0f172a;
 $black:    #000000;
 
-// --- Markenfarben (am Equilio-Logo ausgerichtet: Indigo) -----
-// Logo-Palette: #3730A3 / #4F46E5 / #6366F1 / #818CF8 / #EEF0FF.
-$brand-900: #3730a3; // dunkler Logo-Balken (Hover/Active)
-$brand-600: #4f46e5; // dominanter Logo-Balken (Primary)
-$brand-500: #6366f1;
-$brand-400: #818cf8;
-$brand-050: #eef0ff; // heller Logo-Hintergrund (Tint/Flächen)
+// --- Markenfarben: harmonische Indigo-Tonleiter (Logo) -------
+// Aus der Logo-Palette (#3730A3 / #4F46E5 / #6366F1 / #818CF8 /
+// #EEF0FF) zu einer gleichmäßig abgestuften 50–900-Skala harmonisiert.
+$brand-50:  #eef0ff; // Flächen, Hover-BG, Login-Verlauf (Logo-BG)
+$brand-100: #e0e2fe; // Badge-BG, aktive Listenzeile
+$brand-200: #c7cbfb; // zarte Trenner/Ränder
+$brand-300: #a5abf7; // Disabled-Primär, Charts
+$brand-400: #818cf8; // Fokus-Ring, Hover-Akzent (Logo)
+$brand-500: #6366f1; // Sekundär-Akzent, Link-Hover (Logo)
+$brand-600: #4f46e5; // PRIMARY (Logo-Hauptton)
+$brand-700: #4338ca; // Button-Hover
+$brand-800: #3730a3; // Button-Active (Logo dunkel)
+$brand-900: #312e81; // Text auf Tint, starke Akzente
+
+// Rückwärtskompatible Aliasse (frühe Phase-5-Nutzung).
+$brand-050: $brand-50;
 
 $blue:    #0284c7;
 $indigo:  $brand-600;
@@ -71,7 +80,7 @@ $box-shadow-lg: 0 12px 32px rgba(15, 23, 42, .12);
 // --- Komponenten --------------------------------------------
 $component-active-bg: $primary;
 $link-color:          $primary;
-$link-hover-color:    $brand-900;
+$link-hover-color:    $brand-700;
 
 $card-border-color:  $gray-200;
 $card-border-radius: $border-radius-lg;

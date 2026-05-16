@@ -1,0 +1,113 @@
+// Gemeinsame Primitive für das Phase-5-Redesign.
+
+.eq-page-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding: 1.5rem 0 1.25rem;
+
+  &__main {
+    min-width: 0;
+    flex: 1 1 20rem;
+  }
+
+  &__back {
+    display: inline-flex;
+    align-items: center;
+    gap: .15rem;
+    font-size: .85rem;
+    font-weight: 600;
+    color: var(--eq-brand-700, #4338ca);
+    text-decoration: none;
+    margin-bottom: .35rem;
+
+    &:hover {
+      color: var(--eq-brand-800, #3730a3);
+    }
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: #0f172a;
+  }
+
+  &__desc {
+    margin: .35rem 0 0;
+    color: #64748b;
+    font-size: .95rem;
+  }
+
+  &__chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: .75rem;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+    flex-wrap: wrap;
+    margin-left: auto;
+    padding-top: .25rem;
+  }
+}
+
+.eq-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: .3rem;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: .3rem .6rem;
+  border-radius: 999px;
+  background: #eef2f6;
+  color: #475569;
+  border: 1px solid transparent;
+
+  &--brand {
+    background: var(--eq-brand-50, #eef0ff);
+    color: var(--eq-brand-900, #312e81);
+  }
+  &--success {
+    background: #dcfce7;
+    color: #166534;
+  }
+  &--warning {
+    background: #fef3c7;
+    color: #92400e;
+  }
+  &--danger {
+    background: #fee2e2;
+    color: #991b1b;
+  }
+}
+
+.eq-empty {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  color: #64748b;
+
+  &__icon {
+    font-size: 2.25rem;
+    color: var(--eq-brand-400, #818cf8);
+    margin-bottom: .75rem;
+  }
+
+  &__title {
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 1.05rem;
+  }
+
+  &__desc {
+    margin: .35rem auto 1rem;
+    max-width: 28rem;
+    font-size: .92rem;
+  }
+}
