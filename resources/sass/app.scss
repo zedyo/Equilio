@@ -12,12 +12,32 @@
 // =============================================================
 
 :root {
-  --eq-brand: #{$brand-600};
-  --eq-brand-dark: #{$brand-900};
-  --eq-brand-tint: #{$brand-050};
+  // Harmonische Indigo-Tonleiter (Logo) als CSS-Custom-Properties.
+  --eq-brand-50:  #{$brand-50};
+  --eq-brand-100: #{$brand-100};
+  --eq-brand-200: #{$brand-200};
+  --eq-brand-300: #{$brand-300};
+  --eq-brand-400: #{$brand-400};
+  --eq-brand-500: #{$brand-500};
+  --eq-brand-600: #{$brand-600};
+  --eq-brand-700: #{$brand-700};
+  --eq-brand-800: #{$brand-800};
+  --eq-brand-900: #{$brand-900};
+
+  // Semantische Aliasse
+  --eq-brand: var(--eq-brand-600);
+  --eq-brand-hover: var(--eq-brand-700);
+  --eq-brand-active: var(--eq-brand-800);
+  --eq-brand-dark: var(--eq-brand-900);
+  --eq-brand-tint: var(--eq-brand-50);
+
   --eq-surface: #{$white};
   --eq-app-bg: #{$gray-100};
   --eq-border: #{$gray-300};
+
+  // Abstände/Radien für Primitive
+  --eq-radius: #{$border-radius};
+  --eq-radius-lg: #{$border-radius-lg};
 }
 
 body {
@@ -75,9 +95,20 @@ a, button, .btn, .form-control, .form-select, .dropdown-item,
 }
 
 .btn-primary {
-  --bs-btn-hover-bg: #{$brand-900};
-  --bs-btn-hover-border-color: #{$brand-900};
-  --bs-btn-active-bg: #{$brand-900};
+  --bs-btn-hover-bg: #{$brand-700};
+  --bs-btn-hover-border-color: #{$brand-700};
+  --bs-btn-active-bg: #{$brand-800};
+  --bs-btn-active-border-color: #{$brand-800};
+  --bs-btn-disabled-bg: #{$brand-300};
+  --bs-btn-disabled-border-color: #{$brand-300};
+}
+
+.btn-outline-primary {
+  --bs-btn-color: #{$brand-700};
+  --bs-btn-border-color: #{$brand-300};
+  --bs-btn-hover-bg: #{$brand-600};
+  --bs-btn-hover-border-color: #{$brand-600};
+  --bs-btn-active-bg: #{$brand-700};
 }
 
 // Tabellen: klarer Kopf, ruhige Zeilen
