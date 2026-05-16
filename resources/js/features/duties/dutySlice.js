@@ -2,6 +2,7 @@ import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   dutiesData: [],
+  ownDuties: [],
   isLoading: true,
   generatorSummary: null,
   isGenerating: false,
@@ -44,6 +45,22 @@ export const getDutiesDataByMonth = createAsyncThunk(
       return data.duties
     } catch (error) {
       return thunkAPI.rejectWithValue('Fehler beim abholen von duties')
+    }
+  }
+)
+
+export const getOwnDutiesByMonth = createAsyncThunk(
+  'duties/getOwnDutiesByMonth',
+  async ({ year, month, employeeId }, thunkAPI) => {
+    try {
+      const { data } = await axios.get(
+        `http://127.0.0.1:8000/api/duties/${year}/${month}/${employeeId}`
+      )
+      return data.duties
+    } catch (error) {
+      return thunkAPI.rejectWithValue(
+        'Fehler beim Abholen des eigenen Dienstplans'
+      )
     }
   }
 )
@@ -147,6 +164,10 @@ const dutySlice = createSlice({
         state.errorMessage = payload
         state.isLoading = false
         state.hasError = true
+      })
+      .addCase(getOwnDutiesByMonth.fulfilled, (state, { payload }) => {
+        state.isLoading = false
+        state.ownDuties = payload
       })
       .addCase(postDuty.pending, (state) => {
         state.isLoading = true

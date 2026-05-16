@@ -9,9 +9,32 @@
  *  Netzwerk-Allowlist blockt den Browser-Download. Diese Suite deckt die
  *  funktionalen Migrations-Risiken ohne Browser ab.)
  */
-import { describe, it, expect, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll, beforeEach } from 'vitest'
 import { render, screen, act, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
+
+const SESSION_KEY = 'equilio_demo_session'
+
+function loginAs(role) {
+  const acct =
+    role === 'pflegekraft'
+      ? {
+          email: 'pflege@equilio.test',
+          name: 'Pflege Demo',
+          role: 'pflegekraft',
+          employee_id: 1,
+        }
+      : {
+          email: 'leitung@equilio.test',
+          name: 'Leitung Demo',
+          role: 'leitung',
+          employee_id: null,
+        }
+  window.localStorage.setItem(SESSION_KEY, JSON.stringify(acct))
+}
+
+// Standard: angemeldet als Leitung (Voll-UI). Einzelne Tests überschreiben.
+beforeEach(() => loginAs('leitung'))
 
 function navigate(hash) {
   act(() => {
@@ -198,5 +221,50 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     expect(
       screen.queryByRole('dialog', { name: /Monat wählen/i })
     ).not.toBeInTheDocument()
+  })
+
+  it('Auth: ohne Session erscheint der Login, Anmeldung führt ins Dashboard', async () => {
+    const user = userEvent.setup()
+    window.localStorage.removeItem(SESSION_KEY)
+    render(<App />)
+
+    // Login-Maske statt App.
+    await screen.findByText(/Dienstplanung – Anmeldung/i, {}, { timeout: 6000 })
+    expect(screen.queryByText(/Albers/i)).not.toBeInTheDocument()
+
+    // Schnellzugang "Als Leitung" füllt die Felder, dann anmelden.
+    await user.click(screen.getByRole('button', { name: /Als Leitung/i }))
+    await user.click(screen.getByRole('button', { name: /^Anmelden$/i }))
+
+    expect(
+      await screen.findByText(/Albers/i, {}, { timeout: 8000 })
+    ).toBeInTheDocument()
+  })
+
+  it('Rollen: Pflegekraft sieht nur den eigenen Plan, keine Einstellungen', async () => {
+    loginAs('pflegekraft')
+    render(<App />)
+
+    // Pflegekraft-Ansicht (MyPlan) statt Leitungs-Dashboard.
+    expect(
+      await screen.findByText(/Mein Dienstplan/i, {}, { timeout: 8000 })
+    ).toBeInTheDocument()
+    expect(screen.getAllByText(/Pflegekraft/i).length).toBeGreaterThan(0)
+
+    // Keine Leitungs-Funktionen.
+    expect(screen.queryByText(/Einstellungen/i)).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(/Plan automatisch generieren/i)
+    ).not.toBeInTheDocument()
+
+    // Geschützte Route wird auf den eigenen Plan umgeleitet.
+    navigate('#/employees')
+    await waitFor(
+      () => {
+        expect(screen.queryByText(/^Team$/)).not.toBeInTheDocument()
+      },
+      { timeout: 4000 }
+    )
+    expect(screen.getByText(/Mein Dienstplan/i)).toBeInTheDocument()
   })
 })
