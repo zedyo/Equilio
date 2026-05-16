@@ -1,52 +1,54 @@
 import React from 'react'
-import {
-  Breadcrumb,
-  Button,
-  Card,
-  Container,
-  Row,
-  Stack,
-} from 'react-bootstrap'
+import { Button, Card, Container, Row } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import ShiftTypeCard from './show/ShiftTypeCard'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FiLayers } from 'react-icons/fi'
+import PageHeader from '../shared/PageHeader'
+import EmptyState from '../shared/EmptyState'
 
 function ShiftTypes() {
   const { shiftTypesData } = useSelector((store) => store.shiftTypes)
 
   return (
-    <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item active>Einstellungen: Schicht Arten</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
-          <Card.Header>
-            <Stack direction="horizontal" gap={3}>
-              <div>Schicht Arten</div>
-              <div className="ms-auto">
-                <Button href={`/shift_type/create`} variant="outline-success">
-                  <AiOutlinePlus /> Neue Schicht Art
+    <Container className="pb-5">
+      <PageHeader
+        title="Schichtarten"
+        description="Übergeordnete Arten (z. B. Frühdienst) mit Soll-/Optimalbesetzung."
+        actions={
+          <Button href="/shift_type/create" variant="primary">
+            <AiOutlinePlus className="me-1" /> Neue Schichtart
+          </Button>
+        }
+        chips={[{ label: `${shiftTypesData.length} Arten`, tone: 'brand' }]}
+      />
+
+      <Card>
+        <Card.Body>
+          {shiftTypesData.length === 0 ? (
+            <EmptyState
+              icon={<FiLayers />}
+              title="Keine Schichtarten"
+              description="Lege Schichtarten an, denen konkrete Schichten zugeordnet werden."
+              action={
+                <Button href="/shift_type/create" variant="primary">
+                  <AiOutlinePlus className="me-1" /> Neue Schichtart
                 </Button>
-              </div>
-            </Stack>
-          </Card.Header>
-          <Card.Body>
-            <Container fluid="sm">
-              <Row>
-                {shiftTypesData.map((shiftTypeData) => (
-                  <ShiftTypeCard
-                    key={shiftTypeData.id}
-                    shiftTypeData={shiftTypeData}
-                  />
-                ))}
-              </Row>
-            </Container>
-          </Card.Body>
-        </Card>
-      </Container>
-    </>
+              }
+            />
+          ) : (
+            <Row>
+              {shiftTypesData.map((shiftTypeData) => (
+                <ShiftTypeCard
+                  key={shiftTypeData.id}
+                  shiftTypeData={shiftTypeData}
+                />
+              ))}
+            </Row>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   )
 }
 

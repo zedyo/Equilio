@@ -1,58 +1,56 @@
 import React from 'react'
 import QualificationCard from './show/QualificationCard'
-import {
-  Button,
-  Row,
-  Container,
-  Card,
-  Stack,
-  Breadcrumb,
-} from 'react-bootstrap'
+import { Button, Row, Container, Card } from 'react-bootstrap'
 import { useSelector } from 'react-redux'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { FiAward } from 'react-icons/fi'
+import PageHeader from '../shared/PageHeader'
+import EmptyState from '../shared/EmptyState'
 
 function Qualifications() {
   const { qualificationsData } = useSelector((store) => store.qualifications)
 
   return (
-    <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item active>
-            Einstellungen: Qualifikationen
-          </Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
-          <Card.Header>
-            <Stack direction="horizontal" gap={3}>
-              <div>Qualifikationen</div>
-              <div className="ms-auto">
-                <Button
-                  href={`/qualification/create`}
-                  variant="outline-success"
-                >
-                  <AiOutlinePlus /> Neue Qualifikation
-                </Button>
-              </div>
-            </Stack>
-          </Card.Header>
+    <Container className="pb-5">
+      <PageHeader
+        title="Qualifikationen"
+        description="Qualifikationsstufen, nach denen das Team gruppiert und geplant wird."
+        actions={
+          <Button href="/qualification/create" variant="primary">
+            <AiOutlinePlus className="me-1" /> Neue Qualifikation
+          </Button>
+        }
+        chips={[
+          { label: `${qualificationsData.length} Einträge`, tone: 'brand' },
+        ]}
+      />
 
-          <Card.Body>
-            <Container md={3}>
-              <Row>
-                {qualificationsData.map((qualificationObject) => (
-                  <QualificationCard
-                    key={qualificationObject.id}
-                    qualificationData={qualificationObject}
-                  />
-                ))}
-              </Row>
-            </Container>
-          </Card.Body>
-        </Card>
-      </Container>
-    </>
+      <Card>
+        <Card.Body>
+          {qualificationsData.length === 0 ? (
+            <EmptyState
+              icon={<FiAward />}
+              title="Keine Qualifikationen"
+              description="Lege Qualifikationsstufen an (z. B. Examinierte Pflegefachkraft)."
+              action={
+                <Button href="/qualification/create" variant="primary">
+                  <AiOutlinePlus className="me-1" /> Neue Qualifikation
+                </Button>
+              }
+            />
+          ) : (
+            <Row>
+              {qualificationsData.map((qualificationObject) => (
+                <QualificationCard
+                  key={qualificationObject.id}
+                  qualificationData={qualificationObject}
+                />
+              ))}
+            </Row>
+          )}
+        </Card.Body>
+      </Card>
+    </Container>
   )
 }
 
