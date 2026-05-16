@@ -75,7 +75,12 @@
     text-transform: uppercase;
     letter-spacing: .06em;
     color: #475569;
-    padding: 1.25rem 0 .5rem;
+    padding: 1.25rem .75rem .5rem;
     margin-bottom: .25rem;
     border-bottom: 2px solid var(--eq-brand, #4f46e5);
+    // Mit der fixierten ersten Spalte mitlaufen.
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #ffffff;
 }
