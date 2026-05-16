@@ -397,6 +397,82 @@ Lokalsuche den im Greedy erzeugten Fachkraft-Mix wieder zertauschte.
 Nachbarschaftsoperatoren brauchen denselben Constraint-Guard wie die
 Konstruktion.
 
+## 2026-05-15 — Phase 2k: manual_only + belastungsadaptive Gewichtung
+
+- **manual_only**: Schichten können „nur manuell" markiert werden
+  (`shifts.manual_only`, Migration/Model/Controller/Create+UpdateShift-
+  Switch). Sonderdienst/Abwesenheit (FO/U/BS/PA …) ist vorbelegt true.
+  Generieren überschreibt sie nie: DutyController gibt bestehende
+  manual_only-Duties als `$locked` an den Generator (vorbelegt, MA
+  belegt, Lokalsuche/SA fassen sie nicht an, werden unverändert
+  mitausgegeben). Mock kongruent.
+- **Belastungsadaptive Gewichtung**: je MA `employeeSequenceStrain`
+  nach Greedy → Gewicht m=1+k·min(strain/scale,cap) skaliert dessen
+  Sequenz-Δ + Wunsch/Präferenz/Stunden in Lokalsuche/SA. Höher
+  belastete MA werden bevorzugt entlastet. `hours[]` führt strain+weight.
+- **Unterstunden hoch priorisiert** (4,0/h, Ist<Soll) — unter Ruhepausen
+  (Sequenz-Strain, zusätzlich m-skaliert). Reihenfolge Ruhe >
+  Unterstunden > Überstunden/Präferenz. Config `strain_adaptive`,
+  `monthly_undertime_deviation`.
+
+**Verifiziert:** PHPUnit 26/26 (7185 Assertions), Frontend 10/10, Build
+grün. SA-Determinismus/Soll-Stunden/Real-Feasibility unverändert grün.
+
+**Lessons Learned:** Der per-MA-Multiplikator passt sauber ins
+`$obj`-Kontextmuster und bleibt deterministisch, weil er einmalig nach
+dem (deterministischen) Greedy fixiert wird — variable Gewichte
+während SA würden Konvergenz/Reproduzierbarkeit brechen.
+
+## 2026-05-15 — Phase 2j: 3-stufige Präferenzen + Bugfix
+
+- Präferenzen je MA/Schicht jetzt 3-stufig: **Bevorzugt / Erlaubt /
+  Gesperrt**. `blocked` ist harte Regel (Greedy überspringt,
+  `employeeExtraStrain`→INF, `forbidden`). DB-Spalte `preferences.level`
+  (Migration), Controller-Upsert, Slice-Upsert, Mock kongruent.
+- **Bugfix (Ursache des „nicht nutzbar"):** Mock gab interne
+  `db`-Array-Referenzen an Redux; Immer fror sie ein → späteres
+  Mutieren warf „object is not extensible", POST scheiterte still →
+  Schalter reagierten nicht. Mock-Antworten sind nun Kopien, keine
+  In-place-Mutation der db-Arrays.
+- UI: segmentierte 3-Wege-Steuerung statt Schalter (gruppiert nach
+  Schichtart, farbcodiert), robust gegen fehlende/abweichende
+  Datenform. Neuer Frontend-Test deckt die End-to-End-Nutzbarkeit ab.
+
+**Verifiziert:** PHPUnit 26/26 (6499 Assertions), Frontend **10/10**,
+Build grün.
+
+**Lessons Learned:** Geteilte Mock-Array-Referenzen + Immer-Freeze sind
+eine subtile, still scheiternde Fehlerquelle — Mock-APIs müssen Kopien
+liefern und intern immutabel arbeiten. Der gemeldete „Schalter nicht
+nutzbar"-Bug war genau das (nicht die UI selbst).
+
+## 2026-05-15 — Phase 2i: Objektiv-Erweiterung + UX
+
+- **Monatsstunden** als Planungsziel: `employeeExtraStrain()` straft
+  |Ist−Soll| je MA (1,5/h) → MA werden auf ihre Monatsstunden geplant.
+- **Wünsche** stark gewichtet (25/Tag) → werden bevorzugt erfüllt
+  (Work/Life-Balance); **Präferenzen** sanft (0,5/Dienst) zusätzlich
+  zum bestehenden Greedy-Bonus. Alles memoisiert (`$extraCache`),
+  additiv im Δ von Lokalsuche + SA und im `total_strain`; neue
+  Summary-Felder `hours_strain`/`wish_violations`/`preference_misses`.
+- **Schichtfarben**: Früh = Orange `#f59e0b`, Spät = Blau `#3b82f6`
+  (RealRosterSeeder + Mock kongruent).
+- **Wunsch-Datepicker**: neuer Inline-Kalender `WishDatePicker`
+  (Wochenraster, Monatsnavigation, Heute/ausgewählt markiert) ersetzt
+  die 3 klobigen Tag/Monat/Jahr-Felder im Wunsch-Modal; alter
+  fehlerhafter Jahr-Input (controlled/uncontrolled) behoben.
+- **Präferenzen**: Feature war bereits voll funktionsfähig & erreichbar
+  (Team → „show" → „Dienst Präferenzen"); Planung bevorzugt sie nun
+  zusätzlich über den Objektiv-Term.
+
+**Verifiziert:** PHPUnit 26/26 (6499 Assertions), Frontend 9/9, Build
+grün. SA-Determinismus/Soll-Stunden-Tests unverändert grün.
+
+**Lessons Learned:** Der memoisierte „extra strain" passt exakt ins
+seqCache-Muster (reine Zustands-Funktion je MA) → Mehr-Ziel-
+Optimierung ohne Performance-Verlust und ohne die StrainIndex-Unit-
+Tests zu berühren.
+
 ## 2026-05-15 — Phase 2h: Generator-Skalierung + Real-World-Testdatensatz
 
 - Echte Pflege-Dienstplan-Excel (Jan–Mai 2018) analysiert (xlrd inkl.

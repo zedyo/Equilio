@@ -92,15 +92,44 @@ sie dienen hier nur als realistische Testkonstellation.
 Der reale Plan bestätigt die Modellannahmen; lediglich die konkreten
 Min/Opt-Zahlen sind stationsspezifisch (→ Nutzerkonfiguration).
 
+## Abgeleitete Präferenzen (aus realer Dienstverteilung)
+
+Aus der tatsächlichen Schichtverteilung je MA über alle 5 Monate
+abgeleitet und im Seeder/Mock **vorausgefüllt** (228 Einträge,
+26 `preferred`, 202 `blocked`, 31 MA):
+
+- **preferred**: der/die dominante(n) aktive(n) Dienstcode(s) — Anteil
+  ≥ 45 % der aktiven Dienste **und** ≥ 8×, max. 2 Codes. Beispiele:
+  Günther F1 (94 %), Celling F3 (100 %), Stolz/Habteab/Wanninger
+  F14 (100 %), Köse F10 (84 %), Tordo S33 (74 %).
+- **blocked**: jede aktive Dienst**art**, die der MA in der Quelle
+  **nie** geleistet hat → alle Codes dieser Art gesperrt. Spiegelt
+  reale Spezialisierung (z. B. „macht nie Nachtdienst", reine
+  Frühdienst-Kräfte wie Präsenz/Therapie/Azubi-1).
+- **valid** (kein Eintrag): alles übrige, neutral.
+
+Verifiziert: Generator bleibt mit diesen harten `blocked`-Regeln
+**machbar** — `generate()` auf vollem 36-MA-Echtbestand: forbidden=0,
+Besetzungs-/Qualifikations-Strain 0, ~0,4 s. Genug nicht-gesperrte,
+qualifizierte Kräfte je Dienstart/Tag (insb. Nacht: ~14 MA, die real
+Nachtdienste hatten, bleiben ungesperrt).
+
 ## Datensatz / Anonymisierung
 
 - 36 MA mit **fiktiven** deutschen Namen (deterministisch nach
   Einlese-Reihenfolge); Real↔Fake-Mapping wird **nicht** persistiert.
-- Alle 5 Monate (Jan–Mai), Jahr **2018** im Original belassen
-  (historischer Referenz-Datensatz; 2779 Duty-Zeilen inkl. U/PA/BS …
-  für vollständige Plan-Rekonstruktion).
+- 5 aufeinanderfolgende Quellmonate (Jan–Mai), 2779 Duty-Zeilen inkl.
+  U/PA/BS … für vollständige Plan-Rekonstruktion. Beim Seeden auf ein
+  **rollierendes Fenster** gemappt, das im *aktuellen* Monat endet
+  (Quellmonat 5 → aktueller Monat) → der Plan ist sofort beim App-Start
+  sichtbar (kein manuelles Zurücknavigieren ins Jahr 2018 nötig).
 - Separater Seeder, **nicht** in `DatabaseSeeder` registriert → die
   bestehende Test-Suite/Generator bleiben unberührt.
+- **Mock/Demo-Kongruenz:** identische anonymisierte Daten zusätzlich als
+  `resources/js/mock/realRosterData.js`; `mockApi.js` nutzt sie (gleiche
+  rollierende Umdatierung) → die klickbare Online-/Pages-Demo zeigt
+  denselben Real-Datensatz. `STORAGE_KEY` auf `v2` erhöht (löst die
+  alten Demo-Beispieldaten im localStorage ab).
 
 ## Offene Punkte / mögliche Erweiterungen
 

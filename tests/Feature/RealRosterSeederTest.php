@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\Duty;
 use App\Models\Employee;
+use App\Models\Preference;
 use App\Models\Qualification;
 use App\Models\Shift;
 use App\Services\RosterGenerator;
@@ -26,11 +27,33 @@ class RealRosterSeederTest extends TestCase
         $this->assertSame(7, Qualification::count());
         $this->assertSame(36, Employee::count());
         $this->assertSame(2779, Duty::count());
-        $this->assertEqualsCanonicalizing(
-            [1, 2, 3, 4, 5],
-            Duty::distinct()->pluck('month')->all()
-        );
-        $this->assertSame(0, Duty::where('year', '!=', 2018)->count());
+
+        // Vorausgefüllte Präferenzen aus der realen Verteilung.
+        $this->assertGreaterThan(0, Preference::where('level', 'preferred')->count());
+        $this->assertGreaterThan(0, Preference::where('level', 'blocked')->count());
+        // Jede Präferenz zeigt auf realen MA + Shift.
+        $empIds2 = Employee::pluck('id')->all();
+        $shiftIds2 = Shift::pluck('id')->all();
+        foreach (Preference::all() as $p) {
+            $this->assertContains($p->employee_id, $empIds2);
+            $this->assertContains($p->shift_id, $shiftIds2);
+            $this->assertContains($p->level, ['preferred', 'blocked']);
+        }
+
+        // Quelle = 5 Monate, auf ein im aktuellen Monat endendes Fenster
+        // gemappt (Quellmonat 5 -> aktueller Monat).
+        $base = now()->startOfMonth();
+        $expected = [];
+        for ($m = 1; $m <= 5; $m++) {
+            $t = $base->copy()->subMonths(5 - $m);
+            $expected[] = $t->year.'-'.$t->month;
+        }
+        $actual = Duty::get(['year', 'month'])
+            ->map(fn ($d) => $d->year.'-'.$d->month)
+            ->unique()->values()->all();
+        $this->assertEqualsCanonicalizing($expected, $actual);
+        // Der aktuelle Monat ist im Fenster (sofort sichtbar bei App-Start).
+        $this->assertContains($base->year.'-'.$base->month, $actual);
 
         // Examinierte vorhanden (Qual-Mix realistisch).
         $this->assertGreaterThanOrEqual(

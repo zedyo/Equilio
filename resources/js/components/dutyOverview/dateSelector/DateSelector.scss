@@ -1,3 +1,184 @@
-.dateView {
-    text-align: center;
+.date-selector {
+  position: relative;
+  display: inline-block;
+  user-select: none;
+
+  &__bar {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 4px;
+    background: #f5f6f8;
+    border: 1px solid #dfe3e8;
+    border-radius: 10px;
+    padding: 4px;
+  }
+
+  &__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: transparent;
+    color: #4a5568;
+    font-size: 1.05rem;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease;
+
+    &:hover {
+      background: #e7eaef;
+      color: #1a202c;
+    }
+    &:active {
+      background: #d8dde4;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+  }
+
+  &__current {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 168px;
+    justify-content: center;
+    padding: 0 14px;
+    height: 34px;
+    border: none;
+    border-radius: 8px;
+    background: #fff;
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    transition: box-shadow 0.12s ease, transform 0.06s ease;
+
+    &:hover {
+      box-shadow: 0 2px 6px rgba(16, 24, 40, 0.12);
+    }
+    &:active {
+      transform: translateY(1px);
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+  }
+
+  &__current-icon {
+    color: #3b82f6;
+    font-size: 1rem;
+  }
+
+  &__label {
+    letter-spacing: 0.01em;
+  }
+
+  &__panel {
+    position: absolute;
+    top: calc(100% + 8px);
+    left: 0;
+    z-index: 30;
+    width: 280px;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+    box-shadow: 0 12px 32px rgba(16, 24, 40, 0.16);
+    padding: 12px;
+    animation: date-selector-pop 0.12s ease-out;
+  }
+
+  &__panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  &__year {
+    font-weight: 700;
+    font-size: 1.05rem;
+    color: #1a202c;
+  }
+
+  &__grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  &__month {
+    height: 42px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: #f5f6f8;
+    color: #2d3748;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.12s ease, color 0.12s ease,
+      border-color 0.12s ease;
+
+    &:hover {
+      background: #e7eaef;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+
+    &.is-today {
+      border-color: #93c5fd;
+      color: #1d4ed8;
+    }
+
+    &.is-selected {
+      background: #3b82f6;
+      color: #fff;
+      border-color: #3b82f6;
+      font-weight: 600;
+    }
+  }
+
+  &__panel-foot {
+    margin-top: 12px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__today {
+    border: none;
+    background: transparent;
+    color: #3b82f6;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 6px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.12s ease;
+
+    &:hover {
+      background: #eff6ff;
+    }
+    &:focus-visible {
+      outline: 2px solid #3b82f6;
+      outline-offset: 1px;
+    }
+  }
+}
+
+@keyframes date-selector-pop {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }

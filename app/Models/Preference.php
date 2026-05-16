@@ -13,6 +13,7 @@ class Preference extends Model
         'id',
         'employee_id',
         'shift_id',
+        'level',
         'creation_date'
     ];
 

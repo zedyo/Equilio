@@ -10,7 +10,7 @@
  *  funktionalen Migrations-Risiken ohne Browser ab.)
  */
 import { describe, it, expect, beforeAll } from 'vitest'
-import { render, screen, act } from '@testing-library/react'
+import { render, screen, act, within, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 
 function navigate(hash) {
@@ -34,17 +34,17 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Dienstplan-Startseite lädt Seeder-Daten (React19/RTK2/axios1/Router7)', async () => {
     render(<App />)
     // Mitarbeiter aus dem Seeder erscheint -> kompletter Daten-Pfad ok.
-    expect(await screen.findByText(/Testy/i, {}, { timeout: 8000 })).toBeInTheDocument()
+    expect(await screen.findByText(/Albers/i, {}, { timeout: 8000 })).toBeInTheDocument()
   })
 
   it('Team-Seite zeigt Mitarbeiter-Tabelle mit Qualifikation', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/employees')
     expect(await screen.findByText('Team', {}, { timeout: 5000 })).toBeInTheDocument()
     // Mehrere Mitarbeiter teilen sich Qualifikationen -> findAllByText.
     const quals = await screen.findAllByText(
-      /Exam\. Pfleger:in/i,
+      /Examinierte Pflegefachkraft/i,
       {},
       { timeout: 5000 }
     )
@@ -53,16 +53,16 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
 
   it('Qualifikationen-Seite listet Seeder-Qualifikationen', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/qualifications')
     expect(
-      await screen.findByText(/Betreuungsassistent:in/i, {}, { timeout: 5000 })
+      await screen.findByText(/Beschäftigungstherapeut:in/i, {}, { timeout: 5000 })
     ).toBeInTheDocument()
   })
 
   it('Schicht-Arten-Seite listet Seeder-ShiftTypes', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/shift_types')
     expect(
       await screen.findByText(/Frühschicht/i, {}, { timeout: 5000 })
@@ -71,7 +71,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
 
   it('Schichten-Seite listet Seeder-Schichten (Kürzel F1)', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/shifts')
     expect(await screen.findByText('F1', {}, { timeout: 5000 })).toBeInTheDocument()
   })
@@ -82,23 +82,62 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Navigation via Nav-Dropdown bleibt clientseitig (kein 404)', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     await user.click(await screen.findByText(/Einstellungen/i))
     await user.click(await screen.findByText('Team'))
 
     // Team-Seite gerendert -> Interceptor hat per Router navigiert.
     const quals = await screen.findAllByText(
-      /Exam\. Pfleger:in/i,
+      /Examinierte Pflegefachkraft/i,
       {},
       { timeout: 5000 }
     )
     expect(quals.length).toBeGreaterThan(0)
   })
 
+  it('Präferenzen: 3-Stufen-Auswahl je Schicht ist nutzbar', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
+
+    navigate('#/employee/show/1')
+    await screen.findByText(/Dienst Präferenzen/i, {}, { timeout: 6000 })
+
+    // Segmentierte Steuerung vorhanden. Einige Schichten sind aus den
+    // Echtdaten vorbelegt -> einen noch NICHT bevorzugten Button wählen.
+    const prefBtns = await screen.findAllByRole(
+      'button',
+      { name: 'Bevorzugt' },
+      { timeout: 5000 }
+    )
+    expect(prefBtns.length).toBeGreaterThan(0)
+    const idx = prefBtns.findIndex(
+      (b) => b.getAttribute('aria-pressed') === 'false'
+    )
+    expect(idx).toBeGreaterThanOrEqual(0)
+
+    await user.click(prefBtns[idx])
+
+    // Slice + Mock haben die Stufe übernommen -> Button wird aktiv.
+    await waitFor(
+      () => {
+        const after = screen.getAllByRole('button', { name: 'Bevorzugt' })
+        expect(after[idx]).toHaveAttribute('aria-pressed', 'true')
+      },
+      { timeout: 5000 }
+    )
+
+    // Mind. eine Schicht ist aus den Echtdaten vorab bevorzugt.
+    const pressed = screen
+      .getAllByRole('button', { name: 'Bevorzugt' })
+      .filter((b) => b.getAttribute('aria-pressed') === 'true')
+    expect(pressed.length).toBeGreaterThan(0)
+  })
+
   it('Abwesenheiten-Seite listet geseedete Abwesenheiten', async () => {
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/absences')
     expect(
       await screen.findByText(/Jahresurlaub/i, {}, { timeout: 5000 })
@@ -108,7 +147,7 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   it('Automatische Plangenerierung liefert Belastungsindex (Phase 2)', async () => {
     const user = userEvent.setup()
     render(<App />)
-    await screen.findByText(/Testy/i, {}, { timeout: 8000 })
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
     await user.click(
       await screen.findByText(/Plan automatisch generieren/i)
@@ -117,5 +156,47 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     expect(
       await screen.findByText(/Belastungsindex:/i, {}, { timeout: 8000 })
     ).toBeInTheDocument()
+  })
+
+  it('Datepicker: Popover öffnet, Monatswahl & "Heute" funktionieren', async () => {
+    const user = userEvent.setup()
+    render(<App />)
+    await screen.findByText(/Albers/i, {}, { timeout: 8000 })
+
+    const year = new Date().getFullYear()
+    // Trigger trägt das Jahr im Label (Nav-Buttons nicht).
+    const trigger = await screen.findByRole('button', {
+      name: new RegExp(`${year}`),
+    })
+    expect(trigger).toHaveAttribute('aria-expanded', 'false')
+
+    await user.click(trigger)
+    const dialog = await screen.findByRole('dialog', {
+      name: /Monat wählen/i,
+    })
+    expect(trigger).toHaveAttribute('aria-expanded', 'true')
+
+    // Anderen Monat wählen -> Panel schließt, Label aktualisiert.
+    await user.click(within(dialog).getByText('Juni'))
+    expect(
+      screen.queryByRole('dialog', { name: /Monat wählen/i })
+    ).not.toBeInTheDocument()
+    expect(
+      await screen.findByRole('button', {
+        name: new RegExp(`Juni ${year}`),
+      })
+    ).toBeInTheDocument()
+
+    // "Heute" springt zum aktuellen Monat zurück.
+    await user.click(
+      await screen.findByRole('button', { name: new RegExp(`${year}`) })
+    )
+    const dialog2 = await screen.findByRole('dialog', {
+      name: /Monat wählen/i,
+    })
+    await user.click(within(dialog2).getByRole('button', { name: 'Heute' }))
+    expect(
+      screen.queryByRole('dialog', { name: /Monat wählen/i })
+    ).not.toBeInTheDocument()
   })
 })

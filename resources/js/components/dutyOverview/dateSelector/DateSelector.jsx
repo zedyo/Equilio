@@ -1,119 +1,174 @@
-import React from 'react'
-import { Button, Form, Col, Row, InputGroup } from 'react-bootstrap'
+import React, { useEffect, useRef, useState } from 'react'
 import moment from 'moment'
+import {
+  IoChevronBack,
+  IoChevronForward,
+  IoCalendarClearOutline,
+} from 'react-icons/io5'
 import './DateSelector.scss'
-import { IoChevronBack, IoChevronForward } from 'react-icons/io5'
+
+function clampStep(month, year, dir) {
+  let m = Number(month) + dir
+  let y = Number(year)
+  if (m < 1) {
+    m = 12
+    y -= 1
+  } else if (m > 12) {
+    m = 1
+    y += 1
+  }
+  return { month: m.toString(), year: y.toString() }
+}
 
 function DateSelector(props) {
+  const { dateSelectorData, setDateSelector } = props
+  const month = Number(dateSelectorData.month)
+  const year = Number(dateSelectorData.year)
+
+  const [open, setOpen] = useState(false)
+  const [panelYear, setPanelYear] = useState(year)
+  const rootRef = useRef(null)
+
+  const now = moment()
+  const todayMonth = Number(now.format('M'))
+  const todayYear = Number(now.format('YYYY'))
+
+  // Panel beim Öffnen mit dem aktuell gewählten Jahr synchronisieren.
+  useEffect(() => {
+    if (open) setPanelYear(year)
+  }, [open, year])
+
+  // Schließen bei Klick außerhalb bzw. Escape.
+  useEffect(() => {
+    if (!open) return undefined
+    const onDown = (e) => {
+      if (rootRef.current && !rootRef.current.contains(e.target)) {
+        setOpen(false)
+      }
+    }
+    const onKey = (e) => {
+      if (e.key === 'Escape') setOpen(false)
+    }
+    document.addEventListener('mousedown', onDown)
+    document.addEventListener('keydown', onKey)
+    return () => {
+      document.removeEventListener('mousedown', onDown)
+      document.removeEventListener('keydown', onKey)
+    }
+  }, [open])
+
+  const step = (dir) => setDateSelector(clampStep(month, year, dir))
+
+  const pickMonth = (mIdx) => {
+    setDateSelector({ month: (mIdx + 1).toString(), year: panelYear.toString() })
+    setOpen(false)
+  }
+
+  const goToday = () => {
+    setDateSelector({
+      month: todayMonth.toString(),
+      year: todayYear.toString(),
+    })
+    setOpen(false)
+  }
+
+  const label = `${moment(dateSelectorData.month, 'M').format('MMMM')} ${year}`
+  const monthsShort = moment.monthsShort()
+
   return (
-    <>
-      <Form>
-        <Row>
-          <Col xs="auto">
-            <InputGroup className="mb-3">
-              <Button
-                variant="outline-secondary"
-                size="text"
-                id="prev-month-button"
-                onClick={(e) => {
-                  props.dateSelectorData.month === '1'
-                    ? props.setDateSelector({
-                        month: '12',
-                        year: (
-                          Number(props.dateSelectorData.year) - 1
-                        ).toString(),
-                      })
-                    : props.setDateSelector({
-                        ...props.dateSelectorData,
-                        month: (
-                          Number(props.dateSelectorData.month) - 1
-                        ).toString(),
-                      })
-                }}
-              >
-                <IoChevronBack />
-              </Button>
-              <Form.Control
-                className="dateView"
-                placeholder={`${moment(
-                  `${props.dateSelectorData.month}`,
-                  'M'
-                ).format('MMMM')} ${props.dateSelectorData.year}`}
-                disabled
-                size="text"
-              />
-              <Button
-                variant="outline-secondary"
-                size="text"
-                id="next-month-button"
-                onClick={(e) => {
-                  props.dateSelectorData.month === '12'
-                    ? props.setDateSelector({
-                        month: '1',
-                        year: (
-                          Number(props.dateSelectorData.year) + 1
-                        ).toString(),
-                      })
-                    : props.setDateSelector({
-                        ...props.dateSelectorData,
-                        month: (
-                          Number(props.dateSelectorData.month) + 1
-                        ).toString(),
-                      })
-                }}
-              >
-                <IoChevronForward />
-              </Button>
-            </InputGroup>
-          </Col>
-        </Row>
-        {/* <Row>
-                    <Col xs={2}>
-                        <InputGroup className="mb-2">
-                            <InputGroup.Text>Monat</InputGroup.Text>
-                            <Form.Control
-                                id="inlineFormInputGroup"
-                                type="text"
-                                onChange={(e) =>
-                                    setCheckerInput({
-                                        ...checkerInput,
-                                        month: e.target.value,
-                                    })
-                                }
-                                value={checkerInput.month}
-                                placeholder="Monat"
-                            />
-                        </InputGroup>
-                    </Col>
-                    <Col xs={2}>
-                        <InputGroup className="mb-2">
-                            <InputGroup.Text>Jahr</InputGroup.Text>
-                            <Form.Control
-                                type="text"
-                                onChange={(e) =>
-                                    setCheckerInput({
-                                        ...checkerInput,
-                                        year: e.target.value,
-                                    })
-                                }
-                                value={checkerInput.year}
-                                placeholder="Jahr"
-                            />
-                        </InputGroup>
-                    </Col>
-                    <Col>
-                        <Button
-                            onClick={(e) =>
-                                props.setDateSelector({ ...checkerInput })
-                            }
-                            variant="outline-success"
-                        >
-                            Suche
-                        </Button>
-                    </Col>
-                </Row> */}
-      </Form>
-    </>
+    <div className="date-selector" ref={rootRef}>
+      <div className="date-selector__bar">
+        <button
+          type="button"
+          className="date-selector__nav"
+          id="prev-month-button"
+          aria-label="Vorheriger Monat"
+          onClick={() => step(-1)}
+        >
+          <IoChevronBack />
+        </button>
+
+        <button
+          type="button"
+          className="date-selector__current"
+          aria-haspopup="dialog"
+          aria-expanded={open}
+          onClick={() => setOpen((o) => !o)}
+        >
+          <IoCalendarClearOutline className="date-selector__current-icon" />
+          <span className="date-selector__label">{label}</span>
+        </button>
+
+        <button
+          type="button"
+          className="date-selector__nav"
+          id="next-month-button"
+          aria-label="Nächster Monat"
+          onClick={() => step(1)}
+        >
+          <IoChevronForward />
+        </button>
+      </div>
+
+      {open && (
+        <div className="date-selector__panel" role="dialog" aria-label="Monat wählen">
+          <div className="date-selector__panel-head">
+            <button
+              type="button"
+              className="date-selector__nav"
+              aria-label="Vorheriges Jahr"
+              onClick={() => setPanelYear((y) => y - 1)}
+            >
+              <IoChevronBack />
+            </button>
+            <span className="date-selector__year">{panelYear}</span>
+            <button
+              type="button"
+              className="date-selector__nav"
+              aria-label="Nächstes Jahr"
+              onClick={() => setPanelYear((y) => y + 1)}
+            >
+              <IoChevronForward />
+            </button>
+          </div>
+
+          <div className="date-selector__grid">
+            {monthsShort.map((name, idx) => {
+              const isSelected = idx + 1 === month && panelYear === year
+              const isToday =
+                idx + 1 === todayMonth && panelYear === todayYear
+              return (
+                <button
+                  type="button"
+                  key={name}
+                  className={[
+                    'date-selector__month',
+                    isSelected ? 'is-selected' : '',
+                    isToday ? 'is-today' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')}
+                  aria-pressed={isSelected}
+                  onClick={() => pickMonth(idx)}
+                >
+                  {name}
+                </button>
+              )
+            })}
+          </div>
+
+          <div className="date-selector__panel-foot">
+            <button
+              type="button"
+              className="date-selector__today"
+              onClick={goToday}
+            >
+              Heute
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
   )
 }
 

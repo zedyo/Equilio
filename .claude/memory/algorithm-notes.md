@@ -240,3 +240,75 @@ Damit ist die im Proposal als Kern genannte automatische, bewertete
 Plangenerierung inkl. Metaheuristik vollständig als getesteter,
 reproduzierbarer Prototyp umgesetzt. Offen: Gewichts-Feinjustierung,
 Phase 3 (Auth/Rollen).
+
+## Phase 2i — Stunden-/Wunsch-/Präferenz-Term im Objektiv
+
+`RosterGenerator::employeeExtraStrain()` ergänzt die Sequenz-Belastung
+um drei Mitarbeiter-bezogene Terme (config `rostering.*`):
+- **monthly_hours_deviation** (1.5/h): Strafe je Stunde |Ist−Soll| →
+  Mitarbeiter werden auf ihre Monatsstunden geplant (Auslastung).
+- **wish_violation** (25/Tag): hohe Strafe je nicht erfülltem
+  Tages-Wunsch → Wünsche werden stark bevorzugt erfüllt (Work/Life).
+- **preference_miss** (0.5/Dienst): sanfte Strafe je Dienst ohne
+  passende hinterlegte Schicht-Präferenz (nur wenn MA Präferenzen hat).
+
+Reine Funktion von `$assigned[$empId]` → wie `seqOf` memoisiert
+(`$extraCache`, Neuberechnung nur für die 2 betroffenen MA pro
+akzeptiertem 2-Tausch). Fließt additiv in das Δ der lokalen Suche
+**und** des SA ein (INF bleibt INF) sowie in `total_strain`; neue
+Summary-Felder `hours_strain`, `wish_violations`, `preference_misses`.
+Bestehende StrainIndex-Unit-Tests unberührt (Term lebt im Generator,
+nicht in `employeeSequenceStrain`). PHPUnit 26/26 weiterhin grün.
+
+## Phase 2i — Schichtfarben
+
+Frühschicht = Orange `#f59e0b`, Spätschicht = Blau `#3b82f6`
+(RealRosterSeeder + Mock `realRosterData.js`, kongruent). Nacht/
+Zwischen/Sonder unverändert.
+
+## Phase 2j — 3-stufige Präferenzen (preferred/valid/blocked)
+
+Präferenzen sind jetzt dreistufig je MA/Schicht:
+- **preferred**: bevorzugt (Greedy-Bonus + kein `preference_miss`).
+- **valid** (kein Datensatz): neutral, erlaubt.
+- **blocked**: harte Restriktion – Greedy überspringt den Kandidaten,
+  `employeeExtraStrain` liefert `INF` (Lokalsuche/SA lehnen ab),
+  `buildResult` markiert `forbidden`. Wird nie vergeben.
+
+DB: `preferences.level` (Migration, Default 'preferred' für Altbestand).
+Controller `create` macht ein 3-Wege-Upsert (valid = Datensatz löschen).
+Slice/Reducer upsert nach (employee_id, shift_id). Mock-API kongruent
+(immutabilitätssicher – Antworten sind Kopien, da Redux/Immer die
+Antwort einfriert; in-place-Mutation der internen db-Arrays vermieden).
+UI: segmentierte 3-Wege-Steuerung je Schicht (Gesperrt/Erlaubt/
+Bevorzugt) statt Schalter, gruppiert nach Schichtart. Frontend-Test
+deckt die End-to-End-Nutzbarkeit ab (Klick → Mock → Slice → aktiv).
+
+## Phase 2k — manual_only, belastungsabhängige Gewichtung, Unterstunden
+
+**manual_only (Schicht-Flag):** `shifts.manual_only` (Migration, Model-
+Cast, ShiftController, Create/UpdateShift-Switch). Sonderdienst/
+Abwesenheit (FO, U, BS, PA …) ist im Seeder manual_only=true.
+DutyController.generate lädt bestehende manual_only-Duties des Monats
+und gibt sie als `$locked` an den Generator: vorbelegt, MA an dem Tag
+belegt, Greedy/Lokalsuche/SA verändern sie nie, buildResult gibt sie
+unverändert mit aus. Mock kongruent (lockedByDay, Persist behält sie).
+
+**Belastungsabhängige Gewichtung:** nach dem Greedy-Lauf wird je MA
+`employeeSequenceStrain` berechnet; Gewicht `m = 1 + k·min(strain/
+scale, cap)` (config `strain_adaptive`, k=1, scale=30, cap=2 → m≤3).
+`m` skaliert in Lokalsuche/SA das Sequenz-Δ je MA **und** (in
+`employeeExtraStrain`) Stunden/Wunsch/Präferenz. Höher belastete MA
+bekommen also bevorzugt Wunsch/Ruhe/Schichtwechsel-Verbesserungen.
+Statisch (deterministisch). `total_strain` nutzt die gewichtete Summe;
+`employee_strain` (Summary) bleibt der rohe Index; `hours[]` führt je
+MA `strain` + `weight`.
+
+**Unterstunden hoch priorisiert:** `monthly_undertime_deviation` (4,0/h)
+für Ist<Soll, `monthly_hours_deviation` (1,5/h) sonst. Bewusst unter
+den Ruhepausen (Sequenz-Strain, zusätzlich m-skaliert) → Reihenfolge
+Ruhe > Unterstunden > Überstunden/Präferenz.
+
+Verifiziert: PHPUnit 26/26 (7185 Assertions, inkl. SA-Determinismus,
+Soll-Stunden, Real-Daten-Feasibility mit locked+blocked+Gewichtung),
+Frontend 10/10, Build grün.
