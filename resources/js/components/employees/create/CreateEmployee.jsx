@@ -8,11 +8,11 @@ import {
   Card,
   Button,
   Stack,
-  Breadcrumb,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { postEmployeeData } from '../../../features/employees/employeeSlice'
 import { BsFillPersonCheckFill } from 'react-icons/bs'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function CreateEmployee() {
   const dispatch = useDispatch()
@@ -21,22 +21,18 @@ function CreateEmployee() {
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/employees">
-            Einstellungen: Team
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Neues Teammitglied</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
+      <Container className="py-4">
+        <a href="/employees" className="eq-page-header__back">
+          <FiChevronLeft /> Team
+        </a>
+        <Card className="mt-2">
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <div>Neues Teammitglied</div>
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(postEmployeeData(employeeData))}
-                  variant="outline-primary"
+                  variant="primary"
                   href={`/employees`}
                 >
                   <BsFillPersonCheckFill /> Speichern
