@@ -312,3 +312,30 @@ Ruhe > Unterstunden > Überstunden/Präferenz.
 Verifiziert: PHPUnit 26/26 (7185 Assertions, inkl. SA-Determinismus,
 Soll-Stunden, Real-Daten-Feasibility mit locked+blocked+Gewichtung),
 Frontend 10/10, Build grün.
+
+## Phase 2.9 — Generator-Evaluation (quantitativ)
+
+`roster:evaluate` meldet jetzt zusätzlich eine quantitative
+Qualitätsbewertung (read-only, schreibt nicht in die DB):
+
+- **Besetzungs-Abdeckung %**: 1 − Σ(fehlende Kräfte je aktiver Art/Tag)
+  / Σ(min_occupation).
+- **Fachkraft-Abdeckung %**: 1 − Schicht-Tage-ohne-Examinierte / aktive
+  Schicht-Tage.
+- **Wunsch-Erfüllung %**: (Wünsche − Verletzungen)/Wünsche.
+- **Präferenz-Abweichungen**, **gesperrte Schicht vergeben** (Soll 0).
+- **Stundenkonto**: Anteil MA mit |Soll−Ist| ≤ Toleranz (≈ 1 Schicht =
+  Wochenstunden/5) sowie Ø/Max |Δ|.
+- **Nachbesserungsquote** = (harte Verletzungen + Besetzungs-Defizit +
+  Fachkraft-Lücken + Wunsch-Verletzungen + vergebene gesperrte
+  Schichten) / generierte Dienste. Abgleich gegen Proposal-Ziele:
+  ≤ 30 % (erschwertes Szenario, SOLL), ≤ 10 % (KANN).
+
+**Messung kanonisches Szenario** (Default-Seeder, 11 MA, aktueller
+Monat): Nachbesserungsquote **14,5 %** → SOLL-Ziel (≤ 30 %) erreicht;
+Stundenkonto 100 % in Toleranz (Ø |Δ| 3,4 h); Fachkraft-Abdeckung
+96,1 %; harte Constraints alle eingehalten. Die verbleibende Lücke ist
+die bekannte **Personal-Kapazitätsgrenze** (11 MA decken die
+Mindestbesetzung nicht voll – kein Algorithmusfehler), nicht die
+Heuristik. Mit ausreichendem Personal (≥ 22 MA) liegt der
+Besetzungs-Strain bei 0 (siehe frühere Szenarien B/C).
