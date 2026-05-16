@@ -4,6 +4,50 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-16 — Phase 5 Schritte 1–6 (Konzept-Umsetzung)
+
+Nutzer-Freigabe „Konzept umsetzen (ganz)" → iterative Umsetzung,
+jeder Schritt eigener Commit + Build + vitest grün, visuelle Abnahme
+beim Nutzer (Container headless).
+
+- **S1** Harmonische Indigo-Tonleiter `brand-50..900` (aus Logo) +
+  CSS-Custom-Properties; Primitive `PageHeader`/`ConfirmDialog`/
+  `EmptyState`; toter `shared/Button.jsx` entfernt.
+- **S2** IA: „Einstellungen"-Dropdown → `Dienstplan · Team ·
+  Stammdaten▾ · Konto▾`, Aktiv-Highlighting, Pill-Nav.
+- **S3** Wunsch-Flow: sichtbarer Einstieg (kein Hover), Modal mit
+  fixem MA-Kontext + vorbelegtem Monat, sauberes `onSaved`-Refetch
+  (setTimeout-Hack raus), kaputter Cancel-Handler gefixt.
+- **S4** MA-Flow: „Profil" vs. „Bearbeiten" getrennt & korrekt
+  verlinkt, Lösch-`ConfirmDialog`, Detail als Definitionsliste.
+- **S5** Dienst-Picker: eine zentrale native `<datalist>` für alle
+  Zellen (Tippfilter + valide Auswahl) statt blindem Kürzeltippen.
+- **S6a** Stammdaten-Listen vereinheitlicht (PageHeader/EmptyState/
+  ConfirmDialog, primäre „+ Neu", konsistente Buttons).
+- **S6b** Alle 9 Create/Update-Formulare: irreführende
+  „Einstellungen:"-Breadcrumb → klarer Zurück-Link, Speichern als
+  Primäraktion, rohe `<h1>… loading</h1>` ersetzt, Debug-
+  `console.log` entfernt.
+
+**Bewusst verschoben (mit Begründung):** Der Konzept-Punkt
+„Create/Edit zu *einer* Formular-Komponente mergen" wird **nach** der
+visuellen Nutzer-Abnahme angegangen — er kollidiert mit der schon in
+Phase 1.3 dokumentierten Backend-Inkonsistenz divergierender
+Payload-Schlüssel (`qualificationsData` vs. `qualificationData`,
+`shiftTypesData` vs. `shiftTypeData`); ein blinder Merge ohne visuelle
+Verifikation wäre regressionsträchtig. Die *präsentationale*
+Vereinheitlichung (Schale/Buttons/Back-Link) ist erfolgt.
+
+**Verifiziert:** Build grün, Frontend **12/12** nach jedem Schritt;
+PHPUnit unberührt (kein Backend-Code geändert).
+
+**Lessons Learned:** Smoke-Tests hingen an UI-Texten („Einstellungen",
+„Dienst Präferenzen", mehrdeutiges „Team") — bei IA-/Label-Redesigns
+Tests gezielt entkoppeln (rollen-/strukturunabhängige Assertions),
+nicht nur Strings nachziehen.
+
+---
+
 ## 2026-05-16 — Phase 5 (Abschnitt 2): UX-/Userflow-Konzept
 
 Nutzer-Feedback zu Abschnitt 1: Farbwahl gut & lesbar, Kontrast gut;

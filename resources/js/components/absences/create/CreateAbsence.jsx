@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Breadcrumb,
   Button,
   Card,
   Col,
@@ -13,6 +12,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { postAbsenceData } from '../../../features/absences/absenceSlice'
 import { ABSENCE_TYPE_LABELS } from '../AbsencesOverview'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function CreateAbsence() {
   const dispatch = useDispatch()
@@ -20,22 +20,18 @@ function CreateAbsence() {
   const [absence, setAbsence] = useState({ type: 'vacation' })
 
   return (
-    <Container style={{ padding: '2rem 0' }}>
-      <Breadcrumb>
-        <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-        <Breadcrumb.Item href="/absences">
-          Einstellungen: Abwesenheiten
-        </Breadcrumb.Item>
-        <Breadcrumb.Item active>Neue Abwesenheit</Breadcrumb.Item>
-      </Breadcrumb>
-      <Card>
+    <Container className="py-4">
+      <a href="/absences" className="eq-page-header__back">
+        <FiChevronLeft /> Abwesenheiten
+      </a>
+      <Card className="mt-2">
         <Card.Header>
           <Stack direction="horizontal" gap={3}>
             <div>Neue Abwesenheit</div>
             <div className="ms-auto">
               <Button
                 onClick={() => dispatch(postAbsenceData(absence))}
-                variant="outline-primary"
+                variant="primary"
                 href="/absences"
               >
                 Speichern
