@@ -56,7 +56,7 @@ class EmployeeController extends Controller
 
         $employee->save();
 
-        return response()->json(['employee' => $employee], 201);
+        return response()->json(['employee' => $employee], 200);
     }
 
     public function destroy(Employee $employee)

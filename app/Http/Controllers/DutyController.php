@@ -6,6 +6,8 @@ use App\Models\Duty;
 use App\Models\Employee;
 use App\Models\Preference;
 use App\Models\Shift;
+use App\Http\Requests\DeleteDutyRequest;
+use App\Http\Requests\UpdateDutyRequest;
 use App\Models\Wish;
 use App\Services\RosterGenerator;
 use Illuminate\Http\Request;
@@ -114,7 +116,7 @@ class DutyController extends Controller
         return ['shift' => $shift];
     }
 
-    public function update(Request $request)
+    public function update(UpdateDutyRequest $request)
     {
         if ($request->dutyData['value'] !== null) {
             $shift_check = Shift::where('abrv', $request->dutyData['value']);
@@ -227,7 +229,7 @@ class DutyController extends Controller
         return ['duties' => $duties];
     }
 
-    public function delete(Request $request, Duty $duty)
+    public function delete(DeleteDutyRequest $request, Duty $duty)
     {
         // Log::debug('DASDASDASD');
         // Log::debug($request);
