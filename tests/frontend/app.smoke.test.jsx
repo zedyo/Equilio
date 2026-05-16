@@ -64,7 +64,9 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
     render(<App />)
     await screen.findByText(/Albers/i, {}, { timeout: 8000 })
     navigate('#/employees')
-    expect(await screen.findByText('Team', {}, { timeout: 5000 })).toBeInTheDocument()
+    expect(
+      await screen.findByText(/Neues Teammitglied/i, {}, { timeout: 5000 })
+    ).toBeInTheDocument()
     // Mehrere Mitarbeiter teilen sich Qualifikationen -> findAllByText.
     const quals = await screen.findAllByText(
       /Examinierte Pflegefachkraft/i,
@@ -100,23 +102,20 @@ describe('Equilio Demo – Smoke (modernisierter Stack)', () => {
   })
 
   // Reproduziert den vom Nutzer gemeldeten 404: Navigation über das
-  // Einstellungen-Dropdown (fest verdrahtete href-Links) muss client-seitig
+  // Stammdaten-Dropdown (fest verdrahtete href-Links) muss client-seitig
   // über den Router laufen, nicht den Browser neu laden.
   it('Navigation via Nav-Dropdown bleibt clientseitig (kein 404)', async () => {
     const user = userEvent.setup()
     render(<App />)
     await screen.findByText(/Albers/i, {}, { timeout: 8000 })
 
-    await user.click(await screen.findByText(/Einstellungen/i))
-    await user.click(await screen.findByText('Team'))
+    await user.click(await screen.findByText(/Stammdaten/i))
+    await user.click(await screen.findByText('Schichten'))
 
-    // Team-Seite gerendert -> Interceptor hat per Router navigiert.
-    const quals = await screen.findAllByText(
-      /Examinierte Pflegefachkraft/i,
-      {},
-      { timeout: 5000 }
-    )
-    expect(quals.length).toBeGreaterThan(0)
+    // Schichten-Seite gerendert -> Interceptor hat per Router navigiert.
+    expect(
+      await screen.findByText(/Neue Schicht/i, {}, { timeout: 5000 })
+    ).toBeInTheDocument()
   })
 
   it('Präferenzen: 3-Stufen-Auswahl je Schicht ist nutzbar', async () => {
