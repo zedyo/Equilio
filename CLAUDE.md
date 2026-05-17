@@ -4,9 +4,11 @@
 > Bachelorarbeit (SAE Institut München, BA Web Development, 2021–2022) von Nikolai Seel.
 >
 > **Namenshistorie:** ursprünglich „Yeti" (Bachelor-Proposal) bzw. „yourPlan"
-> (Repo). Produktname seit Mai 2026: **Equilio**. Der GitHub-Repo-Name und
-> damit der Pages-Base-Pfad `/yourPlan/` bleiben unverändert (an das Repo
-> gebunden), bis das Repository selbst umbenannt wird.
+> (alter Repo-Name). Produktname seit Mai 2026: **Equilio**. Das Repository
+> wurde am 2026-05-17 zu **`equilio`** umbenannt; der Pages-Base-Pfad ist
+> seither `/equilio/` (Live: `https://zedyo.github.io/equilio/`). GitHub
+> leitet alte `yourPlan`-Repo-URLs per Redirect weiter; das lokale
+> Arbeitsverzeichnis heißt aus historischen Gründen weiterhin `yourPlan/`.
 
 Diese Datei ist das primäre Gedächtnis für Claude. Detaillierte Notizen liegen unter `.claude/memory/`.
 
@@ -188,9 +190,9 @@ läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
 - Im Demo-Modus nutzt der Router `HashRouter` statt `BrowserRouter`
   (GitHub Pages hat kein SPA-Fallback für tiefe Pfade).
 - Deploy: `.github/workflows/deploy-pages.yml` baut `npm run build` (Vite,
-  Base `/yourPlan/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
+  Base `/equilio/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
   published via GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
-- Live: `https://zedyo.github.io/yourPlan/`
+- Live: `https://zedyo.github.io/equilio/`
 
 **Bereits eingerichtet (Repo-Owner):** Pages-Source = „GitHub Actions" und das
 `github-pages`-Environment erlaubt Deployments vom Doku-Branch.

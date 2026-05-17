@@ -4,6 +4,21 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-17 — Repo-Umbenennung yourPlan → equilio
+
+Nutzer hat das GitHub-Repo zu `equilio` umbenannt. Angepasst:
+`vite.config.js` Base `/yourPlan/` → `/equilio/`, README- und
+CLAUDE.md-Demo-URL `https://zedyo.github.io/equilio/`,
+Namenshistorie-Notiz in CLAUDE.md aktualisiert (Redirect-Hinweis,
+lokales Arbeitsverzeichnis bleibt aus Historie `yourPlan/`).
+Deploy-Workflow zieht die Base aus Vite — kein Hardcoding,
+unverändert. Build verifiziert: `dist/index.html` referenziert
+`/equilio/assets/...`, 0 `/yourPlan/`-Reste. Lessons Learned:
+Pages-Site springt erst nach erneutem Deploy auf neuen Pfad;
+alte Repo-URLs leiten via GitHub-Redirect weiter.
+
+---
+
 ## 2026-05-16 — Phase 5 Schritte 1–6 (Konzept-Umsetzung)
 
 Nutzer-Freigabe „Konzept umsetzen (ganz)" → iterative Umsetzung,
