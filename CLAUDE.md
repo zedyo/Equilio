@@ -197,8 +197,19 @@ läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
   published via GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
 - Live: `https://zedyo.github.io/Equilio/`
 
-**Bereits eingerichtet (Repo-Owner):** Pages-Source = „GitHub Actions" und das
-`github-pages`-Environment erlaubt Deployments vom Doku-Branch.
+**Pages-Setup (Repo-Owner):** Pages-Source = „GitHub Actions".
+**Achtung — Stolperfalle nach Repo-Rename (2026-05-17):** Die
+Umbenennung hat die **Environment-Schutzregel** des
+`github-pages`-Environments zurückgesetzt, sodass der Doku-Branch
+**nicht** mehr deployen durfte (`build` grün, `deploy` rot:
+„Branch … is not allowed to deploy to github-pages due to
+environment protection rules"). Folge: korrekter Build wird gebaut,
+aber nie veröffentlicht → veralteter Pages-Stand / weiße Seite.
+Fix ausschließlich per UI: **Settings → Environments →
+`github-pages` → „Deployment branches and tags"** → „No
+restriction" bzw. Doku-Branch + `master` erlauben, dann den
+fehlgeschlagenen Deploy-Lauf re-runnen. Master darf weiterhin
+deployen (Default-Branch).
 
 Build-Hinweise:
 - JSX-haltige Dateien tragen die Endung `.jsx` (Vite/plugin-react transformiert
