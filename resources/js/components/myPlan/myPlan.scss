@@ -1,0 +1,97 @@
+// Monatskalender der Pflegekraft-Eigenansicht (read-only).
+.myplan-weekhead,
+.myplan-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.4rem;
+}
+
+.myplan-weekhead {
+  margin-bottom: 0.4rem;
+
+  > div {
+    text-align: center;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #64748b;
+    padding-bottom: 0.15rem;
+  }
+
+  > div.is-weekend {
+    color: #94a3b8;
+  }
+}
+
+.myplan-cell {
+  min-height: 4.6rem;
+  border: 1px solid var(--eq-border, #e2e8f0);
+  border-radius: 8px;
+  padding: 0.35rem 0.4rem;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+}
+
+.myplan-cell--empty {
+  background: #fafafa;
+  border-style: dashed;
+}
+
+.myplan-cell--weekend {
+  background: #f7f7f9;
+}
+
+.myplan-cell--today {
+  outline: 2px solid var(--eq-brand, #4f46e5);
+  outline-offset: -1px;
+}
+
+.myplan-daynum {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: #64748b;
+}
+
+.myplan-cell--today .myplan-daynum {
+  color: var(--eq-brand, #4f46e5);
+}
+
+.myplan-shift {
+  margin-top: auto;
+  align-self: flex-start;
+  max-width: 100%;
+  font-weight: 700;
+  font-size: 0.82rem;
+  line-height: 1.1;
+  padding: 0.18rem 0.5rem;
+  border-radius: 999px;
+  color: #ffffff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.myplan-free {
+  margin-top: auto;
+  font-size: 0.78rem;
+  color: #94a3b8;
+}
+
+@media (max-width: 575.98px) {
+  .myplan-weekhead,
+  .myplan-grid {
+    gap: 0.25rem;
+  }
+
+  .myplan-cell {
+    min-height: 3.4rem;
+    padding: 0.25rem;
+  }
+
+  .myplan-shift {
+    font-size: 0.72rem;
+    padding: 0.12rem 0.35rem;
+  }
+}

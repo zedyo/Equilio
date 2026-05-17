@@ -16,11 +16,15 @@ import { getWishesByEmployee } from '../../features/wishes/wishSlice'
 import { getPreferencesByEmployee } from '../../features/preferences/preferenceSlice'
 import WishCreator from '../dutyOverview/employeeRow/employeeCell/wishCreator/WishCreator'
 import Preferences from '../employees/show/employeeOverview/preferences/Preferences'
+import './myPlan.scss'
 
 const MONTHS = [
   'Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli',
   'August', 'September', 'Oktober', 'November', 'Dezember',
 ]
+
+// Montag-basierte Wochenansicht (deutsche Konvention).
+const WEEKDAYS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So']
 
 function MyPlan() {
   const dispatch = useDispatch()
@@ -52,6 +56,21 @@ function MyPlan() {
     })
     return map
   }, [ownDuties])
+
+  // Kalenderzellen: führende Leerzellen bis zum 1., dann die Tage,
+  // aufgefüllt auf volle Wochen (7er-Raster, Montag zuerst).
+  const calendarCells = useMemo(() => {
+    const firstWeekday = (new Date(year, month - 1, 1).getDay() + 6) % 7
+    const cells = Array.from({ length: firstWeekday }, () => null)
+    for (let d = 1; d <= daysInMonth; d += 1) cells.push(d)
+    while (cells.length % 7 !== 0) cells.push(null)
+    return cells
+  }, [year, month, daysInMonth])
+
+  const isToday = (day) =>
+    day === now.getDate() &&
+    month === now.getMonth() + 1 &&
+    year === now.getFullYear()
 
   const shiftMonth = (delta) => {
     let m = month + delta
@@ -114,48 +133,53 @@ function MyPlan() {
               </Stack>
             </Card.Header>
             <Card.Body>
-              <Table size="sm" bordered hover responsive>
-                <thead>
-                  <tr>
-                    <th style={{ width: '6rem' }}>Tag</th>
-                    <th>Dienst</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {Array.from({ length: daysInMonth }, (_, i) => i + 1).map(
-                    (day) => {
-                      const duty = dutyByDay[day]
-                      const date = new Date(year, month - 1, day)
-                      const weekend = [0, 6].includes(date.getDay())
-                      return (
-                        <tr
-                          key={day}
-                          style={
-                            weekend ? { background: '#f7f7f9' } : undefined
-                          }
+              <div className="myplan-weekhead">
+                {WEEKDAYS.map((wd, i) => (
+                  <div key={wd} className={i >= 5 ? 'is-weekend' : undefined}>
+                    {wd}
+                  </div>
+                ))}
+              </div>
+              <div className="myplan-grid">
+                {calendarCells.map((day, idx) => {
+                  if (day === null) {
+                    return (
+                      <div
+                        key={`empty-${idx}`}
+                        className="myplan-cell myplan-cell--empty"
+                        aria-hidden="true"
+                      />
+                    )
+                  }
+                  const duty = dutyByDay[day]
+                  const weekend = idx % 7 >= 5
+                  const today = isToday(day)
+                  const classes = [
+                    'myplan-cell',
+                    weekend ? 'myplan-cell--weekend' : '',
+                    today ? 'myplan-cell--today' : '',
+                  ]
+                    .filter(Boolean)
+                    .join(' ')
+                  return (
+                    <div key={day} className={classes}>
+                      <span className="myplan-daynum">{day}</span>
+                      {duty && duty.shift ? (
+                        <span
+                          className="myplan-shift"
+                          style={{ background: duty.shift.color_hex }}
+                          title={duty.shift.abrv}
                         >
-                          <td>{day}.</td>
-                          <td>
-                            {duty && duty.shift ? (
-                              <span
-                                style={{
-                                  color: duty.shift.color_hex,
-                                  fontWeight: 600,
-                                }}
-                              >
-                                {duty.shift.abrv}
-                              </span>
-                            ) : (
-                              <span className="text-muted">frei</span>
-                            )}
-                          </td>
-                        </tr>
-                      )
-                    }
-                  )}
-                </tbody>
-              </Table>
-              <small className="text-muted">
+                          {duty.shift.abrv}
+                        </span>
+                      ) : (
+                        <span className="myplan-free">frei</span>
+                      )}
+                    </div>
+                  )
+                })}
+              </div>
+              <small className="text-muted d-block mt-3">
                 Nur-Lese-Ansicht. Änderungen nimmt die Leitung vor.
               </small>
             </Card.Body>
