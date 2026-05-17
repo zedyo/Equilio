@@ -4,6 +4,25 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-17 — Weiße Seite: Ursache = Environment-Schutzregel
+
+Nach dem Casing-Fix blieb `/Equilio/` weiß. Diagnose über Actions:
+`build`-Job grün (Artefakt korrekt, `/Equilio/assets/...`),
+`deploy`-Job rot mit „Branch claude/add-project-documentation-1Qnpn
+is not allowed to deploy to github-pages due to environment
+protection rules". Der Repo-Rename hat die Deployment-Branch-Regel
+des `github-pages`-Environments zurückgesetzt → korrekter Build
+wurde gebaut, aber nie publiziert (alter Lowercase-Stand blieb
+live). NICHT per Code/Workflow lösbar — reine Repo-Einstellung
+(Settings → Environments → github-pages → Deployment branches).
+Zwischenschritt zuvor: Test-Step im Deploy auf `continue-on-error`
+gesetzt (bleibt sinnvoll, war aber nicht die Ursache — Job scheiterte
+in ~1 min am `deploy`, nicht am Smoke-Test). Lessons Learned:
+Repo-Rename kann github-pages-Environment-Protection resetten;
+bei „build grün / deploy rot" immer zuerst die Annotations lesen.
+
+---
+
 ## 2026-05-17 — Repo-Umbenennung yourPlan → Equilio (Case-Fix)
 
 Nutzer hat das GitHub-Repo zu `Equilio` (großes „E") umbenannt.
