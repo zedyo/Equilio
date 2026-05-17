@@ -4,18 +4,21 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
-## 2026-05-17 — Repo-Umbenennung yourPlan → equilio
+## 2026-05-17 — Repo-Umbenennung yourPlan → Equilio (Case-Fix)
 
-Nutzer hat das GitHub-Repo zu `equilio` umbenannt. Angepasst:
-`vite.config.js` Base `/yourPlan/` → `/equilio/`, README- und
-CLAUDE.md-Demo-URL `https://zedyo.github.io/equilio/`,
-Namenshistorie-Notiz in CLAUDE.md aktualisiert (Redirect-Hinweis,
-lokales Arbeitsverzeichnis bleibt aus Historie `yourPlan/`).
-Deploy-Workflow zieht die Base aus Vite — kein Hardcoding,
-unverändert. Build verifiziert: `dist/index.html` referenziert
-`/equilio/assets/...`, 0 `/yourPlan/`-Reste. Lessons Learned:
-Pages-Site springt erst nach erneutem Deploy auf neuen Pfad;
-alte Repo-URLs leiten via GitHub-Redirect weiter.
+Nutzer hat das GitHub-Repo zu `Equilio` (großes „E") umbenannt.
+Erster Versuch mit Base `/equilio/` (klein) → weiße Seite, weil
+GitHub-Pages-Pfade **case-sensitive** sind: Site läuft unter
+`/Equilio/`, Assets wurden als `/equilio/assets/...` referenziert
+→ 404. Korrigiert auf `/Equilio/`: `vite.config.js`, README- und
+CLAUDE.md-Demo-URL `https://zedyo.github.io/Equilio/`,
+Namenshistorie-Notiz mit Case-Warnung. Repo-Schreibweise via
+GitHub-API verifiziert (`full_name: zedyo/Equilio`). Deploy-Workflow
+zieht die Base aus Vite — kein Hardcoding, unverändert. Build
+verifiziert: `dist/index.html` referenziert `/Equilio/assets/...`,
+0 `/equilio/`- oder `/yourPlan/`-Reste. Lessons Learned:
+GitHub-Pages-Pfad == exakte Repo-Schreibweise (case-sensitive);
+Site springt erst nach erneutem Deploy-Lauf auf neuen Pfad.
 
 ---
 

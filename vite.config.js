@@ -1,11 +1,14 @@
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
-// Statische GitHub-Pages-Demo wird unter /equilio/ ausgeliefert
-// (Repo seit 2026-05-17 von „yourPlan" zu „equilio" umbenannt).
+// Statische GitHub-Pages-Demo wird unter /Equilio/ ausgeliefert
+// (Repo seit 2026-05-17 von „yourPlan" zu „Equilio" umbenannt).
+// WICHTIG: GitHub-Pages-Pfade sind case-sensitive — der Base muss
+// die exakte Repo-Schreibweise (großes „E") treffen, sonst 404 auf
+// alle Assets (weiße Seite).
 // Lokale Laravel-Integration ist nicht Teil dieses Setups (Backend-Phase).
 export default defineConfig({
-  base: '/equilio/',
+  base: '/Equilio/',
   // Laravels public/ ist Web-Root des Backends (index.php etc.) und darf
   // NICHT in das statische Demo-Deploy kopiert werden.
   publicDir: false,

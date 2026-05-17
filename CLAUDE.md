@@ -5,10 +5,13 @@
 >
 > **Namenshistorie:** ursprünglich „Yeti" (Bachelor-Proposal) bzw. „yourPlan"
 > (alter Repo-Name). Produktname seit Mai 2026: **Equilio**. Das Repository
-> wurde am 2026-05-17 zu **`equilio`** umbenannt; der Pages-Base-Pfad ist
-> seither `/equilio/` (Live: `https://zedyo.github.io/equilio/`). GitHub
-> leitet alte `yourPlan`-Repo-URLs per Redirect weiter; das lokale
-> Arbeitsverzeichnis heißt aus historischen Gründen weiterhin `yourPlan/`.
+> wurde am 2026-05-17 zu **`Equilio`** (großes „E") umbenannt; der
+> Pages-Base-Pfad ist seither `/Equilio/` (Live:
+> `https://zedyo.github.io/Equilio/`). **Achtung:** GitHub-Pages-Pfade
+> sind case-sensitive — der Vite-`base` muss exakt `/Equilio/` lauten,
+> sonst 404 auf alle Assets (weiße Seite). GitHub leitet alte
+> `yourPlan`-Repo-URLs per Redirect weiter; das lokale Arbeitsverzeichnis
+> heißt aus historischen Gründen weiterhin `yourPlan/`.
 
 Diese Datei ist das primäre Gedächtnis für Claude. Detaillierte Notizen liegen unter `.claude/memory/`.
 
@@ -190,9 +193,9 @@ läuft die React-App daher gegen ein **In-Browser-Mock-Backend**:
 - Im Demo-Modus nutzt der Router `HashRouter` statt `BrowserRouter`
   (GitHub Pages hat kein SPA-Fallback für tiefe Pfade).
 - Deploy: `.github/workflows/deploy-pages.yml` baut `npm run build` (Vite,
-  Base `/equilio/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
+  Base `/Equilio/`, Ausgabe `dist/`), ergänzt `404.html`/`.nojekyll` und
   published via GitHub Pages (Trigger: Push auf den Doku-Branch oder `master`).
-- Live: `https://zedyo.github.io/equilio/`
+- Live: `https://zedyo.github.io/Equilio/`
 
 **Bereits eingerichtet (Repo-Owner):** Pages-Source = „GitHub Actions" und das
 `github-pages`-Environment erlaubt Deployments vom Doku-Branch.
