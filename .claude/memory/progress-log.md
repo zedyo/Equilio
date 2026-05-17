@@ -4,18 +4,40 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
-## 2026-05-17 — Repo-Umbenennung yourPlan → equilio
+## 2026-05-17 — Weiße Seite: Ursache = Environment-Schutzregel
 
-Nutzer hat das GitHub-Repo zu `equilio` umbenannt. Angepasst:
-`vite.config.js` Base `/yourPlan/` → `/equilio/`, README- und
-CLAUDE.md-Demo-URL `https://zedyo.github.io/equilio/`,
-Namenshistorie-Notiz in CLAUDE.md aktualisiert (Redirect-Hinweis,
-lokales Arbeitsverzeichnis bleibt aus Historie `yourPlan/`).
-Deploy-Workflow zieht die Base aus Vite — kein Hardcoding,
-unverändert. Build verifiziert: `dist/index.html` referenziert
-`/equilio/assets/...`, 0 `/yourPlan/`-Reste. Lessons Learned:
-Pages-Site springt erst nach erneutem Deploy auf neuen Pfad;
-alte Repo-URLs leiten via GitHub-Redirect weiter.
+Nach dem Casing-Fix blieb `/Equilio/` weiß. Diagnose über Actions:
+`build`-Job grün (Artefakt korrekt, `/Equilio/assets/...`),
+`deploy`-Job rot mit „Branch claude/add-project-documentation-1Qnpn
+is not allowed to deploy to github-pages due to environment
+protection rules". Der Repo-Rename hat die Deployment-Branch-Regel
+des `github-pages`-Environments zurückgesetzt → korrekter Build
+wurde gebaut, aber nie publiziert (alter Lowercase-Stand blieb
+live). NICHT per Code/Workflow lösbar — reine Repo-Einstellung
+(Settings → Environments → github-pages → Deployment branches).
+Zwischenschritt zuvor: Test-Step im Deploy auf `continue-on-error`
+gesetzt (bleibt sinnvoll, war aber nicht die Ursache — Job scheiterte
+in ~1 min am `deploy`, nicht am Smoke-Test). Lessons Learned:
+Repo-Rename kann github-pages-Environment-Protection resetten;
+bei „build grün / deploy rot" immer zuerst die Annotations lesen.
+
+---
+
+## 2026-05-17 — Repo-Umbenennung yourPlan → Equilio (Case-Fix)
+
+Nutzer hat das GitHub-Repo zu `Equilio` (großes „E") umbenannt.
+Erster Versuch mit Base `/equilio/` (klein) → weiße Seite, weil
+GitHub-Pages-Pfade **case-sensitive** sind: Site läuft unter
+`/Equilio/`, Assets wurden als `/equilio/assets/...` referenziert
+→ 404. Korrigiert auf `/Equilio/`: `vite.config.js`, README- und
+CLAUDE.md-Demo-URL `https://zedyo.github.io/Equilio/`,
+Namenshistorie-Notiz mit Case-Warnung. Repo-Schreibweise via
+GitHub-API verifiziert (`full_name: zedyo/Equilio`). Deploy-Workflow
+zieht die Base aus Vite — kein Hardcoding, unverändert. Build
+verifiziert: `dist/index.html` referenziert `/Equilio/assets/...`,
+0 `/equilio/`- oder `/yourPlan/`-Reste. Lessons Learned:
+GitHub-Pages-Pfad == exakte Repo-Schreibweise (case-sensitive);
+Site springt erst nach erneutem Deploy-Lauf auf neuen Pfad.
 
 ---
 
