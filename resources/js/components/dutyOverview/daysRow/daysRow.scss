@@ -4,4 +4,15 @@
     display: grid;
     justify-items: center;
     align-items: center;
+
+    .rowLabel {
+        // Erste Spalte fixiert: bleibt beim horizontalen Scrollen des
+        // breiten Boards (Mobil) sichtbar.
+        position: sticky;
+        left: 0;
+        z-index: 3;
+        justify-self: stretch;
+        background: #ffffff;
+        border-right: 1px solid var(--eq-border, #e2e8f0);
+    }
 }

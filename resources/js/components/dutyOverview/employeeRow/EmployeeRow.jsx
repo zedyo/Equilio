@@ -15,7 +15,10 @@ function EmployeeRow(props) {
           alignItems: 'center',
         }}
       >
-        <EmployeeCell employeeData={props.employeeData} />
+        <EmployeeCell
+          employeeData={props.employeeData}
+          dateSelectorData={props.dateSelectorData}
+        />
         {props.days.map((day) => {
           return (
             <DutyCell

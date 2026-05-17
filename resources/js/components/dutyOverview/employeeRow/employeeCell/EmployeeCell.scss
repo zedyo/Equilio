@@ -6,19 +6,50 @@
   height: 2.1rem;
   display: flex;
   align-items: center;
-  padding: 0.1rem 1rem 0.1rem 0;
+  gap: .5rem;
+  padding: 0.1rem .75rem 0.1rem .75rem;
   overflow: hidden;
+  // Beim horizontalen Scrollen des breiten Boards fixiert.
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  background: #ffffff;
+  border-right: 1px solid var(--eq-border, #e2e8f0);
 
   .employeeName {
+    flex: 1 1 auto;
+    min-width: 0;
     align-content: center;
-    font-weight: 500;
-    font-size: 1rem;
+    font-weight: 600;
+    font-size: .95rem;
     line-height: 1;
     text-decoration: none;
-    color: black;
+    color: #1e293b;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+
+    &:hover {
+      color: var(--eq-brand-700, #4338ca);
+      text-decoration: underline;
+    }
+  }
+
+  .employeeCell__action {
+    flex: 0 0 auto;
+    opacity: .55;
+    transition: opacity .12s ease;
+
+    .btn {
+      --bs-btn-padding-y: .15rem;
+      --bs-btn-padding-x: .35rem;
+      line-height: 1;
+    }
+  }
+
+  &:hover .employeeCell__action,
+  .employeeCell__action:focus-within {
+    opacity: 1;
   }
 
   .employeeQualification {

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import {
-  Breadcrumb,
   Button,
   Card,
   Container,
@@ -12,6 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { updateQualificationsData } from '../../../features/qualifications/qualificationSlice'
 import { FaCheck } from 'react-icons/fa'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function UpdateQualification() {
   const params = useParams()
@@ -28,19 +28,15 @@ function UpdateQualification() {
   }, [qualification])
 
   if (Object.keys(qualificationData).length === 0)
-    return <h1>...this loading</h1>
+    return <Container className="py-4 text-muted">Lädt …</Container>
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/qualifications">
-            Einstellungen: Qualifikationen
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className="row justify-content-center">
+      <Container className="py-4">
+        <a href="/qualifications" className="eq-page-header__back">
+          <FiChevronLeft /> Qualifikationen
+        </a>
+        <div className="row justify-content-center mt-2">
           <div className="col-md-12">
             <Card>
               <Card.Header>
@@ -51,7 +47,7 @@ function UpdateQualification() {
                       onClick={() =>
                         dispatch(updateQualificationsData(qualificationData))
                       }
-                      variant="outline-primary"
+                      variant="primary"
                       href={`/qualifications`}
                     >
                       <FaCheck /> Speichern

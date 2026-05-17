@@ -78,4 +78,4 @@ npm run preview   # serve the built dist/ locally
 ## Online demo
 
 A backend-free demo (in-browser mock) is deployed via GitHub Pages:
-**https://zedyo.github.io/yourPlan/** — see `CLAUDE.md` for details.
+**https://zedyo.github.io/equilio/** — see `CLAUDE.md` for details.

@@ -1,6 +1,5 @@
 import React, { useState } from 'react'
 import {
-  Breadcrumb,
   Button,
   Card,
   Container,
@@ -11,6 +10,7 @@ import {
 import { useDispatch } from 'react-redux'
 import { postQualificationsData } from '../../../features/qualifications/qualificationSlice'
 import { FaCheck } from 'react-icons/fa'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function CreateQualification() {
   const dispatch = useDispatch()
@@ -18,15 +18,11 @@ function CreateQualification() {
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/qualifications">
-            Einstellungen: Qualifikationen
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Neue Qualifikation</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className="row justify-content-center">
+      <Container className="py-4">
+        <a href="/qualifications" className="eq-page-header__back">
+          <FiChevronLeft /> Qualifikationen
+        </a>
+        <div className="row justify-content-center mt-2">
           <div className="col-md-12">
             <Card>
               <Card.Header>
@@ -37,7 +33,7 @@ function CreateQualification() {
                       onClick={() =>
                         dispatch(postQualificationsData(qualificationsData))
                       }
-                      variant="outline-primary"
+                      variant="primary"
                       href={`/qualifications`}
                     >
                       <FaCheck /> Speichern

@@ -8,12 +8,12 @@ import {
   Card,
   Button,
   Stack,
-  Breadcrumb,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateEmployeeData } from '../../../features/employees/employeeSlice'
 import { BsFillPersonCheckFill } from 'react-icons/bs'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function UpdateEmployee() {
   const params = useParams()
@@ -28,31 +28,30 @@ function UpdateEmployee() {
     employee !== undefined && setEmployee(employee)
   }, [employee])
 
-  if (Object.keys(employeeData).length === 0) return <h1>... loading</h1>
-  if (Object.keys(qualificationsData).length === 0) return <h1>... loading</h1>
+  if (
+    Object.keys(employeeData).length === 0 ||
+    Object.keys(qualificationsData).length === 0
+  )
+    return <Container className="py-4 text-muted">Lädt …</Container>
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/employees">
-            Einstellungen: Team
-          </Breadcrumb.Item>
-          <Breadcrumb.Item href={`/employee/show/${employeeData.id}`}>
-            Teammitglied Details: {employeeData.first_name}{' '}
-            {employeeData.last_name}
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
+      <Container className="py-4">
+        <a
+          href={`/employee/show/${employeeData.id}`}
+          className="eq-page-header__back"
+        >
+          <FiChevronLeft /> {employeeData.first_name}{' '}
+          {employeeData.last_name}
+        </a>
+        <Card className="mt-2">
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <div>Daten Bearbeitung</div>
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(updateEmployeeData(employeeData))}
-                  variant="outline-primary"
+                  variant="primary"
                   href={`/employee/show/${employeeData.id}`}
                 >
                   <BsFillPersonCheckFill /> Speichern

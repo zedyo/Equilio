@@ -4,6 +4,133 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-05-17 — Repo-Umbenennung yourPlan → equilio
+
+Nutzer hat das GitHub-Repo zu `equilio` umbenannt. Angepasst:
+`vite.config.js` Base `/yourPlan/` → `/equilio/`, README- und
+CLAUDE.md-Demo-URL `https://zedyo.github.io/equilio/`,
+Namenshistorie-Notiz in CLAUDE.md aktualisiert (Redirect-Hinweis,
+lokales Arbeitsverzeichnis bleibt aus Historie `yourPlan/`).
+Deploy-Workflow zieht die Base aus Vite — kein Hardcoding,
+unverändert. Build verifiziert: `dist/index.html` referenziert
+`/equilio/assets/...`, 0 `/yourPlan/`-Reste. Lessons Learned:
+Pages-Site springt erst nach erneutem Deploy auf neuen Pfad;
+alte Repo-URLs leiten via GitHub-Redirect weiter.
+
+---
+
+## 2026-05-16 — Phase 5 Schritte 1–6 (Konzept-Umsetzung)
+
+Nutzer-Freigabe „Konzept umsetzen (ganz)" → iterative Umsetzung,
+jeder Schritt eigener Commit + Build + vitest grün, visuelle Abnahme
+beim Nutzer (Container headless).
+
+- **S1** Harmonische Indigo-Tonleiter `brand-50..900` (aus Logo) +
+  CSS-Custom-Properties; Primitive `PageHeader`/`ConfirmDialog`/
+  `EmptyState`; toter `shared/Button.jsx` entfernt.
+- **S2** IA: „Einstellungen"-Dropdown → `Dienstplan · Team ·
+  Stammdaten▾ · Konto▾`, Aktiv-Highlighting, Pill-Nav.
+- **S3** Wunsch-Flow: sichtbarer Einstieg (kein Hover), Modal mit
+  fixem MA-Kontext + vorbelegtem Monat, sauberes `onSaved`-Refetch
+  (setTimeout-Hack raus), kaputter Cancel-Handler gefixt.
+- **S4** MA-Flow: „Profil" vs. „Bearbeiten" getrennt & korrekt
+  verlinkt, Lösch-`ConfirmDialog`, Detail als Definitionsliste.
+- **S5** Dienst-Picker: eine zentrale native `<datalist>` für alle
+  Zellen (Tippfilter + valide Auswahl) statt blindem Kürzeltippen.
+- **S6a** Stammdaten-Listen vereinheitlicht (PageHeader/EmptyState/
+  ConfirmDialog, primäre „+ Neu", konsistente Buttons).
+- **S6b** Alle 9 Create/Update-Formulare: irreführende
+  „Einstellungen:"-Breadcrumb → klarer Zurück-Link, Speichern als
+  Primäraktion, rohe `<h1>… loading</h1>` ersetzt, Debug-
+  `console.log` entfernt.
+
+**Bewusst verschoben (mit Begründung):** Der Konzept-Punkt
+„Create/Edit zu *einer* Formular-Komponente mergen" wird **nach** der
+visuellen Nutzer-Abnahme angegangen — er kollidiert mit der schon in
+Phase 1.3 dokumentierten Backend-Inkonsistenz divergierender
+Payload-Schlüssel (`qualificationsData` vs. `qualificationData`,
+`shiftTypesData` vs. `shiftTypeData`); ein blinder Merge ohne visuelle
+Verifikation wäre regressionsträchtig. Die *präsentationale*
+Vereinheitlichung (Schale/Buttons/Back-Link) ist erfolgt.
+
+**Verifiziert:** Build grün, Frontend **12/12** nach jedem Schritt;
+PHPUnit unberührt (kein Backend-Code geändert).
+
+**Lessons Learned:** Smoke-Tests hingen an UI-Texten („Einstellungen",
+„Dienst Präferenzen", mehrdeutiges „Team") — bei IA-/Label-Redesigns
+Tests gezielt entkoppeln (rollen-/strukturunabhängige Assertions),
+nicht nur Strings nachziehen.
+
+---
+
+## 2026-05-16 — Phase 5 (Abschnitt 2): UX-/Userflow-Konzept
+
+Nutzer-Feedback zu Abschnitt 1: Farbwahl gut & lesbar, Kontrast gut;
+gewünscht (a) harmonischere Farbabstufungen, (b) Redesign über Farben
+hinaus — Struktur/Formulare/Navigation, gesamtes Nutzungsverhalten;
+explizit ein Userflow-Konzept.
+
+- Code-Analyse der realen Flows (Wunsch, Mitarbeiter-Bearbeitung,
+  Dienst-Eingabe, IA, MyPlan) → Reibungspunkte verifiziert
+  (Hover-only-Wunsch-Button, „Bearbeiten" führt zu Read-only,
+  Freitext-Dienstzelle, flaches „Einstellungen"-Dropdown, …).
+- Konzept-Deliverable `.claude/memory/ux-concept.md`: Ziel-IA
+  (Topbar Dienstplan/Team/Stammdaten▾ statt „Einstellungen"),
+  redesignte Kern-Userflows (Generieren/Justieren mit Schicht-Picker,
+  vorbelegter sichtbarer Wunsch-Flow, getrenntes Profil vs.
+  Bearbeiten, einheitliches Stammdaten-Muster), Interaktions-
+  Prinzipien, **harmonisierte Indigo-Tonleiter 50–900**,
+  Umsetzungsreihenfolge.
+- Noch **keine** Implementierung — wartet auf Nutzer-Freigabe/
+  Priorisierung des Konzepts.
+
+**Lessons Learned:** „Bearbeiten"-Button der Team-Tabelle führt
+tatsächlich auf die Read-only-Detailseite (`/employee/show`), nicht
+auf das Edit-Formular — klassischer Label/Ziel-Bruch, im Konzept
+adressiert.
+
+---
+
+## 2026-05-16 — Phase 5 (Abschnitt 1): Designsystem + Shell + Kern-Screen
+
+Start des vom Nutzer beauftragten UI/UX-Komplett-Redesigns. Container
+headless → keine Chrome-Live-Exploration; Analyse code-/stilbasiert,
+funktionale Verifikation via vitest. Analyse + Designentscheidungen in
+`.claude/memory/ui-redesign-notes.md`.
+
+- **Farbschema am Logo ausgerichtet** (ausdrücklicher Nutzerwunsch):
+  `equilio-mark.svg` ist Indigo-monochrom → Primary `#4F46E5`,
+  Hover/Active `#3730A3`, Tint `#EEF0FF`, Fokus `#818CF8`.
+- `resources/sass/_variables.scss`: Legacy-Laravel-2017-Palette ersetzt
+  durch vollständiges, kohärentes Bootstrap-5-Theme-Override (Slate-
+  Neutrale, Markenfarben, Radius, Schatten, Typo, Komponenten-Tokens).
+  Wirkt zentral auf alle ~45 React-Bootstrap-Komponenten → geringes
+  Regressionsrisiko ohne visuelle Verifikation.
+- `app.scss`: Inter (1 Request statt mehrfach Nunito) + globaler
+  Politur-Layer: sichtbarer `:focus-visible`-Ring (A11y), sticky/
+  erhöhte Navbar, ruhige Karten/Buttons/Tabellen, am Markenton
+  ausgerichtetes Dropdown, moderne Scrollbars.
+- `NavigationBar`: voll responsiv (Toggle/Collapse, `expand=lg`),
+  Inline-`margin:0 5rem` (mobil kaputt) entfernt.
+- `LoginPage`: Logo-Tint-Radialverlauf, größere schattige Card,
+  inline-`Container` → sauberes `div`; ungenutzten Import entfernt.
+- `DutyOverview.scss`: Aktionsleiste + Board als abgesetzte erhöhte
+  Flächen, ruhige Qualifikations-Sektionsüberschrift (statt
+  ausgefranstem Gradient-Strich), responsives Padding.
+- Stray Nunito-`@import` aus `shift_type.scss` entfernt (Schrift global).
+
+**Verifiziert:** `npm run build` grün (Sass kompiliert; nur
+vorbestehende `@import`-Deprecation), Frontend **12/12**. PHPUnit
+unberührt (keine Backend-Änderung).
+
+**Lessons Learned:** Bootstrap-Funktionen (`tint-color`/`shade-color`)
+stehen im Variablen-Override **nicht** zur Verfügung (Funktionen werden
+erst mit dem Bootstrap-Import geladen) → stattdessen feste Logo-Token
+nutzen. Theming über Bootstrap-Sass-Variablen ist der risikoärmste
+Hebel für ein App-weites Redesign ohne visuelle Verifikation.
+
+---
+
 ## 2026-05-16 — Phase 3.11: Testabdeckung ausbauen
 
 - Neuer `CrudLifecycleTest` (6): voller store→show→update→destroy für
