@@ -1,21 +1,44 @@
 .dutyOverviewContainer {
-    padding: 1rem 2rem 3rem;
+    padding: 1.5rem 1rem 3rem;
+
+    @media (min-width: 992px) {
+        padding: 1.75rem 2rem 3rem;
+    }
 }
 
 // Datumsauswahl separat über dem Board, zentriert.
 .dateSelectorBar {
     display: flex;
     justify-content: center;
-    margin: 1rem 0 1.5rem;
+    margin: .5rem 0 1.25rem;
 }
 
+// Aktionsleiste: als ruhige, abgesetzte Karte über dem Board.
 .generatorBar {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 1rem;
-    margin: 0 0 1rem;
+    gap: .75rem 1rem;
+    margin: 0 auto 1.25rem;
     flex-wrap: wrap;
+    max-width: max-content;
+    padding: .85rem 1.25rem;
+    background: #ffffff;
+    border: 1px solid var(--eq-border, #e2e8f0);
+    border-radius: .75rem;
+    box-shadow: 0 1px 2px rgba(15, 23, 42, .06);
+}
+
+.generatorSummary {
+    display: inline-flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+
+    .badge {
+        font-size: .8rem;
+        padding: .4rem .6rem;
+    }
 }
 
 .generatorAlert {
@@ -25,28 +48,39 @@
 
 // Das gesamte Board (Kopfzeile, Mitarbeiterzeilen, Statistik) hat eine
 // feste, vom Monat abhängige Breite und wird als Ganzes mittig zentriert.
-// Dadurch fluchten alle Tagesspalten exakt untereinander.
+// Dadurch fluchten alle Tagesspalten exakt untereinander. Als erhöhte
+// Fläche mit weichem Rahmen vom App-Hintergrund abgesetzt.
 .dutyBoard {
     width: max-content;
     max-width: 100%;
     margin: 0 auto;
     overflow-x: auto;
+    background: #ffffff;
+    border: 1px solid var(--eq-border, #e2e8f0);
+    border-radius: .75rem;
+    box-shadow: 0 4px 16px rgba(15, 23, 42, .06);
+    padding: .5rem .75rem 1rem;
 }
 
 .separator {
     height: 1rem;
 }
 
+// Qualifikations-Trenner: klare, ruhige Sektionsüberschrift statt
+// des alten ausgefransten Gradient-Strichs.
 .qualificationSection {
     width: 16rem;
-    font-size: 0.7rem;
-    border-width: 1px;
-    border-style: none none solid none;
-    padding: 1rem 0 0 0;
-    border-image:
-    linear-gradient(
-      to right,
-      rgb(0, 0, 0),
-      rgba(0, 0, 0, 0)
-    )  100% 1;
+    font-size: .72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .06em;
+    color: #475569;
+    padding: 1.25rem .75rem .5rem;
+    margin-bottom: .25rem;
+    border-bottom: 2px solid var(--eq-brand, #4f46e5);
+    // Mit der fixierten ersten Spalte mitlaufen.
+    position: sticky;
+    left: 0;
+    z-index: 2;
+    background: #ffffff;
 }

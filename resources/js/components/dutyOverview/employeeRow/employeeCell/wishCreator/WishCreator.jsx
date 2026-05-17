@@ -3,21 +3,38 @@ import { Button } from 'react-bootstrap'
 import WishCreatorModal from './wishCreatorModal/WishCreatorModal'
 import { AiOutlinePlus } from 'react-icons/ai'
 
-function WishCreator(props) {
+function WishCreator({
+  employeeId,
+  employeeName,
+  defaultDate,
+  onSaved,
+  size = 'sm',
+  variant = 'outline-primary',
+  label = 'Wunsch',
+  iconOnly = false,
+}) {
   const [modalShow, setModalShow] = React.useState(false)
 
   return (
     <>
       <Button
-        variant="outline-success"
-        size="sm"
+        variant={variant}
+        size={size}
         onClick={() => setModalShow(true)}
+        title="Dienstwunsch anlegen"
+        aria-label={`Dienstwunsch anlegen${
+          employeeName ? ` für ${employeeName}` : ''
+        }`}
       >
-        <AiOutlinePlus /> Wunsch
+        <AiOutlinePlus />
+        {!iconOnly && <span className="ms-1">{label}</span>}
       </Button>
 
       <WishCreatorModal
-        employeeId={props.employeeId}
+        employeeId={employeeId}
+        employeeName={employeeName}
+        defaultDate={defaultDate}
+        onSaved={onSaved}
         show={modalShow}
         onHide={() => setModalShow(false)}
       />

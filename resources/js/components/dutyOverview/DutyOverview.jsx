@@ -27,6 +27,7 @@ function DutyOverview() {
   const { employeesData } = useSelector((store) => store.employees)
   const { wishesData } = useSelector((store) => store.wishes)
   const { qualificationsData } = useSelector((store) => store.qualifications)
+  const { shiftsData } = useSelector((store) => store.shifts)
   const dispatch = useDispatch()
   const monthlyDays = daysToArray(dateSelectorData.year, dateSelectorData.month)
 
@@ -118,6 +119,16 @@ function DutyOverview() {
             </Alert>
           )}
           <div className="dutyBoard">
+            {/* Eine zentrale Schicht-Auswahlliste für alle Dienstzellen
+                (statt hunderter Einzel-Picker): native Combobox, per
+                Tastatur bedienbar, Tippfilter, kein Auswendiglernen. */}
+            <datalist id="eq-shift-options">
+              {(shiftsData || []).map((s) => (
+                <option key={s.id} value={s.abrv}>
+                  {s.shift_type ? s.shift_type.name : ''}
+                </option>
+              ))}
+            </datalist>
             <DaysRow
               monthlyDays={monthlyDays}
               dateSelectorData={dateSelectorData}

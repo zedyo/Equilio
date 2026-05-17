@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Breadcrumb,
   Button,
   Card,
   Col,
@@ -15,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateShiftTypesData } from '../../../features/shiftTypes/shiftTypeSlice'
 import { FaCheck } from 'react-icons/fa'
+import { FiChevronLeft } from 'react-icons/fi'
 
 function UpdateShiftType() {
   const params = useParams()
@@ -30,27 +30,23 @@ function UpdateShiftType() {
     shiftType !== undefined && setShiftType(shiftType)
   }, [shiftType])
 
-  if (Object.keys(shiftTypeData).length === 0) return <h1></h1>
+  if (Object.keys(shiftTypeData).length === 0)
+    return <Container className="py-4 text-muted">Lädt …</Container>
 
-  console.log(shiftTypeData)
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/shift_types">
-            Einstellungen: Schicht Arten
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
-        </Breadcrumb>
-        <Card>
+      <Container className="py-4">
+        <a href="/shift_types" className="eq-page-header__back">
+          <FiChevronLeft /> Schichtarten
+        </a>
+        <Card className="mt-2">
           <Card.Header>
             <Stack direction="horizontal" gap={3}>
               <div>Daten Bearbeitung</div>
               <div className="ms-auto">
                 <Button
                   onClick={() => dispatch(updateShiftTypesData(shiftTypeData))}
-                  variant="outline-primary"
+                  variant="primary"
                   href={`/shift_types`}
                 >
                   <FaCheck /> Speichern

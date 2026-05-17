@@ -8,7 +8,6 @@ import {
   FormSelect,
   InputGroup,
   Stack,
-  Breadcrumb,
   Row,
   Col,
   Form,
@@ -16,6 +15,7 @@ import {
 import { useDispatch } from 'react-redux'
 import { postShiftsData } from '../../../features/shifts/shiftSlice'
 import { FaCheck } from 'react-icons/fa'
+import { FiChevronLeft } from 'react-icons/fi'
 import '../../dutyOverview/employeeRow/dutyCell/DutyCell.scss'
 
 function CreateShift() {
@@ -40,15 +40,11 @@ function CreateShift() {
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/shifts">
-            Einstellungen: Schichten
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Neue Schicht</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className="row justify-content-center">
+      <Container className="py-4">
+        <a href="/shifts" className="eq-page-header__back">
+          <FiChevronLeft /> Schichten
+        </a>
+        <div className="row justify-content-center mt-2">
           <div className="col-md-12">
             <Card>
               <Card.Header>
@@ -57,7 +53,7 @@ function CreateShift() {
                   <div className="ms-auto">
                     <Button
                       onClick={() => dispatch(postShiftsData(shiftsData))}
-                      variant="outline-primary"
+                      variant="primary"
                       href={`/shifts`}
                     >
                       <FaCheck /> Speichern

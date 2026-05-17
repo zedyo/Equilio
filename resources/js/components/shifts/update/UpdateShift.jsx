@@ -10,13 +10,13 @@ import {
   Stack,
   Row,
   Col,
-  Breadcrumb,
   Form,
 } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 import { updateShiftsData } from '../../../features/shifts/shiftSlice'
 import { FaCheck } from 'react-icons/fa'
+import { FiChevronLeft } from 'react-icons/fi'
 import '../../dutyOverview/employeeRow/dutyCell/DutyCell.scss'
 
 function UpdateShift() {
@@ -46,20 +46,16 @@ function UpdateShift() {
     getShiftTypeData()
   }, [])
 
-  if (Object.keys(shiftData).length === 0) return <h1></h1>
-  console.log(shiftData.shift_type.active_duty)
+  if (Object.keys(shiftData).length === 0)
+    return <Container className="py-4 text-muted">Lädt …</Container>
 
   return (
     <>
-      <Container style={{ padding: '2rem 0' }}>
-        <Breadcrumb>
-          <Breadcrumb.Item href="/">Dienstplan</Breadcrumb.Item>
-          <Breadcrumb.Item href="/shifts">
-            Einstellungen: Schichten
-          </Breadcrumb.Item>
-          <Breadcrumb.Item active>Daten Bearbeitung</Breadcrumb.Item>
-        </Breadcrumb>
-        <div className="row justify-content-center">
+      <Container className="py-4">
+        <a href="/shifts" className="eq-page-header__back">
+          <FiChevronLeft /> Schichten
+        </a>
+        <div className="row justify-content-center mt-2">
           <div className="col-md-12">
             <Card>
               <Card.Header>
@@ -68,7 +64,7 @@ function UpdateShift() {
                   <div className="ms-auto">
                     <Button
                       onClick={() => dispatch(updateShiftsData(shiftData))}
-                      variant="outline-primary"
+                      variant="primary"
                       href={`/shifts`}
                     >
                       <FaCheck /> Speichern

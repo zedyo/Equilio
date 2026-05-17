@@ -1,0 +1,45 @@
+// Topbar-Navigation (Phase-5-IA)
+
+.eq-nav {
+  gap: .25rem;
+  align-items: center;
+
+  .nav-link {
+    font-weight: 600;
+    color: #475569;
+    border-radius: 999px;
+    padding: .4rem .9rem;
+    transition: background-color .12s ease, color .12s ease;
+
+    &:hover {
+      color: var(--eq-brand-700, #4338ca);
+      background: var(--eq-brand-50, #eef0ff);
+    }
+
+    &.active {
+      color: var(--eq-brand-700, #4338ca);
+      background: var(--eq-brand-50, #eef0ff);
+    }
+  }
+
+  &__dd.dropdown-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: .25rem;
+
+    &::after {
+      display: none; // eigener Chevron
+    }
+  }
+}
+
+.eq-role-badge {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  padding: .12rem .45rem;
+  border-radius: 999px;
+  background: var(--eq-brand-100, #e0e2fe);
+  color: var(--eq-brand-900, #312e81);
+}
