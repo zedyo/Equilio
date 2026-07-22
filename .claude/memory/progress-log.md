@@ -4,6 +4,43 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-07-22 — Dependabot: Sicherheits-Updates Frontend + Backend
+
+Dependabot meldete offene Advisories in beiden Stacks. Prüfung per
+`npm audit` (gegen `package-lock.json`) und `composer audit --locked`
+(gegen `composer.lock`); beide Ergebnisse decken sich mit der
+GitHub-Advisory-Datenbank, die auch Dependabot nutzt.
+
+**Frontend — 8 Schwachstellen (1 critical, 5 high, 2 low) → 0.**
+Alle Fixes lagen innerhalb der bestehenden Caret-Ranges, daher nur
+`package-lock.json` verändert (kein `package.json`-Bump nötig):
+`vitest` 3.2.4→3.2.7 (**critical** — Datei-Lesen/-Ausführung via UI-Server),
+`axios` 1.16.1→1.18.1 (10 Advisories: DoS, Prototype-Pollution,
+SSRF/Proxy), `vite` 7.3.3→7.3.6, `form-data` 4.0.5→4.0.6 (transitiv/axios),
+`immutable` 5.1.5→5.1.9, `ws` 8.20.1→8.21.1, `esbuild` 0.27.7→0.28.1
+(transitiv/vite), `@babel/core` 7.29.0→7.29.7. Verifiziert:
+`npm audit` = 0, `npm run build` grün, 12/12 vitest-Tests grün.
+
+**Backend — 25 Advisories über 10 Pakete → 0.** `composer update`
+(innerhalb Constraints, keine Constraint-Änderung in `composer.json`):
+`laravel/framework` v12.59.0→v12.64.0 (u. a. HTTP-Kernel/Routing-Fixes),
+`guzzlehttp/guzzle` 7.10.0→7.15.1 (7 Cookie-/Referer-/Proxy-Advisories),
+`guzzlehttp/psr7` 2.9.0→2.13.0, `symfony/http-foundation` 7.4.8→7.4.14,
+`symfony/http-kernel` 7.4.11→7.4.14 (**high**), `symfony/mailer` →7.4.14,
+`symfony/mime` 7.4.9→7.4.13 (**high**), `symfony/routing` →7.4.13,
+`symfony/yaml` →v8.1.1 (Major-Sprung, von Constraint erlaubt),
+`symfony/polyfill-intl-idn` →v1.38.1. Verifiziert:
+`composer audit` = keine Advisories, 51/51 PHPUnit-Tests grün (7259
+Assertions) — inkl. `symfony/yaml` v8.
+
+Nur die Lock-Dateien wurden committet (`vendor/`, `node_modules/`,
+`.env`, `dist/` gitignored). Lessons Learned: `composer audit` braucht
+`--locked`, wenn `vendor/` nicht installiert ist (sonst „No packages —
+skipping audit"); alle Fixes waren nicht-breaking und blieben in den
+vorhandenen Semver-Ranges, daher reine Lockfile-Änderungen.
+
+---
+
 ## 2026-05-17 — Weiße Seite: Ursache = Environment-Schutzregel
 
 Nach dem Casing-Fix blieb `/Equilio/` weiß. Diagnose über Actions:
