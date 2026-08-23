@@ -4,6 +4,48 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-08-23 — Dependabot: react-router + league/commonmark (2 High-Alerts)
+
+Zwei offene High-Severity-Alerts, gezielt und minimal behoben — bewusst
+**kein** Sammel-Update nebenbei:
+
+- **npm / react-router** — GHSA-qwww-vcr4-c8h2 („RSC Mode CSRF Bypass
+  Allows Action Execution Before 400 Response"), betroffen bis 7.18.1.
+  `npm update react-router react-router-dom`: **7.15.1 → 7.18.2**.
+  Minor-Sprung innerhalb `^7.1.0` (package.json unverändert, reiner
+  Lockfile-Change), kein Major, keine Breaking Changes. Deckt zugleich
+  die vier weiteren react-router-Advisories der 7.x-Reihe ab
+  (GHSA-wrjc-x8rr-h8h6, -h8fp-f39c-q6mh, -337j-9hxr-rhxg, -chx6-hx7r-mcp5).
+- **Composer / league/commonmark** — CVE-2026-71488 („Quadratic-time
+  denial of service when parsing crafted Markdown", GHSA-2q4p-g7hv-5rgv),
+  betroffen `>=0.6.0,<2.9.0`. `composer update league/commonmark`:
+  **2.8.3 → 2.10.0**. Minor innerhalb `^2`, transitiv über
+  laravel/framework — keine Constraint-Änderung nötig. Räumt zusätzlich
+  GHSA-jfm3-95jq-q3rf, GHSA-g2gp-3wwq-f4ph und CVE-2026-71478 ab.
+
+Diff bleibt sauber: `composer.lock` und `package-lock.json` ändern
+ausschließlich diese drei Pakete, keine mitgezogenen Transitiv-Bumps.
+
+**Verifiziert:** PHPUnit **51/51** (7259 Assertions), Vitest **12/12**,
+`npm run build` grün. `composer audit`: commonmark-Advisories weg.
+
+**Noch offen (bewusst außerhalb des Auftrags-Scopes, separat zu fixen):**
+- npm: `nanoid <=3.3.17` (high) und `postcss <=8.5.22` (high) — beides
+  transitiv über Vite, per `npm audit fix` lockfile-only lösbar.
+- Composer: `guzzlehttp/guzzle <7.15.2` (CVE-2026-69246 high,
+  CVE-2026-69245 medium) — Patch-Bump innerhalb `^7`.
+
+**Lessons Learned:** In dieser Session war die Dependabot-Alerts-API
+nicht erreichbar (`repos/.../dependabot/alerts` → 403 „Resource not
+accessible by integration", `gh` gar nicht installiert; die Session ist
+zudem auf repo-scoped Endpunkte beschränkt, `api.github.com/advisories`
+also ebenfalls 403). Ersatzquelle für die exakten Patch-Versionen waren
+`npm audit` und `composer audit` — beide speisen sich aus derselben
+GitHub Advisory Database und nennen die betroffenen Ranges direkt, sind
+für „ab welcher Version gepatcht" also gleichwertig. Konsequenz: die
+Alert-Zustände auf GitHub konnten nicht gegengeprüft werden.
+
+
 ## 2026-07-22 — Dependabot: Sicherheits-Updates Frontend + Backend
 
 Dependabot meldete offene Advisories in beiden Stacks. Prüfung per
