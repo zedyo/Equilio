@@ -4,6 +4,39 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-08-23 — Restliche vier Advisories nachgezogen (Audits jetzt sauber)
+
+Nachtrag zum Alert-Fix von heute: die vier Advisories, die im ersten
+Commit bewusst außerhalb des Scopes blieben, sind jetzt ebenfalls
+gepatcht. Alle vier waren Patch-Bumps innerhalb bestehender Constraints,
+kein Manifest musste angefasst werden.
+
+- **npm / nanoid** — 3.3.12 → **3.3.18** (GHSA-28wg-ghj8-5hjv,
+  GHSA-2v37-7h3g-55p8, beide high: Endlosschleife bei negativer bzw.
+  Null-Größe in den non-secure Generatoren).
+- **npm / postcss** — 8.5.14 → **8.5.26** (GHSA-fxqj-rqcc-2cmp,
+  GHSA-r28c-9q8g-f849, beide high: Path Traversal über
+  `sourceMappingURL`, Auslesen beliebiger `.map`-Dateien). Beide
+  transitiv über Vite, per `npm audit fix` lockfile-only gelöst.
+- **Composer / guzzlehttp/guzzle** — 7.15.1 → **7.15.2**
+  (CVE-2026-69246 high: noncanonical Host umgeht Host-basierte Checks;
+  CVE-2026-69245 medium: noncanonical Cookie-Domain behält
+  Subdomain-Scope). `composer update guzzlehttp/guzzle`, Patch in `^7`.
+
+Diff wieder minimal: exakt diese drei Pakete in den beiden Lockfiles.
+
+**Verifiziert:** `npm audit` → **0 vulnerabilities**, `composer audit` →
+**keine Advisories**. PHPUnit **51/51** (7259 Assertions), Vitest
+**12/12**, `npm run build` grün.
+
+**Lessons Learned:** `composer audit` lief einmal in einen
+Packagist-Timeout und fiel still auf den lokalen Cache zurück (Hinweis
+„package information was loaded from the local cache and may be out of
+date"). Bei Sicherheits-Checks ist das kein akzeptables Ergebnis — die
+Warnzeile muss geprüft und der Lauf bei Netzfehlern wiederholt werden,
+sonst bestätigt man Sauberkeit gegen einen veralteten Advisory-Stand.
+
+
 ## 2026-08-23 — Dependabot: react-router + league/commonmark (2 High-Alerts)
 
 Zwei offene High-Severity-Alerts, gezielt und minimal behoben — bewusst
