@@ -4,6 +4,70 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-08-26 — Dependabot-Runde 2: react-router, postcss, guzzle, commonmark
+
+Zweite Welle offener Advisories. Wichtig: Das sind **neue** Advisories,
+keine Wiedergänger vom 22.07. — die commonmark-Meldungen wurden am
+06.08.2026 veröffentlicht, also *nach* der letzten Runde. Der Juli-Fix
+war korrekt und ist weiterhin auf `master`; er konnte diese Lücken nur
+noch nicht kennen.
+
+**Zugriffshürde:** Die Dependabot-Alerts-API ist für das Session-Token
+gesperrt (`403 Resource not accessible by integration`), `gh` ist im
+Remote-Container nicht installiert, und der GitHub-MCP-Server hat kein
+Dependabot-Tool. Der echte Stand kam deshalb aus `npm audit` (gegen
+`package-lock.json`) und `composer audit --locked` (gegen
+`composer.lock`) — dieselben Advisory-Datenbanken, die Dependabot nutzt.
+
+**Frontend — 4 Pakete (3 high, 1 moderate) → 0.** Alle Fixes lagen
+innerhalb der bestehenden Ranges, daher nur `package-lock.json`
+verändert:
+`react-router` 7.15.1→7.18.2 (**5 Advisories**: Open Redirect via
+Backslash = CVE-2025-68470-Bypass `GHSA-wrjc-x8rr-h8h6`, RSCErrorHandler
+XSS `GHSA-h8fp-f39c-q6mh`, Constructor Injection in
+`deserializeErrors()` `GHSA-337j-9hxr-rhxg`, DoS via ineffizientes
+Route-Matching `GHSA-chx6-hx7r-mcp5`, RSC-CSRF-Bypass
+`GHSA-qwww-vcr4-c8h2`), `react-router-dom` 7.15.1→7.18.2 (transitiv),
+`postcss` 8.5.14→8.5.26 (Path Traversal via `sourceMappingURL`,
+`GHSA-r28c-9q8g-f849` CVSS 7.5 + unvollständiger Fix
+`GHSA-fxqj-rqcc-2cmp`), `nanoid` 3.3.12→3.3.18 (Endlosschleife bei
+negativer/Null-Größe, `GHSA-28wg-ghj8-5hjv`, `GHSA-2v37-7h3g-55p8`).
+
+`nanoid` stand **nicht** in der Dependabot-Mail, ist aber transitiv über
+`postcss` → `vite` eingebunden und war ebenfalls high. Der postcss-Bump
+zieht es innerhalb `^3.3.11` automatisch mit.
+
+**Backend — 2 Pakete, 8 Advisories (5 high, 3 medium) → 0.**
+`guzzlehttp/guzzle` 7.15.1→7.15.2 (Host-Check-Bypass via
+nicht-kanonischem Host `GHSA-v5mv-p594-2x33` high; Cookie behält
+Subdomain-Scope `GHSA-f7vp-7xgx-4w4r`), `league/commonmark` 2.8.3→2.10.0
+(**6 Advisories**, u. a. CVE-2026-71488 quadratische Laufzeit beim
+Parsen, CVE-2026-71478 `unsafe-link`-Bypass über eingebettete
+Control-Bytes, plus drei DoS-Pfade über kollidierende Heading-Slugs,
+doppelte Footnotes und benachbarte Inline-Attribut-Blöcke).
+
+**Kein Major-Sprung nötig.** Guzzle hat den Fix in beide Linien
+zurückportiert (`>=8.0.0,<8.0.1|<7.15.2`); 7.15.2 reicht, und
+`laravel/framework` v12.64 verlangt ohnehin `^7.8.2` — ein Sprung auf
+Guzzle 8 wäre ohne Laravel-Update gar nicht auflösbar gewesen.
+`commonmark ^2.8.1` deckt 2.10.0 ab. Beide Pakete sind transitiv über
+Laravel, stehen also nicht in `composer.json` — `composer update
+<vendor/paket>` funktioniert dafür trotzdem.
+
+**Verifiziert:** `npm audit` 0, `composer audit` „No security
+vulnerability advisories found", PHPUnit **51/51** (7259 Assertions),
+Vitest **12/12**, `npm run build` grün. Diff bleibt minimal: 24 Zeilen
+`composer.lock`, 29 Zeilen `package-lock.json`, keine Manifest-Änderung.
+
+**Lessons Learned:** „Dependabot meldet noch offen" hieß hier weder
+Stale-Alert noch unmergter Branch — die Alerts waren echt und neu.
+Erst die lokalen Audits gegen die Lockfiles haben das geklärt, weil die
+Alerts-API gesperrt war; die Lockfile-Audits sind der belastbarere
+Ersatz, weil sie den tatsächlich installierten Baum prüfen statt eine
+Alert-Liste. Zweite Lehre: Die Mail nennt nur die Pakete mit eigenem
+Alert — `nanoid` wäre bei rein listengetreuem Abarbeiten liegen
+geblieben.
+
 ## 2026-07-22 — Dependabot: Sicherheits-Updates Frontend + Backend
 
 Dependabot meldete offene Advisories in beiden Stacks. Prüfung per
