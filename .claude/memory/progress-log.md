@@ -68,6 +68,22 @@ Alert-Liste. Zweite Lehre: Die Mail nennt nur die Pakete mit eigenem
 Alert — `nanoid` wäre bei rein listengetreuem Abarbeiten liegen
 geblieben.
 
+**Nachtrag — Merge auf `master` + neue Konvention.** Auf Ansage des
+Nutzers als Fast-Forward direkt auf `master` gemerged (`205a789..4bc2e44`,
+kein Merge-Commit, kein PR). Bestätigung, dass Dependabot danach neu
+gescannt hat: um 06:12:37Z gepusht, um 06:17:22Z hat Dependabot seinen
+eigenen PR #16 („Bump postcss 8.5.14 → 8.5.25") **ungemerged
+geschlossen** — Standardverhalten, wenn der Rescan die Abhängigkeit
+bereits aktualisiert vorfindet (auf `master` liegt 8.5.26).
+
+Daraufhin in `CLAUDE.md` festgehalten: Dependency-Updates dürfen direkt
+auf `master`, aber nur bei fünf grünen Kriterien (beide Audits auf 0,
+beide Testsuiten vollständig, Build grün, kein Major-Sprung im
+Alleingang, Diff nur in den Lockfiles). Der Punkt 5 ist der eigentliche
+Wächter: sobald `package.json`/`composer.json` angefasst werden, ist es
+kein reines Dependency-Update mehr und die Änderung gehört auf den
+Arbeitsbranch.
+
 ## 2026-07-22 — Dependabot: Sicherheits-Updates Frontend + Backend
 
 Dependabot meldete offene Advisories in beiden Stacks. Prüfung per

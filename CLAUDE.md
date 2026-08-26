@@ -220,7 +220,7 @@ Build-Hinweise:
 
 ## Konventionen & Hinweise
 
-- Branch für laufende Doku/Entwicklung: `claude/add-project-documentation-1Qnpn` (Push erlaubt; Master nicht).
+- Branch für laufende Doku/Entwicklung: `claude/add-project-documentation-1Qnpn` (Push erlaubt; `master` nur für geprüfte Dependency-Updates — siehe „Arbeitsweise des Agents").
 - Codestil: PSR via `.styleci.yml`; Frontend: Prettier (`.prettierrc`), ESLint (`.eslintrc`).
 - Commit-Stil (aus `git log`): kurz, imperativ-englisch, z. B. `Add Statistics`, `Fix Shift duty selection`, `Optimize UI`. Keine Konvention für Conventional-Commits.
 - Sprache: UI-Texte sind deutsch (Pflegebranche), Code-Identifier englisch.
@@ -233,6 +233,22 @@ Build-Hinweise:
   Keine Bestätigungs-/Auswahlfragen für normale Entwicklungsarbeit. Ausnahmen
   bleiben: wirklich destruktive/irreversible Aktionen (z. B. Force-Push auf
   `master`, History-Rewrite) sowie inhaltlich mehrdeutige Produktentscheidungen.
+- **Dependency-Updates dürfen direkt auf `master`** (Nutzer-Freigabe,
+  Aug. 2026) — aber ausschließlich nach bestandener Integritäts- und
+  Funktionsprüfung. Alle fünf Punkte müssen grün sein; sonst geht die
+  Änderung wie gewohnt auf den Arbeitsbranch:
+  1. `npm audit` **und** `composer audit --locked` melden 0 Advisories.
+  2. Beide Testsuiten vollständig grün: `php artisan test` und `npm test`
+     (nicht nur ein Teillauf).
+  3. `npm run build` läuft durch.
+  4. Kein Major-Sprung im Alleingang. Wäre einer nötig, Breaking Changes
+     benennen und nachfragen — auch dann kein Direkt-Push.
+  5. Der Diff beschränkt sich auf `package-lock.json` / `composer.lock`.
+     Ändert sich `package.json` oder `composer.json`, ist es kein reines
+     Dependency-Update mehr → Arbeitsbranch.
+  Bevorzugt als Fast-Forward ohne Merge-Commit. Force-Push auf `master`
+  bleibt auch hier ausgeschlossen. Für Code, Features und Doku gilt
+  unverändert der Arbeitsbranch.
 - Bei eigenständigen Änderungen: kleine, fokussierte Commits mit aussagekräftiger Botschaft.
 - Fortschritt mitschreiben in `.claude/memory/progress-log.md` (Datum, was gemacht, Lessons Learned).
 - Wenn Code von Proposal-Zielen abweicht, in `.claude/memory/implementation-status.md` aktualisieren.
