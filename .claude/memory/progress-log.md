@@ -968,3 +968,31 @@ Verbesserungs-Hebel — sie macht bestehende Kapazitätsdefizite *sichtbarer*
 nötige Gewichts-Feinjustierung Qual↔Stunden↔Besetzung (offen).
 
 <!-- Neue Einträge bitte hier nach diesem Marker einfügen, jeweils oben unter dem H2-Datumsblock. -->
+
+## 2026-09-14: Sicherheitsupdate vitest (GHSA-82fw-gwwq-j7x9)
+
+Dependabot meldete `@vitest/mocker` (Path Traversal / Arbitrary File Read
+über Redirect-Mocks, CVE-2026-84373, moderate, CVSS 5.9, CWE-22).
+Betroffen laut Advisory: `vitest` und `@vitest/mocker` `>=2.1.0 <4.1.11`,
+gepatcht ab **4.1.11**. Die 3.x-Linie endet bei 3.2.7 und hat keinen
+Patch, der Sprung auf Vitest 5 ist aber nicht nötig.
+
+- `vitest` von `^3.2.4` auf `^4.1.11` gehoben, sonst nichts.
+  `@vitest/mocker` ist nur transitiv und zieht mit.
+- Dependabot-PR #17 (schlug 5.0.0 vor, also `latest` statt niedrigster
+  gepatchter Version) kommentiert und geschlossen.
+
+**Verifiziert:** Baseline vor dem Update 12/12 Frontend-Tests grün,
+danach unverändert 12/12. `npm audit`: 0 Schwachstellen (vorher 2
+moderate). `npm run build` grün. Lockfile-Diff auf den vitest-Teilbaum
+begrenzt (vitest 4 inlined u.a. `vite-node`, `tinypool`, chai-Teile).
+
+**Lessons Learned:** Dependabot schlägt bei Security-Updates `latest`
+vor, nicht die niedrigste gepatchte Version. Ein Blick ins Advisory
+sparte hier einen unnötigen Major-Sprung auf Vitest 5 (Mocks per Default
+vor jedem Test geleert, `sequential` entfernt, `toHaveTextContent`
+strikt). Nebenbei: `npm 10.9.7` stürzt beim Auflösen des neuen Baums mit
+`Cannot read properties of null (reading 'edgesOut')` ab (Arborist-Bug
+bei Peer-Deps jsdom → canvas), `npx npm@12 install` läuft durch und
+schreibt weiterhin `lockfileVersion: 3`. Relevant, falls die CI noch auf
+npm 10 steht.
