@@ -4,6 +4,19 @@ Chronologisches Tagebuch der Arbeit, die Claude an diesem Projekt verrichtet. Fo
 
 ---
 
+## 2026-11-15 — Dependabot-Runde: axios, vite, laravel/framework, symfony/yaml
+
+24 offene Warnungen (22 npm, 2 Composer). **npm:** `npm audit fix` ohne
+`--force`, nur `package-lock.json` geändert: axios 1.18.1→1.21.1,
+vite 7.3.6→7.3.8, moment 2.30.1→2.31.0, @vitest/mocker 5.0.1→5.1.0,
+follow-redirects 1.16.1→1.16.3, source-map-js 1.2.1→1.2.2. `npm audit`: 0.
+**Composer:** lokal kein PHP, daher `composer.lock` aus dem Dependabot-PR #22
+übernommen (laravel/framework 12.69.0→12.71.0, symfony/yaml 8.1.1→8.1.11 und
+Patch-Folgen). Frontend-Tests 12/12, `npm run build` grün. PHPUnit lokal nicht
+lauffähig, läuft in CI nach Push auf `master`. Neu: `KARTE.md`.
+
+---
+
 ## 2026-08-26 — Dependabot-Runde 2: react-router, postcss, guzzle, commonmark
 
 Zweite Welle offener Advisories. Wichtig: Das sind **neue** Advisories,
